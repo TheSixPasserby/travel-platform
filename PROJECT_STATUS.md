@@ -2,7 +2,7 @@
 
 **项目：** 旅游攻略分享与行程规划平台  
 **基线版本：** V1.1 审查稿（2026-11-02）  
-**当前阶段：** M0–M7既有阶段基线已验收；用户授权建仓库推送，待补充功能缺口后继续规划审查
+**当前阶段：** M0–M7既有阶段基线已验收；私有仓库首次推送完成，待补充功能缺口后继续规划审查
 
 ## 总体进度
 - [x] 项目定位和技术路线初步确定
@@ -45,7 +45,7 @@
 模型方案无需再次确认：Codex GPT-6.1-Sol / Ultra 主导，DSH CodeBuddy DeepSeek V4.1 Flash / Max 执行。用户已授权准备独立 MySQL 8.4、保留原 26.7 服务；本地连接配置由主代理完成，凭据不写入文档。
 
 ## 下一步
-1. 将既有代码基线提交到私有仓库main；仅源码/公开设计与验证材料，不提交凭据、运行数据、上传和构建产物；
+1. 私有仓库main已保存现有基线，后续按功能增量维护；凭据、运行数据、上传和构建产物继续排除；
 2. 待用户说明未实现功能，核对原需求与实际行为后规划、审查、逐项补齐；
 3. 学校格式终稿和正式部署按实际要求推进，Nginx/负载/真实备份恢复仍未执行。
 
@@ -53,6 +53,7 @@
 
 - [TheSixPasserby/travel-platform](https://github.com/TheSixPasserby/travel-platform)，私有仓库，主分支`main`。
 - 本次用户明确授权建立仓库、提交并推送；此前里程碑“未自动commit”是当时状态，历史验收记录不改写。
+- 首次源码提交`7e4e557`已推送，GitHub远端SHA与本地一致；发布记录随后单独提交。302文件全部按实际Git内容核对，DSH静态审查无阻塞。
 - 发布前完整复验：后端165/165、前端227/227、Python40/40；302候选文件无已知本地凭据/私钥令牌模式、禁用目录或软链接。补充项目级`.superpowers/`忽略，保证换机后同样排除执行日志。
 
 最新验收：[M7记录](docs/27-m7-test-report.md)、[机器证据](docs/verification/2026-11-04-m7.json)。历史：[M0](docs/13-baseline-review.md)、[M1](docs/16-m1-test-report.md)、[M2](docs/17-m2-test-report.md)、[M3](docs/18-m3-test-report.md)、[M4](docs/19-m4-test-report.md)、[M5](docs/20-m5-test-report.md)、[M6](docs/21-m6-test-report.md)、[依赖版本](docs/15-dependency-baseline.md)。
