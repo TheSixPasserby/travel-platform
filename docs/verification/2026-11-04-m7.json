@@ -1,0 +1,143 @@
+{
+  "milestone": "M7",
+  "status": "passed",
+  "scope": "local delivery and material framework; official deployment and school-format finals pending",
+  "accepted": "2026-11-04",
+  "backend": {
+    "tests": 165,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "package": "passed"
+  },
+  "frontend": {
+    "tests": 227,
+    "files": 25,
+    "build": "vue-tsc and Vite passed"
+  },
+  "python": {
+    "tests": 40,
+    "launcher": 29,
+    "release": 11,
+    "failures": 0,
+    "errors": 0
+  },
+  "independentReviews": {
+    "preflight": "hub63 ruled",
+    "manual": "hub64 single file; main verified and refined",
+    "release": "hub65 no blockers; Unicode finding fixed",
+    "final": "hub66 no blockers; static review only",
+    "model": "buddy/deepseek-v4.1-flash/max"
+  },
+  "productionRehearsal": {
+    "jarPort": 8081,
+    "previewPort": 5174,
+    "loopbackOnly": true,
+    "deepLinkReload": true,
+    "publicTagsStatus": 200,
+    "anonymousPrivateStatus": 401,
+    "packagedLauncher": "passed without Maven or copied dotenv, 8 tags",
+    "ownedProcessesStopped": true,
+    "originalPortsRetained": [
+      3306,
+      3307,
+      8080,
+      5173
+    ]
+  },
+  "browser": {
+    "run": "graduation-demo-c456a7092c",
+    "productionLogin": true,
+    "privateTimelineAndReload": true,
+    "foreignUi403": true,
+    "interactions": true,
+    "adminHideRestore": true,
+    "summary": {
+      "userCount": 3,
+      "guideCount": 3,
+      "destinationCount": 6,
+      "commentCount": 1
+    },
+    "upload": {
+      "url": "/uploads/2026/11/0b79c8a655894941b2e9de63535a1541.png",
+      "status": 200,
+      "type": "image/png",
+      "cleanedAfterZeroReferenceCheck": true
+    },
+    "allLoggedOut": true,
+    "persistentDemoRetained": true,
+    "mobileScreenshotInspected": true
+  },
+  "demo": {
+    "run": "graduation-demo-c456a7092c",
+    "accounts": 3,
+    "publicGuides": 2,
+    "drafts": 1,
+    "itineraries": 1,
+    "days": 2,
+    "items": 3,
+    "comments": 1,
+    "likes": 1,
+    "favorites": 1,
+    "retained": true,
+    "resumeWithoutDuplicates": "passed",
+    "passwordFile": ".local/demo/credentials.json",
+    "permissions": "600",
+    "tokensPersisted": false
+  },
+  "artifact": {
+    "candidate": {
+      "path": ".local/releases/m7-candidate-20261104",
+      "files": 334,
+      "hashes": "verified",
+      "knownPrivateValuesFound": 0
+    },
+    "finalDirectory": ".local/releases/travel-platform-delivery",
+    "archive": ".local/releases/travel-platform-delivery.zip",
+    "receipt": ".local/releases/travel-platform-delivery-receipt.json",
+    "contents": "source, JAR, dist, DB initialization, documentation; no local credentials or uploaded data"
+  },
+  "sourceSnapshot": {
+    "files": 178,
+    "path": ".superpowers/sdd/2026-11-04-m7-delivery/accepted-source-hashes.json",
+    "changedWithinM6Snapshot": [],
+    "newlyIncluded": [
+      ".env.example",
+      "frontend/vite.config.ts",
+      "scripts/backend.py",
+      "scripts/release.py",
+      "scripts/tests/test_backend_launcher.py",
+      "scripts/tests/test_release.py"
+    ],
+    "systemFilesExcluded": ".DS_Store"
+  },
+  "requirements": {
+    "defined": 40,
+    "executedWithStageEvidence": 39,
+    "optionalNotExecuted": [
+      "TC-020 AI not integrated"
+    ],
+    "namedTestReferencesMissing": 0
+  },
+  "schemaChanged": false,
+  "dependenciesChanged": false,
+  "gitCommitCreated": false,
+  "audit": {
+    "runtime": 0,
+    "full": {
+      "moderate": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "unchangedSinceM3": true,
+    "rerunInM7": false
+  },
+  "notExecuted": [
+    "Nginx syntax/startup",
+    "public domain/TLS/host deployment",
+    "performance/load",
+    "actual database backup/restore",
+    "AI/maps",
+    "school-format thesis/Word/defense PPT; template not supplied"
+  ]
+}

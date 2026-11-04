@@ -1,0 +1,245 @@
+{
+  "milestone": "M6",
+  "status": "passed",
+  "started": "2026-11-04",
+  "accepted": "2026-11-04",
+  "backend": {
+    "tests": 165,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": [
+      {
+        "name": "com.example.travelplatform.administration.AdminDashboardApiTest",
+        "tests": "2",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.administration.AdministrationApiTest",
+        "tests": "13",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.comment.CommentApiTest",
+        "tests": "8",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.comment.CommentInputPolicyTest",
+        "tests": "8",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.common.GlobalExceptionHandlerTest",
+        "tests": "15",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.common.RequestValuesTest",
+        "tests": "5",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.destination.DestinationApiTest",
+        "tests": "9",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.destination.DestinationInputPolicyTest",
+        "tests": "4",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.file.ImageApiTest",
+        "tests": "9",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.file.ManagedImagePathsTest",
+        "tests": "4",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.guide.GuideApiTest",
+        "tests": "13",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.guide.GuideInputPolicyTest",
+        "tests": "10",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.interaction.InteractionApiTest",
+        "tests": "7",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.itinerary.ItineraryApiTest",
+        "tests": "14",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.itinerary.ItineraryDatesTest",
+        "tests": "6",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.user.AuthApiTest",
+        "tests": "24",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.user.UserInputPolicyTest",
+        "tests": "14",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      }
+    ],
+    "package": "passed"
+  },
+  "frontend": {
+    "tests": 227,
+    "files": 25,
+    "build": "vue-tsc and vite passed"
+  },
+  "launcher": {
+    "tests": 24,
+    "unchangedSinceM2": true
+  },
+  "independentReviews": {
+    "preflight": "hub57 ruled and closed",
+    "backend": "hub59 ruled and closed",
+    "frontend": "hub60 applied-filter suggestions fixed with real RED; hub61/62 evidence closure ruled"
+  },
+  "dshDeliveries": {
+    "usersPage": "hub58 / root session, filter and late-response refinement",
+    "model": "buddy/deepseek-v4.1-flash/max"
+  },
+  "browser": {
+    "run": "m6-browser-e01dd20765c143",
+    "suffix": "e01dd20765c143",
+    "users": [
+      {
+        "id": "9",
+        "username": "m6browserae01dd20765c143",
+        "role": "ADMIN"
+      },
+      {
+        "id": "10",
+        "username": "m6browserbe01dd20765c143",
+        "role": "USER"
+      }
+    ],
+    "guideId": "3",
+    "commentIds": [
+      "3"
+    ],
+    "flags": {
+      "adminNavigationAndSelfGuard": true,
+      "userAdminForbidden": true,
+      "guideAndInteractionsCreatedInUi": true,
+      "hiddenGuideVisibility": true,
+      "guideRestorePreserved": true,
+      "commentGovernanceAndSafeText": true,
+      "adminNoAuthorBypass": true,
+      "mobileNoOverflow": true,
+      "disableRejectsOldSessionAndKeepsPublicContent": true,
+      "reenableAndLogin": true,
+      "realSummary": true,
+      "deletedContentNotRevived": true,
+      "bothLoggedOut": true,
+      "privateCredentialsDestroyed": true,
+      "mobileScreenshotsInspected": true
+    },
+    "cleanup": true,
+    "publishedAt": "2026-11-04T18:09:41.746+08:00",
+    "summaryDuringQa": {
+      "userCount": 2,
+      "guideCount": 1,
+      "destinationCount": 6,
+      "commentCount": 1
+    },
+    "cleanupCounts": {
+      "users": 2,
+      "guides": 1,
+      "comments": 1,
+      "likes": 1,
+      "favorites": 1,
+      "images": 0,
+      "destinationSeeds": 6,
+      "tagSeeds": 8
+    }
+  },
+  "openApi": {
+    "paths": 40,
+    "operations": 53
+  },
+  "sourceSnapshot": {
+    "files": 177,
+    "path": ".superpowers/sdd/2026-11-04-m6-administration/accepted-source-hashes.json",
+    "changedExistingFiles": [
+      "backend/src/main/java/com/example/travelplatform/comment/mapper/CommentMapper.java",
+      "backend/src/main/java/com/example/travelplatform/comment/service/CommentService.java",
+      "backend/src/main/java/com/example/travelplatform/guide/mapper/GuideMapper.java",
+      "backend/src/main/java/com/example/travelplatform/guide/service/GuideService.java",
+      "backend/src/main/java/com/example/travelplatform/user/service/UserService.java",
+      "frontend/src/api/client.ts",
+      "frontend/src/components/SiteHeader.vue",
+      "frontend/src/router/index.ts",
+      "frontend/src/views/AdminDestinationsView.vue"
+    ]
+  },
+  "schemaChanged": false,
+  "dependenciesChanged": false,
+  "gitCommitCreated": false,
+  "audit": {
+    "runtime": 0,
+    "full": {
+      "moderate": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "unchangedSinceM3": true
+  },
+  "limitations": [
+    "AI optional and not integrated",
+    "Temporary disable allows retained unexpired tokens to work after reenable; browser clears current token on 401",
+    "Previously authorized in-flight content writes may finish during actor disable; subsequent requests reject",
+    "Dirty-form navigation and inline confirmation focus remain UI polish items"
+  ],
+  "next": "M7 system delivery, deployment rehearsal, demo dataset and graduation documentation: design and independent preflight first"
+}

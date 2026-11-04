@@ -1,0 +1,18 @@
+erDiagram
+    DESTINATIONS o|--o{ DESTINATIONS : contains
+    USERS ||--o{ GUIDES : writes
+    DESTINATIONS o|--o{ GUIDES : categorizes
+    GUIDES ||--o{ GUIDE_IMAGES : contains
+    GUIDES ||--o{ GUIDE_TAGS : has
+    TAGS ||--o{ GUIDE_TAGS : assigned
+    USERS ||--o{ GUIDE_LIKES : likes
+    GUIDES ||--o{ GUIDE_LIKES : receives
+    USERS ||--o{ GUIDE_FAVORITES : favorites
+    GUIDES ||--o{ GUIDE_FAVORITES : saved
+    USERS ||--o{ GUIDE_COMMENTS : writes
+    GUIDES ||--o{ GUIDE_COMMENTS : receives
+    USERS ||--o{ ITINERARIES : owns
+    DESTINATIONS o|--o{ ITINERARIES : destination
+    ITINERARIES ||--o{ ITINERARY_DAYS : contains
+    ITINERARY_DAYS ||--o{ ITINERARY_ITEMS : contains
+    DESTINATIONS o|--o{ ITINERARY_ITEMS : references

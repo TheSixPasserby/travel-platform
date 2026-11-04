@@ -1,0 +1,92 @@
+{
+  "executedAt": "2026-11-02T15:45:55.200905+00:00",
+  "milestone": "M1",
+  "status": "passed",
+  "backend": {
+    "command": "python3 scripts/backend.py package",
+    "exitCode": 0,
+    "tests": 55,
+    "failures": 0,
+    "errors": 0,
+    "suites": [
+      {
+        "name": "com.example.travelplatform.common.GlobalExceptionHandlerTest",
+        "tests": "13",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.file.ManagedImagePathsTest",
+        "tests": "4",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.user.UserInputPolicyTest",
+        "tests": "14",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.user.AuthApiTest",
+        "tests": "24",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      }
+    ]
+  },
+  "frontend": {
+    "tests": 69,
+    "files": 9,
+    "build": "vue-tsc and vite passed"
+  },
+  "launcher": {
+    "tests": 23,
+    "syntheticOnly": true
+  },
+  "browser": {
+    "registration": true,
+    "login": true,
+    "profileUpdateAndReload": true,
+    "logout": true,
+    "oldTokenStatus": 401,
+    "anonymousRedirect": true,
+    "desktop": [
+      1440,
+      1000
+    ],
+    "mobile": [
+      390,
+      844
+    ],
+    "qaAccountCleaned": true
+  },
+  "openapi": {
+    "httpStatus": 200,
+    "paths": 5,
+    "idType": "string",
+    "tokenHeader": "satoken",
+    "registerPublic": true,
+    "registerHttpStatus": 201
+  },
+  "notImplemented": [
+    "guides",
+    "interactions",
+    "destinations",
+    "image upload",
+    "itineraries",
+    "admin modules",
+    "optional AI"
+  ],
+  "independentReviews": {
+    "foundation": "hub24 spec/quality passed",
+    "frontend": "hub21 spec/quality passed",
+    "authenticationCore": "hub27 passed, no must-fix",
+    "managedPaths": "hub28 passed, no must-fix",
+    "broadAuthJob": "hub25 cancelled near output cap; replaced by focused completed reviews"
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "milestone": "M2",
+  "status": "passed",
+  "backend": {
+    "command": "python3 scripts/backend.py package",
+    "tests": 84,
+    "failures": 0,
+    "errors": 0,
+    "sourceUnchangedSinceReviewedBuild": true,
+    "reviewedFiles": 41,
+    "suites": [
+      {
+        "name": "com.example.travelplatform.common.GlobalExceptionHandlerTest",
+        "tests": "15",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.common.RequestValuesTest",
+        "tests": "5",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.destination.DestinationApiTest",
+        "tests": "9",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.destination.DestinationInputPolicyTest",
+        "tests": "4",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.file.ImageApiTest",
+        "tests": "9",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.file.ManagedImagePathsTest",
+        "tests": "4",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.user.AuthApiTest",
+        "tests": "24",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.user.UserInputPolicyTest",
+        "tests": "14",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      }
+    ]
+  },
+  "frontend": {
+    "tests": 105,
+    "files": 13,
+    "build": "vue-tsc and vite passed",
+    "currentReview": "passed"
+  },
+  "launcher": {
+    "tests": 24,
+    "syntheticOnly": true
+  },
+  "independentReviews": {
+    "destination": "hub-33-mvzin6ee passed",
+    "image": "hub-34-mvzin9d3 passed",
+    "frontend": "hub-36-mvznpczo passed with Codex ruling"
+  },
+  "browser": {
+    "status": "passed",
+    "avatarUploadBeforeSaveDidNotPersist": true,
+    "avatarSavedAndReloaded": true,
+    "failedUploadKeptAvatar": true,
+    "adminDestinationWithCoverCreatedAndPublic": true,
+    "inactiveExcludedFromList": true,
+    "inactiveHistoricalDetailVisible": true,
+    "expiredUpload401AndLoginRedirect": true,
+    "tokenCleared": true,
+    "mobileViewport": [
+      390,
+      844
+    ],
+    "mobileOverflow": false,
+    "visualInspection": "desktop profile and mobile admin inspected; remaining screenshots retained",
+    "cleanup": {
+      "ownAccountAndDestination": true,
+      "ownImages": 2,
+      "originalDestinationCount": 6,
+      "tagCount": 8
+    },
+    "expectedConsoleResponses": [
+      415,
+      401
+    ],
+    "qaScriptLocatorCorrections": "Register submit/empty heading/login heading corrected; same fixtures continued, no product fix or duplicate account creation"
+  },
+  "database": {
+    "schemaChanged": false,
+    "destructiveOperations": false
+  },
+  "remaining": [],
+  "currentContinuation": {
+    "frontendTests": 105,
+    "launcherTests": 24,
+    "backendSourceUnchanged": true,
+    "frontendSourceUnchanged": true,
+    "documentLinksMissing": 0,
+    "documentCredentialHits": 0,
+    "dshReadOnlySpawn": "automatic approval review timed out; no job_id returned; not started/complete claimed"
+  },
+  "openApi": {
+    "paths": 12,
+    "operations": 14,
+    "headerScheme": true
+  }
+}

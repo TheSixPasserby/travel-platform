@@ -1,0 +1,236 @@
+{
+  "date": "2026-11-02",
+  "timezone": "Asia/Shanghai",
+  "database_version": "8.4.13",
+  "host": "127.0.0.1",
+  "port": 3307,
+  "passed": 31,
+  "failed": 0,
+  "checks": [
+    {
+      "check": "owned_mysql84_instance",
+      "passed": true,
+      "detail": [
+        "8.4.13",
+        "3307"
+      ]
+    },
+    {
+      "check": "database_time_zone",
+      "passed": true,
+      "detail": "+08:00"
+    },
+    {
+      "check": "travel_platform_initially_empty",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "travel_platform_seed_run_1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "travel_platform_seed_run_2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "travel_platform_seed_idempotence",
+      "passed": true,
+      "detail": "6\t8"
+    },
+    {
+      "check": "travel_platform_test_initially_empty",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "travel_platform_test_seed_run_1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "travel_platform_test_seed_run_2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "travel_platform_test_seed_idempotence",
+      "passed": true,
+      "detail": "6\t8"
+    },
+    {
+      "check": "twelve_tables_seventeen_foreign_keys_eight_unique_constraints",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "transaction_fixture_roundtrip",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "username_unique",
+      "passed": true,
+      "detail": {
+        "expected_mysql_error": 1062,
+        "actual_mysql_error": 1062
+      }
+    },
+    {
+      "check": "user_role_check",
+      "passed": true,
+      "detail": {
+        "expected_mysql_error": 3819,
+        "actual_mysql_error": 3819
+      }
+    },
+    {
+      "check": "user_status_check",
+      "passed": true,
+      "detail": {
+        "expected_mysql_error": 3819,
+        "actual_mysql_error": 3819
+      }
+    },
+    {
+      "check": "destination_status_check",
+      "passed": true,
+      "detail": {
+        "expected_mysql_error": 3819,
+        "actual_mysql_error": 3819
+      }
+    },
+    {
+      "check": "guide_status_check",
+      "passed": true,
+      "detail": {
+        "expected_mysql_error": 3819,
+        "actual_mysql_error": 3819
+      }
+    },
+    {
+      "check": "guide_budget_check",
+      "passed": true,
+      "detail": {
+        "expected_mysql_error": 3819,
+        "actual_mysql_error": 3819
+      }
+    },
+    {
+      "check": "guide_author_foreign_key",
+      "passed": true,
+      "detail": {
+        "expected_mysql_error": 1452,
+        "actual_mysql_error": 1452
+      }
+    },
+    {
+      "check": "guide_tag_unique",
+      "passed": true,
+      "detail": {
+        "expected_mysql_error": 1062,
+        "actual_mysql_error": 1062
+      }
+    },
+    {
+      "check": "like_unique",
+      "passed": true,
+      "detail": {
+        "expected_mysql_error": 1062,
+        "actual_mysql_error": 1062
+      }
+    },
+    {
+      "check": "favorite_unique",
+      "passed": true,
+      "detail": {
+        "expected_mysql_error": 1062,
+        "actual_mysql_error": 1062
+      }
+    },
+    {
+      "check": "itinerary_dates_check",
+      "passed": true,
+      "detail": {
+        "expected_mysql_error": 3819,
+        "actual_mysql_error": 3819
+      }
+    },
+    {
+      "check": "day_number_unique",
+      "passed": true,
+      "detail": {
+        "expected_mysql_error": 1062,
+        "actual_mysql_error": 1062
+      }
+    },
+    {
+      "check": "day_date_unique",
+      "passed": true,
+      "detail": {
+        "expected_mysql_error": 1062,
+        "actual_mysql_error": 1062
+      }
+    },
+    {
+      "check": "item_time_check",
+      "passed": true,
+      "detail": {
+        "expected_mysql_error": 3819,
+        "actual_mysql_error": 3819
+      }
+    },
+    {
+      "check": "bigint_above_js_safe_integer_roundtrip",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "day_item_physical_delete_cascade",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "all_transaction_fixtures_rolled_back",
+      "passed": true,
+      "detail": "0\t0\t0\t0\t0"
+    },
+    {
+      "check": "application_grants_limited_to_project_dml",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "original_3306_instance_still_26_7",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "seed_alias_rechecks": [
+    {
+      "database": "travel_platform",
+      "iteration": 1,
+      "no_errors_or_warnings": true
+    },
+    {
+      "database": "travel_platform",
+      "iteration": 2,
+      "no_errors_or_warnings": true
+    },
+    {
+      "database": "travel_platform_test",
+      "iteration": 1,
+      "no_errors_or_warnings": true
+    },
+    {
+      "database": "travel_platform_test",
+      "iteration": 2,
+      "no_errors_or_warnings": true
+    }
+  ],
+  "initial_seed_warning_code": 1287,
+  "seed_warnings_resolved": true,
+  "scope": "Real MySQL DDL/data/constraint checks only; no application/API/authentication tests executed."
+}

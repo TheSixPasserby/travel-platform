@@ -1,0 +1,9 @@
+flowchart TB
+    U[游客 / 注册用户 / 管理员] --> FE[Vue 3 + TypeScript]
+    FE -->|HTTPS / JSON| API[Spring Boot REST API]
+    API --> AUTH[Sa-Token]
+    API --> SVC[业务 Service]
+    SVC --> MP[MyBatis-Plus]
+    MP --> DB[(MySQL 8)]
+    SVC --> FS[本地图片存储]
+    SVC -. optional .-> AI[外部 AI API]

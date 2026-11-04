@@ -1,0 +1,8 @@
+{
+  "purpose": "M2 design lock experiment, not application acceptance",
+  "ddlExecuted": false,
+  "secondWriterBlocked": true,
+  "currentReadSawCommittedParent": true,
+  "ownFixtureRowsRemaining": 0,
+  "emptyTableConcurrency": "not executed: existing schema/data preserved"
+}

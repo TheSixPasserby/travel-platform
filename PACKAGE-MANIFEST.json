@@ -1,0 +1,22 @@
+{
+  "package_name": "travel-platform-codex-starter",
+  "version": "1.0.0",
+  "description": "Codex + DSH starter pack for Vue 3 / Spring Boot / MySQL travel guide and itinerary platform",
+  "collaboration_mode": "dual-model",
+  "codex_primary_model_requirement": "GPT-6.1-Sol / Ultra",
+  "dsh_subagent_model_requirement": "CodeBuddy DeepSeek V4.1 Flash / Max",
+  "model_sameness_required": false,
+  "codex_primary_responsibilities": "总体规划、架构决策、任务拆分、代码整合、质量控制、最终验收",
+  "dsh_subagent_responsibilities": "编码、测试、文档整理、专项审查",
+  "application_code_status": "M0-M7 local delivery accepted; P0/P1 runnable; official deployment and school-format final artifacts pending",
+  "database_schema_status": "12-table baseline implemented and integration-tested on isolated MySQL 8.4.13; no schema change since M0",
+  "validated_database_version": "8.4.13",
+  "delivery_documentation": [
+    "docs/22-deployment-and-operations.md",
+    "docs/23-user-manual.md",
+    "docs/24-demo-walkthrough.md",
+    "docs/25-requirements-traceability.md",
+    "docs/26-thesis-and-defense-outline.md",
+    "docs/27-m7-test-report.md"
+  ]
+}

@@ -1,0 +1,236 @@
+{
+  "milestone": "M5",
+  "status": "passed",
+  "started": "2026-11-03",
+  "accepted": "2026-11-04",
+  "backend": {
+    "tests": 150,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": [
+      {
+        "name": "com.example.travelplatform.comment.CommentApiTest",
+        "tests": "8",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.comment.CommentInputPolicyTest",
+        "tests": "8",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.common.GlobalExceptionHandlerTest",
+        "tests": "15",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.common.RequestValuesTest",
+        "tests": "5",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.destination.DestinationApiTest",
+        "tests": "9",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.destination.DestinationInputPolicyTest",
+        "tests": "4",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.file.ImageApiTest",
+        "tests": "9",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.file.ManagedImagePathsTest",
+        "tests": "4",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.guide.GuideApiTest",
+        "tests": "13",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.guide.GuideInputPolicyTest",
+        "tests": "10",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.interaction.InteractionApiTest",
+        "tests": "7",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.itinerary.ItineraryApiTest",
+        "tests": "14",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.itinerary.ItineraryDatesTest",
+        "tests": "6",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.user.AuthApiTest",
+        "tests": "24",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.user.UserInputPolicyTest",
+        "tests": "14",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      }
+    ],
+    "package": "executable JAR",
+    "newTests": 20
+  },
+  "frontend": {
+    "tests": 190,
+    "files": 22,
+    "build": "vue-tsc and vite passed",
+    "finalMobileCssRegression": {
+      "componentTests": 4,
+      "build": "passed",
+      "realBrowser": "passed and screenshot inspected"
+    }
+  },
+  "launcher": {
+    "tests": 24,
+    "unchangedSinceM2": true
+  },
+  "independentReviews": {
+    "preflight": "hub50 ruled and closed",
+    "backend": "hub52 plus hub55 cache fix closure",
+    "frontend": "hub54 findings fixed, hub56 closure"
+  },
+  "dshDeliveries": {
+    "dates": "hub51 / root strict-format refinement",
+    "timeline": "hub53 / root responsive layout refinement",
+    "model": "buddy/deepseek-v4.1-flash/max"
+  },
+  "browser": {
+    "run": "m5-browser-c3ad2dee058c4a",
+    "users": [
+      {
+        "id": "7",
+        "username": "m5browserac3ad2dee058c4a"
+      },
+      {
+        "id": "8",
+        "username": "m5browserbc3ad2dee058c4a"
+      }
+    ],
+    "itineraryId": "1",
+    "dayIds": [
+      "1",
+      "2"
+    ],
+    "itemIds": [
+      "1",
+      "2",
+      "3"
+    ],
+    "flags": {
+      "createdViaProfileEntry": true,
+      "twoDaysThreeItemsViaUI": true,
+      "plainTextSafe": true,
+      "orderAndReload": true,
+      "titleOnlyPreservedFields": true,
+      "startDateReindexedDays": true,
+      "shrinkConflictAtomicAndInputKept": true,
+      "dayAndItemEditedReload": true,
+      "archiveAndPrivateFilters": true,
+      "mobileNoOverflow": true,
+      "deleteTargetFixed": true,
+      "foreignUiAndEightMutations403": true,
+      "privateListAndOriginalUnchanged": true,
+      "mobileReadableLayout": true,
+      "explicitItemDeleteDenseOrder": true,
+      "explicitDayDeleteCascade": true,
+      "rootDeletedViaUIAndChildrenHidden": true,
+      "logout": true
+    },
+    "cleanup": true,
+    "latestTitle": "三日溪谷慢行 · m5-browser-c3ad2dee058c4a · 补记",
+    "remainingDayIds": [
+      "1"
+    ],
+    "remainingItemIds": [
+      "1"
+    ],
+    "cleanupCounts": {
+      "users": 2,
+      "itineraries": 1,
+      "remainingDays": 1,
+      "remainingItems": 1,
+      "daysDeletedViaUI": 1,
+      "itemsDeletedViaUIIncludingDayCascade": 2,
+      "uploadedFiles": 0,
+      "destinationSeeds": 6,
+      "tagSeeds": 8
+    }
+  },
+  "openApi": {
+    "paths": 33,
+    "operations": 46
+  },
+  "sourceSnapshot": {
+    "files": 160,
+    "path": ".superpowers/sdd/2026-11-03-m5-itineraries/accepted-source-hashes.json",
+    "changedExistingFiles": [
+      "frontend/src/router/index.ts",
+      "frontend/src/views/ProfileView.vue"
+    ]
+  },
+  "schemaChanged": false,
+  "dependenciesChanged": false,
+  "gitCommitCreated": false,
+  "audit": {
+    "runtime": 0,
+    "full": {
+      "moderate": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "unchangedSinceM3": true
+  },
+  "limitations": [
+    "AI is optional and not integrated",
+    "Dirty-form navigation warnings, returning to filtered lists, and inline confirmation focus improvements remain UI polish items"
+  ],
+  "next": "M6 basic administration: design and independent preflight before implementation"
+}

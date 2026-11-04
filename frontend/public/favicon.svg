@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="山水间标志">
+  <rect width="64" height="64" rx="16" fill="#F9F7F2"/>
+  <circle cx="44" cy="21" r="7" fill="#C87545"/>
+  <path d="M6 46 L22 24 L34 40 L43 30 L58 46 Z" fill="#145C45"/>
+  <path d="M6 50 C18 44 28 55 40 50 C48 47 55 49 58 51 L58 60 L6 60 Z" fill="#DDE6D6"/>
+</svg>

@@ -1,0 +1,192 @@
+{
+  "milestone": "M4",
+  "date": "2026-11-03",
+  "status": "passed",
+  "backend": {
+    "tests": 130,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": [
+      {
+        "name": "com.example.travelplatform.comment.CommentApiTest",
+        "tests": "8",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.comment.CommentInputPolicyTest",
+        "tests": "8",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.common.GlobalExceptionHandlerTest",
+        "tests": "15",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.common.RequestValuesTest",
+        "tests": "5",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.destination.DestinationApiTest",
+        "tests": "9",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.destination.DestinationInputPolicyTest",
+        "tests": "4",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.file.ImageApiTest",
+        "tests": "9",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.file.ManagedImagePathsTest",
+        "tests": "4",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.guide.GuideApiTest",
+        "tests": "13",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.guide.GuideInputPolicyTest",
+        "tests": "10",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.interaction.InteractionApiTest",
+        "tests": "7",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.user.AuthApiTest",
+        "tests": "24",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.user.UserInputPolicyTest",
+        "tests": "14",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      }
+    ],
+    "package": "executable JAR",
+    "newTests": 23
+  },
+  "frontend": {
+    "tests": 169,
+    "files": 20,
+    "build": "vue-tsc and vite passed"
+  },
+  "launcher": {
+    "tests": 24,
+    "unchangedSinceM2": true
+  },
+  "independentReviews": {
+    "preflight": "hub44 ruling / hub45 closed",
+    "backend": "hub48 no blockers / Codex ruling",
+    "frontend": "hub49 no blockers / Codex ruling"
+  },
+  "dshDeliveries": {
+    "policy": "hub46 CommentInputPolicy.java",
+    "actions": "hub47 GuideActions.vue",
+    "model": "buddy/deepseek-v4.1-flash/max"
+  },
+  "browser": {
+    "run": "m4-browser-f497677d1aaa42",
+    "users": [
+      {
+        "id": "5",
+        "username": "m4browseraf497677d1aaa42"
+      },
+      {
+        "id": "6",
+        "username": "m4browserbf497677d1aaa42"
+      }
+    ],
+    "guideId": "2",
+    "commentIds": [
+      "2",
+      "1"
+    ],
+    "flags": {
+      "createdPublishedViaUI": true,
+      "likeFavoriteReload": true,
+      "commentPlainTextAndClear": true,
+      "ownFavoritesEntryAndSearch": true,
+      "mobileNoOverflow": true,
+      "independentViewerStateAndLoginReturn": true,
+      "foreignCommentDelete403": true,
+      "secondUserOwnFavorite": true,
+      "commentOwnerDeleteViaUI": true,
+      "withdrawFavoritesExcludedAndRestored": true,
+      "cancelAndCountsAccurate": true,
+      "public401KeepsCopyableDraft": true,
+      "guideDeletedViaUI": true
+    },
+    "cleanup": true,
+    "cleanupCounts": {
+      "users": 2,
+      "guides": 1,
+      "comments": 2,
+      "uploadedFiles": 0,
+      "destinationSeeds": 6,
+      "tagSeeds": 8
+    }
+  },
+  "openApi": {
+    "paths": 26,
+    "operations": 34
+  },
+  "sourceSnapshot": {
+    "files": 131,
+    "path": ".superpowers/sdd/2026-11-03-m4-interactions/accepted-source-hashes.json"
+  },
+  "schemaChanged": false,
+  "dependenciesChanged": false,
+  "gitCommitCreated": false,
+  "audit": {
+    "runtime": 0,
+    "full": {
+      "moderate": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "unchangedSinceM3": true
+  },
+  "limitations": [
+    "401 comment draft is preserved only on the current public page for copying, not across login navigation",
+    "Development-only moderate dependency advisories remain; no forced overrides"
+  ],
+  "next": "M5 manual itineraries: design, contract and independent preflight before code"
+}

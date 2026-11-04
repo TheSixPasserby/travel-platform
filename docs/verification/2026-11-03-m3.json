@@ -1,0 +1,175 @@
+{
+  "milestone": "M3",
+  "status": "passed",
+  "backend": {
+    "tests": 107,
+    "failures": 0,
+    "errors": 0,
+    "package": "executable JAR",
+    "suites": [
+      {
+        "name": "com.example.travelplatform.common.GlobalExceptionHandlerTest",
+        "tests": "15",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.common.RequestValuesTest",
+        "tests": "5",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.destination.DestinationApiTest",
+        "tests": "9",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.destination.DestinationInputPolicyTest",
+        "tests": "4",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.file.ImageApiTest",
+        "tests": "9",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.file.ManagedImagePathsTest",
+        "tests": "4",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.guide.GuideApiTest",
+        "tests": "13",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.guide.GuideInputPolicyTest",
+        "tests": "10",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.user.AuthApiTest",
+        "tests": "24",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.example.travelplatform.user.UserInputPolicyTest",
+        "tests": "14",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      }
+    ]
+  },
+  "frontend": {
+    "tests": 136,
+    "files": 16,
+    "build": "vue-tsc and vite passed",
+    "vitest": "4.1.12",
+    "testUtils": "2.4.11"
+  },
+  "launcher": {
+    "tests": 24,
+    "unchangedSinceM2": true
+  },
+  "independentReviews": {
+    "preflight": "hub37 adjudicated then hub38 no blockers",
+    "backend": "hub41 no blockers",
+    "markdown": "hub42 no blockers",
+    "frontend": "hub43 no blockers"
+  },
+  "browser": {
+    "a": {
+      "id": "3",
+      "username": "m3browserae2f2406d8524650"
+    },
+    "b": {
+      "username": "m3guest62060c7eb1c649d2",
+      "id": "4"
+    },
+    "guide": {
+      "id": "1",
+      "title": "溪谷慢行-d8524650·补记",
+      "destinationId": "3",
+      "tagId": "1",
+      "uploads": [
+        "/uploads/2026/11/fd8efb927e8446cd8e88c8889285e4ff.webp",
+        "/uploads/2026/11/f81865410102422dbe27d68d477b4735.webp"
+      ],
+      "firstPublishedAt": "2026-11-03T05:21:44.110+08:00"
+    },
+    "lifecycle": {
+      "published": true,
+      "editedAndReloaded": true,
+      "withdrawPreservedUnsaved": true,
+      "withdrawHidden": true,
+      "republishKeptFirstTime": true,
+      "keywordAndCombinedFilters": true,
+      "explicitPageReset": true,
+      "detailSafe": true
+    },
+    "ownership": {
+      "privateEditorDenied": true,
+      "foreignPut403": true,
+      "foreignDelete403": true,
+      "originalUnchanged": true
+    },
+    "final": {
+      "mobileViewport": [
+        390,
+        844
+      ],
+      "mobileOverflow": false,
+      "authorDelete": true,
+      "deletedHidden": true,
+      "logout": true
+    }
+  },
+  "cleanup": {
+    "users": 2,
+    "guides": 1,
+    "imageRelations": 1,
+    "tagRelations": 1,
+    "uploadedFiles": 2,
+    "remainingGuides": 0,
+    "destinationSeeds": 6,
+    "tagSeeds": 8
+  },
+  "openApi": {
+    "paths": 20,
+    "operations": 25
+  },
+  "audit": {
+    "runtime": 0,
+    "full": {
+      "moderate": 4,
+      "high": 0,
+      "critical": 0
+    },
+    "remainingScope": "dev js-beautify/editorconfig/glob/minimatch; compatible fix unsuccessful, no force overrides"
+  },
+  "sourceSnapshot": {
+    "files": 104,
+    "path": ".superpowers/sdd/2026-11-03-m3-guides/accepted-source-hashes.json"
+  },
+  "schemaChanged": false,
+  "remaining": []
+}
