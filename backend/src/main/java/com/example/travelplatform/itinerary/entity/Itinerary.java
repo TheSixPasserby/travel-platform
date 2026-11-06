@@ -7,6 +7,7 @@ public class Itinerary {
     private Long id;
     private Long userId;
     private Long destinationId;
+    private String clientRequestId;
     private String title;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -22,6 +23,8 @@ public class Itinerary {
     public void setUserId(Long value) { this.userId=value; }
     public Long getDestinationId() { return destinationId; }
     public void setDestinationId(Long value) { this.destinationId=value; }
+    public String getClientRequestId() { return clientRequestId; }
+    public void setClientRequestId(String value) { this.clientRequestId=value; }
     public String getTitle() { return title; }
     public void setTitle(String value) { this.title=value; }
     public LocalDate getStartDate() { return startDate; }

@@ -10,8 +10,10 @@ signed BIGINT 自增主键及同类型外键，与 Java Long 范围一致；REST
 |---|---|
 | `users` | 用户账号、资料和角色 |
 | `destinations` | 城市/景点目的地 |
+| `destination_images` | 目的地有序图片、来源与授权 |
 | `guides` | 攻略主体 |
 | `guide_images` | 攻略图片 |
+| `guide_destinations` | 攻略与多个同城景点关系 |
 | `tags` | 攻略标签 |
 | `guide_tags` | 攻略标签关系 |
 | `guide_likes` | 点赞关系 |
@@ -25,6 +27,9 @@ signed BIGINT 自增主键及同类型外键，与 Java Long 范围一致；REST
 ```mermaid
 erDiagram
     DESTINATIONS o|--o{ DESTINATIONS : contains
+    DESTINATIONS ||--o{ DESTINATION_IMAGES : illustrates
+    GUIDES ||--o{ GUIDE_DESTINATIONS : visits
+    DESTINATIONS ||--o{ GUIDE_DESTINATIONS : linked
     USERS ||--o{ GUIDES : writes
     DESTINATIONS o|--o{ GUIDES : categorizes
     GUIDES ||--o{ GUIDE_IMAGES : contains
@@ -74,3 +79,11 @@ users：username 唯一；destinations：status/type/parent_id、name；guides�
 `database/seed.sql` 只放公开目的地和标签示例，不创建明文默认管理员。管理员应通过安全首次启动流程或人工命令创建。
 
 SQL 脚本不创建或切换数据库，调用者必须显式选择目标库；测试只在经确认的独立空库执行。已验证本机原服务为 26.7.0，用户随后授权单独准备 MySQL 8.4 并保留原服务，见 ADR-018；凭据保留在本地，具体运行验证见基线审查记录。`CREATE TABLE IF NOT EXISTS` 不代替后续结构迁移。
+
+## 8. M8 增量字段与关系
+
+destinations 新增 address、DECIMAL(9,6) longitude/DECIMAL(8,6) latitude、recommended_duration_minutes、recommended_days、opening_hours、ticket_info、official_url、source_url、verified_at，全部可空。坐标成对且有范围 CHECK；分钟 1–1440、天数 1–30。CITY 无父；SCENIC_SPOT 直属 CITY，服务层维护层级及历史停用边界。
+
+destination_images 保留图片路径、说明、顺序、来源/作者/许可/许可链接/获取时间，唯一(destination_id,image_url)，顺序索引(destination_id,sort_order,id)。guide_destinations 唯一(guide_id,destination_id)，反向索引(destination_id,guide_id)。三条新外键均 RESTRICT；逻辑删除主体不物理级联。图库和攻略景点替换分别与主体同事务。
+
+itineraries 增加可空 client_request_id CHAR(36)，唯一(user_id,client_request_id)，供整程原子导入防重；原手动创建保持 NULL。没有新增 AI 行程表。DDL 与新空库 SQL 已在 MySQL 8.4.13 验证等价，精确 SQL 及哈希见 database/migrations/manifest.json。

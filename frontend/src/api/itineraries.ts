@@ -16,3 +16,5 @@ export function createItineraryItem(id:string,body:ItemInput):Promise<ItineraryI
 export function updateItineraryItem(id:string,body:ItemInput):Promise<ItineraryItem>{return apiClient.put<ItineraryItem,ItineraryItem>(item(id),body)}
 export function deleteItineraryItem(id:string):Promise<null>{return apiClient.delete<null,null>(item(id))}
 export function reorderItineraryItems(id:string,itemIds:string[]):Promise<ItineraryDay>{return apiClient.put<ItineraryDay,ItineraryDay>(`${day(id)}/items/order`,{itemIds})}
+
+export function importItinerary(body:import('@/types/itinerary').ItineraryImportInput):Promise<ItineraryDetail>{return apiClient.post<ItineraryDetail,ItineraryDetail>('/itineraries/import',body)}

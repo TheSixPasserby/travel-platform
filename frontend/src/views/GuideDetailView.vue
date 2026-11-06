@@ -48,6 +48,15 @@ watch(()=>route.params.id,()=>{void load()},{ immediate:true })
           <dl class="mt-6 flex flex-wrap gap-x-10 gap-y-4 text-sm"><div v-if="guide.destination"><dt class="text-xs text-ink-soft">目的地</dt><dd class="mt-1"><RouterLink :to="{ name:'destination-detail',params:{ id:guide.destination.id } }" class="text-pine hover:underline">{{ guide.destination.name }}{{ guide.destination.status==='INACTIVE'?'（历史目的地）':'' }}</RouterLink></dd></div><div v-if="guide.travelDays"><dt class="text-xs text-ink-soft">旅行天数</dt><dd class="mt-1 text-pine-deep">{{ guide.travelDays }} 天</dd></div><div v-if="guide.budgetPerPerson!==null"><dt class="text-xs text-ink-soft">人均预算</dt><dd class="mt-1 text-pine-deep">¥ {{ guide.budgetPerPerson }}</dd></div><div v-if="guide.season"><dt class="text-xs text-ink-soft">旅行季节</dt><dd class="mt-1 text-pine-deep">{{ guide.season }}</dd></div></dl>
         </header>
       </div>
+      <section v-if="guide.scenicSpots.length" data-test="guide-scenic-spots" class="surface-card mt-7 p-6 sm:p-8">
+        <h2 class="font-serif text-xl text-pine-deep">这篇攻略提到的景点</h2>
+        <p class="mt-2 text-xs text-ink-soft">点开可查看景点地址、推荐游玩时间与开放信息。</p>
+        <ul class="mt-4 flex flex-wrap gap-3">
+          <li v-for="spot in guide.scenicSpots" :key="spot.id">
+            <RouterLink :to="{ name:'destination-detail',params:{ id:spot.id } }" class="inline-flex items-center gap-2 rounded-full border border-pine/25 bg-pine-soft/30 px-4 py-2 text-sm text-pine hover:bg-pine-soft/50">{{ spot.name }}<span v-if="spot.status==='INACTIVE'" class="text-xs text-ember">（已停用）</span></RouterLink>
+          </li>
+        </ul>
+      </section>
       <GuideActions :guide-id="guide.id" :like-count="guide.likeCount" :favorite-count="guide.favoriteCount" :comment-count="guide.commentCount" @change="updateInteraction" />
       <div class="mt-7 grid items-start gap-7 lg:grid-cols-[minmax(0,1fr)_17rem]">
         <div class="surface-card min-w-0 p-6 sm:p-9 lg:p-12"><SafeMarkdown :content="guide.content" /><section v-if="guide.images.length" class="mt-10 border-t border-pine/10 pt-6"><h2 class="font-serif text-xl text-pine-deep">沿途影像</h2><div class="mt-4 grid gap-4 sm:grid-cols-2"><figure v-for="image in guide.images" :key="image.url"><img v-if="!failedImages.has(image.url)" :src="image.url" :alt="image.altText||'攻略中的旅行影像'" class="aspect-[4/3] w-full rounded-xl object-cover" loading="lazy" @error="failedImages.add(image.url)" /><div v-else class="flex aspect-[4/3] items-center justify-center rounded-xl bg-pine-soft/30 p-4 text-sm text-ink-soft">图片暂时无法显示</div><figcaption v-if="image.altText" class="mt-2 text-sm text-ink-soft">{{ image.altText }}</figcaption></figure></div></section></div>

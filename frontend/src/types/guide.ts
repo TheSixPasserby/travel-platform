@@ -26,7 +26,7 @@ export interface GuideSummary {
 }
 export interface GuideImageInput { url: string; altText: string | null }
 export interface GuideImage extends GuideImageInput { sortOrder: number }
-export interface GuideDetail extends GuideSummary { content: string; images: GuideImage[] }
+export interface GuideDetail extends GuideSummary { content: string; images: GuideImage[]; scenicSpots: GuideDestination[] }
 export interface GuideInput {
   title: string
   content: string
@@ -38,6 +38,7 @@ export interface GuideInput {
   season: string | null
   tagIds: string[]
   images: GuideImageInput[]
+  scenicSpotIds?: string[]
 }
 export interface GuideCreate extends GuideInput { status?: 'DRAFT' | 'PUBLISHED' }
 export interface GuideQuery { page?: number; size?: number; keyword?: string; destinationId?: string; tagId?: string; sort?: GuideSort }

@@ -19,3 +19,7 @@ export interface DayInput { travelDate:string;title:string|null;notes:string|nul
 export interface ItemInput { placeName:string;destinationId:string|null;addressText:string|null;startTime:string|null;endTime:string|null;notes:string|null }
 export interface ItineraryQuery { page?:number;size?:number;keyword?:string;status?:ItineraryStatus }
 export const itineraryStatusLabels:Record<ItineraryStatus,string>={ACTIVE:'进行中的计划',ARCHIVED:'已归档'}
+
+export interface ItineraryImportItem extends ItemInput { kind:'SCENIC_SPOT'|'FREE_TIME' }
+export interface ItineraryImportDay extends DayInput { items:ItineraryImportItem[] }
+export interface ItineraryImportInput { clientRequestId:string;title:string;destinationId:string;startDate:string;endDate:string;notes:string|null;days:ItineraryImportDay[] }

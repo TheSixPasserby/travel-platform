@@ -1,0 +1,79 @@
+{
+  "date": "2026-11-07",
+  "branch": "codex/m8-upgrade",
+  "userAuthorized": "start services then commit and push",
+  "backend": {
+    "tests": 236,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "frontend": {
+    "tests": 311,
+    "files": 31,
+    "typecheck": "passed",
+    "productionBuild": "passed"
+  },
+  "python": {
+    "tests": 65,
+    "failures": 0
+  },
+  "runtime": {
+    "frontendUrl": "http://127.0.0.1:5173",
+    "backendUrl": "http://127.0.0.1:8080",
+    "publicApiAvailability": "passed",
+    "frontendProxy": "passed",
+    "newOpenApiPaths": 5,
+    "openApiPaths": 45,
+    "aiDefault": "disabled, available=false",
+    "draft6PublicStatus": 404,
+    "foreignItinerary2Status": 403,
+    "originalItinerary2Items": 3,
+    "sourceAll14TablesExactMatch": true,
+    "businessRows": 132,
+    "uploadFilesExactMatch": 44,
+    "candidateKnownLocalSecretsFound": 0,
+    "specArchiveSha256": "12a1b7423e7645546a52680223fc20b362ddfa7a26fd71c0a13c3ec9ddc9e6ff"
+  },
+  "workflowValidation": {
+    "tool": "actionlint",
+    "result": "passed",
+    "externalShellcheck": "disabled",
+    "externalPyflakes": "disabled"
+  },
+  "dsh": {
+    "job": "hub-1-mw5dgeoo",
+    "provider": "buddy",
+    "model": "deepseek-v4.1-flash",
+    "effort": "max",
+    "result": "static review completed, lead actionlint executed"
+  },
+  "productAiPaidProvider": "not executed; default disabled",
+  "remoteCiAtEvidenceTime": "not yet run; consult branch Actions after push",
+  "logs": [
+    {
+      "path": ".local/m8/20261107-backend-package.log",
+      "sha256": "4db94fb43852f4cb90117f678de0b59675dceb1b88970c41ec19f0f4214eeaf6"
+    },
+    {
+      "path": ".local/m8/20261107-frontend-test.log",
+      "sha256": "904482534512b2a9d8808dc6e7acbf1cdab31368bcf432d2ae6b7e3ad44c8004"
+    },
+    {
+      "path": ".local/m8/20261107-frontend-build.log",
+      "sha256": "1149c8573cd9465c7ef9a41aab6c54cda3c6a74304eda966fd4ccdd58e089559"
+    },
+    {
+      "path": ".local/m8/20261107-python-test.log",
+      "sha256": "0bbfb655d18f27a42fcab5272798e954f1f718fa7fe5687eb21c707d9cbf3c16"
+    },
+    {
+      "path": ".local/m8/20261107-live-check.log",
+      "sha256": "60cc8a895bc0ac509507d6ba292863772c5c4dd9ec1e99819c06d157e30da035"
+    },
+    {
+      "path": ".local/m8/20261107-actionlint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

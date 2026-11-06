@@ -9,6 +9,7 @@ import type { Destination } from '@/types/destination'
 vi.mock('@/api/destinations', () => ({ fetchAdminDestinations: vi.fn(), fetchDestinations: vi.fn(), fetchDestination: vi.fn(),
   createDestination: vi.fn(), updateDestination: vi.fn(), changeDestinationStatus: vi.fn() }))
 const row: Destination = { id: '9007199254740993', name: '湖畔', destinationType: 'CITY', parentId: null, country: '中国',
+  address:null,longitude:null,latitude:null,recommendedDurationMinutes:null,recommendedDays:null,openingHours:null,ticketInfo:null,officialUrl:null,sourceUrl:null,verifiedAt:null,images:[],
   province: '浙江', city: null, description: '湖边散步', coverImageUrl: null, recommendedSeasons: null, status: 'ACTIVE',
   sortOrder: 0, createdAt: '2026-11-03T00:00:00.000+08:00', updatedAt: '2026-11-03T00:00:00.000+08:00' }
 const page = (records: Destination[]) => ({ records, total: records.length, current: 1, size: 10, pages: records.length ? 1 : 0 })
@@ -81,8 +82,8 @@ describe('管理员目的地维护', () => {
   })
 
   it('迟到的上级查询不覆盖后来编辑的目的地', async () => {
-    const a = { ...row, parentId: '9007199254740990' }
-    const b = { ...row, id: '9007199254740995', name: '山城', parentId: '9007199254740991' }
+    const a = { ...row, destinationType: 'SCENIC_SPOT' as const, parentId: '9007199254740990' }
+    const b = { ...row, id: '9007199254740995', name: '山城', destinationType: 'SCENIC_SPOT' as const, parentId: '9007199254740991' }
     const parentA = { ...row, id: a.parentId, name: 'A上级' }
     const parentB = { ...row, id: b.parentId, name: 'B上级' }
     let release!: (value: Destination) => void
@@ -106,7 +107,8 @@ describe('管理员目的地维护', () => {
     expect(createDestination).toHaveBeenCalledWith(expect.objectContaining({ name: '新城市', destinationType: 'CITY',
       country: '中国', status: 'ACTIVE', sortOrder: 0, parentId: null, coverImageUrl: null }))
     expect(Object.keys(vi.mocked(createDestination).mock.calls[0]![0]).sort()).toEqual(
-      ['name','destinationType','country','status','sortOrder','parentId','coverImageUrl','province','city','description','recommendedSeasons'].sort())
+      ['name','destinationType','country','status','sortOrder','parentId','coverImageUrl','province','city','description','recommendedSeasons',
+        'address','longitude','latitude','recommendedDurationMinutes','recommendedDays','openingHours','ticketInfo','officialUrl','sourceUrl','verifiedAt','images'].sort())
     expect(wrapper.text()).toContain('目的地已创建')
     wrapper.unmount()
   })
@@ -139,7 +141,7 @@ describe('管理员目的地维护', () => {
 
   it('编辑保留未改变的历史停用父引用', async () => {
     const parent = { ...row, id: '9007199254740991', name: '原上级', status: 'INACTIVE' as const }
-    vi.mocked(fetchAdminDestinations).mockResolvedValueOnce(page([{ ...row, parentId: parent.id }]))
+    vi.mocked(fetchAdminDestinations).mockResolvedValueOnce(page([{ ...row, destinationType: 'SCENIC_SPOT' as const, parentId: parent.id }]))
     vi.mocked(fetchDestination).mockResolvedValueOnce(parent)
     const { wrapper } = await render()
     await wrapper.get(`[data-test="edit-${row.id}"]`).trigger('click'); await flushPromises()

@@ -34,8 +34,9 @@ public class GuideService {
     private final UserMapper users;
     private final DestinationMapper destinations;
     private final ManagedImagePaths images;
-    public GuideService(GuideMapper guides,UserService session,UserMapper users,DestinationMapper destinations,ManagedImagePaths images) {
-        this.guides=guides;this.session=session;this.users=users;this.destinations=destinations;this.images=images;
+    private final GuideDestinationsMapper spots;
+    public GuideService(GuideMapper guides,UserService session,UserMapper users,DestinationMapper destinations,ManagedImagePaths images,GuideDestinationsMapper spots) {
+        this.guides=guides;this.session=session;this.users=users;this.destinations=destinations;this.images=images;this.spots=spots;
     }
 
     @Transactional(readOnly=true,isolation=Isolation.REPEATABLE_READ)
@@ -82,6 +83,15 @@ public class GuideService {
     public List<TagVO> tags() { return List.copyOf(guides.allTags()); }
 
     @Transactional(readOnly=true,isolation=Isolation.REPEATABLE_READ)
+    public PageResponse<GuideSummaryVO> relatedDestination(String rawId,String rawPage,String rawSize,String keyword,String tag){
+        long destinationId=RequestValues.positiveId(rawId),page=RequestValues.page(rawPage),size=RequestValues.size(rawSize),offset=RequestValues.offset(page,size);
+        Destination d=destinations.selectById(destinationId);if(d==null)throw new ApiException(ErrorCode.NOT_FOUND);
+        String search=pattern(keyword);Long tagId=id(tag);long total=guides.countRelated(destinationId,d.getDestinationType(),search,tagId);
+        List<GuideRow> rows=offset>=total?List.of():guides.pageRelated(destinationId,d.getDestinationType(),search,tagId,size,offset);
+        return new PageResponse<>(summaries(rows),total,page,size,total/size+(total%size==0?0:1));
+    }
+
+    @Transactional(readOnly=true,isolation=Isolation.REPEATABLE_READ)
     public PageResponse<GuideSummaryVO> adminList(String rawPage,String rawSize,String keyword,String status) {
         session.requireAdministrator();if(status!=null&&!STATUSES.contains(status))throw invalid();
         long page=RequestValues.page(rawPage),size=RequestValues.size(rawSize),offset=RequestValues.offset(page,size);
@@ -111,10 +121,11 @@ public class GuideService {
         GuideValues value=GuideInputPolicy.normalize(request);String status=GuideInputPolicy.creationStatus(request);
         if(status.equals("PUBLISHED"))GuideInputPolicy.requirePublishable(value);
         references(value,null);
+        List<Long> scenicIds=resolveSpots(request,value.destinationId(),null,null);
         Guide guide=new Guide();guide.setAuthorId(author.getId());guide.setStatus(status);guide.setIsDeleted(0);
         guide.setCreatedAt(now());guide.setUpdatedAt(guide.getCreatedAt());
         if(status.equals("PUBLISHED"))guide.setPublishedAt(guide.getCreatedAt());
-        apply(guide,value);guides.insert(guide);replaceRelations(guide.getId(),value);
+        apply(guide,value);guides.insert(guide);replaceRelations(guide.getId(),value);replaceSpots(guide.getId(),scenicIds);
         return detail(required(guides.detail(guide.getId())));
     }
     @Transactional(isolation=Isolation.READ_COMMITTED)
@@ -123,6 +134,7 @@ public class GuideService {
         GuideValues value=GuideInputPolicy.normalize(request);
         if("PUBLISHED".equals(guide.getStatus()))GuideInputPolicy.requirePublishable(value);
         references(value,guide.getDestinationId());
+        List<Long> scenicIds=resolveSpots(request,value.destinationId(),guide.getId(),guide.getDestinationId());
         LocalDateTime time=now();
         var update=Wrappers.<Guide>lambdaUpdate().eq(Guide::getId,guide.getId())
                 .set(Guide::getTitle,value.title()).set(Guide::getContent,value.content()).set(Guide::getSummary,value.summary())
@@ -131,6 +143,7 @@ public class GuideService {
                 .set(Guide::getSeason,value.season()).set(Guide::getUpdatedAt,time);
         if(guides.update(null,update)!=1)throw new ApiException(ErrorCode.STATE_CONFLICT);
         replaceRelations(guide.getId(),value);
+        replaceSpots(guide.getId(),scenicIds);
         return detail(required(guides.detail(guide.getId())));
     }
     @Transactional(isolation=Isolation.READ_COMMITTED)
@@ -192,7 +205,28 @@ public class GuideService {
         g.setTitle(v.title());g.setContent(v.content());g.setSummary(v.summary());g.setDestinationId(v.destinationId());g.setCoverImageUrl(v.coverImageUrl());
         g.setTravelDays(v.travelDays());g.setBudgetPerPerson(v.budgetPerPerson());g.setSeason(v.season());
     }
-    private GuideDetailVO detail(GuideRow row) { return GuideDetailVO.from(summaries(List.of(row)).getFirst(),row.getContent(),guides.images(row.getId())); }
+    private GuideDetailVO detail(GuideRow row) { return GuideDetailVO.from(summaries(List.of(row)).getFirst(),row.getContent(),guides.images(row.getId()),spots.references(row.getId())); }
+    private List<Long> resolveSpots(GuideWriteRequest request,Long city,Long guide,Long originalCity){
+        List<Long> old=guide==null?List.of():spots.ids(guide);
+        if(!request.scenicSpotsProvided()){
+            if(!old.isEmpty()&&!Objects.equals(city,originalCity))throw invalid();
+            return guide==null?List.of():null;
+        }
+        if(request.getScenicSpotIds()==null||request.getScenicSpotIds().size()>20)throw invalid();
+        List<Long> ids=request.getScenicSpotIds().stream().map(RequestValues::positiveId).sorted().toList();
+        if(new HashSet<>(ids).size()!=ids.size())throw invalid();
+        if(ids.isEmpty())return ids;
+        if(city==null)throw invalid();
+        Destination parent=guides.lockDestination(city);
+        if(parent==null||!Integer.valueOf(0).equals(parent.getIsDeleted())||!"CITY".equals(parent.getDestinationType()))throw invalid();
+        for(long id:ids){
+            Destination spot=guides.lockDestination(id);boolean retained=Objects.equals(city,originalCity)&&old.contains(id);
+            if(spot==null||!Integer.valueOf(0).equals(spot.getIsDeleted())||!"SCENIC_SPOT".equals(spot.getDestinationType())||!Objects.equals(spot.getParentId(),city)
+                    ||(!retained&&(!"ACTIVE".equals(spot.getStatus())||!"ACTIVE".equals(parent.getStatus()))))throw invalid();
+        }
+        return ids;
+    }
+    private void replaceSpots(long id,List<Long> ids){if(ids==null)return;spots.clear(id);for(long destination:ids)spots.add(id,destination);}
     private List<GuideSummaryVO> summaries(List<GuideRow> rows) {
         if(rows.isEmpty())return List.of();
         List<Long> ids=rows.stream().map(Guide::getId).toList();

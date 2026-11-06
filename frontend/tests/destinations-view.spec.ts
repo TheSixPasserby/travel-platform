@@ -1,5 +1,7 @@
+vi.mock('@/api/guides', () => ({ fetchTags:vi.fn().mockResolvedValue([{id:'2',name:'Nature'}]) }))
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
+import { createPinia, setActivePinia } from 'pinia'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import DestinationsView from '@/views/DestinationsView.vue'
 import DestinationDetailView from '@/views/DestinationDetailView.vue'
@@ -11,6 +13,7 @@ vi.mock('@/api/destinations', () => ({ fetchDestinations: vi.fn(), fetchDestinat
 
 function destination(index = 0): Destination {
   return {
+    address:null,longitude:null,latitude:null,recommendedDurationMinutes:null,recommendedDays:null,openingHours:null,ticketInfo:null,officialUrl:null,sourceUrl:null,verifiedAt:null,images:[],
     id: (9007199254740993n + BigInt(index)).toString(), name: `山水目的地${index}`,
     destinationType: 'CITY', parentId: null, country: '中国', province: '浙江', city: null,
     description: '沿着湖畔慢慢走。', coverImageUrl: null, recommendedSeasons: '春秋', status: 'ACTIVE',
@@ -19,14 +22,17 @@ function destination(index = 0): Destination {
 }
 const firstPage = () => ({ records: Array.from({ length: 9 }, (_, index) => destination(index)), total: 10, current: 1, size: 9, pages: 2 })
 async function render(detail = false) {
+  const pinia = createPinia(); setActivePinia(pinia)
   const router = createRouter({ history: createMemoryHistory(), routes: [
     { path: '/destinations', name: 'destinations', component: DestinationsView },
     { path: '/destinations/:id', name: 'destination-detail', component: DestinationDetailView },
-    { path: '/guides', name: 'guides', component: { template:'<div />' } }
+    { path: '/guides', name: 'guides', component: { template:'<div />' } },
+    { path: '/login', name: 'login', component: { template:'<div />' } },
+    { path: '/itineraries/:id', name: 'itinerary-detail', component: { template:'<div />' } }
   ] })
   await router.push(detail ? `/destinations/${destination().id}` : '/destinations')
   await router.isReady()
-  const wrapper = mount(detail ? DestinationDetailView : DestinationsView, { global: { plugins: [router] } })
+  const wrapper = mount(detail ? DestinationDetailView : DestinationsView, { global: { plugins: [pinia, router] } })
   await flushPromises()
   return { wrapper, router }
 }

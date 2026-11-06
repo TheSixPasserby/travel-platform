@@ -40,7 +40,7 @@
 | 017 行程起止倒置 | ItineraryDates/Service | T.malformedInputsNeverCreateRowsOrApplyPartialChanges；纯日期策略测试 | 已执行 |
 | 018 日程日期越界 | 根事务锁及范围校验 | T.daysCannotEscapeDateRangeOrDuplicateAndDoNotAutofill / aDayWaitingOnTheRootLockSeesCommittedDateShrink | 已执行 |
 | 019 他人行程 | 全父子链所有权 | T.foreignUsersAndAdminsCannotReadOrMutateAnyLevel；M5隔离浏览器 | 已执行 |
-| 020 AI不可用 | P2未接入，无AI接口/外部依赖 | 当前核心在无AI配置下运行；未执行AI错误降级测试 | 未执行（选做） |
+| 020 AI不可用 | AI capabilities与手动入口 | AiItineraryApiTest及M8真实浏览器错误后手动保存 | 已执行，本地stub |
 | 021 上传失败业务原子性 | 图片与受管路径验证 | F.failedAndSuccessfulUploadsKeepExistingFilesAndBusinessRowsIntact；G.publishingRevalidatesStoredImagePathsAndRollsBackOnMissingFiles | 已执行 |
 | 022 组合搜索翻页 | 稳定数据库分页 | G.literalSearchFiltersCountsAndStableDatabasePaginationAgree | 已执行 |
 | 023 退出复用旧token | 当前token失效 | A.multipleLoginsIssueIndependentTokensAndLogoutOnlyInvalidatesCurrent | 已执行 |
@@ -76,4 +76,22 @@
 | M5 | [行程](20-m5-test-report.md) | 全链归属、日期/排序/锁等待缓存回归 |
 | M6 | [后台](21-m6-test-report.md) | ADMIN并发保护、治理、安全投影与统计 |
 
-性能负载、异地数据库恢复、正式公网HTTPS及学校最终验收未执行。AI不纳入P0/P1通过率；不把未执行项从原始清单中删除或伪装成已通过。
+性能负载、异地数据库恢复、正式公网HTTPS及学校最终验收未执行。M8用户明确将AI纳入本轮范围，本地stub集成已经执行，真实收费提供商验收单列未执行。
+
+## M8扩展追踪
+
+| 范围 | 代码与实际证据 |
+|---|---|
+| 原攻略图文与数据保护 | scripts/m8_content.py、test_m8_content.py、Phase1报告、三篇实际详情与草稿浏览器 |
+| 增量迁移与恢复 | 三个V008迁移、test_m8_migrate.py、Phase2副本首次17步/重复0步/旧JAR八项 |
+| 六城24处景点与素材许可 | docs/m8/data/、scripts/m8_data.py、七项副本故障/重复实测、最终全14表/44文件指纹 |
+| 层级、图库、字段和来源 | DestinationM8ApiTest、DestinationDetailsPolicyTest、m8-destination-pages与m8-admin-destinations前端测试 |
+| 攻略多景点及公开关联 | GuideDestinationsApiTest、m8-guide-scenic-spots.spec.ts、真实城市/景点/草稿浏览器 |
+| AI候选与结果边界 | AiItineraryValidationTest、AiPreviewApiTest，真实MySQL和本地模型替身，预览/错误零写入 |
+| AI外部HTTP协议与失败 | AiModelClientTest，本地HTTP服务器验证超时/429/5xx/非法JSON/Key缺失/禁止重试 |
+| AI单体限流 | AiGenerationGateTest、29项独立Java断言，滚动窗口、并发与容量 |
+| 确认保存与所有权 | ItineraryImportApiTest，同key并发/重复/二日真实失败回滚/366天500项/403 |
+| AI预览交互与竞态 | ai-itinerary.spec.ts，换账号、迟到单日、其他天编辑、保存重试、备注/费用与容量 |
+| 真实浏览器 | 城市/景点/图库/草稿/管理员/390px，QA副本AI保存刷新、外来用户403、502后编辑保留及手动保存 |
+
+完整命令、实际数量、限制与十项验收见[最终报告](33-m8-final-report.md)及[机器证据](verification/2026-11-06-m8-final.json)。

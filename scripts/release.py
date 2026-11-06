@@ -16,7 +16,7 @@ _spec.loader.exec_module(_launcher)
 LauncherError,select_jar=_launcher.LauncherError,_launcher.select_jar
 
 ROOT_FILES=['AGENTS.md','README.md','PROJECT_STATUS.md','PACKAGE-MANIFEST.json','.env.example','.editorconfig','.gitignore']
-PROJECT_FILES=['backend/pom.xml','backend/mvnw','backend/mvnw.cmd','frontend/package.json','frontend/package-lock.json','frontend/index.html','frontend/vite.config.ts','frontend/tsconfig.json','scripts/backend.py','scripts/release.py']
+PROJECT_FILES=['backend/pom.xml','backend/mvnw','backend/mvnw.cmd','frontend/package.json','frontend/package-lock.json','frontend/index.html','frontend/vite.config.ts','frontend/tsconfig.json','scripts/backend.py','scripts/release.py','scripts/m8_content.py','scripts/m8_data.py','scripts/m8_migrate.py','scripts/requirements-maintenance.txt','.github/workflows/ci.yml']
 SOURCE_TREES=['backend/src','backend/.mvn','frontend/src','frontend/public','frontend/tests','scripts/tests','database','docs','prompts','deploy']
 BANNED={'.git','.local','.superpowers','node_modules','__pycache__','.vite','coverage','.DS_Store'}
 

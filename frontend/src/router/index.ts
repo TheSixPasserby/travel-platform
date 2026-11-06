@@ -125,6 +125,12 @@ const routes = [
     meta: { requiresAuth: true, title: '我的行程 · 山水间' }
   },
   {
+    path: '/itineraries/ai',
+    name: 'ai-itinerary',
+    component: () => import('@/views/AiItineraryView.vue'),
+    meta: { requiresAuth: true, title: 'AI 行程规划 · 山水间' }
+  },
+  {
     path: '/itineraries/:id',
     name: 'itinerary-detail',
     component: () => import('@/views/ItineraryDetailView.vue'),

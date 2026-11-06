@@ -1,6 +1,6 @@
 # 交付、部署与运维
 
-软件形态为Java21可执行JAR、Vue生产dist、MySQL8.x与项目根uploads。已验证本机生产构建演练；Nginx模板、公网域名/TLS、其他操作系统部署和数据库恢复尚未实测。正式上线前应在实际目标环境核对，不把preview当作公网服务。
+软件形态为Java21可执行JAR、Vue生产dist、MySQL8.x与项目根uploads。已验证本机生产构建和数据库与上传成套备份恢复。Nginx模板、公网域名/TLS、异地恢复和其他操作系统部署尚未实测。
 
 ## 1. 环境与数据边界
 
@@ -31,7 +31,7 @@ mysql --host=127.0.0.1 --port=3307 --user=YOUR_OPERATOR --password --database=YO
 | UPLOAD_DIR | 直接运行JAR时须给持久化绝对目录；backend.py固定使用所在项目根uploads |
 | TRAVEL_API_TARGET | 仅Vite开发/preview的Node环境，默认http://127.0.0.1:8080；不会进入浏览器配置 |
 
-AI和自动管理员bootstrap均未实现，不提供无效开关。不要把DB密码放入VITE_变量。
+AI设置见[提供商预设](m8/ai-provider-presets.md)。`AI_ENABLED=false`为默认值，`AI_PROVIDER`支持openai、deepseek、qwen、custom，服务端读取`AI_API_KEY`及可覆盖的`AI_BASE_URL`、`AI_MODEL`。连接超时默认5秒，读取超时45秒。Key与数据库密码只配置到后端环境。管理员使用第6节的人工核对流程。
 
 ## 3. 构建与运行
 
@@ -110,6 +110,8 @@ tar -czf "$BACKUP_UPLOADS" uploads
 
 数据库参数是单个库名，不使用`--databases`，避免备份内嵌USE指回原库；上传压缩包同样须使用新文件名并核对，tar本身不承诺拒绝覆盖。确认两条命令成功、文件哈希和可读性后再恢复服务，失败不得记作有效备份。
 
-恢复必须先准备独立的全新空库与新的uploads目录，在副本中导入并核对12表、记录数、文件引用、登录和私人资源权限；绝不把未验证SQL直接导回已有库。验证后通过服务环境切换新库/新上传目录，再按实际维护方案切换流量。当前未执行真实备份恢复，不宣称灾备可用。
+恢复先准备独立的全新空库与新的uploads目录，在副本中导入并核对14表、记录数、文件引用、登录和私人资源权限。M8已在本机MySQL8.4.13多次恢复全新副本，核对全部行指纹、列定义和文件SHA256，并验证八项账号/草稿/行程权限。最近用于AI联调的副本恢复了132行业务数据和44个文件，明细见[最终报告](33-m8-final-report.md)。异地目标环境的恢复仍需单独验收。
 
-版本回退保留上一交付目录/JAR/dist及一致数据库/上传备份；M7无DDL变化，仍需评估回退代码的数据兼容性。先停止自己的后端、切换成套JAR/dist再启动并验收，重启会要求重新登录。不自动覆盖数据或执行回滚SQL。
+M8迁移为`database/migrations/V008_01__destination_details.sql`、`V008_02__destination_relations.sql`和`V008_03__itinerary_import_key.sql`。既有库升级使用已核对目标、备份回执与文件哈希的`scripts/m8_migrate.py`，默认dry-run，操作步骤见[数据库说明](../database/README.md)。维护脚本依赖在独立环境安装`scripts/requirements-maintenance.txt`。首次17条DDL，重复执行0条，开发库和测试库分别验证。
+
+版本回退优先切换已验证兼容的旧JAR/dist并保留新增可空列与表。旧JAR在升级副本的八项权限检查已通过。DDL中途失败按元数据定位续跑，MySQL DDL不能依赖事务整体回滚。数据恢复仅在新副本验证后切换，备份回执含目标数据库和服务器UUID。重启会使内存会话失效，用户重新登录即可。

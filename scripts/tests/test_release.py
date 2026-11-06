@@ -49,6 +49,17 @@ class ReleaseTests(unittest.TestCase):
         with self.assertRaises(self.m.ReleaseError):self.m.assemble(self.root,self.out)
         self.assertEqual(list(self.out.iterdir()),[self.out/'keep.txt'])
 
+    def test_m8_maintenance_and_ci_files_are_included(self):
+        names = ['scripts/m8_content.py', 'scripts/m8_data.py', 'scripts/m8_migrate.py',
+                 'scripts/requirements-maintenance.txt', '.github/workflows/ci.yml']
+        for name in names:
+            source = self.root / name
+            source.parent.mkdir(parents=True, exist_ok=True)
+            source.write_text('synthetic public maintenance file')
+        self.m.assemble(self.root, self.out)
+        for name in names:
+            self.assertEqual((self.out / name).read_text(), 'synthetic public maintenance file')
+
     def test_source_symbolic_link_refused_before_output_is_created(self):
         private=Path(self.tmp.name)/'private.txt';private.write_text('synthetic secret')
         (self.root/'docs/link.md').symlink_to(private)

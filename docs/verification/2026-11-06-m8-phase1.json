@@ -1,0 +1,252 @@
+{
+  "milestone": "M8",
+  "phase": 1,
+  "date": "2026-11-06",
+  "database": "travel_platform",
+  "backup": {
+    "database": "travel_platform",
+    "host": "127.0.0.1",
+    "port": 3307,
+    "restoreDatabase": "travel_platform_m8_9f92e427_test",
+    "directory": ".local/m8/backups/20261106-003223-349e00",
+    "status": "backup_and_restore_verified",
+    "sqlSha256": "084b484c99c3eb85118b889c39b4432091b3f60f2a633695843590dd05c29030",
+    "uploadsArchiveSha256": "97ff0776778e2cb0315071419df41e8b67783010954469412a688aaf3a3ffbc1",
+    "restoredBusinessRows": 34,
+    "restoredFiles": 2,
+    "schemaAndRowsMatch": true
+  },
+  "restoreHttpChecks": [
+    {
+      "role": "author",
+      "check": "restored credential login",
+      "status": 200
+    },
+    {
+      "role": "author",
+      "path": "/auth/me",
+      "status": 200,
+      "code": 0
+    },
+    {
+      "role": "author",
+      "path": "/users/me/guides/6",
+      "status": 200,
+      "code": 0
+    },
+    {
+      "role": "author",
+      "path": "/itineraries/2",
+      "status": 200,
+      "code": 0
+    },
+    {
+      "role": "reader",
+      "check": "restored credential login",
+      "status": 200
+    },
+    {
+      "role": "reader",
+      "path": "/auth/me",
+      "status": 200,
+      "code": 0
+    },
+    {
+      "role": "reader",
+      "path": "/users/me/guides/6",
+      "status": 403,
+      "code": 40301
+    },
+    {
+      "role": "reader",
+      "path": "/itineraries/2",
+      "status": 403,
+      "code": 40301
+    }
+  ],
+  "maintenanceIntegration": {
+    "checks": [
+      "drift: rejected, zero changes",
+      "unknownID: rejected, zero changes",
+      "missingUpload: rejected, zero changes",
+      "mid-write failure: full rollback",
+      "dry-run: zero changes",
+      "success: existing IDs/statuses and 18 images verified"
+    ],
+    "result": [
+      {
+        "id": 4,
+        "status": "PUBLISHED",
+        "characters": 4566,
+        "images": 6
+      },
+      {
+        "id": 5,
+        "status": "PUBLISHED",
+        "characters": 4171,
+        "images": 6
+      },
+      {
+        "id": 6,
+        "status": "DRAFT",
+        "characters": 4275,
+        "images": 6
+      }
+    ]
+  },
+  "pythonTests": {
+    "command": "python3 -m unittest discover -s scripts/tests",
+    "tests": 48,
+    "failures": 0,
+    "errors": 0,
+    "newBoundaryTests": 8,
+    "secretFileTestRedGreen": true
+  },
+  "guides": [
+    {
+      "id": 4,
+      "status": "PUBLISHED",
+      "originalStatus": "PUBLISHED",
+      "authorId": "12",
+      "publishedAt": "2026-11-04 18:33:45.998000",
+      "images": 6,
+      "bodyImages": 5,
+      "chineseCharacters": 2385,
+      "originalInteractions": {
+        "likes": 2,
+        "favorites": 1,
+        "comments": 1
+      },
+      "currentInteractions": {
+        "likes": 2,
+        "favorites": 1,
+        "comments": 1
+      }
+    },
+    {
+      "id": 5,
+      "status": "PUBLISHED",
+      "originalStatus": "PUBLISHED",
+      "authorId": "12",
+      "publishedAt": "2026-11-04 18:33:46.029000",
+      "images": 6,
+      "bodyImages": 5,
+      "chineseCharacters": 2178,
+      "originalInteractions": {
+        "likes": 0,
+        "favorites": 0,
+        "comments": 0
+      },
+      "currentInteractions": {
+        "likes": 0,
+        "favorites": 0,
+        "comments": 0
+      }
+    },
+    {
+      "id": 6,
+      "status": "DRAFT",
+      "originalStatus": "DRAFT",
+      "authorId": "12",
+      "publishedAt": null,
+      "images": 6,
+      "bodyImages": 5,
+      "chineseCharacters": 2267,
+      "originalInteractions": {
+        "likes": 0,
+        "favorites": 0,
+        "comments": 0
+      },
+      "currentInteractions": {
+        "likes": 0,
+        "favorites": 0,
+        "comments": 0
+      }
+    }
+  ],
+  "unchangedTables": [
+    "users",
+    "destinations",
+    "tags",
+    "guide_tags",
+    "guide_likes",
+    "guide_favorites",
+    "guide_comments",
+    "itineraries",
+    "itinerary_days",
+    "itinerary_items"
+  ],
+  "managedImageUploads": 18,
+  "imagesHttpSha256Verified": true,
+  "publishedBrowserBodyImages": 5,
+  "publishedBrowserCreditLinks": 6,
+  "dsh": {
+    "content": "hub-71-mw3rjrnk",
+    "failedResearch": {
+      "id": "hub-72-mw3rjund",
+      "reason": "invalid tool JSON during compression; no output files"
+    },
+    "smallResearch": [
+      "hub-73-mw3rvzw1",
+      "hub-74-mw3rw2o9"
+    ],
+    "contentToolReview": "hub-75-mw3s3e4r",
+    "reviewOutcome": "static no blocking findings; lead additionally fixed secret content path and child row locking"
+  },
+  "notExecuted": [
+    "scenic spot relations (Phase2 dependency)",
+    "real AI",
+    "external deployment"
+  ],
+  "artifacts": [
+    {
+      "path": "scripts/m8_content.py",
+      "sha256": "1ebd9070bde4cc77f0324662aac374a06c7781fc5123b3df21561b573f689c39"
+    },
+    {
+      "path": "scripts/tests/test_m8_content.py",
+      "sha256": "4c657a127da6255202441c59efee8fd9ab2a73e130bccd9efd2563d5e49db291"
+    },
+    {
+      "path": "scripts/requirements-maintenance.txt",
+      "sha256": "b11c96739c843d091c4fa6baaf340a8de18a1098a3908f1800a7cb75629a377a"
+    },
+    {
+      "path": "docs/m8/content/image-sources.json",
+      "sha256": "e8b80f8c4f4b55ea417308153c26e5f2939a7d19214550ab70a44202f3166a0f"
+    },
+    {
+      "path": "docs/m8/content/guide-change-manifest.json",
+      "sha256": "e9f653744984b14750f0d2539c46f3457be45851db408b4767e90fcc336c4d8a"
+    },
+    {
+      "path": "docs/m8/content/guide-4.md",
+      "sha256": "91c313f58a9151427555282fc6e9cf32e754b2609379ac673883fb9863af6d0c"
+    },
+    {
+      "path": "docs/m8/content/guide-5.md",
+      "sha256": "5a029c598c5516dfd1618210a54081f982594afd6369b5b2a32e44267ababfec"
+    },
+    {
+      "path": "docs/m8/content/guide-6.md",
+      "sha256": "fdecd667a9175aaef9e7eff1fbfc0390e95a288141b7d1bf0541bb9f8567eac3"
+    }
+  ],
+  "browser": {
+    "publishedGuides": [
+      4,
+      5
+    ],
+    "bodyImagesEach": 5,
+    "creditLinksEach": 6,
+    "allDisplayedImagesDecoded": true,
+    "authorDraftPreview": true,
+    "mobileViewport": {
+      "width": 390,
+      "height": 844,
+      "wholePageOverflow": false
+    },
+    "logoutThenPublicDraftRejected": true,
+    "screenshot": "output/playwright/m8-phase1-draft-mobile.png"
+  }
+}

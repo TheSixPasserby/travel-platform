@@ -12,7 +12,8 @@ const router = useRouter()
 const keyword = ref(typeof route.query.keyword === 'string' ? route.query.keyword : '')
 const allowedTypes = Object.keys(destinationTypeLabels) as DestinationType[]
 const initialType = typeof route.query.type === 'string' ? route.query.type : ''
-const type = ref<DestinationType | ''>(allowedTypes.includes(initialType as DestinationType) ? initialType as DestinationType : '')
+/** 默认浏览城市；仍允许显式切换到景点或其他目的地。 */
+const type = ref<DestinationType | ''>(allowedTypes.includes(initialType as DestinationType) ? initialType as DestinationType : 'CITY')
 const initialPage = Number(route.query.page ?? 1)
 const page = ref(Number.isSafeInteger(initialPage) && initialPage > 0 ? initialPage : 1)
 const result = ref<PageResult<Destination>>({ records: [], total: 0, current: page.value, size: 9, pages: 0 })
@@ -34,7 +35,7 @@ async function load(): Promise<void> {
   } finally { if (request === version) loading.value = false }
 }
 function search(): void { page.value = 1; void load() }
-function reset(): void { keyword.value = ''; type.value = ''; search() }
+function reset(): void { keyword.value = ''; type.value = 'CITY'; search() }
 function turn(delta: number): void { page.value += delta; void load() }
 onMounted(() => { void load() })
 </script>

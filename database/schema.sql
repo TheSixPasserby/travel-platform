@@ -32,6 +32,16 @@ CREATE TABLE IF NOT EXISTS destinations (
   description TEXT NULL,
   cover_image_url VARCHAR(500) NULL,
   recommended_seasons VARCHAR(120) NULL,
+  address VARCHAR(300) NULL,
+  longitude DECIMAL(9,6) NULL,
+  latitude DECIMAL(8,6) NULL,
+  recommended_duration_minutes SMALLINT UNSIGNED NULL,
+  recommended_days SMALLINT UNSIGNED NULL,
+  opening_hours VARCHAR(1000) NULL,
+  ticket_info VARCHAR(1000) NULL,
+  official_url VARCHAR(1000) NULL,
+  source_url VARCHAR(1000) NULL,
+  verified_at DATETIME(3) NULL,
   status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
   sort_order INT NOT NULL DEFAULT 0,
   is_deleted TINYINT(1) NOT NULL DEFAULT 0,
@@ -43,7 +53,10 @@ CREATE TABLE IF NOT EXISTS destinations (
   KEY idx_destinations_name (name),
   CONSTRAINT fk_destinations_parent FOREIGN KEY (parent_id) REFERENCES destinations(id) ON DELETE SET NULL,
   CONSTRAINT chk_destinations_type CHECK (destination_type IN ('CITY', 'SCENIC_SPOT', 'OTHER')),
-  CONSTRAINT chk_destinations_status CHECK (status IN ('ACTIVE', 'INACTIVE'))
+  CONSTRAINT chk_destinations_status CHECK (status IN ('ACTIVE', 'INACTIVE')),
+  CONSTRAINT chk_destinations_coordinates CHECK ((longitude IS NULL AND latitude IS NULL) OR (longitude IS NOT NULL AND latitude IS NOT NULL AND longitude BETWEEN -180 AND 180 AND latitude BETWEEN -90 AND 90)),
+  CONSTRAINT chk_destinations_duration CHECK (recommended_duration_minutes IS NULL OR recommended_duration_minutes BETWEEN 1 AND 1440),
+  CONSTRAINT chk_destinations_days CHECK (recommended_days IS NULL OR recommended_days BETWEEN 1 AND 30)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE IF NOT EXISTS guides (
@@ -151,6 +164,7 @@ CREATE TABLE IF NOT EXISTS itineraries (
   user_id BIGINT NOT NULL,
   destination_id BIGINT NULL,
   title VARCHAR(160) NOT NULL,
+  client_request_id CHAR(36) NULL,
   start_date DATE NOT NULL,
   end_date DATE NOT NULL,
   notes TEXT NULL,
@@ -159,6 +173,7 @@ CREATE TABLE IF NOT EXISTS itineraries (
   created_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
   updated_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   PRIMARY KEY (id),
+  UNIQUE KEY uk_itineraries_client_request (user_id,client_request_id),
   KEY idx_itineraries_user_status_created (user_id, status, created_at),
   CONSTRAINT fk_itineraries_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   CONSTRAINT fk_itineraries_destination FOREIGN KEY (destination_id) REFERENCES destinations(id) ON DELETE SET NULL,
@@ -200,4 +215,35 @@ CREATE TABLE IF NOT EXISTS itinerary_items (
   CONSTRAINT fk_itinerary_items_day FOREIGN KEY (itinerary_day_id) REFERENCES itinerary_days(id) ON DELETE CASCADE,
   CONSTRAINT fk_itinerary_items_destination FOREIGN KEY (destination_id) REFERENCES destinations(id) ON DELETE SET NULL,
   CONSTRAINT chk_itinerary_items_time CHECK (start_time IS NULL OR end_time IS NULL OR end_time >= start_time)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS destination_images (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  destination_id BIGINT NOT NULL,
+  image_url VARCHAR(500) NOT NULL,
+  alt_text VARCHAR(200) NULL,
+  sort_order INT NOT NULL DEFAULT 0,
+  source_url VARCHAR(1000) NOT NULL,
+  author VARCHAR(300) NOT NULL,
+  license VARCHAR(100) NOT NULL,
+  license_url VARCHAR(1000) NOT NULL,
+  retrieved_at DATETIME(3) NOT NULL,
+  created_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  updated_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+  PRIMARY KEY (id),
+  UNIQUE KEY uk_destination_images_path (destination_id,image_url),
+  KEY idx_destination_images_order (destination_id,sort_order,id),
+  CONSTRAINT fk_destination_images_destination FOREIGN KEY (destination_id) REFERENCES destinations(id) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS guide_destinations (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  guide_id BIGINT NOT NULL,
+  destination_id BIGINT NOT NULL,
+  created_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  PRIMARY KEY (id),
+  UNIQUE KEY uk_guide_destinations_pair (guide_id,destination_id),
+  KEY idx_guide_destinations_reverse (destination_id,guide_id),
+  CONSTRAINT fk_guide_destinations_guide FOREIGN KEY (guide_id) REFERENCES guides(id) ON DELETE RESTRICT,
+  CONSTRAINT fk_guide_destinations_destination FOREIGN KEY (destination_id) REFERENCES destinations(id) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

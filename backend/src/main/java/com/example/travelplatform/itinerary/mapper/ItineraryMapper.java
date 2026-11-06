@@ -8,6 +8,13 @@ import java.util.List;
 
 @Mapper
 public interface ItineraryMapper extends BaseMapper<Itinerary> {
+    @Select("SELECT id FROM users WHERE id=#{id} AND status='ACTIVE' AND is_deleted=0 FOR UPDATE")
+    Long lockImportUser(long id);
+    @Select("SELECT * FROM itineraries WHERE user_id=#{user} AND client_request_id=#{key}")
+    @Options(flushCache=Options.FlushCachePolicy.TRUE,useCache=false)
+    Itinerary forRequest(@Param("user") long user,@Param("key") String key);
+    @Update("UPDATE itineraries SET client_request_id=#{key} WHERE id=#{id} AND user_id=#{user} AND is_deleted=0 AND client_request_id IS NULL")
+    int importKey(@Param("id") long id,@Param("key") String key,@Param("user") long user);
     String COUNTS="""
         (SELECT COUNT(*) FROM itinerary_days d WHERE d.itinerary_id=i.id) AS day_count,
         (SELECT COUNT(*) FROM itinerary_items p JOIN itinerary_days d ON p.itinerary_day_id=d.id WHERE d.itinerary_id=i.id) AS item_count

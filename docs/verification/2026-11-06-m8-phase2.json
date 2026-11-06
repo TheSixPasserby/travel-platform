@@ -1,0 +1,129 @@
+{
+  "phase": "M8.2",
+  "date": "2026-11-06",
+  "backend": {
+    "tests": 210,
+    "failures": 0,
+    "package": "passed"
+  },
+  "frontend": {
+    "tests": 227,
+    "failures": 0,
+    "build": "passed"
+  },
+  "python": {
+    "tests": 63,
+    "failures": 0
+  },
+  "migration": {
+    "stepsFirst": 17,
+    "stepsRepeat": 0,
+    "businessTables": 14,
+    "foreignKeys": 20,
+    "freshSchemaEquivalent": true,
+    "oldJarChecks": 8
+  },
+  "data": {
+    "protectedTablesExactMatch": [
+      "guide_comments",
+      "guide_favorites",
+      "guide_images",
+      "guide_likes",
+      "guide_tags",
+      "guides",
+      "itineraries",
+      "itinerary_days",
+      "itinerary_items",
+      "tags",
+      "users"
+    ],
+    "counts": {
+      "destination_images": 48,
+      "destinations": 30,
+      "guide_comments": 1,
+      "guide_destinations": 8,
+      "guide_favorites": 1,
+      "guide_images": 18,
+      "guide_likes": 2,
+      "guide_tags": 3,
+      "guides": 3,
+      "itineraries": 1,
+      "itinerary_days": 2,
+      "itinerary_items": 3,
+      "tags": 8,
+      "users": 4
+    },
+    "cities": [
+      {
+        "id": 1,
+        "name": "成都",
+        "recommended_seasons": "春季、秋季"
+      },
+      {
+        "id": 2,
+        "name": "重庆",
+        "recommended_seasons": "春季、秋季"
+      },
+      {
+        "id": 3,
+        "name": "杭州",
+        "recommended_seasons": "春季、秋季"
+      },
+      {
+        "id": 4,
+        "name": "西安",
+        "recommended_seasons": "春季、秋季"
+      },
+      {
+        "id": 5,
+        "name": "大理",
+        "recommended_seasons": "春季、秋季"
+      },
+      {
+        "id": 6,
+        "name": "青岛",
+        "recommended_seasons": "夏季、秋季"
+      }
+    ],
+    "businessRows": 132,
+    "unknownUserAvatarShaUnchanged": true,
+    "draft6Unpublished": true,
+    "allScenicCoordinatesNull": true,
+    "sameCityFourSpotsEach": true,
+    "galleryFilesExist": 48,
+    "guideRelations": [
+      4,
+      2,
+      2
+    ]
+  },
+  "cloneIntegration": {
+    "database": "travel_platform_m8_6203cd9c_test",
+    "passed": [
+      "dry-run zero writes",
+      "real draft drift refuses all maintenance",
+      "mid-write failure rolls back cities/gallery/new spots",
+      "missing image zero writes",
+      "first apply: 24 new spots, 48 gallery, 8 links; guides and all other tables exactly unchanged",
+      "repeat receipt zero writes",
+      "missing own receipt refuses overwrite"
+    ],
+    "count": 7
+  },
+  "http": {
+    "passed": [
+      "city 1 gallery + four scenic spots + stable pagination",
+      "city 2 gallery + four scenic spots + stable pagination",
+      "city 3 gallery + four scenic spots + stable pagination",
+      "city 4 gallery + four scenic spots + stable pagination",
+      "city 5 gallery + four scenic spots + stable pagination",
+      "city 6 gallery + four scenic spots + stable pagination",
+      "published guide links and related-city draft exclusion",
+      "three roles: draft private, admin boundary, original itinerary owner only"
+    ],
+    "count": 8,
+    "scenicDetailsChecked": 24
+  },
+  "dshReview": "hub83 cancelled without final; hub85 bounded review completed and lead rulings recorded",
+  "browser": "passed in Phase3; see final evidence"
+}

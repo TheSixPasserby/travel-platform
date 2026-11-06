@@ -5,13 +5,21 @@ import com.example.travelplatform.itinerary.service.ItineraryService;
 import com.example.travelplatform.itinerary.vo.*;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import com.example.travelplatform.itinerary.service.ItineraryImportService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/itineraries")
 public class ItineraryController {
     private final ItineraryService service;
-    public ItineraryController(ItineraryService service){this.service=service;}
+    private final ItineraryImportService imports;
+    public ItineraryController(ItineraryService service,ItineraryImportService imports){this.service=service;this.imports=imports;}
+    @PostMapping("/import")
+    public ResponseEntity<ApiResponse<ItineraryDetailVO>> importWhole(@RequestBody ItineraryImportRequest body){
+        var result=imports.save(body);
+        return ResponseEntity.status(result.created()?HttpStatus.CREATED:HttpStatus.OK).body(ApiResponse.success(result.itinerary()));
+    }
     @GetMapping @Operation(summary="我的行程分页")
     public ApiResponse<PageResponse<ItinerarySummaryVO>> list(@RequestParam(required=false) String page,@RequestParam(required=false) String size,@RequestParam(required=false) String keyword,@RequestParam(required=false) String status){return ApiResponse.success(service.list(page,size,keyword,status));}
     @GetMapping("/{id}") @Operation(summary="本人行程详情")

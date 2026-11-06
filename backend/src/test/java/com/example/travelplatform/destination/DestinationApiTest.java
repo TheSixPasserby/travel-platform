@@ -91,6 +91,7 @@ class DestinationApiTest {
         Set<String> names = new HashSet<>(); value.fieldNames().forEachRemaining(names::add);
         Set<String> expected = new HashSet<>(List.of(WRITE_FIELDS));
         expected.addAll(Set.of("id", "createdAt", "updatedAt"));
+        expected.addAll(Set.of("address","longitude","latitude","recommendedDurationMinutes","recommendedDays","openingHours","ticketInfo","officialUrl","sourceUrl","verifiedAt","images"));
         assertThat(names).isEqualTo(expected);
         assertThat(value.path("id").isTextual()).isTrue();
         assertThat(value.path("id").asText()).matches("[1-9][0-9]*");
@@ -138,7 +139,7 @@ class DestinationApiTest {
     @Test void putClearsNullableFieldsAndStatusPatchIsIdempotent() {
         Account admin = h.account(true);
         JsonNode parent = create(admin, "parent", Map.of());
-        JsonNode child = create(admin, "child", Map.of("parentId", parent.path("id").asText(), "province", "浙江", "city", "杭州",
+        JsonNode child = create(admin, "child", Map.of("destinationType","OTHER","parentId", parent.path("id").asText(), "province", "浙江", "city", "杭州",
                 "description", "旧简介", "recommendedSeasons", "春", "coverImageUrl", "/uploads/cover.png"));
         Map<String, Object> replacement = full(child);
         for (String key : List.of("parentId", "province", "city", "description", "coverImageUrl", "recommendedSeasons")) replacement.remove(key);
@@ -184,9 +185,9 @@ class DestinationApiTest {
 
     @Test void parentCyclesAndInactiveNewReferencesAreRejected() {
         Account admin = h.account(true);
-        JsonNode a = create(admin, "a", Map.of());
-        JsonNode b = create(admin, "b", Map.of("parentId", a.path("id").asText()));
-        JsonNode c = create(admin, "c", Map.of("parentId", b.path("id").asText()));
+        JsonNode a = create(admin, "a", Map.of("destinationType","OTHER"));
+        JsonNode b = create(admin, "b", Map.of("destinationType","OTHER","parentId", a.path("id").asText()));
+        JsonNode c = create(admin, "c", Map.of("destinationType","OTHER","parentId", b.path("id").asText()));
         Map<String, Object> bad = full(a); bad.put("parentId", c.path("id").asText()); error(put(admin, a, bad), 400, 40001);
         bad = full(b); bad.put("parentId", b.path("id").asText()); error(put(admin, b, bad), 400, 40001);
         state(admin, a, "INACTIVE");
@@ -198,7 +199,7 @@ class DestinationApiTest {
 
     @Test void simultaneousMutualParentUpdatesCannotCommitACycle() throws Exception {
         Account admin = h.account(true);
-        JsonNode a = create(admin, "a", Map.of()), b = create(admin, "b", Map.of());
+        JsonNode a = create(admin, "a", Map.of("destinationType","OTHER")), b = create(admin, "b", Map.of("destinationType","OTHER"));
         Map<String, Object> aBody = full(a), bBody = full(b);
         aBody.put("parentId", b.path("id").asText()); bBody.put("parentId", a.path("id").asText());
         CountDownLatch start = new CountDownLatch(1);

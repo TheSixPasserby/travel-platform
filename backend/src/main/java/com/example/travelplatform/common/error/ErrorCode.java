@@ -26,6 +26,13 @@ public enum ErrorCode {
     PAYLOAD_TOO_LARGE(41301, HttpStatus.PAYLOAD_TOO_LARGE, "上传内容超出大小限制"),
     /** 不支持的媒体类型。 */
     UNSUPPORTED_MEDIA_TYPE(41501, HttpStatus.UNSUPPORTED_MEDIA_TYPE, "不支持的请求内容类型"),
+    AI_UNAVAILABLE(50310, HttpStatus.SERVICE_UNAVAILABLE, "AI服务暂未配置或启用，请使用手动行程"),
+    AI_DATA_INSUFFICIENT(42210, HttpStatus.UNPROCESSABLE_ENTITY, "可用城市或景点资料不足，请调整选择"),
+    AI_RATE_LIMIT(42910, HttpStatus.TOO_MANY_REQUESTS, "生成请求过于频繁或仍在进行，请稍后再试"),
+    AI_UPSTREAM_RATE_LIMIT(42911, HttpStatus.TOO_MANY_REQUESTS, "AI服务当前繁忙，请稍后重试"),
+    AI_TIMEOUT(50410, HttpStatus.GATEWAY_TIMEOUT, "AI请求超时，已保留当前编辑内容"),
+    AI_UPSTREAM_FAILED(50210, HttpStatus.BAD_GATEWAY, "AI服务调用失败，请稍后重试"),
+    AI_INVALID_OUTPUT(50211, HttpStatus.BAD_GATEWAY, "AI结果未通过校验，请调整需求后重新生成"),
     /** 未预期的服务器内部错误，对外只暴露通用文案。 */
     INTERNAL_ERROR(50001, HttpStatus.INTERNAL_SERVER_ERROR, "服务器内部错误，请稍后重试");
 

@@ -5,7 +5,9 @@
 代码仓库：[TheSixPasserby/travel-platform](https://github.com/TheSixPasserby/travel-platform)（私有，主分支`main`）。现有阶段基线按用户授权提交；仍有待补充核对的功能，阶段测试通过不等同最终全功能验收。
 
 ## 项目目标
-构建一个基于 Web 的旅游攻略分享与行程规划平台。核心为用户生成内容（UGC）和手动行程规划；按 `AGENTS.md` 的功能优先级，目的地管理属于 P0 必须完成，基础后台属于 P1 应当完成，AI 行程推荐属于 P2 选做。
+构建一个基于 Web 的旅游攻略分享与行程规划平台。核心为用户生成内容和私人行程规划。2026-11-06的M8升级已落地三篇原攻略图文、六城与24处景点资料、后台图库，以及真实平台资料驱动的AI结构化预览、编辑、单日重生成和确认保存。本机默认关闭AI，运营者可在服务端选择提供商预设或自定义端点。
+
+M8交付见[最终报告](docs/33-m8-final-report.md)、[验收证据](docs/verification/2026-11-06-m8-final.json)和[AI预设配置](docs/m8/ai-provider-presets.md)。需求基线见[正式规范](docs/m8/00-implementation-spec.md)、[项目审计](docs/28-m8-phase0-audit.md)、[技术方案](docs/superpowers/specs/2026-11-06-m8-upgrade-design.md)与[实施任务](docs/superpowers/plans/2026-11-06-m8-upgrade.md)。
 
 ## 运行与交付
 
@@ -106,4 +108,4 @@ git --version
 若文档冲突，先记录冲突和建议，不得静默选择方案并扩大实现范围。
 
 ## 当前状态
-基线与M1–M7本机交付已验收，P0/P1核心可运行、可演示。最新完整后端165项、前端227项、Python40项、类型/生产构建、独立审查与JAR/dist三角色浏览器通过，见[M7记录](docs/27-m7-test-report.md)。演示数据有意保留，临时校验图片已清理；独立MySQL8.4.13在3307运行，原3306服务保留。正式公网部署、备份恢复、学校格式论文终稿与PPT尚未完成，见[项目进度](PROJECT_STATUS.md)。不自动commit，不更换双模型配置。
+M8本机代码、增量数据、备份恢复和浏览器闭环已验收。最新全量测试、执行边界与运行入口见[最终报告](docs/33-m8-final-report.md)。开发库14张表132行业务数据、44个上传文件在AI联调前后逐项一致，私有草稿保留。AI已用本地HTTP stub完成集成，真实收费提供商尚未联调。2026-11-07重新启动并完成236/311/65项推送前复验，远程CI状态以交付分支`codex/m8-upgrade`的Actions记录为准。独立MySQL8.4.13使用3307。公网部署、学校格式论文终稿与PPT待目标环境和模板，详见[项目进度](PROJECT_STATUS.md)。

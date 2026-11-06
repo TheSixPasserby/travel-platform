@@ -164,4 +164,35 @@ public class Destination {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    private String address;
+    public String getAddress() { return address; }
+    public void setAddress(String value) { this.address = value; }
+    private java.math.BigDecimal longitude;
+    public java.math.BigDecimal getLongitude() { return longitude; }
+    public void setLongitude(java.math.BigDecimal value) { this.longitude = value; }
+    private java.math.BigDecimal latitude;
+    public java.math.BigDecimal getLatitude() { return latitude; }
+    public void setLatitude(java.math.BigDecimal value) { this.latitude = value; }
+    private Integer recommendedDurationMinutes;
+    public Integer getRecommendedDurationMinutes() { return recommendedDurationMinutes; }
+    public void setRecommendedDurationMinutes(Integer value) { this.recommendedDurationMinutes = value; }
+    private Integer recommendedDays;
+    public Integer getRecommendedDays() { return recommendedDays; }
+    public void setRecommendedDays(Integer value) { this.recommendedDays = value; }
+    private String openingHours;
+    public String getOpeningHours() { return openingHours; }
+    public void setOpeningHours(String value) { this.openingHours = value; }
+    private String ticketInfo;
+    public String getTicketInfo() { return ticketInfo; }
+    public void setTicketInfo(String value) { this.ticketInfo = value; }
+    private String officialUrl;
+    public String getOfficialUrl() { return officialUrl; }
+    public void setOfficialUrl(String value) { this.officialUrl = value; }
+    private String sourceUrl;
+    public String getSourceUrl() { return sourceUrl; }
+    public void setSourceUrl(String value) { this.sourceUrl = value; }
+    private LocalDateTime verifiedAt;
+    public LocalDateTime getVerifiedAt() { return verifiedAt; }
+    public void setVerifiedAt(LocalDateTime value) { this.verifiedAt = value; }
 }

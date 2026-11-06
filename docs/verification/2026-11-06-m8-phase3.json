@@ -1,0 +1,9 @@
+{
+  "phase": "M8.3",
+  "date": "2026-11-06",
+  "scope": "city-scenic-frontend",
+  "acceptance": "passed locally",
+  "evidence": "docs/verification/2026-11-06-m8-final.json",
+  "productAiProvider": null,
+  "paidProviderRun": "not executed"
+}

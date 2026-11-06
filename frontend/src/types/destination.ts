@@ -1,7 +1,26 @@
 export type DestinationType = 'CITY' | 'SCENIC_SPOT' | 'OTHER'
 export type DestinationStatus = 'ACTIVE' | 'INACTIVE'
 
-export interface Destination {
+export interface DestinationImage {
+  id: string; url: string; altText: string; sortOrder: number
+  sourceUrl: string; author: string; license: string; licenseUrl: string; retrievedAt: string
+}
+export type DestinationImageInput = Omit<DestinationImage, 'id' | 'sortOrder'>
+export interface DestinationDetails {
+  address: string | null
+  longitude: string | null
+  latitude: string | null
+  recommendedDurationMinutes: number | null
+  recommendedDays: number | null
+  openingHours: string | null
+  ticketInfo: string | null
+  officialUrl: string | null
+  sourceUrl: string | null
+  verifiedAt: string | null
+  images: DestinationImage[]
+}
+
+export interface Destination extends DestinationDetails {
   id: string
   name: string
   destinationType: DestinationType
@@ -18,7 +37,8 @@ export interface Destination {
   updatedAt: string
 }
 
-export type DestinationInput = Omit<Destination, 'id' | 'createdAt' | 'updatedAt'>
+export type DestinationInput = Omit<Destination, 'id' | 'createdAt' | 'updatedAt' | keyof DestinationDetails>
+  & Partial<Omit<DestinationDetails, 'images'>> & { images?: DestinationImageInput[] }
 export type DestinationCreate = Pick<DestinationInput, 'name'> & Partial<Omit<DestinationInput, 'name'>>
 export interface DestinationQuery {
   page?: number

@@ -26,12 +26,19 @@ public record DestinationVO(
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "GMT+8")
         OffsetDateTime createdAt,
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "GMT+8")
-        OffsetDateTime updatedAt
+        OffsetDateTime updatedAt,
+        String address,String longitude,String latitude,Integer recommendedDurationMinutes,Integer recommendedDays,
+        String openingHours,String ticketInfo,String officialUrl,String sourceUrl,
+        @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSSXXX") OffsetDateTime verifiedAt,
+        java.util.List<DestinationImageVO> images
 ) {
 
     private static final ZoneOffset DATABASE_OFFSET = ZoneOffset.ofHours(8);
 
     public static DestinationVO from(Destination destination) {
+        return from(destination,java.util.List.of());
+    }
+    public static DestinationVO from(Destination destination,java.util.List<DestinationImageVO> images) {
         if (destination == null) {
             return null;
         }
@@ -49,7 +56,13 @@ public record DestinationVO(
                 destination.getStatus(),
                 destination.getSortOrder() == null ? 0 : destination.getSortOrder(),
                 toOffsetDateTime(destination.getCreatedAt()),
-                toOffsetDateTime(destination.getUpdatedAt())
+                toOffsetDateTime(destination.getUpdatedAt()),
+                destination.getAddress(),
+                destination.getLongitude()==null?null:destination.getLongitude().setScale(6).toPlainString(),
+                destination.getLatitude()==null?null:destination.getLatitude().setScale(6).toPlainString(),
+                destination.getRecommendedDurationMinutes(),destination.getRecommendedDays(),destination.getOpeningHours(),
+                destination.getTicketInfo(),destination.getOfficialUrl(),destination.getSourceUrl(),
+                toOffsetDateTime(destination.getVerifiedAt()),java.util.List.copyOf(images)
         );
     }
 

@@ -1,5 +1,8 @@
 erDiagram
     DESTINATIONS o|--o{ DESTINATIONS : contains
+    DESTINATIONS ||--o{ DESTINATION_IMAGES : illustrates
+    GUIDES ||--o{ GUIDE_DESTINATIONS : visits
+    DESTINATIONS ||--o{ GUIDE_DESTINATIONS : linked
     USERS ||--o{ GUIDES : writes
     DESTINATIONS o|--o{ GUIDES : categorizes
     GUIDES ||--o{ GUIDE_IMAGES : contains

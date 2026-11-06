@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, ref, useId, watch } from 'vue'
 import { fetchDestination, fetchDestinations } from '@/api/destinations'
-import type { DestinationStatus } from '@/types/destination'
+import type { DestinationStatus,DestinationType } from '@/types/destination'
 
 type Option = { id:string; name:string; status?:DestinationStatus }
-const props=withDefaults(defineProps<{ modelValue:string|null; retained?:Option|null; allowInactiveSelection?:boolean; disabled?:boolean; label?:string }>(),
+const props=withDefaults(defineProps<{ modelValue:string|null; retained?:Option|null; allowInactiveSelection?:boolean; disabled?:boolean; label?:string; destinationType?:DestinationType }>(),
   { retained:null,allowInactiveSelection:false,disabled:false,label:'目的地（可选）' })
 const emit=defineEmits<{ 'update:modelValue':[value:string|null] }>()
 const inputId=useId(),keyword=ref(''),loading=ref(false),error=ref('')
@@ -20,7 +20,7 @@ async function load():Promise<void>{
   const request=++version;loading.value=true;error.value=''
   const id=props.modelValue
   try{
-    const page=await fetchDestinations({ page:1,size:50,keyword:keyword.value.trim()||undefined })
+    const page=await fetchDestinations({ page:1,size:50,keyword:keyword.value.trim()||undefined,...(props.destinationType?{destinationType:props.destinationType}:{}) })
     let current:Option|null=props.retained?.id===id?props.retained:null
     if(id&&!page.records.some(item=>item.id===id)&&!current){
       try{
@@ -34,7 +34,7 @@ async function load():Promise<void>{
     if(request===version)error.value='目的地暂时无法加载，请重试'
   }finally{if(request===version)loading.value=false}
 }
-watch(()=>props.modelValue,()=>{void load()},{ immediate:true })
+watch([()=>props.modelValue,()=>props.destinationType],()=>{void load()},{ immediate:true })
 </script>
 
 <template>

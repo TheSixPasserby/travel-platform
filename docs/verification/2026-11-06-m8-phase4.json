@@ -1,0 +1,9 @@
+{
+  "phase": "M8.4",
+  "date": "2026-11-06",
+  "scope": "ai-and-atomic-import",
+  "acceptance": "passed locally",
+  "evidence": "docs/verification/2026-11-06-m8-final.json",
+  "productAiProvider": "local HTTP stub",
+  "paidProviderRun": "not executed"
+}

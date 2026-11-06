@@ -1,6 +1,11 @@
 import { apiClient } from './client'
 import type { PageResult } from '@/types/api'
 import type { AdminDestinationQuery, Destination, DestinationCreate, DestinationInput, DestinationQuery, DestinationStatus } from '@/types/destination'
+import type { GuideQuery, GuideSummary } from '@/types/guide'
+
+export function fetchDestinationGuides(id: string, params: Pick<GuideQuery, 'page'|'size'|'keyword'|'tagId'> = {}): Promise<PageResult<GuideSummary>> {
+  return apiClient.get<PageResult<GuideSummary>, PageResult<GuideSummary>>(`/destinations/${encodeURIComponent(id)}/guides`, { params })
+}
 
 export function fetchDestinations(params: DestinationQuery = {}): Promise<PageResult<Destination>> {
   return apiClient.get<PageResult<Destination>, PageResult<Destination>>('/destinations', { params })

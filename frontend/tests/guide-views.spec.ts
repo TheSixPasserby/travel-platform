@@ -22,7 +22,7 @@ vi.mock('@/api/interactions',()=>({ fetchInteraction:vi.fn(),fetchComments:vi.fn
 const guide: GuideDetail = { id:'9007199254740993',title:'山谷里的清晨',summary:'沿溪慢行',coverImageUrl:null,
   author:{ id:'1',nickname:'山间旅人',avatarUrl:null,bio:'喜欢山野' },destination:null,travelDays:2,budgetPerPerson:'0.10',season:'春',tags:[{ id:'1',name:'自然' }],
   status:'PUBLISHED',publishedAt:'2026-11-03T10:00:00.000+08:00',createdAt:'2026-11-03T09:00:00.000+08:00',updatedAt:'2026-11-03T10:00:00.000+08:00',
-  likeCount:0,favoriteCount:0,commentCount:0,content:'# 山谷\n\n<script>alert(1)</script>',images:[] }
+  likeCount:0,favoriteCount:0,commentCount:0,content:'# 山谷\n\n<script>alert(1)</script>',images:[],scenicSpots:[] }
 const page = (records:GuideSummary[],extra={}) => ({ records,total:records.length,current:1,size:9,pages:records.length?1:0,...extra })
 async function render(component: typeof GuidesView, path:string, loggedIn=false) {
   const pinia=createPinia();setActivePinia(pinia);const auth=useAuthStore()
@@ -155,7 +155,7 @@ describe('攻略浏览与编辑', () => {
     await wrapper.get('[data-test="guide-budget"]').setValue('0.10')
     await wrapper.get('[data-test="save-guide"]').trigger('click');await flushPromises()
     expect(api.createGuide).toHaveBeenCalledWith(expect.objectContaining({ title:'新的清晨',content:'',budgetPerPerson:'0.10',status:'DRAFT',tagIds:[],images:[] }))
-    expect(Object.keys(vi.mocked(api.createGuide).mock.calls[0]![0]).sort()).toEqual(['title','content','summary','destinationId','coverImageUrl','travelDays','budgetPerPerson','season','tagIds','images','status'].sort())
+    expect(Object.keys(vi.mocked(api.createGuide).mock.calls[0]![0]).sort()).toEqual(['title','content','summary','destinationId','coverImageUrl','travelDays','budgetPerPerson','season','tagIds','images','scenicSpotIds','status'].sort())
     wrapper.unmount()
   })
   it('编辑先完整保存再发布，PUT不夹带状态和作者ID', async () => {

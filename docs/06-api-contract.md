@@ -87,13 +87,15 @@
 
 限制 MIME、扩展名、大小，随机生成文件名，拒绝路径穿越。
 
-## 8. AI（选做）
+## 8. AI 行程规划（M8）
 | Method | Path | 说明 | 权限 |
 |---|---|---|---|
-| POST | `/ai/itinerary/recommendations` | 生成行程建议 | 登录 |
-| POST | `/ai/itinerary/save` | 保存确认的建议 | 登录 |
+| GET | `/ai/itineraries/capabilities` | 查看服务配置可用状态 | 登录 |
+| POST | `/ai/itineraries/preview` | 结构化整程只读预览 | 登录 |
+| POST | `/ai/itineraries/day-preview` | 指定日期只读预览 | 登录 |
+| POST | `/itineraries/import` | 明确确认后原子创建新行程 | 登录 |
 
-推荐请求含目的地、日期/天数、预算、人数、兴趣和节奏偏好。服务端校验模型返回结构，保存时重新校验日期、目的地和用户权限。
+请求和响应的精确结构、限制与错误码见第24–25节。
 
 ## 9. 管理员
 | Method | Path | 说明 | 权限 |
@@ -201,13 +203,13 @@ GET /uploads/**为公开图片读取，位于/api/v1之外；仅白名单扩展�
 
 ## 18. M3 攻略 DTO/VO（前置设计契约）
 
-POST /guides和PUT /guides/{id}共同白名单为title、content、summary、destinationId、coverImageUrl、travelDays、budgetPerPerson、season、tagIds、images；POST另含status（缺失DRAFT，显式null拒绝，只允许DRAFT/PUBLISHED），PUT不接受status。POST201，其余写成功200；DELETE成功data=null。用户ID只从认证上下文取得。
+POST /guides和PUT /guides/{id}共同白名单为title、content、summary、destinationId、coverImageUrl、travelDays、budgetPerPerson、season、tagIds、images、scenicSpotIds（详见第23节）；POST另含status（缺失DRAFT，显式null拒绝，只允许DRAFT/PUBLISHED），PUT不接受status。POST201，其余写成功200；DELETE成功data=null。用户ID只从认证上下文取得。
 
 title必填strip后1–180码点；content必填字符串且≤100000码点，保留Markdown空白，DRAFT可空字符串，创建PUBLISHED/编辑PUBLISHED/发布转换时不得全空白（40001）。summary可null≤500、season可null≤40，strip空串归null；destinationId可null，按第14节历史引用规则；coverImageUrl可null，实际受管路径≤500。travelDays为Integer/null且1–365。budgetPerPerson为String/null，文法`^(0|[1-9][0-9]{0,7})(\.[0-9]{1,2})?$`，拒绝数字JSON、指数、前导零、负零，响应固定两位小数字符串。
 
 tagIds缺失/null归空，最多10个不重复、存在的字符串ID；响应tags按id升序。images缺失/null归空，最多20项，恰含url与可空altText（≤200码点），url不重复且指向真实受管文件；服务端按数组顺序赋sortOrder=0..n-1。PUT为完整替换，省略的可空字段清空、数组变空，正文/图片/标签同一事务；未知/内部字段及隐式类型强转拒绝。
 
-GuideSummaryVO恰含id、title、summary、coverImageUrl、author（id/nickname/avatarUrl/bio）、destination（id/name/status或null）、travelDays、budgetPerPerson、season、tags（id/name数组）、status、publishedAt、createdAt、updatedAt、likeCount、favoriteCount、commentCount。GuideDetailVO另含content、images（url/altText/sortOrder）。所有ID字符串、计数数字、时间+08:00毫秒，nullable字段保留。公开status恒PUBLISHED；计数来自实际关系，commentCount仅NORMAL且未删除评论，不增加冗余计数列。
+GuideSummaryVO恰含id、title、summary、coverImageUrl、author（id/nickname/avatarUrl/bio）、destination（id/name/status或null）、travelDays、budgetPerPerson、season、tags（id/name数组）、status、publishedAt、createdAt、updatedAt、likeCount、favoriteCount、commentCount。GuideDetailVO另含content、images（url/altText/sortOrder）、scenicSpots（见第23节）。所有ID字符串、计数数字、时间+08:00毫秒，nullable字段保留。公开status恒PUBLISHED；计数来自实际关系，commentCount仅NORMAL且未删除评论，不增加冗余计数列。
 
 公开列表沿用第11节分页/keyword/sort，筛选destinationId/tagId（合法但不存在ID为空200，非法40001）；标题/摘要LIKE固定ESCAPE '!'，!/%/_按字面转义，反斜杠为普通字符。目的地INACTIVE不隐藏历史攻略，也不阻止筛选。私有GET /users/me/guides另可status=DRAFT/PUBLISHED/HIDDEN，按created_at DESC,id DESC；私有详情仅本人，存在但他人40301。GET /tags公开返回id/name数组按id升序。公开资料只返回既定四个字段。
 
@@ -274,3 +276,43 @@ destination为null或{id,name,status}，无内部字段。所有ID/外键字符�
 用户状态事务RC，先按id有序锁全部ADMIN当前行并清理会话缓存、重核操作者可用，再锁目标。不能禁用自己或最后一位可用ADMIN，40902；并发互相禁用不能把管理员全禁用，等待后操作者已失效则40101。保持M1实时账号校验：禁用期间旧token对全部受保护入口401；不新增永久撤销机制，启用后未过期令牌按原状态规则可用（浏览器401已清本地token，需重新登录）。不自动下架该账号公开内容。
 
 攻略治理只能已发布内容隐藏/恢复，当前DRAFT或没有首次发布时间的异常HIDDEN恢复40902；首次publishedAt、正文、作者及全部图片/标签/点赞收藏关系不变。评论治理只NORMAL/HIDDEN转换，已逻辑删除404且不能复活；按攻略→评论当前锁读，父攻略隐藏/已删不影响管理员治理未删评论，公开读取仍由父可见性限制。所有同状态PATCH幂等200，不重写updatedAt。
+
+
+## 22. M8 目的地资料与图库
+
+DestinationVO在原字段上增加address、longitude/latitude（六位小数字符串或null）、recommendedDurationMinutes（1–1440）、recommendedDays（1–30）、openingHours、ticketInfo、officialUrl、sourceUrl、verifiedAt（+08:00毫秒时间或null）、images（有序数组，空为[]）。字段上限：地址300、说明1000、链接1000；坐标成对提供，longitude[-180,180]、latitude[-90,90]，小数最多6位，不舍入。开放/票务说明或坐标非空时必须有sourceUrl和verifiedAt；链接仅http/https绝对地址，无userinfo，不自动抓取。
+
+POST/PUT目的地允许上述新增字段；为兼容旧客户端，新字段PUT省略保留，显式null清空；旧字段仍遵循原完整替换规则。图库images省略保留、显式null拒绝、[]清空，上限20，url不重复且必须真实受管文件，客户端不传id/sortOrder。每图字段恰为url、altText（必填1–200）、sourceUrl（必填有效URL≤1000）、author（必填1–300）、license（必填1–100）、licenseUrl（必填有效URL≤1000）、retrievedAt（必填ISO带偏移时间，存为+08:00）。响应每图增加id字符串和sortOrder，名称url保持，时间统一毫秒。父图文/图库写入同事务，图片失败不创建目的地；普通用户403，匿名401。
+
+CITY禁止父级；SCENIC_SPOT必须直接归属CITY，禁止景点父级和循环；仍被景点引用的CITY改类型40902。新父级必须ACTIVE未删，原停用父级引用可保留；OTHER原任意父链语义保留并防环。公开列表不列出父城市已停用的景点；公开详情继续可读INACTIVE历史，供已有攻略/行程说明。类型收紧后的旧防环回归改用OTHER夹具，保留循环与并发保护断言。
+
+
+## 23. M8 攻略多景点与目的地相关攻略
+
+GuideDetailVO新增scenicSpots（{id,name,status}数组）；GuideSummaryVO维持原结构。攻略POST/PUT可传scenicSpotIds，最多20个正整数字符串ID，归一化后不可重复，须为主目的地CITY的直属SCENIC_SPOT。新增关联的城市与景点必须ACTIVE未删；同城不变的停用历史关联可保留。省略scenicSpotIds保留旧关联（创建为空），显式null拒绝，[]清空；已有关联时改变主城市必须显式提供兼容新城的集合或[]。关联与正文、标签、图片同事务，所有权规则不变；被攻略关联的景点不能直接换城市或改类型（40902）。
+
+GET /destinations/{id}/guides公开，支持page/size/keyword/tagId，返回GuideSummaryVO标准分页；城市匹配攻略主城市或该城下关联景点，景点匹配自身关联，OTHER匹配主目的地。仅PUBLISHED未删，按首次发布时间/id倒序，EXISTS去重，草稿与隐藏攻略不可见；未知目的地40401。停用历史资料仍可查看。路径ID与分页/搜索规范沿第11节。
+
+## 24. M8 整程原子导入
+
+POST /itineraries/import要求ACTIVE登录。只创建新的本人行程，第一次成功201，同用户同clientRequestId重发200返回已保存行程，已删除目标40902。数据库唯一(user_id,client_request_id)与用户行锁共同防重，幂等键大小写按UUID归一。不同用户可以使用相同UUID。响应为原ItineraryDetailVO，内部幂等键不投影。
+
+输入恰为clientRequestId、title、destinationId、startDate、endDate、notes、days。clientRequestId为UUID，destinationId须为ACTIVE未删CITY。days项恰为travelDate、title、notes、items。items项恰为kind、destinationId、placeName、addressText、startTime、endTime、notes。未知字段拒绝，字段日期、文本和时间上限沿第20节。范围1–366天，最多366条不重复且范围内的日期，每天100项，整程500项。
+
+kind只接受SCENIC_SPOT或FREE_TIME。景点须为根城市直属ACTIVE未删SCENIC_SPOT，名称与地址回查数据库覆盖客户端同名字段。FREE_TIME必须destinationId=null，名称由服务端固定为“自由活动”，地址null。导入景点全程唯一，时段不能重叠。原单条手动编辑入口保留重访能力。模型预览或用户修改均须经过导入重新校验。根、每日与项目在同一事务创建，任一步失败全部回滚。根标题160码点，notes2000码点，上限不截断。
+
+## 25. M8 AI只读预览
+
+全部 /ai/itineraries 入口要求ACTIVE登录。GET /capabilities返回enabled、available、reason、maxDays=14、provider、providerLabel。available表示服务端已具备调用配置。Base URL、Key与上游原始响应不投影。
+
+POST /preview输入AiRequirements，字段为cityId、startDate、endDate、travelers、budgetAmount、budgetBasis、currency、interests、pace、transport、preferredIds、mustVisitIds、avoidIds。日期范围1–14天，人数1–20，budgetAmount为非负两位小数字符串且整数部分最多8位，budgetBasis为PER_PERSON/TOTAL，currency固定CNY。interests最多8项且不重复，枚举FOOD/NATURE/CULTURE/PHOTOGRAPHY/FAMILY/HIKING/CITY_WALK。pace为RELAXED/BALANCED/COMPACT，transport为PUBLIC/WALK/TAXI/MIXED。三组偏好各最多20个不重复真实同城可用景点ID，想去与必须去可交集，二者均与避免集合互斥。必须去数量超过天数乘8时，调用模型前返回400/40001。
+
+预览恰为title、summary、city、startDate、endDate、travelers、budgetAmount、budgetBasis、currency、days、budgetEstimate、warnings、candidates、sourceGuides。city复用行程目的地引用。days项为dayNo、travelDate、title、items。items项为kind、destinationId、placeName、addressText、startTime、endTime、notes、estimatedCost。日期、名称、地址由服务端确定。每日至少1项、最多8项，全程最多60项，景点不重复，时间严格HH:mm且end>start、无重叠。必须去全部覆盖，避免集合不出现。FREE_TIME名称固定、ID和地址null。
+
+budgetEstimate含currency、perPerson、total、notes，total由服务端按人数计算。所有费用是估算，单项为人均CNY，perPerson至少覆盖单项合计。超出用户预算时warnings明确提示。candidates含id、name、address、coverImageUrl、recommendedDurationMinutes、openingHours、ticketInfo、sourceUrl、verifiedAt。sourceGuides只有已发布资料的id/title，正文只进入受控模型上下文。
+
+POST /day-preview输入恰为requirements、targetDate、usedDestinationIds。targetDate在原范围，其他天已用ID最多60个真实同城可用景点。响应仅day和warnings。服务端排除其他天已用景点，校验尚未覆盖的必须去。前端只合并目标日并验证需求/编辑版本，迟到响应失效。
+
+候选最多40个，先包含想去/必须去，再补充其他可用候选。仅检索最多5篇公开攻略，每篇摘要最多1600字符，候选资料与摘要按序收缩，最终外呼JSON不超过24000字符。模型等待期间不持有数据库事务，返回前重新读取景点和父城状态。预览无业务写入。每用户滚动60秒最多2次、每用户1个并发、全局2个并发，最多记录10000个用户状态，过期空闲状态可回收。上游失败不会自动再发调用。
+
+错误码使用503/50310配置不可用、422/42210资料不足、429/42910本地限流、429/42911上游限流、504/50410超时、502/50210上游失败、502/50211非法输出。API请求校验仍为400/40001。AI关闭时私人手动行程接口继续可用。

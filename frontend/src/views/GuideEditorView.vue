@@ -5,6 +5,7 @@ import { createGuide,deleteGuide,fetchOwnGuide,fetchTags,publishGuide,unpublishG
 import { ApiError } from '@/api/client'
 import DestinationPicker from '@/components/DestinationPicker.vue'
 import ImageUpload from '@/components/ImageUpload.vue'
+import ScenicSpotPicker from '@/components/ScenicSpotPicker.vue'
 import SafeMarkdown from '@/components/SafeMarkdown.vue'
 import type { GuideDetail,GuideInput,Tag } from '@/types/guide'
 
@@ -12,8 +13,9 @@ const route=useRoute(),router=useRouter()
 const current=ref<GuideDetail|null>(null),loading=ref(true),loadError=ref(''),error=ref(''),notice=ref(''),saving=ref(false)
 const coverBusy=ref(false),bodyBusy=ref(false),confirmDelete=ref(false),tags=ref<Tag[]>([]),tagsError=ref('')
 const failedImages=reactive(new Set<string>())
+const scenicNotice=ref('')
 const form=reactive({ title:'',content:'',summary:'',destinationId:null as string|null,coverImageUrl:null as string|null,
-  travelDays:'',budgetPerPerson:'',season:'',tagIds:[] as string[],images:[] as GuideInput['images'] })
+  travelDays:'',budgetPerPerson:'',season:'',tagIds:[] as string[],images:[] as GuideInput['images'],scenicSpotIds:[] as string[] })
 const id=computed(()=>typeof route.params.id==='string'?route.params.id:null)
 const hidden=computed(()=>current.value?.status==='HIDDEN')
 const uploading=computed(()=>coverBusy.value||bodyBusy.value)
@@ -23,7 +25,21 @@ let version=0,internalNavigation=false
 function fill(value:GuideDetail|null):void{
   Object.assign(form,{ title:value?.title??'',content:value?.content??'',summary:value?.summary??'',destinationId:value?.destination?.id??null,
     coverImageUrl:value?.coverImageUrl??null,travelDays:value?.travelDays==null?'':String(value.travelDays),budgetPerPerson:value?.budgetPerPerson??'',season:value?.season??'',
-    tagIds:value?.tags.map(t=>t.id)??[],images:value?.images.map(i=>({ url:i.url,altText:i.altText }))??[] })
+    tagIds:value?.tags.map(t=>t.id)??[],images:value?.images.map(i=>({ url:i.url,altText:i.altText }))??[],
+    scenicSpotIds:value?.scenicSpots.map(spot=>spot.id)??[] })
+  scenicNotice.value=''
+}
+/** 更换主城市后旧的景点关系不再成立，先清空并提示用户重新选择。 */
+function changeDestination(value:string|null):void{
+  const changed=value!==form.destinationId
+  form.destinationId=value
+  if(!changed)return
+  if(form.scenicSpotIds.length){form.scenicSpotIds=[];scenicNotice.value='主城市已变更，已清空原先关联的景点，请按新的城市重新选择。'}
+  else scenicNotice.value=''
+}
+function changeScenicSpots(ids:string[]):void{
+  form.scenicSpotIds=[...ids]
+  if(ids.length)scenicNotice.value=''
 }
 function expired():void{void router.replace({ name:'login',query:{ redirect:route.fullPath } })}
 async function load():Promise<void>{
@@ -48,7 +64,8 @@ function payload():GuideInput|null{
   }
   const optional=(s:string)=>s.trim()||null
   return { title:form.title.trim(),content:form.content,summary:optional(form.summary),destinationId:form.destinationId,coverImageUrl:form.coverImageUrl,
-    travelDays:days,budgetPerPerson:form.budgetPerPerson===''?null:form.budgetPerPerson,season:optional(form.season),tagIds:[...form.tagIds],images:form.images.map(i=>({ url:i.url,altText:i.altText?.trim()||null })) }
+    travelDays:days,budgetPerPerson:form.budgetPerPerson===''?null:form.budgetPerPerson,season:optional(form.season),tagIds:[...form.tagIds],
+    images:form.images.map(i=>({ url:i.url,altText:i.altText?.trim()||null })),scenicSpotIds:[...form.scenicSpotIds] }
 }
 async function navigate(target:Parameters<typeof router.replace>[0]):Promise<void>{
   internalNavigation=true
@@ -115,8 +132,9 @@ void loadTags()
       <div class="surface-card space-y-5 p-5 sm:p-8">
         <div><label for="editor-title" class="field-label">攻略标题</label><input id="editor-title" v-model="form.title" data-test="guide-title" class="field-input text-lg" :disabled="disabled" placeholder="一个值得回看的名字" /><p class="mt-1 text-right text-xs text-ink-soft">{{ [...form.title].length }} / 180</p></div>
         <div><label for="editor-summary" class="field-label">摘要（可选）</label><textarea id="editor-summary" v-model="form.summary" class="field-input" rows="2" :disabled="disabled" placeholder="用几句话介绍这段旅程" /></div>
-        <div class="grid gap-5 lg:grid-cols-2"><DestinationPicker v-model="form.destinationId" :retained="current?.destination" :disabled="disabled" /><div class="space-y-4"><div class="grid gap-4 sm:grid-cols-2"><div><label for="editor-days" class="field-label">旅行天数（可选）</label><input id="editor-days" v-model="form.travelDays" class="field-input" type="number" min="1" max="365" step="1" :disabled="disabled" /></div><div><label for="editor-budget" class="field-label">人均预算（元，可选）</label><input id="editor-budget" v-model="form.budgetPerPerson" data-test="guide-budget" class="field-input" inputmode="decimal" :disabled="disabled" placeholder="例如：1280.00" /></div></div><div><label for="editor-season" class="field-label">旅行季节（可选）</label><input id="editor-season" v-model="form.season" class="field-input" :disabled="disabled" placeholder="例如：春天" /></div></div></div>
+        <div class="grid gap-5 lg:grid-cols-2"><div class="space-y-3"><DestinationPicker destination-type="CITY" label="主城市（可选）" :model-value="form.destinationId" :retained="current?.destination" :disabled="disabled" @update:model-value="changeDestination" /><p v-if="scenicNotice" role="status" data-test="scenic-notice" class="text-xs text-ember">{{ scenicNotice }}</p></div><div class="space-y-4"><div class="grid gap-4 sm:grid-cols-2"><div><label for="editor-days" class="field-label">旅行天数（可选）</label><input id="editor-days" v-model="form.travelDays" class="field-input" type="number" min="1" max="365" step="1" :disabled="disabled" /></div><div><label for="editor-budget" class="field-label">人均预算（元，可选）</label><input id="editor-budget" v-model="form.budgetPerPerson" data-test="guide-budget" class="field-input" inputmode="decimal" :disabled="disabled" placeholder="例如：1280.00" /></div></div><div><label for="editor-season" class="field-label">旅行季节（可选）</label><input id="editor-season" v-model="form.season" class="field-input" :disabled="disabled" placeholder="例如：春天" /></div></div></div>
         <fieldset><legend class="field-label">旅行主题（最多10项）</legend><div class="flex flex-wrap gap-x-5 gap-y-3"><label v-for="tag in tags" :key="tag.id" class="flex items-center gap-2 text-sm text-ink"><input v-model="form.tagIds" type="checkbox" :value="tag.id" :disabled="disabled" class="accent-pine" />{{ tag.name }}</label></div><p v-if="tagsError" class="mt-2 text-sm text-ember">{{ tagsError }} <button type="button" class="underline" @click="loadTags">重新加载</button></p></fieldset>
+        <ScenicSpotPicker :model-value="form.scenicSpotIds" :city-id="form.destinationId" :labels="current?.scenicSpots" :disabled="disabled" @update:model-value="changeScenicSpots" />
         <ImageUpload :key="'cover-'+(id??'new')" v-model="form.coverImageUrl" label="上传攻略封面" :disabled="disabled" @busy="coverBusy=$event" @session-expired="expired" />
       </div>
       <div class="grid items-start gap-6 xl:grid-cols-2">

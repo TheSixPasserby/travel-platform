@@ -1,0 +1,227 @@
+{
+  "milestone": "M8",
+  "date": "2026-11-06",
+  "branch": "codex/m8-upgrade",
+  "scope": "local implementation and acceptance; product paid provider and remote CI unexecuted",
+  "backend": {
+    "tests": 236,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "package": "passed",
+    "command": "python3 scripts/backend.py package"
+  },
+  "frontend": {
+    "files": 31,
+    "tests": 311,
+    "failures": 0,
+    "command": "npm --prefix frontend test",
+    "typecheck": "passed",
+    "productionBuild": "passed"
+  },
+  "python": {
+    "tests": 65,
+    "failures": 0,
+    "command": "python3 -m unittest discover -s scripts/tests"
+  },
+  "additionalGateAssertions": 29,
+  "phase2Evidence": "docs/verification/2026-11-06-m8-phase2.json",
+  "dataAndAiIntegration": {
+    "qaDatabase": "travel_platform_m8_916c6f38_test",
+    "passed": [
+      "saved AI root/days/items and complete notes persist; other user403",
+      "same UUID actual JAR import200, all three table fingerprints unchanged",
+      "actual JAR + local HTTP provider preview zero changes to all itinerary rows",
+      "actual JAR invalid model50211 zero changes",
+      "manual scenic confirmation persisted and original itinerary2 still3items"
+    ],
+    "developmentAll14TablesExactMatch": true,
+    "developmentRows": 132,
+    "all44UploadFilesExactMatch": true,
+    "sourceGuide6StillDraft": true,
+    "providerForExecution": "local HTTP stub",
+    "ciRemoteRun": "not executed",
+    "productAiPaidProviderCalls": 0
+  },
+  "finalRunningServices": {
+    "frontendUrl": "http://127.0.0.1:5173",
+    "backendUrl": "http://127.0.0.1:8080",
+    "publicApiAvailability": "passed",
+    "frontendProxy": "passed",
+    "newOpenApiPaths": 5,
+    "openApiPaths": 45,
+    "aiDefault": "disabled, available=false",
+    "draft6PublicStatus": 404,
+    "foreignItinerary2Status": 403,
+    "originalItinerary2Items": 3,
+    "sourceAll14TablesExactMatch": true,
+    "businessRows": 132,
+    "uploadFilesExactMatch": 44,
+    "candidateKnownLocalSecretsFound": 0,
+    "specArchiveSha256": "12a1b7423e7645546a52680223fc20b362ddfa7a26fd71c0a13c3ec9ddc9e6ff"
+  },
+  "aiProviders": [
+    "openai",
+    "deepseek",
+    "qwen",
+    "custom"
+  ],
+  "providerSelection": "server environment",
+  "ci": {
+    "workflow": ".github/workflows/ci.yml",
+    "localEquivalentGates": "passed",
+    "remote": "not executed"
+  },
+  "notExecuted": [
+    "paid product AI provider",
+    "remote GitHub Actions",
+    "standalone lint (no configured script)",
+    "public deployment",
+    "performance load",
+    "offsite restore"
+  ],
+  "codeFiles": 281,
+  "codeManifestSha256": "acc10a9f368a4aee948dd414db253fc64c06fef29900e4c8aae6ce98ff6c2283",
+  "artifacts": [
+    {
+      "path": ".local/m8/phase5-backend-complete.log",
+      "sha256": "61ddf4d0bf08e87a3cbf7a2d515e92e35218c1176f0ae8e145073b8eff112d35",
+      "visibility": "local ignored evidence"
+    },
+    {
+      "path": ".local/m8/phase5-frontend-complete.log",
+      "sha256": "afd467b4e6958ea7adf90779d65ae7719a45fd9a4530f0ac3b8f20be9dabb48a",
+      "visibility": "local ignored evidence"
+    },
+    {
+      "path": ".local/m8/phase5-frontend-build-complete.log",
+      "sha256": "7f2d472858cd9af5f4bf5d53943e5b01210244396624d139254ce4dc9d110cb2",
+      "visibility": "local ignored evidence"
+    },
+    {
+      "path": ".local/m8/phase5-python-final.log",
+      "sha256": "bc91844c7d46ee20dbcab44fea387cd44ab6c40c1de9a7d81ee77a2a0deca781",
+      "visibility": "local ignored evidence"
+    },
+    {
+      "path": ".local/m8/final-data-api.log",
+      "sha256": "d592550592ea34ef9e43e3cf00a4b6a3c02dda3277add280210220dd275c95c8",
+      "visibility": "local ignored evidence"
+    },
+    {
+      "path": ".local/m8/final-live-check.log",
+      "sha256": "60cc8a895bc0ac509507d6ba292863772c5c4dd9ec1e99819c06d157e30da035",
+      "visibility": "local ignored evidence"
+    },
+    {
+      "path": ".local/m8/ai-gate-selftest-final.log",
+      "sha256": "9943b962bb5abdaf0d58e3e75f568279ca926496f46f29190f95359d64f84e44",
+      "visibility": "local ignored evidence"
+    },
+    {
+      "path": ".local/m8/phase3-admin-final.log",
+      "sha256": "7e6f2b8f2f3de40808c9473ce01d82608dad91db9a0b6fa744f36d238fdc92b6",
+      "visibility": "local ignored evidence"
+    },
+    {
+      "path": ".local/m8/phase4-browser-e2e.log",
+      "sha256": "0589b53c1dccab474704e4c9310050f364a929dfa25663ce393d2b666c7c9973",
+      "visibility": "local ignored evidence"
+    },
+    {
+      "path": ".local/m8/phase4-browser-failure.log",
+      "sha256": "03c5bdc4d81e300fddfa93e37bc989f1622cf8be9d6ba9b58fec4a15ccf67e48",
+      "visibility": "local ignored evidence"
+    },
+    {
+      "path": ".local/m8/ai-capacity-red.log",
+      "sha256": "bbad9707299f9fbf9dddb5c98b3a3a6dd5821e151cd153a94e7ec2d61a2453fc",
+      "visibility": "local ignored evidence"
+    },
+    {
+      "path": ".local/m8/release-m8-red.log",
+      "sha256": "30349a88081560687e2083201b26e178ae97054035fcbdb8c1e4f121d559e3ec",
+      "visibility": "local ignored evidence"
+    },
+    {
+      "path": "output/playwright/m8-ai-confirm-mobile.png",
+      "sha256": "e41d5b4f4ccd4bbc6a344e5d20ba63d63e91be3870b6279dd54b86e5ba086814",
+      "visibility": "local screenshot"
+    },
+    {
+      "path": "output/playwright/m8-ai-failure-mobile.png",
+      "sha256": "3b48fca240540e5b0e26be747a61cd0b03fe717b1d586b7a32948cd67d8c6153",
+      "visibility": "local screenshot"
+    },
+    {
+      "path": "output/playwright/m8-ai-saved-mobile.png",
+      "sha256": "f27d510eb24334afdc172f05a5605d7e0c1c73a08bdd8dfe7936ff197a319872",
+      "visibility": "local screenshot"
+    },
+    {
+      "path": "output/playwright/m8-phase1-draft-mobile.png",
+      "sha256": "06bb26de5f0085dd2fff26672c2c4aca20423088a3ae0e1801cd0062dc887ab6",
+      "visibility": "local screenshot"
+    },
+    {
+      "path": "output/playwright/m8-phase3-admin-mobile.png",
+      "sha256": "52e94e569319232e731f3c46a31d9fdf476e93f44d8e810e2d501ceb6f9867da",
+      "visibility": "local screenshot"
+    },
+    {
+      "path": "output/playwright/m8-phase3-city-desktop.png",
+      "sha256": "41a0bfe2287e4d6efe943b3dd0d891a52b93fd7ea2c9083d0f1d4a12b340638a",
+      "visibility": "local screenshot"
+    },
+    {
+      "path": "output/playwright/m8-phase3-city-viewport-final.png",
+      "sha256": "e62bc50388d195250175da424e27d6f926a9da1388ee7be73ceb237145c17bb9",
+      "visibility": "local screenshot"
+    },
+    {
+      "path": "output/playwright/m8-phase3-city-viewport.png",
+      "sha256": "207505e4828a24738c0f4a1fb9f923ea620fffdad0710c6d8c18c12e0f1b275a",
+      "visibility": "local screenshot"
+    },
+    {
+      "path": "output/playwright/m8-phase3-draft-mobile.png",
+      "sha256": "aecb3d1be1a32de845ab21e9777f2575be2d438b16e8a4a38c76cb2b6fa89a58",
+      "visibility": "local screenshot"
+    },
+    {
+      "path": "output/playwright/m8-phase3-gallery-viewport.png",
+      "sha256": "2496b5a5e802c58b917b05eb196b6c6110d826731b5670d5fac8e87653e28857",
+      "visibility": "local screenshot"
+    },
+    {
+      "path": "output/playwright/m8-phase3-spot-mobile.png",
+      "sha256": "8d51514d07b37035ab07b95e29a8e5d2edbc6346062eb459288947ad9a36bd18",
+      "visibility": "local screenshot"
+    }
+  ],
+  "delivery": {
+    "files": 428,
+    "sha256AllFilesVerified": true,
+    "m8MaintenanceAndCiIncluded": true,
+    "localEnvAndPrivateDataExcluded": true,
+    "uploadsOnlyGitkeep": true,
+    "localMarkdownLinksChecked": 180,
+    "missingLinks": [],
+    "privateProofDirectory": ".local/m8/delivery-gelhzncc/result"
+  },
+  "reviews": {
+    "completed": [
+      "hub75",
+      "hub80",
+      "hub85",
+      "hub86",
+      "hub89",
+      "hub90"
+    ],
+    "cancelledWithoutFinal": [
+      "hub83",
+      "hub91"
+    ],
+    "leadFinalReview": "completed"
+  }
+}

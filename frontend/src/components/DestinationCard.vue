@@ -25,6 +25,7 @@ watch(() => props.destination.coverImageUrl, () => { imageFailed.value = false }
       <p class="text-xs tracking-wide text-ink-soft">{{ location }}</p>
       <h2 class="mt-2 break-words font-serif text-2xl text-pine-deep">{{ props.destination.name }}</h2>
       <p class="mt-2 line-clamp-2 text-sm leading-relaxed text-ink-soft">{{ props.destination.description || '留一点时间，去认识这个地方。' }}</p>
+      <p class="mt-3 text-xs text-ink-soft">{{ props.destination.recommendedSeasons || '季节待核实' }}<span v-if="props.destination.recommendedDays"> · 建议 {{ props.destination.recommendedDays }} 天</span><span v-else-if="props.destination.recommendedDurationMinutes"> · 建议 {{ props.destination.recommendedDurationMinutes }} 分钟</span></p>
       <span class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-pine">看看这里 <span aria-hidden="true">↗</span></span>
     </div>
   </RouterLink>

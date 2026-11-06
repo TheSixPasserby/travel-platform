@@ -8,6 +8,20 @@ import java.util.List;
 
 @Mapper
 public interface GuideMapper extends BaseMapper<Guide> {
+    String RELATED_FILTER="""
+        WHERE g.is_deleted=0 AND g.status='PUBLISHED' AND
+        <choose><when test="type == 'CITY'">
+          (g.destination_id=#{destination} OR EXISTS (SELECT 1 FROM guide_destinations gd JOIN destinations spot ON spot.id=gd.destination_id WHERE gd.guide_id=g.id AND spot.parent_id=#{destination} AND spot.destination_type='SCENIC_SPOT' AND spot.is_deleted=0))
+        </when><when test="type == 'SCENIC_SPOT'">
+          EXISTS (SELECT 1 FROM guide_destinations gd WHERE gd.guide_id=g.id AND gd.destination_id=#{destination})
+        </when><otherwise>g.destination_id=#{destination}</otherwise></choose>
+        <if test="keyword != null">AND (g.title LIKE #{keyword} ESCAPE '!' OR g.summary LIKE #{keyword} ESCAPE '!')</if>
+        <if test="tag != null">AND EXISTS (SELECT 1 FROM guide_tags t WHERE t.guide_id=g.id AND t.tag_id=#{tag})</if>
+        """;
+    @Select("<script>SELECT COUNT(*) FROM guides g "+RELATED_FILTER+"</script>")
+    long countRelated(@Param("destination") long destination,@Param("type") String type,@Param("keyword") String keyword,@Param("tag") Long tag);
+    @Select("<script>SELECT g.*, "+COUNTS+" FROM guides g "+RELATED_FILTER+" ORDER BY g.published_at DESC,g.id DESC LIMIT #{limit} OFFSET #{offset}</script>")
+    List<GuideRow> pageRelated(@Param("destination") long destination,@Param("type") String type,@Param("keyword") String keyword,@Param("tag") Long tag,@Param("limit") long limit,@Param("offset") long offset);
     String FILTER = """
         WHERE g.is_deleted=0
         <if test="filter.authorId != null">AND g.author_id=#{filter.authorId}</if>

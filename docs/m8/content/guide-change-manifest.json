@@ -1,0 +1,105 @@
+{
+  "database": "travel_platform",
+  "serverUuid": "97c51c82-d6b2-11f1-ac70-f3b4ab3b2711",
+  "entries": [
+    {
+      "id": 4,
+      "expectedFingerprint": "2de2a96e1fd3a30f1c3dbf27ffb26346531a6a94d7f74243f52fd8d024e010c0",
+      "contentFile": "docs/m8/content/guide-4.md",
+      "summary": "从人民公园的茶香到武侯祠与草堂，用两天慢读成都街巷与人文；附交通取舍和每人560元的示例预算分配。",
+      "coverImageUrl": "/uploads/2026/11/2428d1e213b943d5b5710b4cfaf9ffa4.jpg",
+      "images": [
+        {
+          "url": "/uploads/2026/11/2bb3103a54bc451d89a3d53e1686e002.jpg",
+          "altText": "人民公园的纪念建筑与绿地（资料图）"
+        },
+        {
+          "url": "/uploads/2026/11/7e5a5af3d26c44c08b54291e3bc4d512.jpg",
+          "altText": "人民公园茶馆入口（资料图）"
+        },
+        {
+          "url": "/uploads/2026/11/ed8a1b2fbcb240e4a2452c3e38516a4b.jpg",
+          "altText": "宽窄巷子相关文物展陈（资料图，开放以现场为准）"
+        },
+        {
+          "url": "/uploads/2026/11/f5a5d189ab9d4152801a9cb2b243fbb5.jpg",
+          "altText": "杜甫草堂园内文字景观（资料图）"
+        },
+        {
+          "url": "/uploads/2026/11/cbe2b6a33f3e474582eecf61ce6399d4.jpg",
+          "altText": "锦里夜间街景（资料图）"
+        },
+        {
+          "url": "/uploads/2026/11/2428d1e213b943d5b5710b4cfaf9ffa4.jpg",
+          "altText": "成都武侯祠园林中的门廊（封面资料图）"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "expectedFingerprint": "d5e977647f3b621b2d47346d60212165a05d67a6204c3483bdbc728be4e5dde8",
+      "contentFile": "docs/m8/content/guide-5.md",
+      "summary": "沿湖滨、断桥与白堤慢走，给游船和晚风留出空白；附一日路线、住宿区域与示例预算口径。",
+      "coverImageUrl": "/uploads/2026/11/d14d58421adb42ca83c15658354f06a0.jpg",
+      "images": [
+        {
+          "url": "/uploads/2026/11/e5716d5274af4de3ab8a7d70edf76240.jpg",
+          "altText": "西湖湖岸与小桥（资料图）"
+        },
+        {
+          "url": "/uploads/2026/11/a3344e7918264877af1f4cbcc67ba0f6.jpg",
+          "altText": "断桥附近的西湖与杭州城远眺（资料图）"
+        },
+        {
+          "url": "/uploads/2026/11/b12c917f35454f7bbdea0f049f6001fe.jpg",
+          "altText": "雷峰塔景观（资料图，本路线不默认包含登塔）"
+        },
+        {
+          "url": "/uploads/2026/11/26a86fb4f1954ba6977fd075a4d2ffe3.jpg",
+          "altText": "西湖荷塘景观（资料图，植被随季节变化）"
+        },
+        {
+          "url": "/uploads/2026/11/f0f04721db7b464d9b9e68704197ae7c.jpg",
+          "altText": "西湖游船与远山（资料图，不代表当前班次）"
+        },
+        {
+          "url": "/uploads/2026/11/d14d58421adb42ca83c15658354f06a0.jpg",
+          "altText": "西湖落日、柳枝与游船（封面资料图）"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "expectedFingerprint": "2b57037c8c857eebad8f02c37817d9230e3810ccbb19118cd5201aaac5f5e0f9",
+      "contentFile": "docs/m8/content/guide-6.md",
+      "summary": "仍在整理的一日大理草稿：上午古城、下午洱海西岸，保留未核实信息与可替代安排。",
+      "coverImageUrl": "/uploads/2026/11/d82a46d7b6d64e35a1e0cb0797f6dd87.jpg",
+      "images": [
+        {
+          "url": "/uploads/2026/11/e8d3f104a63f47f6beeff442ad37da9b.jpg",
+          "altText": "大理古城五华楼（资料图）"
+        },
+        {
+          "url": "/uploads/2026/11/7b761c5b8f954108ad67593639aeaf62.jpg",
+          "altText": "洱海湖面与岸边树木（资料图）"
+        },
+        {
+          "url": "/uploads/2026/11/d82a46d7b6d64e35a1e0cb0797f6dd87.jpg",
+          "altText": "大理古城屋顶与远山（封面资料图）"
+        },
+        {
+          "url": "/uploads/2026/11/7be3b12ae8a843fc8cbb3394297d4e04.jpg",
+          "altText": "大理古城店铺门面（资料图，不作店铺推荐）"
+        },
+        {
+          "url": "/uploads/2026/11/f23c5ff01dfb47ff8ec1ba71af73e953.jpg",
+          "altText": "大理古城夜间街巷（资料图）"
+        },
+        {
+          "url": "/uploads/2026/11/abd41788e4904b1fa0f770f1ecf9b4b1.jpg",
+          "altText": "大理古城夜间街景（资料图）"
+        }
+      ]
+    }
+  ]
+}

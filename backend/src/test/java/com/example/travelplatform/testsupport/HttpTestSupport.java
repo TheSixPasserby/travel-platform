@@ -155,7 +155,7 @@ public final class HttpTestSupport {
         assertIsolatedDatabase();
         assertSafePrefix();
         String own = "SELECT id FROM guides WHERE author_id IN (SELECT id FROM users WHERE LEFT(username,?)=?)";
-        for (String table : new String[]{"guide_images", "guide_tags", "guide_likes", "guide_favorites", "guide_comments"}) {
+        for (String table : new String[]{"guide_destinations", "guide_images", "guide_tags", "guide_likes", "guide_favorites", "guide_comments"}) {
             // Table names are fixed literals, never supplied by a request or caller.
             jdbc.update("DELETE FROM " + table + " WHERE guide_id IN (" + own + ")", prefix.length(), prefix);
         }

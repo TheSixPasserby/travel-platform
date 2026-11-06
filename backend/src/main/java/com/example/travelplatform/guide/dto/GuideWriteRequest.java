@@ -14,6 +14,11 @@ public class GuideWriteRequest {
     private String season;
     private List<String> tagIds;
     private List<GuideImageRequest> images;
+    private List<String> scenicSpotIds;
+    @com.fasterxml.jackson.annotation.JsonIgnore private boolean scenicSpotsProvided;
+    public List<String> getScenicSpotIds(){return scenicSpotIds;}
+    public void setScenicSpotIds(List<String> value){scenicSpotIds=value;scenicSpotsProvided=true;}
+    public boolean scenicSpotsProvided(){return scenicSpotsProvided;}
     public String getTitle() { return title; }
     public void setTitle(String value) { this.title = value; }
     public String getContent() { return content; }

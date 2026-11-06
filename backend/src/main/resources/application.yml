@@ -1,4 +1,5 @@
 server:
+  address: ${SERVER_ADDRESS:127.0.0.1}
   port: ${SERVER_PORT:8080}
   tomcat:
     max-swallow-size: 8MB
@@ -54,6 +55,16 @@ springdoc:
     disable-swagger-default-url: true
 
 travel:
+  ai:
+    enabled: ${AI_ENABLED:false}
+    provider: ${AI_PROVIDER:custom}
+    base-url: ${AI_BASE_URL:}
+    api-key: ${AI_API_KEY:}
+    model: ${AI_MODEL:}
+    connect-timeout-seconds: ${AI_CONNECT_TIMEOUT_SECONDS:5}
+    timeout-seconds: ${AI_TIMEOUT_SECONDS:45}
+    max-output-tokens: ${AI_MAX_OUTPUT_TOKENS:6000}
+    response-format: ${AI_RESPONSE_FORMAT:auto}
   storage:
     upload-dir: ${UPLOAD_DIR:./uploads}
   cors:

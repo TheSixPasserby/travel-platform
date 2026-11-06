@@ -11,4 +11,6 @@ public interface DestinationMapper extends BaseMapper<Destination> {
     /** Lock the complete graph with a current read, including logical-deleted rows. */
     @Select("SELECT * FROM destinations ORDER BY id FOR UPDATE")
     List<Destination> lockGraph();
+    @Select("SELECT COUNT(*) FROM guide_destinations WHERE destination_id=#{id}")
+    long guideLinks(long id);
 }

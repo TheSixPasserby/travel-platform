@@ -177,16 +177,7 @@ public class ItineraryService {
     private static ItineraryDestination ref(Long id,Map<Long,Destination> refs){if(id==null)return null;Destination dest=refs.get(id);return dest==null?null:new ItineraryDestination(dest.getId().toString(),dest.getName(),dest.getStatus());}
     private static Collection<Long> single(Long id){return id==null?List.of():List.of(id);}
     private static Long optionalId(String id){return id==null?null:RequestValues.positiveId(id);}
-    private static String text(String raw,int max,boolean required){
-        if(raw==null){if(required)throw invalid();return null;}
-        if(raw.codePoints().anyMatch(cp->Character.isISOControl(cp)&&cp!='\t'&&cp!='\r'&&cp!='\n'))throw invalid();
-        String value=raw.replace("\r\n","\n").replace('\r','\n');int start=0,end=value.length();
-        while(start<end&&space(value.codePointAt(start)))start+=Character.charCount(value.codePointAt(start));
-        while(start<end&&space(value.codePointBefore(end)))end-=Character.charCount(value.codePointBefore(end));
-        value=value.substring(start,end);if(value.isEmpty()){if(required)throw invalid();return null;}
-        if(value.codePointCount(0,value.length())>max)throw invalid();return value;
-    }
-    private static boolean space(int cp){return Character.isWhitespace(cp)||Character.isSpaceChar(cp);}
+    private static String text(String raw,int max,boolean required){return com.example.travelplatform.itinerary.validation.ItineraryText.normalize(raw,max,required);}
     private void touch(Itinerary root){changed(roots.touch(root.getId(),now()));}
     private static void owned(Itinerary root,long user){if(!Objects.equals(root.getUserId(),user))throw new ApiException(ErrorCode.FORBIDDEN);}
     private static <T extends Itinerary>T required(T root){if(root==null||!Integer.valueOf(0).equals(root.getIsDeleted()))throw missing();return root;}

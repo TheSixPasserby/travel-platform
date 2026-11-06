@@ -1,0 +1,727 @@
+{
+  "milestone": "M8",
+  "phase": 0,
+  "status": "audit_complete_implementation_pending",
+  "date": "2026-11-06",
+  "timezone": "Asia/Shanghai",
+  "recordedAt": "2026-11-06T00:23:54.964684+08:00",
+  "repository": {
+    "branch": "main",
+    "head": "864ea1cbdd66a0768d01ff7e26216c2f5a4f1e8b",
+    "initialWorktreeClean": true,
+    "remoteFetched": false,
+    "committed": false,
+    "pushed": false
+  },
+  "specification": {
+    "path": "docs/m8/00-implementation-spec.md",
+    "lines": 392,
+    "sha256": "12a1b7423e7645546a52680223fc20b362ddfa7a26fd71c0a13c3ec9ddc9e6ff"
+  },
+  "models": {
+    "codex": {
+      "model": "gpt-6.1-sol",
+      "effort": "ultra",
+      "evidence": "current session turn_context"
+    },
+    "dsh": {
+      "provider": "buddy",
+      "model": "deepseek-v4.1-flash",
+      "effort": "max",
+      "probeRouteCallable": true,
+      "probeToolCallVerified": true,
+      "mode": "hub",
+      "isolationVerified": false,
+      "readOnlyConcurrentTasksOnly": true
+    }
+  },
+  "runtime": {
+    "java": "21.0.12.1",
+    "maven": "3.9.16",
+    "node": "24.21.0",
+    "npm": "11.19.0"
+  },
+  "database": {
+    "instance": {
+      "port": 3307,
+      "section": "instance",
+      "version": "8.4.13",
+      "database": "travel_platform",
+      "serverUuid": "97c51c82-d6b2-11f1-ac70-f3b4ab3b2711"
+    },
+    "testDatabase": "travel_platform_test",
+    "counts": [
+      {
+        "count": 4,
+        "table": "users",
+        "section": "counts"
+      },
+      {
+        "count": 6,
+        "table": "destinations",
+        "section": "counts"
+      },
+      {
+        "count": 3,
+        "table": "guides",
+        "section": "counts"
+      },
+      {
+        "count": 0,
+        "table": "guide_images",
+        "section": "counts"
+      },
+      {
+        "count": 8,
+        "table": "tags",
+        "section": "counts"
+      },
+      {
+        "count": 3,
+        "table": "guide_tags",
+        "section": "counts"
+      },
+      {
+        "count": 2,
+        "table": "guide_likes",
+        "section": "counts"
+      },
+      {
+        "count": 1,
+        "table": "guide_favorites",
+        "section": "counts"
+      },
+      {
+        "count": 1,
+        "table": "guide_comments",
+        "section": "counts"
+      },
+      {
+        "count": 1,
+        "table": "itineraries",
+        "section": "counts"
+      },
+      {
+        "count": 2,
+        "table": "itinerary_days",
+        "section": "counts"
+      },
+      {
+        "count": 3,
+        "table": "itinerary_items",
+        "section": "counts"
+      }
+    ],
+    "testBaselineCounts": [
+      {
+        "count": 0,
+        "table": "users",
+        "section": "counts"
+      },
+      {
+        "count": 6,
+        "table": "destinations",
+        "section": "counts"
+      },
+      {
+        "count": 0,
+        "table": "guides",
+        "section": "counts"
+      },
+      {
+        "count": 0,
+        "table": "guide_images",
+        "section": "counts"
+      },
+      {
+        "count": 8,
+        "table": "tags",
+        "section": "counts"
+      },
+      {
+        "count": 0,
+        "table": "guide_tags",
+        "section": "counts"
+      },
+      {
+        "count": 0,
+        "table": "guide_likes",
+        "section": "counts"
+      },
+      {
+        "count": 0,
+        "table": "guide_favorites",
+        "section": "counts"
+      },
+      {
+        "count": 0,
+        "table": "guide_comments",
+        "section": "counts"
+      },
+      {
+        "count": 0,
+        "table": "itineraries",
+        "section": "counts"
+      },
+      {
+        "count": 0,
+        "table": "itinerary_days",
+        "section": "counts"
+      },
+      {
+        "count": 0,
+        "table": "itinerary_items",
+        "section": "counts"
+      }
+    ],
+    "columns": 100,
+    "foreignKeysObserved": 17,
+    "protection": {
+      "development": {
+        "counts": true,
+        "columns": true,
+        "fingerprint": true
+      },
+      "test": {
+        "counts": true,
+        "columns": true,
+        "fingerprint": true
+      }
+    },
+    "developmentRowsCompared": 34,
+    "testRowsCompared": 14,
+    "developmentFingerprintSetSha256": "6e8b0d6b62de5c83d59aec616fd6a152a4a9f14683404eb75167040afb186b58",
+    "testFingerprintSetSha256": "91c287452bccb8092923f347dc2bb0596f7d29cbcdb33e61c90a0f1b90223aa4",
+    "developmentWritesExecuted": false,
+    "migrationExecuted": false,
+    "recoverableBackupCreated": false,
+    "restoreTestExecuted": false
+  },
+  "guides": [
+    {
+      "id": "4",
+      "title": "成都两日慢行：茶馆与街巷",
+      "authorId": "12",
+      "status": "PUBLISHED",
+      "publishedAt": "2026-11-04 18:33:45.998000",
+      "destinationId": "1",
+      "days": 2,
+      "cover": null,
+      "images": 0,
+      "likes": 2,
+      "favorites": 1,
+      "comments": 1,
+      "contentCharacters": 139,
+      "contentSha256": "cb38b217aa902b077ca1d557155ba5c6f1b1fbdddcf60fbc7973596cfa561f0a",
+      "tags": [
+        "城市漫游"
+      ]
+    },
+    {
+      "id": "5",
+      "title": "杭州湖边的一天：留白与晚风",
+      "authorId": "12",
+      "status": "PUBLISHED",
+      "publishedAt": "2026-11-04 18:33:46.029000",
+      "destinationId": "3",
+      "days": 1,
+      "cover": null,
+      "images": 0,
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "contentCharacters": 101,
+      "contentSha256": "616db78f6f6057f0b32f9bf241e2a7477d5890323366636f3a33c2da2a2e2500",
+      "tags": [
+        "自然风光"
+      ]
+    },
+    {
+      "id": "6",
+      "title": "下一次出发：大理手记草稿",
+      "authorId": "12",
+      "status": "DRAFT",
+      "publishedAt": null,
+      "destinationId": "5",
+      "days": 1,
+      "cover": null,
+      "images": 0,
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "contentCharacters": 32,
+      "contentSha256": "d30408c918dbecd852659c4de5fa57825882902693e247e27846aae67314d685",
+      "tags": [
+        "摄影"
+      ]
+    }
+  ],
+  "destinations": [
+    {
+      "id": "1",
+      "name": "成都",
+      "type": "CITY",
+      "cover": null,
+      "status": "ACTIVE",
+      "deleted": 0,
+      "seasons": "春季、秋季",
+      "section": "destination",
+      "parentId": null,
+      "description": "以美食、休闲生活和历史文化闻名的城市。"
+    },
+    {
+      "id": "2",
+      "name": "重庆",
+      "type": "CITY",
+      "cover": null,
+      "status": "ACTIVE",
+      "deleted": 0,
+      "seasons": "春季、秋季",
+      "section": "destination",
+      "parentId": null,
+      "description": "山城地貌、夜景和特色美食丰富。"
+    },
+    {
+      "id": "3",
+      "name": "杭州",
+      "type": "CITY",
+      "cover": null,
+      "status": "ACTIVE",
+      "deleted": 0,
+      "seasons": "春季、秋季",
+      "section": "destination",
+      "parentId": null,
+      "description": "以西湖、江南风光和人文景观著称。"
+    },
+    {
+      "id": "4",
+      "name": "西安",
+      "type": "CITY",
+      "cover": null,
+      "status": "ACTIVE",
+      "deleted": 0,
+      "seasons": "春季、秋季",
+      "section": "destination",
+      "parentId": null,
+      "description": "拥有丰富的历史遗迹和文化景观。"
+    },
+    {
+      "id": "5",
+      "name": "大理",
+      "type": "CITY",
+      "cover": null,
+      "status": "ACTIVE",
+      "deleted": 0,
+      "seasons": "春季、秋季",
+      "section": "destination",
+      "parentId": null,
+      "description": "以苍山洱海和古城风貌吸引游客。"
+    },
+    {
+      "id": "6",
+      "name": "青岛",
+      "type": "CITY",
+      "cover": null,
+      "status": "ACTIVE",
+      "deleted": 0,
+      "seasons": "夏季、秋季",
+      "section": "destination",
+      "parentId": null,
+      "description": "海滨风光、城市建筑和海鲜美食。"
+    }
+  ],
+  "files": {
+    "managedBusinessFiles": 1,
+    "existingAvatarBytes": 563174,
+    "existingAvatarSha256": "0eb57601444d6b840d5ade7475e91d86f05cb37c7fc4cc21d63bc589497fcf3d",
+    "existingAvatarPreserved": true,
+    "travelPhotoLicenseVerified": false
+  },
+  "checks": [
+    {
+      "command": "python3 scripts/backend.py package",
+      "exitCode": 0,
+      "tests": 165,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "command": "npm --prefix frontend test",
+      "exitCode": 0,
+      "testFiles": 25,
+      "tests": 227
+    },
+    {
+      "command": "npm --prefix frontend run build",
+      "exitCode": 0,
+      "typecheckIncluded": true
+    },
+    {
+      "command": "python3 -m unittest discover -s scripts/tests",
+      "exitCode": 0,
+      "tests": 40
+    },
+    {
+      "command": "JAR/dist read-only HTTP assertions",
+      "checks": 12,
+      "passed": 12,
+      "details": [
+        {
+          "url": "http://127.0.0.1:8081/api/v1/destinations?page=1&size=10",
+          "status": 200,
+          "bytes": 2352,
+          "contentType": "application/json",
+          "sha256": "7d26766467be80fa9d42611d2f0842f7b956f2dba36333a568712c4adaf08163",
+          "code": 0,
+          "total": 6
+        },
+        {
+          "url": "http://127.0.0.1:8081/api/v1/guides?page=1&size=10",
+          "status": 200,
+          "bytes": 1277,
+          "contentType": "application/json",
+          "sha256": "ff597b1e8d136dcd79758b9728ccdafbee15c565380e4ea6170d470d3a16566f",
+          "code": 0,
+          "total": 2
+        },
+        {
+          "url": "http://127.0.0.1:8081/api/v1/guides/4",
+          "status": 200,
+          "bytes": 1016,
+          "contentType": "application/json",
+          "sha256": "f08741eac53f316a55111ce7f9cf48237f599b6c45c7758bba64221adcfe7113",
+          "code": 0
+        },
+        {
+          "url": "http://127.0.0.1:8081/api/v1/guides/5",
+          "status": 200,
+          "bytes": 926,
+          "contentType": "application/json",
+          "sha256": "faf8e303dd1cb2181a693a762b54fc9918ca5af56ec76cac6ecf7509183d1509",
+          "code": 0
+        },
+        {
+          "url": "http://127.0.0.1:8081/api/v1/guides/6",
+          "status": 404,
+          "bytes": 63,
+          "contentType": "application/json",
+          "sha256": "00be35d018b73f3e8b0784c91d51c794ff4e3e8a2676308ff22e7e954315fc46",
+          "code": 40401
+        },
+        {
+          "url": "http://127.0.0.1:8081/api/v1/itineraries",
+          "status": 401,
+          "bytes": 72,
+          "contentType": "application/json",
+          "sha256": "ad5c52400f1d80fb39b0a4d2ff5419c46a2a4920da4199a4c7f0f1681459d0c2",
+          "code": 40101
+        },
+        {
+          "url": "http://127.0.0.1:8081/api/v1/itineraries/2",
+          "status": 401,
+          "bytes": 72,
+          "contentType": "application/json",
+          "sha256": "ad5c52400f1d80fb39b0a4d2ff5419c46a2a4920da4199a4c7f0f1681459d0c2",
+          "code": 40101
+        },
+        {
+          "url": "http://127.0.0.1:8081/api/v1/openapi",
+          "status": 200,
+          "bytes": 38957,
+          "contentType": "application/json",
+          "sha256": "ec9d6f7b29ff333ef84e13ff9ead6be1bcb7f7185b7b37715f02125abfedb3c9",
+          "paths": 40,
+          "operations": 53
+        },
+        {
+          "url": "http://127.0.0.1:5174/",
+          "status": 200,
+          "bytes": 649,
+          "contentType": "text/html",
+          "sha256": "4d2b3c6ed4d6bfe00503ccb0748847994d5541e9e19241101600a89cf522863c"
+        },
+        {
+          "url": "http://127.0.0.1:5174/guides/4",
+          "status": 200,
+          "bytes": 649,
+          "contentType": "text/html",
+          "sha256": "4d2b3c6ed4d6bfe00503ccb0748847994d5541e9e19241101600a89cf522863c"
+        },
+        {
+          "url": "http://127.0.0.1:5174/api/v1/destinations?page=1&size=10",
+          "status": 200,
+          "bytes": 2352,
+          "contentType": "application/json",
+          "sha256": "7d26766467be80fa9d42611d2f0842f7b956f2dba36333a568712c4adaf08163",
+          "code": 0,
+          "total": 6
+        },
+        {
+          "url": "http://127.0.0.1:5174/uploads/2026/11/13a60825aded443cbea51e5b10787127.jpg",
+          "status": 200,
+          "bytes": 563174,
+          "contentType": "image/jpeg",
+          "sha256": "0eb57601444d6b840d5ade7475e91d86f05cb37c7fc4cc21d63bc589497fcf3d"
+        }
+      ]
+    }
+  ],
+  "backendSuites": [
+    {
+      "name": "com.example.travelplatform.administration.AdminDashboardApiTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.example.travelplatform.administration.AdministrationApiTest",
+      "tests": "13",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.example.travelplatform.comment.CommentApiTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.example.travelplatform.comment.CommentInputPolicyTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.example.travelplatform.common.GlobalExceptionHandlerTest",
+      "tests": "15",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.example.travelplatform.common.RequestValuesTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.example.travelplatform.destination.DestinationApiTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.example.travelplatform.destination.DestinationInputPolicyTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.example.travelplatform.file.ImageApiTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.example.travelplatform.file.ManagedImagePathsTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.example.travelplatform.guide.GuideApiTest",
+      "tests": "13",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.example.travelplatform.guide.GuideInputPolicyTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.example.travelplatform.interaction.InteractionApiTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.example.travelplatform.itinerary.ItineraryApiTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.example.travelplatform.itinerary.ItineraryDatesTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.example.travelplatform.user.AuthApiTest",
+      "tests": "24",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.example.travelplatform.user.UserInputPolicyTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "logs": [
+    {
+      "path": ".local/m8/phase0/backend-package.log",
+      "sha256": "6f858ee3e4c90da8a06e7ddeb9c309f0769e9025eb3fb435b69f195eecbaf799"
+    },
+    {
+      "path": ".local/m8/phase0/frontend-test.log",
+      "sha256": "16ebe3cd8a3a1dccaacb8acc652e2a10100611f94afffa8b11fbe3058c91ada3"
+    },
+    {
+      "path": ".local/m8/phase0/frontend-build.log",
+      "sha256": "b34659c927c9e470200267d533e46bd544b6aef99e5987374ec94ff16b31eba0"
+    },
+    {
+      "path": ".local/m8/phase0/python-test.log",
+      "sha256": "8a2ac97328418e9ddd6502fbd18a2a222d7c7bfd52348e3a37756582d18748a3"
+    },
+    {
+      "path": ".local/m8/phase0/http-production-smoke.json",
+      "sha256": "3eaf34389bc984444dacca796362105422967f665b8795969a73cbf5cdec016c"
+    },
+    {
+      "path": ".local/m8/phase0/before-dev.jsonl",
+      "sha256": "020448e174fd5fcfe9ffd12cf454d8053282df355f048601ed340137da5c4e26"
+    },
+    {
+      "path": ".local/m8/phase0/final-dev.jsonl",
+      "sha256": "020448e174fd5fcfe9ffd12cf454d8053282df355f048601ed340137da5c4e26"
+    },
+    {
+      "path": ".local/m8/phase0/before-test.jsonl",
+      "sha256": "3ef86677b6b80065c51b464cbd882e203374a6817c64845e8a0ad70611ebbc8f"
+    },
+    {
+      "path": ".local/m8/phase0/after-test.jsonl",
+      "sha256": "3ef86677b6b80065c51b464cbd882e203374a6817c64845e8a0ad70611ebbc8f"
+    },
+    {
+      "path": ".local/m8/phase0/dsh-dest.json",
+      "sha256": "bc9f97014d8977680f5a2836276543099104917a01ca8463129ab595f6519f9a"
+    },
+    {
+      "path": ".local/m8/phase0/dsh-itinerary.json",
+      "sha256": "be78f34879045775439e1dc0c4989ecdbf6f77ad65327e592fd4f2151cce660d"
+    },
+    {
+      "path": ".local/m8/phase0/dsh-plan.json",
+      "sha256": "dfa80a9a1399efc11eff190df8cc91b2b1a5f1d10cdcb1ecf68ea1ae04d889f2"
+    }
+  ],
+  "dshJobs": [
+    {
+      "id": "hub-68-mw3qq8o5",
+      "status": "done",
+      "provider": "buddy",
+      "model": "deepseek-v4.1-flash",
+      "effort": "max",
+      "mode": "hub",
+      "toolCalls": 17,
+      "stopReason": "completed"
+    },
+    {
+      "id": "hub-69-mw3qqb3j",
+      "status": "done",
+      "provider": "buddy",
+      "model": "deepseek-v4.1-flash",
+      "effort": "max",
+      "mode": "hub",
+      "toolCalls": 15,
+      "stopReason": "completed"
+    },
+    {
+      "id": "hub-70-mw3r7ofg",
+      "status": "done",
+      "provider": "buddy",
+      "model": "deepseek-v4.1-flash",
+      "effort": "max",
+      "mode": "hub",
+      "toolCalls": 2,
+      "stopReason": "completed"
+    }
+  ],
+  "temporaryServices": {
+    "backendPort": 8081,
+    "frontendPort": 5174,
+    "stopped": true,
+    "listenersAfterStop": 0,
+    "original8080And5173": "connection_unavailable"
+  },
+  "notExecuted": [
+    "Phase1-5 product implementation",
+    "recoverable backup/restore drill",
+    "database upgrade/repeat/rollback drill",
+    "browser visual/mobile acceptance",
+    "real model API/paid requests",
+    "independent lint (no script)",
+    "remote CI (no workflow)",
+    "external deployment"
+  ],
+  "dshPlanReview": {
+    "initialIssues": 4,
+    "leadReview": "resolved_in_design_and_plan",
+    "dshSecondReviewExecuted": false,
+    "resolutions": [
+      "explicit restore/upgrade prerequisite in Task2 (Task1 already included restore)",
+      "preferredIds plus mustVisitIds/avoidIds",
+      "transactional drift guard for later relation-only maintenance",
+      "SCENIC_SPOT/FREE_TIME kind and explicit import limits"
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "docs/m8/00-implementation-spec.md",
+      "sha256": "12a1b7423e7645546a52680223fc20b362ddfa7a26fd71c0a13c3ec9ddc9e6ff"
+    },
+    {
+      "path": "docs/28-m8-phase0-audit.md",
+      "sha256": "0c566d43277711c5a7ac209b1a6300d3335bc14df0d82f590c7f8639623756e8"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-11-06-m8-upgrade-design.md",
+      "sha256": "28ce4f076037ec7b27d8036140ad3949d92d0555126ad6987f5c57450edc7ef4"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-06-m8-upgrade.md",
+      "sha256": "baf2f5ced6e633db7ccf486980b2e597a6dc573cc1facb5f1f05c90ec7dca475"
+    },
+    {
+      "path": "README.md",
+      "sha256": "60dcdbc3eeb491185c1653dacbf956962c20b4eae746947bcaa5f44936df94f3"
+    },
+    {
+      "path": "PROJECT_STATUS.md",
+      "sha256": "d71c0d8ce6bb18cea3829ec3f0e4a7b45b0f6bca4e434759e761ae32d299a75d"
+    }
+  ]
+}

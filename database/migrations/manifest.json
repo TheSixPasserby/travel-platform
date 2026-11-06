@@ -1,0 +1,13 @@
+{
+  "formatVersion": 1,
+  "files": {
+    "V008_01__destination_details.sql": "8889b4a1c37a6aae82c0d9ce103cc10266379e04987dd79eb901da581e948c88",
+    "V008_02__destination_relations.sql": "7b805c66b07cc7b034a3ca00c002d31359cd9e6fa6e4ef84d347ca242cdd0b19",
+    "V008_03__itinerary_import_key.sql": "56886e42318505194394c22d8dd794eeabf4effda1c370707d125700b57cc321"
+  },
+  "mysqlCheckClauses": {
+    "chk_destinations_coordinates": "(((`longitude` is null) and (`latitude` is null)) or ((`longitude` is not null) and (`latitude` is not null) and (`longitude` between -(180) and 180) and (`latitude` between -(90) and 90)))",
+    "chk_destinations_duration": "((`recommended_duration_minutes` is null) or (`recommended_duration_minutes` between 1 and 1440))",
+    "chk_destinations_days": "((`recommended_days` is null) or (`recommended_days` between 1 and 30))"
+  }
+}

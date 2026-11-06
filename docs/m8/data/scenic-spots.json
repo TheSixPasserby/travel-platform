@@ -1,0 +1,626 @@
+[
+  {
+    "cityId": 1,
+    "name": "人民公园",
+    "description": "人民公园是成都市区慢行的一站。编辑建议：预留约90分钟，把散步与休息安排在一起，不以打卡数量衡量这段停留；与宽窄巷子同日安排时，在出发前查一次实际步行路线。茶饮、体验项目和公园开放范围须以现场标价与公告为准。建议时长是编辑估计，含短暂休息，不代表官方游览标准。",
+    "address": null,
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 90,
+    "openingHours": null,
+    "ticketInfo": null,
+    "officialUrl": null,
+    "sourceUrl": "https://www.cq.gov.cn/zwgk/zfxxgkml/zdlyxxgk/ggwh/ly/zxdt/202502/t20250227_14351282.html",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/3a8179178f4340479c4d5b8d2b669c23.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/3a8179178f4340479c4d5b8d2b669c23.jpg",
+        "altText": "成都人民公园湖面与石桥实景（成都）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Peoples_Park_Chengdu_lake_and_stone_bridges_2026_01_23_dllu.jpg",
+        "author": "Daniel Lu (User:dllu)",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 1,
+    "name": "宽窄巷子",
+    "description": "宽窄巷子适合作为成都街巷漫游的一站。编辑建议：留出约90分钟，按自己感兴趣的街巷与店铺慢走；把用餐和休息分开安排，遇到人流集中就缩短停留或换时段。购物与体验项目先核对价格；本页不提供未经核实的店铺推荐或营业时刻，建议时长为编辑估计。",
+    "address": null,
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 90,
+    "openingHours": null,
+    "ticketInfo": null,
+    "officialUrl": null,
+    "sourceUrl": "https://www.cq.gov.cn/zwgk/zfxxgkml/zdlyxxgk/ggwh/ly/zxdt/202502/t20250227_14351282.html",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/b25c577f53584a31b8ea5be07c6e9568.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/b25c577f53584a31b8ea5be07c6e9568.jpg",
+        "altText": "宽窄巷子实景照片（成都）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shops_-_Kuanzhai_Alleys_-_Chengdu,_China_-_DSC05305.jpg",
+        "author": "Daderot",
+        "license": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 1,
+    "name": "成都武侯祠博物馆",
+    "description": "成都武侯祠博物馆适合以三国文化为主题安排参观。编辑建议：留出约两小时，根据兴趣选择展陈与院落，不把拍照与看展排得过满；参观前重新查看官网票务、开放区域和入馆要求。可与同城区街巷安排在一天，交通时间另计。建议时长是编辑估计，展览调整以馆方公告为准。",
+    "address": "成都市武侯祠大街231号",
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 120,
+    "openingHours": "来源页面核验于2026-11-06：09:00开馆、18:00闭馆、17:00停止售票（夏季延时开放及惠民活动时间可能变动，以官方公示为准）；资料仅供参考，临行以官方最新公告为准。",
+    "ticketInfo": "来源页面核验于2026-11-06：全价门票50元/人，半价门票25元/人，年票100元/人/年（官网票务栏；官方提示未委托任何第三方网络售票）；仅指该条目所述项目，价格及优惠以官方最新公告为准。",
+    "officialUrl": "https://www.wuhouci.net.cn/",
+    "sourceUrl": "https://www.wuhouci.net.cn/",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/7a3b7ea820e74ce0acb4dedc4cf19a1d.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/7a3b7ea820e74ce0acb4dedc4cf19a1d.jpg",
+        "altText": "成都武侯祠博物馆实景照片（成都）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E6%88%90%E9%83%BD%E7%9A%84%E6%AD%A6%E4%BE%AF%E7%A5%A0.jpg",
+        "author": "螺钉",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 1,
+    "name": "成都杜甫草堂博物馆",
+    "description": "成都杜甫草堂博物馆是诗歌文化主题的参观地点。编辑建议：留出约两个半小时，按个人兴趣分配阅读与园内慢行时间；需要讲解、特展或无障碍服务时提前向馆方确认。不把本页建议时长当作预约时段，开放时间和票务尚未在本批资料中核实，出发前查看官方公告。",
+    "address": null,
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 150,
+    "openingHours": null,
+    "ticketInfo": null,
+    "officialUrl": "https://www.cddfct.cn/",
+    "sourceUrl": "https://www.cddfct.cn/",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/2d923a0366f44cd9896fc04f7a0acd64.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/2d923a0366f44cd9896fc04f7a0acd64.jpg",
+        "altText": "成都杜甫草堂博物馆实景照片（成都）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E6%9D%9C%E7%94%AB%E8%8D%89%E5%A0%82-%E8%8C%85%E5%B1%8B_02.jpg",
+        "author": "Kcx36",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 2,
+    "name": "解放碑",
+    "description": "解放碑是重庆城市漫游的目的地之一。编辑建议：预留约一小时，结合当天住宿位置安排到访，不为赶多个夜景点压缩用餐和返程时间。遇到人流管制时跟随现场引导，交通与营业信息临行核对。建议时长属于编辑估计，本页没有经核实的票务和开放时刻。",
+    "address": null,
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 60,
+    "openingHours": null,
+    "ticketInfo": null,
+    "officialUrl": null,
+    "sourceUrl": "https://www.cq.gov.cn/zwgk/zfxxgkml/zdlyxxgk/ggwh/ly/zxdt/202502/t20250227_14351282.html",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/319165291c6147faa16c8d5d36957a21.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/319165291c6147faa16c8d5d36957a21.jpg",
+        "altText": "解放碑实景照片（重庆）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E9%87%8D%E5%BA%86%E8%A7%A3%E6%94%BE%E7%A2%91.jpg",
+        "author": "Fxqf",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 2,
+    "name": "洪崖洞",
+    "description": "洪崖洞被重庆官方旅游线路列为城市休闲游的一站。编辑建议：预留约90分钟，根据当日人流选择观景位置；拍照时遵守现场通行引导，另留回到住宿地的时间。灯光、预约与开放范围可能调整，均以现场及官方公告为准，本页不提供保证亮灯的时刻。",
+    "address": null,
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 90,
+    "openingHours": null,
+    "ticketInfo": null,
+    "officialUrl": null,
+    "sourceUrl": "https://www.cq.gov.cn/zwgk/zfxxgkml/zdlyxxgk/ggwh/ly/zxdt/202502/t20250227_14351282.html",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/aa861adb2db541b4ab75bc8d05afa287.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/aa861adb2db541b4ab75bc8d05afa287.jpg",
+        "altText": "洪崖洞实景照片（重庆）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hongya_Cave_20180520.jpg",
+        "author": "xiquinhosilva",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 2,
+    "name": "磁器口古镇",
+    "description": "磁器口古镇可安排为重庆街巷主题的半日停留。编辑建议：按体力留出两至三小时，游览中穿插休息，购物和小吃消费先核对标价。若只想短程漫游，可减少停留；不要在同一天叠加过多跨区地点。建议时长是编辑估计，地址、票务和开放时间本批未核实。",
+    "address": null,
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 180,
+    "openingHours": null,
+    "ticketInfo": null,
+    "officialUrl": null,
+    "sourceUrl": "https://www.cq.gov.cn/zwgk/zfxxgkml/zdlyxxgk/ggwh/ly/zxdt/202502/t20250227_14351282.html",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/4dcc073afb5b461bb321dea2c61010ff.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/4dcc073afb5b461bb321dea2c61010ff.jpg",
+        "altText": "磁器口古镇实景照片（重庆）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E6%8B%A5%E6%8C%A4%E7%9A%84%E7%A3%81%E5%99%A8%E5%8F%A3_-_Ciqikou_Old_Town_-_2015.04_-_panoramio.jpg",
+        "author": "rheins",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 2,
+    "name": "李子坝观景台",
+    "description": "李子坝观景台被重庆官方城市休闲线路列为参观点。编辑建议：预留约40分钟观看轨道列车穿楼的城市景观，候车与往返另计，遵守观景区域引导。配图展示的是列车穿楼主体，不能用于推断观景台入口或到达路线；时刻和现场通行情况须另行核对。",
+    "address": null,
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 40,
+    "openingHours": null,
+    "ticketInfo": null,
+    "officialUrl": null,
+    "sourceUrl": "https://www.cq.gov.cn/zwgk/zfxxgkml/zdlyxxgk/ggwh/ly/zxdt/202502/t20250227_14351282.html",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/92713c10c7e24357b2b1ce81d1607523.png",
+    "images": [
+      {
+        "url": "/uploads/2026/11/92713c10c7e24357b2b1ce81d1607523.png",
+        "altText": "李子坝轻轨穿楼实景（李子坝观景台所观看的轨道穿楼主体）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E6%9D%8E%E5%AD%90%E5%9D%9D%E7%AB%99%E8%BD%BB%E8%BD%A8%E7%A9%BF%E6%A5%BC_0023.png",
+        "author": "David290",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 3,
+    "name": "西湖",
+    "description": "西湖适合分段慢行，而非一天走完全部湖岸。编辑建议：先按住宿位置选择一段湖线，留出约四小时并穿插用餐与休息，乘船或进入单独收费地点前再核对项目、价格和天气。推荐时长为编辑估计，不能把景区管理机构的办公地址当作统一游览入口。",
+    "address": null,
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 240,
+    "openingHours": null,
+    "ticketInfo": null,
+    "officialUrl": "https://westlake.hangzhou.gov.cn/",
+    "sourceUrl": "https://westlake.hangzhou.gov.cn/",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/8dbb940fbec34bacaca91d01626e0ad6.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/8dbb940fbec34bacaca91d01626e0ad6.jpg",
+        "altText": "西湖实景照片（杭州）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:West_Lake,_Hangzhou_2025.jpg",
+        "author": "Takashishin",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 3,
+    "name": "灵隐寺",
+    "description": "灵隐寺可作为杭州人文主题参观的一站。编辑建议：预留约90分钟，在行前分别核对寺院和周边景区的预约、入场及开放范围，勿将不同项目的票务混为一谈。参观中遵守场所礼仪与现场引导。建议时长是编辑估计，不含交通和排队；本批不填写未经核实的实时票价。",
+    "address": "浙江省杭州市灵隐路法云弄1号",
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 90,
+    "openingHours": null,
+    "ticketInfo": null,
+    "officialUrl": "https://www.lingyinsi.org/",
+    "sourceUrl": "https://www.lingyinsi.org/detail_747.html",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/7a3feb53af824d2a8e5b2ae670f174ce.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/7a3feb53af824d2a8e5b2ae670f174ce.jpg",
+        "altText": "灵隐寺实景照片（杭州）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lingyin_Temple,_Hangzhou_20161003.jpg",
+        "author": "Tyg728",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 3,
+    "name": "雷峰塔",
+    "description": "雷峰塔位于西湖南岸，杭州西湖风景名胜区管委会供稿介绍了古塔遗址与重建情况。编辑建议：安排约一小时，按兴趣选择观景与参观，不承诺特定天气下的夕照效果。开放时间与票务在本批资料中尚未核实，临行查看官方公告；建议时长属于编辑估计。",
+    "address": null,
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 60,
+    "openingHours": null,
+    "ticketInfo": null,
+    "officialUrl": null,
+    "sourceUrl": "https://ywhz.hangzhou.com.cn/yjls/content/content_6218549.htm",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/8b6f05e1ff764d7bbc6c184ffec67500.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/8b6f05e1ff764d7bbc6c184ffec67500.jpg",
+        "altText": "雷峰塔塔身实景（杭州）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:20250310_Leifeng_Ta.jpg",
+        "author": "Yumeto",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 3,
+    "name": "浙江省博物馆（之江馆区）",
+    "description": "浙江省博物馆之江馆区可作为杭州文化主题的参观地点。编辑建议：预留约两小时，先核对馆区、预约与当天展览，再选择感兴趣的内容阅读。该馆区与其他馆区不能混用地址或开放信息；本批未核实地址、票务和开放时刻，雨天替代安排也应先确认是否开放。",
+    "address": null,
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 120,
+    "openingHours": null,
+    "ticketInfo": null,
+    "officialUrl": null,
+    "sourceUrl": "https://zjic.zj.gov.cn/zkfw/xcfwybz/202604/t20260422_24046878.shtml",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/f21a89e001f7465892d623b7b7c1eb82.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/f21a89e001f7465892d623b7b7c1eb82.jpg",
+        "altText": "浙江省博物馆（之江馆区）实景照片（杭州）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zhijiang_branch,_Zhejiang_Provincial_Museum_20231206114251.jpg",
+        "author": "XiaYZ2023",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 4,
+    "name": "秦始皇帝陵博物院",
+    "description": "秦始皇帝陵博物院在西安市文旅部门博物馆介绍中列有资料。编辑建议：预留约四小时，根据实际预约与交通安排参观，不在同一半天叠加多个城区地点。展陈、讲解和不同参观区域须以馆方当日公告为准；建议时长是编辑估计，不含从西安市区往返的时间。",
+    "address": "陕西省西安市临潼区秦陵北路",
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 240,
+    "openingHours": null,
+    "ticketInfo": null,
+    "officialUrl": null,
+    "sourceUrl": "https://wlj.xa.gov.cn/wbdw/bwgjs/1.html",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/6b1b3e5843194e3bb626cf121e461684.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/6b1b3e5843194e3bb626cf121e461684.jpg",
+        "altText": "秦始皇帝陵博物院实景照片（西安）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Terracotta_Warriors_-_Xi%27an_(4535488885).jpg",
+        "author": "Will Clayton from Blackburn, UK",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 4,
+    "name": "西安城墙",
+    "description": "西安城墙适合作为西安人文漫游的一站。编辑建议：留出约两小时，根据体力选择短段步行，进入前核对实际开放城门与路线；骑行或其他付费项目须另查条件和价格。不把单个城门地址当作整个城墙唯一入口，本批地址留空，建议时长属于编辑估计。",
+    "address": null,
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 120,
+    "openingHours": null,
+    "ticketInfo": null,
+    "officialUrl": null,
+    "sourceUrl": "https://www.xa.gov.cn/ztzl/ztzl/lzledc/ywdc/1824366329290301442.html",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/a892dbd8e397430d91f2d43edc2368c7.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/a892dbd8e397430d91f2d43edc2368c7.jpg",
+        "altText": "西安城墙实景照片（西安）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yongningmen,_Xi%27an_City_Wall,_Xi%27an.jpg",
+        "author": "YikyuenG",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 4,
+    "name": "大雁塔",
+    "description": "大雁塔被西安官方旅游资料列为参观点。编辑建议：安排约90分钟，并区分寺院、登塔和周边公共区域的参观安排，票务与开放范围逐项核对。若同日还看夜景，留出休息和返程余量。本页不把大雁塔与其他联合景区的办公地址混用，建议时长为编辑估计。",
+    "address": null,
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 90,
+    "openingHours": null,
+    "ticketInfo": null,
+    "officialUrl": null,
+    "sourceUrl": "https://www.xa.gov.cn/ztzl/ztzl/lzledc/ywdc/1824366329290301442.html",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/33c7fcbfc4c94e6fab546e0540a2f0ca.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/33c7fcbfc4c94e6fab546e0540a2f0ca.jpg",
+        "altText": "大雁塔实景照片（西安）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Giant_Wild_Goose_Pagoda,_Xi%27an,_May,_2018-1.jpg",
+        "author": "Alexey Komarov",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 4,
+    "name": "陕西历史博物馆",
+    "description": "陕西历史博物馆可作为西安博物馆主题行程的一站。编辑建议：留出约三小时，先核对馆区与预约，再按兴趣选择展陈；讲解、特展及入馆要求以官方公告为准。参观中预留阅读和休息时间，不为赶点压缩展厅停留。本页建议时长不含交通及排队。",
+    "address": "西安市小寨东路91号",
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 180,
+    "openingHours": null,
+    "ticketInfo": null,
+    "officialUrl": null,
+    "sourceUrl": "https://wlj.xa.gov.cn/wbdw/bwgjs/1.html",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/ba82092a219647e79b71a2997cb8a3a9.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/ba82092a219647e79b71a2997cb8a3a9.jpg",
+        "altText": "陕西历史博物馆实景照片（西安）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E9%99%95%E8%A5%BF%E5%8E%86%E5%8F%B2%E5%8D%9A%E7%89%A9%E9%A6%86_Shaanxi_History_Museum_-_panoramio_-_monicker.jpg",
+        "author": "monicker",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 5,
+    "name": "大理古城",
+    "description": "大理古城列于大理市A级景区名录，适合安排半日街巷漫游。编辑建议：预留约四小时，用餐、拍照和休息按当天体力取舍；石板路行走选择舒适鞋履。名录中的开放信息不代表城内所有场馆与经营项目免费，消费和具体场所须分别核对。建议时长为编辑估计。",
+    "address": "云南省大理白族自治州大理市大理镇",
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 240,
+    "openingHours": null,
+    "ticketInfo": "来源页面核验于2026-11-06：免费开放（全年）；仅指该条目所述项目，价格及优惠以官方最新公告为准。",
+    "officialUrl": null,
+    "sourceUrl": "https://www.yndali.gov.cn/dlsrmzf/c106716/pc/content/1983786742782726144/content_1983786742782726144.html",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/bea7b2ed595c43d985053267a6bf5d11.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/bea7b2ed595c43d985053267a6bf5d11.jpg",
+        "altText": "大理古城实景照片（大理）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E5%A4%A7%E7%90%86%E5%8F%A4%E5%9F%8E%E5%8D%97%E5%9F%8E%E9%97%A8.jpg",
+        "author": "shizhao",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 5,
+    "name": "洱海生态廊道（才村段）",
+    "description": "大理市政府历史通告确认了洱海生态廊道的才村入口。编辑建议：预留约90分钟做短段慢行，防晒、防风并提前考虑返程。该通告中的2025年集中整治时段已过，不能当作现行开放规则；本页不据此给出票价、限行或营业承诺。配图为洱海湖面资料图，未核实具体岸段。",
+    "address": null,
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 90,
+    "openingHours": null,
+    "ticketInfo": null,
+    "officialUrl": null,
+    "sourceUrl": "https://www.yndali.gov.cn/dlsrmzf/c106724/pc/content/1983764619263578112/content_1983764619263578112.html",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/42db4e3533064bb0ac3b210fa87125f5.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/42db4e3533064bb0ac3b210fa87125f5.jpg",
+        "altText": "洱海湖面实景资料图（未核实具体岸段，不代表才村段实景）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Erhai_Lake_in_2023.jpg",
+        "author": "Nishino Asuka",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 5,
+    "name": "崇圣寺三塔",
+    "description": "崇圣寺三塔列于大理市A级景区名录。编辑建议：预留约两个半小时，根据体力安排参观与休息，入园前核对开放范围及实际票务。名录中的开放时间作为有日期的参考，不保证节假日或临时调整后的安排；建议时长是编辑估计，不含古城往返交通。",
+    "address": "云南省大理白族自治州大理市大理镇三文笔村",
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 150,
+    "openingHours": "来源页面核验于2026-11-06：07:30-18:30（18:30停止入园）；资料仅供参考，临行以官方最新公告为准。",
+    "ticketInfo": null,
+    "officialUrl": null,
+    "sourceUrl": "https://www.yndali.gov.cn/dlsrmzf/c106716/pc/content/1983786742782726144/content_1983786742782726144.html",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/110a87b2631d4ff9ad54cdd42eb33ba2.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/110a87b2631d4ff9ad54cdd42eb33ba2.jpg",
+        "altText": "崇圣寺三塔（三塔全景）实景（大理）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E5%B4%87%E5%9C%A3%E5%AF%BA%E4%B8%89%E5%A1%94-2404059.jpg",
+        "author": "huweijie07170",
+        "license": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 5,
+    "name": "大理州博物馆",
+    "description": "大理州博物馆列于大理市A级景区名录，位于下关街道。编辑建议：安排约两小时，出发前核对是否开放和是否需要预约；若当天主要在古城一带活动，另留跨城区交通时间。开放说明引自有日期的名录，临时展览与节假日安排以馆方最新公告为准。",
+    "address": "云南省大理白族自治州大理市下关街道洱河南路8号",
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 120,
+    "openingHours": "来源页面核验于2026-11-06：09:00-17:00（16:30停止入馆；周一闭馆，法定节假日除外）；资料仅供参考，临行以官方最新公告为准。",
+    "ticketInfo": null,
+    "officialUrl": null,
+    "sourceUrl": "https://www.yndali.gov.cn/dlsrmzf/c106716/pc/content/1983786742782726144/content_1983786742782726144.html",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/28c942dff60f4c4082a193d967637db9.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/28c942dff60f4c4082a193d967637db9.jpg",
+        "altText": "大理州博物馆（大理白族自治州博物馆）馆舍建筑外观实景（大理）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E5%A4%A7%E7%90%86%E7%99%BD%E6%97%8F%E8%87%AA%E6%B2%BB%E5%B7%9E%E5%8D%9A%E7%89%A9%E9%A6%86_202307_01.jpg",
+        "author": "Kcx36",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 6,
+    "name": "栈桥",
+    "description": "栈桥是青岛官方旅游资料介绍的海岸参观点。编辑建议：预留约一小时，按天气和当天通行情况选择散步或远观，遇到海风与湿滑路面放慢脚步。不要为拍照进入未开放区域，返程可按实际住宿位置安排。本页不提供未经核实的潮汐、开放或游船时刻。",
+    "address": "青岛市市南区中山路南端",
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 60,
+    "openingHours": null,
+    "ticketInfo": null,
+    "officialUrl": null,
+    "sourceUrl": "http://www.qingdao.gov.cn/yfqd/qdwl/cjfw/wyqhb/202009/t20200902_518755.shtml",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/025b3408644947199200c73e4f8f6e0a.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/025b3408644947199200c73e4f8f6e0a.jpg",
+        "altText": "栈桥实景照片（青岛）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E9%9D%92%E5%B2%9B%E6%A0%88%E6%A1%A5_Ehemalige_Landungsbr%C3%BCcke_Qingdao.jpg",
+        "author": "StefanTsingtauer",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 6,
+    "name": "八大关",
+    "description": "八大关适合安排为青岛街区慢行的一站。编辑建议：留出约两小时，按步行舒适度选择街道与休息点，不将所有建筑视为开放参观场所。进入单独场馆前分别核对营业和票务；雨天可缩短步行。本页建议时长为编辑估计，详细门牌和实时开放信息本批留空。",
+    "address": null,
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 120,
+    "openingHours": null,
+    "ticketInfo": null,
+    "officialUrl": null,
+    "sourceUrl": "http://www.qingdao.gov.cn/yfqd/?sign=c",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/00a9a297acb743e9be315919b1f59332.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/00a9a297acb743e9be315919b1f59332.jpg",
+        "altText": "八大关实景照片（青岛）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E9%9D%92%E5%B2%9B%E5%85%AB%E5%A4%A7%E5%85%B3%E8%8A%B1%E7%9F%B3%E6%A5%BC.jpg",
+        "author": "Gisling",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 6,
+    "name": "五四广场",
+    "description": "五四广场位于青岛海岸城市游览线路中。编辑建议：安排约一小时，结合当天住宿与沿海步行路线到访，晚间活动与灯光时间另外查看公告。人流集中时遵守现场引导并留出返程余量。本页建议时长属于编辑估计，不承诺特定演出或灯光安排。",
+    "address": "青岛市市南区东海西路",
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 60,
+    "openingHours": null,
+    "ticketInfo": null,
+    "officialUrl": null,
+    "sourceUrl": "http://www.qingdao.gov.cn/yfqd/?sign=c",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/f2580542a4404f24aea0567feaf17119.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/f2580542a4404f24aea0567feaf17119.jpg",
+        "altText": "五四广场实景照片（青岛）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:51361-Qingdao_May_Fourth_Square.jpg",
+        "author": "xiquinhosilva",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  },
+  {
+    "cityId": 6,
+    "name": "崂山",
+    "description": "崂山是青岛官方旅游资料介绍的山地目的地。编辑建议：预留约五小时并根据体力只选择适当范围，登山装备、天气与返程应提前确认。不同游览区域的入场和交通条件可能不同，不以本页估时替代实际路线规划；门票、开放与坐标尚未核实，出发前查看公告。",
+    "address": null,
+    "longitude": null,
+    "latitude": null,
+    "recommendedDurationMinutes": 300,
+    "openingHours": null,
+    "ticketInfo": null,
+    "officialUrl": null,
+    "sourceUrl": "http://www.qingdao.gov.cn/yfqd/?sign=c",
+    "verifiedAt": "2026-11-06T01:00:00+08:00",
+    "coverImageUrl": "/uploads/2026/11/092ad8c70b8b44388a9b0aae52a06aa7.jpg",
+    "images": [
+      {
+        "url": "/uploads/2026/11/092ad8c70b8b44388a9b0aae52a06aa7.jpg",
+        "altText": "崂山实景照片（青岛）",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Laoshan-mountain-with-rocks.jpg",
+        "author": "Pratyeka",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+        "retrievedAt": "2026-11-06T01:00:00+08:00"
+      }
+    ]
+  }
+]

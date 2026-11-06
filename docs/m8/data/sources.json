@@ -1,0 +1,376 @@
+{
+  "verifiedAt": "2026-11-06T01:00:00+08:00",
+  "policy": "仅有实际阅读全文的来源支持事实。建议分钟/天数与游览建议为编辑估计；地址未确认、全部坐标及多数动态信息留空。",
+  "rulings": [
+    "西湖龙井路1号为机构信息，不作为湖区统一入口，地址置空。",
+    "浙博固定之江馆区，资料与图片均指该馆区，不沿用孤山描述。",
+    "大理采用州博物馆替代未取得足够官方资料的喜洲，仍为每城4处共24处。",
+    "才村廊道来源2025年整治公告只证明地点存在，不推导2026年通行规则；照片仅为湖面资料图。",
+    "拒绝根据搜索摘要填写雷峰塔南山路15号，已读管委会供稿证明主体，门牌/票务/开放仍空。"
+  ],
+  "additionalSources": [
+    {
+      "url": "https://ywhz.hangzhou.com.cn/yjls/content/content_6218549.htm",
+      "actualRead": true,
+      "supports": "雷峰塔主体与西湖南岸，来源署名西湖风景名胜区管委会"
+    },
+    {
+      "url": "https://zjic.zj.gov.cn/zkfw/xcfwybz/202604/t20260422_24046878.shtml",
+      "actualRead": true,
+      "supports": "浙江省博物馆之江馆区存在，未核实地址及开放票务"
+    }
+  ],
+  "delegatedResearchEvidence": [
+    {
+      "institution": "成都武侯祠博物馆",
+      "url": "https://www.wuhouci.net.cn/",
+      "status": "ok",
+      "supports": [
+        "name",
+        "city",
+        "address",
+        "openingHours",
+        "ticketInfo",
+        "officialUrl"
+      ],
+      "readAt": "2026-11-06",
+      "evidence": "首页页脚“中国.成都市武侯祠大街231号”；票务栏全价50/半价25/年票100；开馆09:00、闭馆18:00、17:00停止售票。",
+      "failures": null
+    },
+    {
+      "institution": "成都杜甫草堂博物馆",
+      "url": "https://www.cddfct.cn/",
+      "status": "ok",
+      "supports": [
+        "name",
+        "officialUrl"
+      ],
+      "readAt": "2026-11-06",
+      "evidence": "首页标题为“成都杜甫草堂博物馆”，含参观/开放时间等栏目入口，但首页未列地址与票价正文。",
+      "failures": null
+    },
+    {
+      "institution": "成都杜甫草堂博物馆（候选旧域名）",
+      "url": "https://www.cddfct.com/",
+      "status": "failed",
+      "supports": [],
+      "readAt": "2026-11-06",
+      "evidence": null,
+      "failures": "https 直连 fetch failed；http 访问 302 跨域跳转至 https://www.cddfct.cn 未被自动跟随，改为直取 .cn 成功。故官网以 https://www.cddfct.cn/ 记。"
+    },
+    {
+      "institution": "人民公园、宽窄巷子（官方来源）",
+      "url": null,
+      "status": "failed",
+      "supports": [],
+      "readAt": "2026-11-06",
+      "evidence": null,
+      "failures": "web_search 两次报错 Cannot read properties of undefined (reading 'length')，未取得可读取的官方页面正文；条目全部标 unverified、字段置 null。"
+    },
+    {
+      "type": "source",
+      "organization": "重庆市人民政府网站（政务公开-重点领域信息公开-文化-旅游-资讯动态）",
+      "sourceUrl": "https://www.cq.gov.cn/zwgk/zfxxgkml/zdlyxxgk/ggwh/ly/zxdt/202502/t20250227_14351282.html",
+      "title": "@游客 成渝双城六大主题精品线路来了→",
+      "publishedAt": "2025-02-27",
+      "httpStatus": 200,
+      "readStatus": "ok",
+      "accessedAt": "2026-11-06",
+      "supports": [
+        "cityId=2（重庆）",
+        "name:解放碑",
+        "name:洪崖洞",
+        "name:磁器口古镇",
+        "name:李子坝观景台（“巴蜀逸趣·山水都市休闲游”线路原文列举）"
+      ],
+      "supportedFields": [
+        "name",
+        "cityId",
+        "sourceUrl",
+        "verifiedAt"
+      ],
+      "notSupported": [
+        "address",
+        "longitude",
+        "latitude",
+        "openingHours",
+        "ticketInfo",
+        "officialUrl"
+      ]
+    },
+    {
+      "type": "source",
+      "organization": "重庆市文化和旅游发展委员会（经重庆市人民政府网站发布）",
+      "sourceUrl": "https://www.cq.gov.cn/zwgk/zfxxgkml/zdlyxxgk/ggwh/ly/zxdt/202512/t20251205_15214301.html",
+      "title": "10条精品线路，畅游巴蜀文化旅游走廊",
+      "publishedAt": "2025-12-05",
+      "httpStatus": 200,
+      "readStatus": "ok",
+      "accessedAt": "2026-11-06",
+      "supports": [
+        "cityId=2（重庆）",
+        "name:解放碑",
+        "name:洪崖洞",
+        "name:磁器口",
+        "name:李子坝（“宽洪大量”都市之旅、双城极速穿越之旅、“渝你相约”Citywalk等线路）"
+      ],
+      "supportedFields": [
+        "name",
+        "cityId"
+      ],
+      "notSupported": [
+        "address",
+        "longitude",
+        "latitude",
+        "openingHours",
+        "ticketInfo",
+        "officialUrl"
+      ]
+    },
+    {
+      "type": "failure-log",
+      "accessedAt": "2026-11-06",
+      "failures": [
+        "address/longitude/latitude：两篇官方正文均为线路推介稿，未给出点位门牌与坐标；按指令保持 null，未为地址扩大搜索。",
+        "openingHours/ticketInfo：官方稿不含开放时间与票价，保持 null，未编造。",
+        "officialUrl：四景点均未核实到官方专站，保持 null，回退为政府官网来源页。",
+        "web_search：按指令未使用（此前故障），仅实读给定两条官方 URL 正文。"
+      ]
+    },
+    {
+      "institution": "杭州西湖风景名胜区管理委员会",
+      "url": "https://westlake.hangzhou.gov.cn/",
+      "supportsFields": [
+        "西湖:name",
+        "西湖:address",
+        "西湖:description",
+        "西湖:officialUrl"
+      ],
+      "readStatus": "读取成功(HTTP 200)；页面自述“位于浙江省杭州市西湖区龙井路1号……总面积达59.04平方千米，其中湖面6.38平方千米”，含“三秋桂子、六桥烟柳、九里云松、十里荷花”及西湖十景表述"
+    },
+    {
+      "institution": "杭州灵隐寺",
+      "url": "https://www.lingyinsi.org/",
+      "supportsFields": [
+        "灵隐寺:name",
+        "灵隐寺:officialUrl"
+      ],
+      "readStatus": "读取成功(HTTP 200)；首页标题“杭州灵隐寺”"
+    },
+    {
+      "institution": "杭州灵隐寺·灵隐简介",
+      "url": "https://www.lingyinsi.org/detail_747.html",
+      "supportsFields": [
+        "灵隐寺:address",
+        "灵隐寺:description"
+      ],
+      "readStatus": "读取成功(HTTP 200)；正文“地址：浙江省杭州市灵隐路法云弄1号(邮编：310013)”，并载“灵隐寺始建于东晋咸和元年(公元326年)……背靠北高峰，面朝飞来峰”"
+    },
+    {
+      "institution": "杭州灵隐寺·古寺春秋",
+      "url": "https://www.lingyinsi.org/detail_813.html",
+      "supportsFields": [
+        "灵隐寺:description"
+      ],
+      "readStatus": "读取成功(HTTP 200)；载创建于东晋咸和元年、慧理建寺传说"
+    },
+    {
+      "institution": "浙江省博物馆（候选官网）",
+      "url": "http://www.zhejiangmuseum.com/",
+      "supportsFields": [],
+      "readStatus": "读取失败：HTTP 403，返回阿里云备案拦截页(title=Non-compliance ICP Filing)；https/wss 变体 TLS 握手失败，未能取得正文"
+    },
+    {
+      "institution": "雷峰塔（候选官网）",
+      "url": "https://www.leifengta.com/",
+      "supportsFields": [],
+      "readStatus": "读取失败：连接失败(HTTP 000)，未取得正文；未确认存在官方站点，故officialUrl置null"
+    },
+    {
+      "institution": "维基百科·雷峰塔",
+      "url": "https://zh.wikipedia.org/wiki/雷峰塔",
+      "supportsFields": [
+        "雷峰塔:description",
+        "雷峰塔:sourceUrl"
+      ],
+      "readStatus": "读取成功(REST summary)；载“原名皇妃塔……五代吴越王钱俶所建……西湖南岸净慈寺前雷峰之上……1924年坍塌，2002年在原址重建”，未给出街道门牌，故address置null"
+    },
+    {
+      "institution": "维基百科·浙江省博物馆",
+      "url": "https://zh.wikipedia.org/wiki/浙江省博物馆",
+      "supportsFields": [
+        "浙江省博物馆:description"
+      ],
+      "readStatus": "读取成功(REST summary)；载“始建于1929年11月……位于杭州西湖孤山南麓……国家一级博物馆”，未载门牌地址，故address与sourceUrl置null"
+    },
+    {
+      "id": "src-xian-a-level-2026",
+      "title": "西安市A级旅游景区信息表（截至2026-02-25）",
+      "institution": "西安市人民政府门户网站（来源：西安市文化旅游局）",
+      "url": "https://www.xa.gov.cn/ztzl/ztzl/lzledc/ywdc/1824366329290301442.html",
+      "fetchedAt": "2026-11-06",
+      "status": "ok",
+      "httpStatus": 200,
+      "supportsFields": [
+        "景区名称",
+        "A级等级",
+        "景区地址（部分仅到区县）"
+      ],
+      "usedFor": [
+        "西安城墙",
+        "大雁塔"
+      ],
+      "notes": [
+        "表内'西安大雁塔·大唐芙蓉园景区'为合并景区，登记地址'芙蓉西路99号'属整个大景区（大唐芙蓉园一侧），未套用为大雁塔地址，故大雁塔 address 记 null。",
+        "'西安城墙·碑林历史文化景区'仅登记到'碑林区'，无街道门牌，西安城墙 address 记 null，未自行补全。",
+        "该表不含开放时间与票价。"
+      ],
+      "failures": [],
+      "unverified": [
+        "未读取任何景区官方专站，officialUrl 全部留 null。"
+      ]
+    },
+    {
+      "id": "src-xian-museum-list-2026",
+      "title": "西安市博物馆基本信息表（2026-05-19）",
+      "institution": "西安市文化和旅游局 / 西安市文物局",
+      "url": "https://wlj.xa.gov.cn/wbdw/bwgjs/1.html",
+      "fetchedAt": "2026-11-06",
+      "status": "ok",
+      "httpStatus": 200,
+      "supportsFields": [
+        "博物馆名称",
+        "所属区县",
+        "详细地址",
+        "博物馆等级",
+        "是否免费开放",
+        "开放时间",
+        "联系电话"
+      ],
+      "usedFor": [
+        "秦始皇帝陵博物院",
+        "陕西历史博物馆"
+      ],
+      "notes": [
+        "秦始皇帝陵博物院：地址'陕西省西安市临潼区秦陵北路'，等级一级，非免费；开放时间分旺季3月1日—11月底 8:30—17:00、淡季12月1日—次年2月底 8:30—16:30（字段按任务约定未写入 spots.json 的 openingHours）。",
+        "陕西历史博物馆：地址'西安市小寨东路91号'，等级一级，免费开放；开放时间淡季11月15日—次年3月14日 9:00—17:30、旺季3月15日—11月14日 8:30—18:00，周一闭馆整修（法定节假日除外）。",
+        "西安城墙、大雁塔不属本表博物馆条目，未从本表取址。"
+      ],
+      "failures": [],
+      "unverified": [
+        "未读取景区官方专站与票务页，ticketInfo/openingHours/officialUrl 依约留 null。"
+      ]
+    },
+    {
+      "institution": "大理市人民政府（大理市A级景区基本信息名录）",
+      "url": "https://www.yndali.gov.cn/dlsrmzf/c106716/pc/content/1983786742782726144/content_1983786742782726144.html",
+      "actualRead": true,
+      "verifiedAt": "2026-11-06",
+      "supports": {
+        "大理古城": "景区名称、等级AAAA、地址“大理市大理镇”、开放时间“全年免费开放”、咨询电话0872-2670396",
+        "崇圣寺三塔": "景区名称“大理崇圣寺三塔文化旅游区”、等级AAAAA、地址“大理镇三文笔村”、开放时间07:30-18:30且18:30停止入园、咨询电话0872-2666158",
+        "大理州博物馆": "景区名称、等级AAAA、地址“大理市下关街道洱河南路8号”、开放时间09:00-17:00且16:30停止入园、周一闭馆法定节假日除外、咨询电话0872-2128614/2124851"
+      },
+      "unverifiedFields": [
+        "longitude/latitude：页面无坐标",
+        "崇圣寺三塔与大理州博物馆的ticketInfo：页面未列票价",
+        "大理古城openingHours：仅“全年免费开放”，无具体起止时刻"
+      ],
+      "failures": null,
+      "note": "本页为表格型名录，正文部分被截断，但四处所需行均已完整读到。"
+    },
+    {
+      "institution": "大理市人民政府（关于开展洱海生态廊道海西46km段及周边区域秩序综合集中整治的通告，2025-08-20发布）",
+      "url": "https://www.yndali.gov.cn/dlsrmzf/c106724/pc/content/1983764619263578112/content_1983764619263578112.html",
+      "actualRead": true,
+      "verifiedAt": "2026-11-06",
+      "supports": {
+        "洱海生态廊道（才村段）": "廊道存在及其范围“阳南溪至喜洲镇桃源46km”、才村入口为廊道入口之一（与阳南溪入口、龙龛入口并列）"
+      },
+      "unverifiedFields": [
+        "address：仅确认才村入口属海西46公里廊道，未给出才村段门牌或街道地址，故置null",
+        "openingHours/ticketInfo：通告未涉及",
+        "longitude/latitude：页面无坐标"
+      ],
+      "failures": [
+        "通告所载“集中整治时间2025年8月22日至9月30日”为阶段性整治，属历史信息，不可当作2026年实时限行或禁入规则；本条仅用于确认才村入口与廊道存在"
+      ],
+      "note": "通告中的整治内容（禁野炊露营垂钓、查机动车进入廊道等）未写入spots字段，避免误导为现行规则。"
+    },
+    {
+      "sourceId": "src-qd-01",
+      "institution": "青岛市人民政府·青岛政务网（扬帆青岛频道首页）",
+      "url": "http://www.qingdao.gov.cn/yfqd/?sign=c",
+      "status": "read_ok",
+      "accessedAt": "2026-11-06",
+      "supports": [
+        "五四广场：市南区东海西路、北依市级机关办公楼、南临浮山湾、占地约10公顷、因五四运动得名",
+        "崂山：中国海岸线第一高峰、海上第一名山、山区面积446平方公里",
+        "八大关：太平山南麓、太平角与汇泉角之间、20世纪30年代建成、占地66.6万平方米、八条以中国古关隘命名的道路",
+        "栈桥：青岛海滨风景区景点、1982年首批国家级风景名胜区、首批国家AAAA级景区"
+      ],
+      "notes": "频道首页栏目摘要，非独立详情页；页面尾部正文被截断，未取用截断处内容"
+    },
+    {
+      "sourceId": "src-qd-02",
+      "institution": "青岛政务网·扬帆青岛·我要去海边",
+      "url": "http://www.qingdao.gov.cn/yfqd/qdwl/cjfw/wyqhb/202009/t20200902_518755.shtml",
+      "status": "read_ok",
+      "accessedAt": "2026-11-06",
+      "supports": [
+        "栈桥位于市南区中山路南端",
+        "建于1892年，长200米、宽10米，初为码头",
+        "德占时期扩建至350米",
+        "1931年扩修至394.38米，南端增半圆形防波堤与回澜阁",
+        "栈桥及回澜阁为市级文物保护单位"
+      ],
+      "notes": "栈桥唯一直接读到的独立详情页"
+    },
+    {
+      "sourceId": "src-qd-03",
+      "institution": "青岛政务网·要闻动态·部门动态（市文化和旅游局）",
+      "url": "http://www.qingdao.gov.cn/ywdt/bmdt/202510/t20251023_10341033.shtml",
+      "status": "read_ok",
+      "publishedAt": "2025-10-23",
+      "accessedAt": "2026-11-06",
+      "supports": [
+        "官方推荐线路含 栈桥→小鱼山→八大关→青岛电视塔→五四广场→奥帆中心",
+        "官方推荐线路含 崂山风景区（海上第一名山）",
+        "票根经济商家联盟首批110家、优惠门店280家，崂山风景区等景区参与半价/特惠，但未公布票面价格"
+      ],
+      "notes": "仅用于景点存在性与游览组合交叉核对；未据此填写票价、开放时间"
+    },
+    {
+      "sourceId": "src-qd-fail-01",
+      "institution": "同上主机（qingdao.gov.cn）",
+      "urls": [
+        "https://www.qingdao.gov.cn/yfqd/?sign=c",
+        "https://www.qingdao.gov.cn/ywdt/bmdt/202510/t20251023_10341033.shtml",
+        "https://www.qingdao.gov.cn/yfqd/qdwl/cjfw/wyqhb/202009/t20200902_518755.shtml"
+      ],
+      "status": "read_failed",
+      "accessedAt": "2026-11-06",
+      "failure": "https 版本直连返回交叉域重定向：cross-origin redirect to http://www.qingdao.gov.cn is not followed automatically；改用 http 协议后三页均 HTTP 200 读取成功",
+      "fieldsAffected": [
+        "officialUrl 未核实（无经核实的景点官方专站）",
+        "longitude/latitude 未采集",
+        "openingHours/ticketInfo 未采集"
+      ]
+    },
+    {
+      "sourceId": "src-qd-lim-01",
+      "institution": "青岛政务网·扬帆青岛",
+      "urls": [
+        "http://www.qingdao.gov.cn/yfqd/qdwl/cjfw/wyqgy/202009/t20200903_520360.shtml",
+        "http://www.qingdao.gov.cn/yfqd/qdwl/cjfw/wyqtsjd/202009/t20200910_521991.shtml"
+      ],
+      "status": "not_read",
+      "accessedAt": "2026-11-06",
+      "failure": "受本次工具调用次数上限限制，五四广场、八大关两个独立详情页未单独打开；相关字段仅取自首页摘要与官方线路文本",
+      "fieldsAffected": [
+        "八大关 address 置 null：官方摘要仅述太平山南麓、太平角与汇泉角之间，未给门牌；未把片区内任何单栋建筑门牌套用于整个片区",
+        "五四广场 address 仅取首页原文“市南区东海西路”，未细化门牌"
+      ]
+    }
+  ]
+}
