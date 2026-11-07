@@ -1,13 +1,29 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 import { ApiError } from '@/api/client'
 import { useAuthStore } from '@/stores/auth'
 import UserAvatar from './UserAvatar.vue'
+import ThemeSwitcher from './ThemeSwitcher.vue'
 
 const auth = useAuthStore()
 const router = useRouter()
+const route = useRoute()
+const mobileMenuOpen = ref(false)
+const menuToggle = ref<HTMLButtonElement | null>(null)
+
+watch(() => route.fullPath, () => { mobileMenuOpen.value = false })
+
+function closeOnEscape(event: KeyboardEvent): void {
+  if (event.key === 'Escape' && mobileMenuOpen.value) {
+    mobileMenuOpen.value = false
+    menuToggle.value?.focus()
+  }
+}
+
+onMounted(() => window.addEventListener('keydown', closeOnEscape))
+onBeforeUnmount(() => window.removeEventListener('keydown', closeOnEscape))
 
 const loggingOut = ref(false)
 const logoutError = ref('')
@@ -33,7 +49,7 @@ async function handleLogout(): Promise<void> {
 
 <template>
   <header class="border-b border-pine/10 bg-cream/90 backdrop-blur-sm">
-    <div class="app-container flex flex-wrap items-center gap-4 py-4">
+    <div class="app-container flex flex-wrap items-center gap-2 py-3 sm:gap-4">
       <RouterLink
         to="/"
         class="group flex items-center gap-2.5 font-serif text-xl tracking-wide text-pine-deep"
@@ -52,16 +68,40 @@ async function handleLogout(): Promise<void> {
         <span>山水间</span>
       </RouterLink>
 
-      <span class="hidden text-xs tracking-[0.3em] text-ink-soft sm:inline">旅行手记</span>
+      <span class="hidden text-xs tracking-[0.3em] text-ink-soft lg:inline">旅行手记</span>
 
-      <nav class="ml-auto flex w-full flex-wrap items-center gap-2 sm:w-auto sm:gap-3" aria-label="主导航">
+      <div class="ml-auto flex items-center gap-2">
+        <ThemeSwitcher />
+        <button
+          ref="menuToggle"
+          type="button"
+          data-test="mobile-menu-toggle"
+          class="btn-ghost px-3 md:hidden"
+          :aria-expanded="mobileMenuOpen"
+          aria-controls="site-navigation"
+          @click="mobileMenuOpen = !mobileMenuOpen"
+        >
+          {{ mobileMenuOpen ? '收起' : '导航' }}
+        </button>
+      </div>
+
+      <nav
+        id="site-navigation"
+        :class="mobileMenuOpen ? 'grid' : 'hidden'"
+        class="w-full grid-cols-2 items-center gap-2 border-t border-pine/10 pt-3 md:flex md:flex-wrap md:gap-3"
+        aria-label="主导航"
+      >
         <RouterLink to="/guides" class="btn-ghost">攻略</RouterLink>
         <RouterLink to="/destinations" class="btn-ghost">目的地</RouterLink>
+        <RouterLink to="/itineraries/ai" class="btn-ghost">AI 行程</RouterLink>
         <RouterLink v-if="auth.user?.role === 'ADMIN'" to="/admin/users" class="btn-ghost">管理后台</RouterLink>
         <template v-if="auth.isAuthenticated && auth.user">
+          <RouterLink to="/me/itineraries" class="btn-ghost">我的行程</RouterLink>
+          <RouterLink to="/me/favorites" class="btn-ghost">我的收藏</RouterLink>
+          <RouterLink to="/guides/new" class="btn-ghost">写攻略</RouterLink>
           <RouterLink
             to="/me"
-            class="flex items-center gap-2 rounded-full py-1 pr-3 pl-1 transition-colors hover:bg-pine-soft/50"
+            class="flex min-h-11 min-w-0 items-center gap-2 rounded-full py-1 pr-3 pl-1 transition-colors hover:bg-pine-soft/50"
           >
             <UserAvatar :src="auth.user.avatarUrl" :name="auth.user.nickname" size="sm" />
             <span class="max-w-28 truncate text-sm font-medium text-ink">
@@ -82,7 +122,7 @@ async function handleLogout(): Promise<void> {
           <RouterLink to="/login" class="btn-ghost">登录</RouterLink>
           <RouterLink
             to="/register"
-            class="rounded-full bg-pine px-4 py-2 text-sm font-medium text-[#FDFBF6] transition-colors hover:bg-pine-deep"
+            class="btn-primary"
           >
             注册
           </RouterLink>

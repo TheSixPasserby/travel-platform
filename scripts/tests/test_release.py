@@ -60,6 +60,49 @@ class ReleaseTests(unittest.TestCase):
         for name in names:
             self.assertEqual((self.out / name).read_text(), 'synthetic public maintenance file')
 
+    def test_root_startup_entry_and_helper_are_delivered(self):
+        for name in ['start.sh', 'scripts/start.py']:
+            source = self.root / name
+            source.parent.mkdir(parents=True, exist_ok=True)
+            source.write_text('synthetic startup file')
+        self.m.assemble(self.root, self.out)
+        for name in ['start.sh', 'scripts/start.py']:
+            self.assertEqual((self.out / name).read_text(), 'synthetic startup file')
+
+    def test_mobile_source_and_compiled_targets_are_delivered_without_private_files(self):
+        names = ['mobile/package.json', 'mobile/package-lock.json', 'mobile/index.html',
+                 'mobile/vite.config.ts', 'mobile/tsconfig.json', 'mobile/README.md',
+                 'mobile/.env.example', 'mobile/.gitignore', 'mobile/src/main.ts',
+                 'mobile/tests/checks.ts', 'mobile/dist/build/mp-weixin/app.json',
+                 'mobile/dist/build/app/manifest.json', 'mobile/dist/build/h5/index.html']
+        for name in names:
+            source = self.root / name
+            source.parent.mkdir(parents=True, exist_ok=True)
+            source.write_text('synthetic mobile public source')
+        for name in ['mobile/.env.local', 'mobile/.npm-cache/private', 'mobile/node_modules/private',
+                     'mobile/unpackage/private', 'mobile/src/.env', 'mobile/src/application-local.yml']:
+            source = self.root / name
+            source.parent.mkdir(parents=True, exist_ok=True)
+            source.write_text('synthetic-sensitive-value')
+        hashes = self.m.assemble(self.root, self.out)
+        for name in names:
+            self.assertIn(name, hashes)
+        for name in hashes:
+            self.assertNotIn(b'synthetic-sensitive-value', (self.out / name).read_bytes())
+        self.assertNotIn('mobile/.env.local', hashes)
+
+    def test_mobile_build_failure_stops_delivery(self):
+        source = self.root / 'mobile/package.json'
+        source.parent.mkdir(parents=True)
+        source.write_text('{}')
+        calls = []
+        def runner(argv, **kwargs):
+            calls.append(argv)
+            return SimpleNamespace(returncode=4 if 'build:mp-weixin' in argv else 0)
+        self.assertEqual(self.m.run([str(self.out)], root=self.root, runner=runner), 4)
+        self.assertIn('build:mp-weixin', calls[-1])
+        self.assertFalse(self.out.exists())
+
     def test_source_symbolic_link_refused_before_output_is_created(self):
         private=Path(self.tmp.name)/'private.txt';private.write_text('synthetic secret')
         (self.root/'docs/link.md').symlink_to(private)

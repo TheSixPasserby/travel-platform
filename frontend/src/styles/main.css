@@ -8,7 +8,14 @@
   --color-pine-soft: #dde6d6;
   --color-ink: #25352c;
   --color-ink-soft: #55645b;
-  --color-ember: #c87545;
+  --color-ember: #a65028;
+  --color-surface: #fffdf8;
+  --color-action: #145c45;
+  --color-action-hover: #0d3f2f;
+  --color-on-action: #fdfbf6;
+  --color-scrim: #08140f;
+  --color-code: #0d3f2f;
+  --color-on-code: #f2f6ef;
 
   --font-sans: 'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui,
     sans-serif;
@@ -17,9 +24,44 @@
   --radius-card: 1.25rem;
 }
 
+:root {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-cream: #141e1a;
+  --color-cream-deep: #223027;
+  --color-surface: #1c2922;
+  --color-pine: #9bcdb2;
+  --color-pine-deep: #c0e1cc;
+  --color-pine-soft: #30483a;
+  --color-ink: #e4e9e1;
+  --color-ink-soft: #b0beb1;
+  --color-ember: #e5a47c;
+  --color-action: #9bcdb2;
+  --color-action-hover: #b6ddc6;
+  --color-on-action: #11251a;
+  --color-code: #101a15;
+}
+
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
+    scroll-padding-block: 1.5rem;
+    background-color: var(--color-cream);
+  }
+
+  :where(button, a, input, textarea, select) {
+    touch-action: manipulation;
+  }
+
+  :where(input, textarea, select) {
+    scroll-margin-block: 5rem;
+  }
+
+  :where(h1, h2, h3, p, dd) {
+    overflow-wrap: anywhere;
   }
 
   body {
@@ -38,7 +80,7 @@
   }
 
   ::selection {
-    background-color: color-mix(in srgb, var(--color-pine-soft) 80%, white);
+    background-color: var(--color-pine-soft);
     color: var(--color-pine-deep);
   }
 }
@@ -46,6 +88,7 @@
 @layer components {
   .app-container {
     width: 100%;
+    min-width: 0;
     max-width: 76rem;
     margin-inline: auto;
     padding-inline: 1.25rem;
@@ -58,8 +101,9 @@
   }
 
   .surface-card {
-    background-color: #fffdf8;
-    border: 1px solid color-mix(in srgb, var(--color-pine) 12%, white);
+    min-width: 0;
+    background-color: var(--color-surface);
+    border: 1px solid color-mix(in srgb, var(--color-pine) 18%, var(--color-surface));
     border-radius: var(--radius-card);
     box-shadow: 0 18px 40px -32px color-mix(in srgb, var(--color-pine-deep) 45%, transparent);
   }
@@ -75,9 +119,11 @@
 
   .field-input {
     width: 100%;
+    min-width: 0;
+    max-width: 100%;
     border-radius: 0.875rem;
-    border: 1px solid color-mix(in srgb, var(--color-pine) 22%, white);
-    background-color: #fffdf8;
+    border: 1px solid color-mix(in srgb, var(--color-pine) 40%, var(--color-surface));
+    background-color: var(--color-surface);
     padding: 0.625rem 0.875rem;
     font-size: 0.9375rem;
     color: var(--color-ink);
@@ -88,11 +134,11 @@
   }
 
   .field-input::placeholder {
-    color: color-mix(in srgb, var(--color-ink-soft) 55%, white);
+    color: var(--color-ink-soft);
   }
 
   .field-input:hover {
-    border-color: color-mix(in srgb, var(--color-pine) 38%, white);
+    border-color: var(--color-pine);
   }
 
   .field-input:focus {
@@ -118,11 +164,12 @@
     justify-content: center;
     gap: 0.5rem;
     border-radius: 999px;
-    background-color: var(--color-pine);
+    min-height: 2.75rem;
+    background-color: var(--color-action);
     padding: 0.625rem 1.5rem;
     font-size: 0.9375rem;
     font-weight: 600;
-    color: #fdfbf6;
+    color: var(--color-on-action);
     transition:
       background-color 160ms ease,
       transform 160ms ease,
@@ -130,7 +177,7 @@
   }
 
   .btn-primary:hover:not(:disabled) {
-    background-color: var(--color-pine-deep);
+    background-color: var(--color-action-hover);
     box-shadow: 0 12px 24px -18px var(--color-pine-deep);
   }
 
@@ -149,7 +196,8 @@
     justify-content: center;
     gap: 0.4rem;
     border-radius: 999px;
-    border: 1px solid color-mix(in srgb, var(--color-pine) 24%, white);
+    min-height: 2.75rem;
+    border: 1px solid color-mix(in srgb, var(--color-pine) 30%, var(--color-surface));
     padding: 0.5rem 1.125rem;
     font-size: 0.875rem;
     font-weight: 500;
@@ -162,8 +210,71 @@
 
   .btn-ghost:hover:not(:disabled) {
     border-color: var(--color-pine);
-    background-color: color-mix(in srgb, var(--color-pine-soft) 45%, white);
+    background-color: var(--color-pine-soft);
   }
+
+  .btn-ghost:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .theme-select {
+    min-height: 2.75rem;
+    max-width: 8.5rem;
+  }
+
+  [role='dialog'],
+  [role='alertdialog'] {
+    max-height: calc(100dvh - 2rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scroll-padding-block: 1rem;
+  }
+
+  @media (max-width: 767px) {
+    .field-input {
+      font-size: 1rem;
+      min-height: 2.75rem;
+    }
+
+    .theme-select {
+      font-size: 1rem;
+    }
+  }
+}
+
+.page-enter-active {
+  transition: opacity 140ms ease, transform 140ms ease;
+}
+
+.page-leave-active {
+  transition: opacity 90ms ease;
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+.page-leave-to {
+  opacity: 0;
+}
+
+@keyframes content-appear {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :where(.grid, .space-y-4, .space-y-5) > .surface-card,
+  [role='alert'],
+  [role='status'],
+  [role='alertdialog'] {
+    animation: content-appear 180ms ease both;
+  }
+
+  .grid > .surface-card:nth-child(2) { animation-delay: 30ms; }
+  .grid > .surface-card:nth-child(3) { animation-delay: 60ms; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -174,5 +285,11 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .surface-card,
+  .btn-primary,
+  .page-enter-from {
+    transform: none !important;
   }
 }

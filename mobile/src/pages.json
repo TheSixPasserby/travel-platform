@@ -1,0 +1,91 @@
+{
+  "easycom": {
+    "autoscan": true
+  },
+  "pages": [
+    {
+      "path": "pages/guides/index",
+      "style": {
+        "navigationBarTitleText": "攻略",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/destinations/index",
+      "style": {
+        "navigationBarTitleText": "目的地",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/me/index",
+      "style": {
+        "navigationBarTitleText": "我的"
+      }
+    },
+    {
+      "path": "pages/login/index",
+      "style": {
+        "navigationBarTitleText": "登录"
+      }
+    },
+    {
+      "path": "pages/guides/detail",
+      "style": {
+        "navigationBarTitleText": "攻略详情"
+      }
+    },
+    {
+      "path": "pages/destinations/detail",
+      "style": {
+        "navigationBarTitleText": "目的地详情"
+      }
+    },
+    {
+      "path": "pages/favorites/index",
+      "style": {
+        "navigationBarTitleText": "我的收藏",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/itineraries/index",
+      "style": {
+        "navigationBarTitleText": "我的行程",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/itineraries/detail",
+      "style": {
+        "navigationBarTitleText": "行程详情"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "山水间旅行手记",
+    "navigationBarBackgroundColor": "#fffaf3",
+    "backgroundColor": "#f7f4ee"
+  },
+  "tabBar": {
+    "color": "#7a8590",
+    "selectedColor": "#2f6f5e",
+    "backgroundColor": "#fffdf8",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/guides/index",
+        "text": "攻略"
+      },
+      {
+        "pagePath": "pages/destinations/index",
+        "text": "目的地"
+      },
+      {
+        "pagePath": "pages/me/index",
+        "text": "我的"
+      }
+    ]
+  }
+}

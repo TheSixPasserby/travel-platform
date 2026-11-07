@@ -1,0 +1,1312 @@
+{
+  "date": "2026-11-07",
+  "timezone": "Asia/Shanghai",
+  "deadline": "2026-11-10T23:59:00+08:00",
+  "phase": "M9 code and local compile/browser verification; native acceptance pending",
+  "branch": "codex/m9-delivery",
+  "m8Base": "56052b58ff64644d2a5370f2dc85981b52c46364",
+  "modelVerification": {
+    "codexConfig": "gpt-6.1-sol/ultra",
+    "dshConfigProbeAndJobs": "buddy/deepseek-v4.1-flash/max"
+  },
+  "tests": {
+    "frontend": {
+      "files": 33,
+      "passed": 329
+    },
+    "backendPackage": {
+      "passed": 236,
+      "failed": 0,
+      "skipped": 0,
+      "java": "21.0.12.1"
+    },
+    "python": {
+      "passed": 67
+    },
+    "mobileSafety": {
+      "passed": 14
+    },
+    "webTypeAndBuild": "passed",
+    "mobileTypeCheck": "passed",
+    "mpWeixinCompile": "passed",
+    "appResourceCompile": "passed",
+    "h5Compile": "passed",
+    "actionlint": "passed"
+  },
+  "browser": {
+    "engine": "Chromium",
+    "webMatrixCombinations": 210,
+    "matrices": {
+      "public": {
+        "checked": 80,
+        "checks": [
+          {
+            "theme": "light",
+            "width": 360,
+            "route": "/"
+          },
+          {
+            "theme": "light",
+            "width": 360,
+            "route": "/guides"
+          },
+          {
+            "theme": "light",
+            "width": 360,
+            "route": "/guides/4"
+          },
+          {
+            "theme": "light",
+            "width": 360,
+            "route": "/destinations"
+          },
+          {
+            "theme": "light",
+            "width": 360,
+            "route": "/destinations/1"
+          },
+          {
+            "theme": "light",
+            "width": 360,
+            "route": "/destinations/26"
+          },
+          {
+            "theme": "light",
+            "width": 360,
+            "route": "/login"
+          },
+          {
+            "theme": "light",
+            "width": 360,
+            "route": "/register"
+          },
+          {
+            "theme": "light",
+            "width": 390,
+            "route": "/"
+          },
+          {
+            "theme": "light",
+            "width": 390,
+            "route": "/guides"
+          },
+          {
+            "theme": "light",
+            "width": 390,
+            "route": "/guides/4"
+          },
+          {
+            "theme": "light",
+            "width": 390,
+            "route": "/destinations"
+          },
+          {
+            "theme": "light",
+            "width": 390,
+            "route": "/destinations/1"
+          },
+          {
+            "theme": "light",
+            "width": 390,
+            "route": "/destinations/26"
+          },
+          {
+            "theme": "light",
+            "width": 390,
+            "route": "/login"
+          },
+          {
+            "theme": "light",
+            "width": 390,
+            "route": "/register"
+          },
+          {
+            "theme": "light",
+            "width": 430,
+            "route": "/"
+          },
+          {
+            "theme": "light",
+            "width": 430,
+            "route": "/guides"
+          },
+          {
+            "theme": "light",
+            "width": 430,
+            "route": "/guides/4"
+          },
+          {
+            "theme": "light",
+            "width": 430,
+            "route": "/destinations"
+          },
+          {
+            "theme": "light",
+            "width": 430,
+            "route": "/destinations/1"
+          },
+          {
+            "theme": "light",
+            "width": 430,
+            "route": "/destinations/26"
+          },
+          {
+            "theme": "light",
+            "width": 430,
+            "route": "/login"
+          },
+          {
+            "theme": "light",
+            "width": 430,
+            "route": "/register"
+          },
+          {
+            "theme": "light",
+            "width": 768,
+            "route": "/"
+          },
+          {
+            "theme": "light",
+            "width": 768,
+            "route": "/guides"
+          },
+          {
+            "theme": "light",
+            "width": 768,
+            "route": "/guides/4"
+          },
+          {
+            "theme": "light",
+            "width": 768,
+            "route": "/destinations"
+          },
+          {
+            "theme": "light",
+            "width": 768,
+            "route": "/destinations/1"
+          },
+          {
+            "theme": "light",
+            "width": 768,
+            "route": "/destinations/26"
+          },
+          {
+            "theme": "light",
+            "width": 768,
+            "route": "/login"
+          },
+          {
+            "theme": "light",
+            "width": 768,
+            "route": "/register"
+          },
+          {
+            "theme": "light",
+            "width": 1440,
+            "route": "/"
+          },
+          {
+            "theme": "light",
+            "width": 1440,
+            "route": "/guides"
+          },
+          {
+            "theme": "light",
+            "width": 1440,
+            "route": "/guides/4"
+          },
+          {
+            "theme": "light",
+            "width": 1440,
+            "route": "/destinations"
+          },
+          {
+            "theme": "light",
+            "width": 1440,
+            "route": "/destinations/1"
+          },
+          {
+            "theme": "light",
+            "width": 1440,
+            "route": "/destinations/26"
+          },
+          {
+            "theme": "light",
+            "width": 1440,
+            "route": "/login"
+          },
+          {
+            "theme": "light",
+            "width": 1440,
+            "route": "/register"
+          },
+          {
+            "theme": "dark",
+            "width": 360,
+            "route": "/"
+          },
+          {
+            "theme": "dark",
+            "width": 360,
+            "route": "/guides"
+          },
+          {
+            "theme": "dark",
+            "width": 360,
+            "route": "/guides/4"
+          },
+          {
+            "theme": "dark",
+            "width": 360,
+            "route": "/destinations"
+          },
+          {
+            "theme": "dark",
+            "width": 360,
+            "route": "/destinations/1"
+          },
+          {
+            "theme": "dark",
+            "width": 360,
+            "route": "/destinations/26"
+          },
+          {
+            "theme": "dark",
+            "width": 360,
+            "route": "/login"
+          },
+          {
+            "theme": "dark",
+            "width": 360,
+            "route": "/register"
+          },
+          {
+            "theme": "dark",
+            "width": 390,
+            "route": "/"
+          },
+          {
+            "theme": "dark",
+            "width": 390,
+            "route": "/guides"
+          },
+          {
+            "theme": "dark",
+            "width": 390,
+            "route": "/guides/4"
+          },
+          {
+            "theme": "dark",
+            "width": 390,
+            "route": "/destinations"
+          },
+          {
+            "theme": "dark",
+            "width": 390,
+            "route": "/destinations/1"
+          },
+          {
+            "theme": "dark",
+            "width": 390,
+            "route": "/destinations/26"
+          },
+          {
+            "theme": "dark",
+            "width": 390,
+            "route": "/login"
+          },
+          {
+            "theme": "dark",
+            "width": 390,
+            "route": "/register"
+          },
+          {
+            "theme": "dark",
+            "width": 430,
+            "route": "/"
+          },
+          {
+            "theme": "dark",
+            "width": 430,
+            "route": "/guides"
+          },
+          {
+            "theme": "dark",
+            "width": 430,
+            "route": "/guides/4"
+          },
+          {
+            "theme": "dark",
+            "width": 430,
+            "route": "/destinations"
+          },
+          {
+            "theme": "dark",
+            "width": 430,
+            "route": "/destinations/1"
+          },
+          {
+            "theme": "dark",
+            "width": 430,
+            "route": "/destinations/26"
+          },
+          {
+            "theme": "dark",
+            "width": 430,
+            "route": "/login"
+          },
+          {
+            "theme": "dark",
+            "width": 430,
+            "route": "/register"
+          },
+          {
+            "theme": "dark",
+            "width": 768,
+            "route": "/"
+          },
+          {
+            "theme": "dark",
+            "width": 768,
+            "route": "/guides"
+          },
+          {
+            "theme": "dark",
+            "width": 768,
+            "route": "/guides/4"
+          },
+          {
+            "theme": "dark",
+            "width": 768,
+            "route": "/destinations"
+          },
+          {
+            "theme": "dark",
+            "width": 768,
+            "route": "/destinations/1"
+          },
+          {
+            "theme": "dark",
+            "width": 768,
+            "route": "/destinations/26"
+          },
+          {
+            "theme": "dark",
+            "width": 768,
+            "route": "/login"
+          },
+          {
+            "theme": "dark",
+            "width": 768,
+            "route": "/register"
+          },
+          {
+            "theme": "dark",
+            "width": 1440,
+            "route": "/"
+          },
+          {
+            "theme": "dark",
+            "width": 1440,
+            "route": "/guides"
+          },
+          {
+            "theme": "dark",
+            "width": 1440,
+            "route": "/guides/4"
+          },
+          {
+            "theme": "dark",
+            "width": 1440,
+            "route": "/destinations"
+          },
+          {
+            "theme": "dark",
+            "width": 1440,
+            "route": "/destinations/1"
+          },
+          {
+            "theme": "dark",
+            "width": 1440,
+            "route": "/destinations/26"
+          },
+          {
+            "theme": "dark",
+            "width": 1440,
+            "route": "/login"
+          },
+          {
+            "theme": "dark",
+            "width": 1440,
+            "route": "/register"
+          }
+        ],
+        "problems": [],
+        "motion": "1e-05s",
+        "themePersistence": true,
+        "systemChanges": true,
+        "mobileNavigation": true
+      },
+      "author": {
+        "role": "author",
+        "checked": 80,
+        "checks": [
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 360,
+            "route": "/me"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 360,
+            "route": "/me/guides"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 360,
+            "route": "/me/favorites"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 360,
+            "route": "/me/itineraries"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 360,
+            "route": "/itineraries/2"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 360,
+            "route": "/guides/6/edit"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 360,
+            "route": "/guides/new"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 360,
+            "route": "/itineraries/ai"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 390,
+            "route": "/me"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 390,
+            "route": "/me/guides"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 390,
+            "route": "/me/favorites"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 390,
+            "route": "/me/itineraries"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 390,
+            "route": "/itineraries/2"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 390,
+            "route": "/guides/6/edit"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 390,
+            "route": "/guides/new"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 390,
+            "route": "/itineraries/ai"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 430,
+            "route": "/me"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 430,
+            "route": "/me/guides"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 430,
+            "route": "/me/favorites"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 430,
+            "route": "/me/itineraries"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 430,
+            "route": "/itineraries/2"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 430,
+            "route": "/guides/6/edit"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 430,
+            "route": "/guides/new"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 430,
+            "route": "/itineraries/ai"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 768,
+            "route": "/me"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 768,
+            "route": "/me/guides"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 768,
+            "route": "/me/favorites"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 768,
+            "route": "/me/itineraries"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 768,
+            "route": "/itineraries/2"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 768,
+            "route": "/guides/6/edit"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 768,
+            "route": "/guides/new"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 768,
+            "route": "/itineraries/ai"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 1440,
+            "route": "/me"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 1440,
+            "route": "/me/guides"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 1440,
+            "route": "/me/favorites"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 1440,
+            "route": "/me/itineraries"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 1440,
+            "route": "/itineraries/2"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 1440,
+            "route": "/guides/6/edit"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 1440,
+            "route": "/guides/new"
+          },
+          {
+            "role": "author",
+            "theme": "light",
+            "width": 1440,
+            "route": "/itineraries/ai"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 360,
+            "route": "/me"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 360,
+            "route": "/me/guides"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 360,
+            "route": "/me/favorites"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 360,
+            "route": "/me/itineraries"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 360,
+            "route": "/itineraries/2"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 360,
+            "route": "/guides/6/edit"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 360,
+            "route": "/guides/new"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 360,
+            "route": "/itineraries/ai"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 390,
+            "route": "/me"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 390,
+            "route": "/me/guides"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 390,
+            "route": "/me/favorites"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 390,
+            "route": "/me/itineraries"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 390,
+            "route": "/itineraries/2"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 390,
+            "route": "/guides/6/edit"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 390,
+            "route": "/guides/new"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 390,
+            "route": "/itineraries/ai"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 430,
+            "route": "/me"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 430,
+            "route": "/me/guides"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 430,
+            "route": "/me/favorites"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 430,
+            "route": "/me/itineraries"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 430,
+            "route": "/itineraries/2"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 430,
+            "route": "/guides/6/edit"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 430,
+            "route": "/guides/new"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 430,
+            "route": "/itineraries/ai"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 768,
+            "route": "/me"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 768,
+            "route": "/me/guides"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 768,
+            "route": "/me/favorites"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 768,
+            "route": "/me/itineraries"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 768,
+            "route": "/itineraries/2"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 768,
+            "route": "/guides/6/edit"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 768,
+            "route": "/guides/new"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 768,
+            "route": "/itineraries/ai"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 1440,
+            "route": "/me"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 1440,
+            "route": "/me/guides"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 1440,
+            "route": "/me/favorites"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 1440,
+            "route": "/me/itineraries"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 1440,
+            "route": "/itineraries/2"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 1440,
+            "route": "/guides/6/edit"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 1440,
+            "route": "/guides/new"
+          },
+          {
+            "role": "author",
+            "theme": "dark",
+            "width": 1440,
+            "route": "/itineraries/ai"
+          }
+        ],
+        "problems": []
+      },
+      "admin": {
+        "role": "admin",
+        "checked": 50,
+        "checks": [
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 360,
+            "route": "/admin"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 360,
+            "route": "/admin/users"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 360,
+            "route": "/admin/guides"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 360,
+            "route": "/admin/comments"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 360,
+            "route": "/admin/destinations"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 390,
+            "route": "/admin"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 390,
+            "route": "/admin/users"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 390,
+            "route": "/admin/guides"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 390,
+            "route": "/admin/comments"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 390,
+            "route": "/admin/destinations"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 430,
+            "route": "/admin"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 430,
+            "route": "/admin/users"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 430,
+            "route": "/admin/guides"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 430,
+            "route": "/admin/comments"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 430,
+            "route": "/admin/destinations"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 768,
+            "route": "/admin"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 768,
+            "route": "/admin/users"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 768,
+            "route": "/admin/guides"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 768,
+            "route": "/admin/comments"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 768,
+            "route": "/admin/destinations"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 1440,
+            "route": "/admin"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 1440,
+            "route": "/admin/users"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 1440,
+            "route": "/admin/guides"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 1440,
+            "route": "/admin/comments"
+          },
+          {
+            "role": "admin",
+            "theme": "light",
+            "width": 1440,
+            "route": "/admin/destinations"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 360,
+            "route": "/admin"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 360,
+            "route": "/admin/users"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 360,
+            "route": "/admin/guides"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 360,
+            "route": "/admin/comments"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 360,
+            "route": "/admin/destinations"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 390,
+            "route": "/admin"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 390,
+            "route": "/admin/users"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 390,
+            "route": "/admin/guides"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 390,
+            "route": "/admin/comments"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 390,
+            "route": "/admin/destinations"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 430,
+            "route": "/admin"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 430,
+            "route": "/admin/users"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 430,
+            "route": "/admin/guides"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 430,
+            "route": "/admin/comments"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 430,
+            "route": "/admin/destinations"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 768,
+            "route": "/admin"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 768,
+            "route": "/admin/users"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 768,
+            "route": "/admin/guides"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 768,
+            "route": "/admin/comments"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 768,
+            "route": "/admin/destinations"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 1440,
+            "route": "/admin"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 1440,
+            "route": "/admin/users"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 1440,
+            "route": "/admin/guides"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 1440,
+            "route": "/admin/comments"
+          },
+          {
+            "role": "admin",
+            "theme": "dark",
+            "width": 1440,
+            "route": "/admin/destinations"
+          }
+        ],
+        "problems": []
+      },
+      "mobile": {
+        "checks": [
+          "real public guide list and detail, anonymous favorite login entry",
+          "six actual cities, four child scenic spots and scenic detail",
+          "real session restored, private itinerary and daily items read",
+          "real authenticated favorite state read, no interaction mutation"
+        ],
+        "requests": [
+          "/guides?page=1&size=10",
+          "/guides/4",
+          "/destinations?page=1&size=10&destinationType=CITY",
+          "/destinations/1",
+          "/destinations?parentId=1&destinationType=SCENIC_SPOT&page=1&size=10",
+          "/destinations/26",
+          "/auth/me",
+          "/itineraries?page=1&size=10",
+          "/itineraries/2",
+          "/guides/4/interaction"
+        ],
+        "widths": [
+          360,
+          390,
+          430,
+          768
+        ],
+        "overflows": []
+      }
+    },
+    "actualApi": true,
+    "mobileFavoriteMutationInDevelopment": "not executed",
+    "physicalKeyboardAndSafari": "not executed"
+  },
+  "dataProtection": {
+    "originalTables": 14,
+    "originalRows": 132,
+    "allOriginalRowsExactMatch": true,
+    "uploadFiles": 44,
+    "allUploadsExactMatch": true,
+    "additionalComment": {
+      "id": 5,
+      "createdAt": "2026-11-07T04:18:00.802+08:00",
+      "origin": "unverified",
+      "retained": true
+    },
+    "currentRows": 133
+  },
+  "native": {
+    "appId": "not supplied",
+    "wechatDevtoolsRun": "pending toolchain",
+    "androidDevice": "user has device; run deferred until code stage ends",
+    "apk": "pending native build/signing",
+    "ios": "pending Xcode/signing"
+  },
+  "delivery": {
+    "sourceAndOutputs": ".local/m9/delivery-20261107",
+    "privateData": "excluded; empty uploads directory",
+    "publicScreenshots": [
+      "docs/m9/screenshots/web-dark-390.png",
+      "docs/m9/screenshots/uni-h5-guide-390.png"
+    ]
+  },
+  "limitations": [
+    "native device/tool execution pending",
+    "public HTTPS API/domain configuration pending",
+    "remote CI not executed",
+    "complex mobile Markdown uses safe text/native image fallback",
+    "concurrent new comment5 retained; origin unverified"
+  ]
+}

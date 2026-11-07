@@ -130,8 +130,8 @@ onBeforeUnmount(() => {
 
 .safe-markdown :deep(blockquote) {
   margin-block: 1.1em;
-  border-inline-start: 3px solid color-mix(in srgb, var(--color-pine) 45%, white);
-  background-color: color-mix(in srgb, var(--color-pine-soft) 32%, white);
+  border-inline-start: 3px solid var(--color-pine);
+  background-color: var(--color-pine-soft);
   border-radius: 0 0.75rem 0.75rem 0;
   padding: 0.75rem 1rem;
   color: var(--color-ink-soft);
@@ -148,7 +148,7 @@ onBeforeUnmount(() => {
 .safe-markdown :deep(hr) {
   margin-block: 1.75em;
   border: 0;
-  border-top: 1px solid color-mix(in srgb, var(--color-pine) 18%, white);
+  border-top: 1px solid color-mix(in srgb, var(--color-pine) 25%, var(--color-surface));
 }
 
 .safe-markdown :deep(code) {
@@ -165,7 +165,7 @@ onBeforeUnmount(() => {
   max-width: 100%;
   overflow-x: auto;
   border-radius: 0.9rem;
-  background-color: var(--color-pine-deep);
+  background-color: var(--color-code);
   padding: 0.95rem 1.1rem;
   -webkit-overflow-scrolling: touch;
 }
@@ -174,7 +174,7 @@ onBeforeUnmount(() => {
   display: block;
   background-color: transparent;
   padding: 0;
-  color: #f2f6ef;
+  color: var(--color-on-code);
   font-size: 0.85rem;
   line-height: 1.7;
   white-space: pre;
@@ -197,7 +197,7 @@ onBeforeUnmount(() => {
 
 .safe-markdown :deep(th),
 .safe-markdown :deep(td) {
-  border: 1px solid color-mix(in srgb, var(--color-pine) 16%, white);
+  border: 1px solid color-mix(in srgb, var(--color-pine) 25%, var(--color-surface));
   padding: 0.5rem 0.75rem;
   text-align: start;
   white-space: nowrap;
@@ -235,9 +235,9 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 0.35rem;
   margin-block: 0.5em;
-  border: 1px dashed color-mix(in srgb, var(--color-pine) 30%, white);
+  border: 1px dashed color-mix(in srgb, var(--color-pine) 40%, var(--color-surface));
   border-radius: 999px;
-  background-color: color-mix(in srgb, var(--color-cream-deep) 70%, white);
+  background-color: var(--color-cream-deep);
   padding: 0.3rem 0.85rem;
   color: var(--color-ink-soft);
   font-size: 0.875rem;

@@ -47,7 +47,7 @@ function photoDate(value: string): string {
         >
           图片暂时无法显示
         </span>
-        <div class="space-y-2 p-4 text-xs text-ink-soft">
+        <div class="space-y-2 p-4 text-xs text-ink-soft [overflow-wrap:anywhere]">
           <p class="text-sm text-pine-deep">{{ image.altText }}</p>
           <p>作者：{{ image.author }}</p>
           <p>

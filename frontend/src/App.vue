@@ -16,17 +16,21 @@ onMounted(() => {
 <template>
   <a
     href="#main"
-    class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-full focus:bg-pine focus:px-4 focus:py-2 focus:text-sm focus:text-white"
+    class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-full focus:bg-action focus:px-4 focus:py-2 focus:text-sm focus:text-on-action"
   >
     跳到主要内容
   </a>
 
-  <div class="flex min-h-screen flex-col bg-cream">
+  <div class="flex min-h-dvh flex-col bg-cream">
     <SiteHeader />
 
-    <main id="main" class="flex-1">
-      <RouterView v-slot="{ Component }">
-        <component :is="Component" />
+    <main id="main" class="min-w-0 flex-1">
+      <RouterView v-slot="{ Component, route }">
+        <Transition name="page" mode="out-in">
+          <div :key="route.path" class="min-w-0">
+            <component :is="Component" />
+          </div>
+        </Transition>
       </RouterView>
     </main>
 

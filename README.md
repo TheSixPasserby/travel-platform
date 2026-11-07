@@ -2,6 +2,8 @@
 
 > 可运行的旅游攻略分享与私人行程平台，包含源码、设计与验收证据、数据库初始化、运行和毕业演示材料。采用Codex主导、DSH执行的分阶段规划、实现和审查流程。
 
+M9 正在现有 M8 上增量交付三态主题、移动 Web、轻量动效及 uni-app 移动源码，截止 2026-11-10 23:59（Asia/Shanghai）。已实现、真实测试与跨端工具链阻塞持续记录在 [M9 交付状态](docs/M9-DELIVERY-STATUS.md)。
+
 代码仓库：[TheSixPasserby/travel-platform](https://github.com/TheSixPasserby/travel-platform)（私有，主分支`main`）。现有阶段基线按用户授权提交；仍有待补充核对的功能，阶段测试通过不等同最终全功能验收。
 
 ## 项目目标
@@ -10,6 +12,12 @@
 M8交付见[最终报告](docs/33-m8-final-report.md)、[验收证据](docs/verification/2026-11-06-m8-final.json)和[AI预设配置](docs/m8/ai-provider-presets.md)。需求基线见[正式规范](docs/m8/00-implementation-spec.md)、[项目审计](docs/28-m8-phase0-audit.md)、[技术方案](docs/superpowers/specs/2026-11-06-m8-upgrade-design.md)与[实施任务](docs/superpowers/plans/2026-11-06-m8-upgrade.md)。
 
 ## 运行与交付
+
+根目录提供 `./start.sh`，默认启动后端与 Web，均监听 `0.0.0.0`。`./start.sh --mobile` 同时以全接口监听启动 uni-app H5，`./start.sh --help` 查看用法。先准备运行中的 MySQL、根 `.env`、Java21 和已安装的 Node 依赖（`npm --prefix frontend ci`，移动端另执行 `npm --prefix mobile ci`）。
+
+本机入口为 Web `http://127.0.0.1:5173`、移动 H5 `http://127.0.0.1:5174`，局域网设备使用 `http://电脑局域网IP:5173` 或 `:5174`，启动时会打印实际地址。启动器将当前本机 IPv4 的两个页面来源追加到服务端精确 CORS 白名单，保留已有来源配置。H5 开发服务器使用严格文件访问边界。
+
+启动器复用可识别且局域网可达的已有服务，日志位于忽略的 `.local/run/时间-PID/`。旧实例若仅监听本机，在原终端按 Ctrl+C 后重新启动以加载新监听地址。按 Ctrl+C 清理本次启动的进程组，已有实例继续由原启动方式管理。后端端口通过 `SERVER_PORT` 配置，启动器为 Web/H5 设置对应的回环代理地址。
 
 已配置本机访问 `http://127.0.0.1:5173`。新机器先按[部署与运维](docs/22-deployment-and-operations.md)准备专用MySQL8.x、独立测试库及根`.env`，然后在项目根运行：
 

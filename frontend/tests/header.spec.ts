@@ -36,12 +36,13 @@ function buildRouter(): Router {
       { path: '/', name: 'home', component: { template: '<div>首页</div>' } },
       { path: '/login', name: 'login', component: { template: '<div>登录</div>' } },
       { path: '/register', name: 'register', component: { template: '<div>注册</div>' } },
+      ...['/guides', '/destinations', '/itineraries/ai', '/me/itineraries', '/me/favorites', '/guides/new', '/admin/users'].map(path => ({ path, component: { template: '<div>页面</div>' } })),
       { path: '/me', name: 'me', component: { template: '<div>资料</div>' } }
     ]
   })
 }
 
-async function mountHeader(authenticated: boolean) {
+async function mountHeader(authenticated: boolean, attachTo?: HTMLElement) {
   const pinia = createPinia()
   setActivePinia(pinia)
   const store = useAuthStore()
@@ -54,7 +55,7 @@ async function mountHeader(authenticated: boolean) {
   await router.push('/')
   await router.isReady()
   const pushSpy = vi.spyOn(router, 'push')
-  const wrapper = mount(SiteHeader, { global: { plugins: [pinia, router] } })
+  const wrapper = mount(SiteHeader, { attachTo, global: { plugins: [pinia, router] } })
   return { wrapper, store, router, pushSpy }
 }
 
@@ -63,6 +64,31 @@ beforeEach(() => {
 })
 
 describe('站点页头', () => {
+  it('手机菜单可以展开，Escape关闭并恢复焦点', async () => {
+    const { wrapper } = await mountHeader(false, document.body)
+    const toggle = wrapper.get('[data-test="mobile-menu-toggle"]')
+    expect(toggle.attributes('aria-expanded')).toBe('false')
+    await toggle.trigger('click')
+    expect(toggle.attributes('aria-expanded')).toBe('true')
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+    await flushPromises()
+    expect(toggle.attributes('aria-expanded')).toBe('false')
+    expect(document.activeElement).toBe(toggle.element)
+    expect(wrapper.find('select[aria-label="外观主题"]').exists()).toBe(true)
+    wrapper.unmount()
+  })
+
+  it('导航后收起手机菜单，登录后业务入口齐全', async () => {
+    const { wrapper, router } = await mountHeader(true)
+    await wrapper.get('[data-test="mobile-menu-toggle"]').trigger('click')
+    for (const href of ['/me/itineraries', '/me/favorites', '/guides/new', '/itineraries/ai']) {
+      expect(wrapper.find(`a[href="${href}"]`).exists()).toBe(true)
+    }
+    await router.push('/me/itineraries')
+    await flushPromises()
+    expect(wrapper.get('[data-test="mobile-menu-toggle"]').attributes('aria-expanded')).toBe('false')
+    wrapper.unmount()
+  })
   it('管理后台入口只对管理员显示并指向用户管理',async()=>{
     const {wrapper,store}=await mountHeader(true);expect(wrapper.find('a[href="/admin/users"]').exists()).toBe(false)
     store.user={...user,role:'ADMIN'};await flushPromises();expect(wrapper.get('a[href="/admin/users"]').text()).toBe('管理后台');wrapper.unmount()

@@ -40,6 +40,13 @@ beforeEach(() => {
 })
 
 describe('管理员目的地维护', () => {
+  it('窄屏列表使用流式布局，操作按钮保留触摸尺寸', async () => {
+    const { wrapper } = await render()
+    expect(wrapper.get('table').classes()).toContain('sm:table')
+    expect(wrapper.get('table').classes()).not.toContain('min-w-[32rem]')
+    expect(wrapper.get(`[data-test="edit-${row.id}"]`).classes()).toContain('btn-ghost')
+    wrapper.unmount()
+  })
   it('卸载后迟到401不能将公共目的地送回登录',async()=>{
     let reject!:(error:Error)=>void;vi.mocked(fetchAdminDestinations).mockReturnValueOnce(new Promise((_,fail)=>{reject=fail}))
     const {wrapper,router}=await render();wrapper.unmount();await router.push('/destinations');reject(new ApiError('会话失效',{status:401}));await flushPromises()

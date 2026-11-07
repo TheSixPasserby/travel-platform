@@ -240,7 +240,7 @@ onBeforeUnmount(()=>{active=false;context+=1})
       </div>
     </div>
 
-    <div v-if="dialog" class="fixed inset-0 z-20 flex items-end justify-center bg-pine-deep/40 p-4 sm:items-center" @click.self="closeDialog">
+    <div v-if="dialog" class="fixed inset-0 z-20 flex items-end justify-center overflow-y-auto bg-scrim/60 p-4 sm:items-center" @click.self="closeDialog">
       <div role="alertdialog" aria-modal="true" class="surface-card w-full max-w-md p-5">
         <h2 class="font-serif text-xl text-pine-deep">{{ dialog.targetStatus==='DISABLED'?'确认禁用账号':'确认恢复账号' }}</h2>
         <p class="mt-2 text-sm text-pine/70">目标账号：{{ dialog.nickname }}（{{ dialog.username }}）。{{ dialog.targetStatus==='DISABLED'?'禁用后该用户将无法登录。':'恢复后该用户可以重新登录。' }}</p>

@@ -273,12 +273,12 @@ onBeforeUnmount(() => { active=false;listVersion++;parentVersion++ })
         <div v-else-if="loadError" role="alert" class="surface-card p-6"><p>{{ loadError }}</p><button class="btn-ghost mt-4" data-test="retry-admin-destinations" @click="load">重新加载</button></div>
         <div v-else-if="!result.records.length" class="surface-card p-8 text-center text-ink-soft">没有符合筛选条件的目的地。</div>
         <div v-else class="surface-card overflow-x-auto">
-          <table class="w-full min-w-[32rem] text-left text-sm">
-            <thead class="border-b border-pine/10 text-xs text-ink-soft"><tr><th scope="col" class="p-4">目的地</th><th scope="col" class="p-4">状态</th><th scope="col" class="p-4">操作</th></tr></thead>
-            <tbody><tr v-for="destination in result.records" :key="destination.id" class="border-b border-pine/10 last:border-0">
-              <td class="p-4"><RouterLink :to="{ name: 'destination-detail', params: { id: destination.id } }" class="font-medium text-pine hover:underline">{{ destination.name }}</RouterLink><p class="mt-1 text-xs text-ink-soft">{{ destinationTypeLabels[destination.destinationType] }} · {{ destination.country }}</p></td>
+          <table class="block w-full text-left text-sm sm:table sm:min-w-[32rem]">
+            <thead class="sr-only border-b border-pine/10 text-xs text-ink-soft sm:not-sr-only sm:table-header-group"><tr><th scope="col" class="p-4">目的地</th><th scope="col" class="p-4">状态</th><th scope="col" class="p-4">操作</th></tr></thead>
+            <tbody class="block sm:table-row-group"><tr v-for="destination in result.records" :key="destination.id" class="grid grid-cols-[minmax(0,1fr)_auto] border-b border-pine/10 last:border-0 sm:table-row">
+              <td class="min-w-0 break-words p-4"><RouterLink :to="{ name: 'destination-detail', params: { id: destination.id } }" class="font-medium text-pine hover:underline">{{ destination.name }}</RouterLink><p class="mt-1 text-xs text-ink-soft">{{ destinationTypeLabels[destination.destinationType] }} · {{ destination.country }}</p></td>
               <td class="p-4"><span :class="destination.status === 'ACTIVE' ? 'text-pine' : 'text-ember'">{{ destination.status === 'ACTIVE' ? '可用' : '已停用' }}</span></td>
-              <td class="p-4"><div class="flex gap-3"><button :data-test="`edit-${destination.id}`" class="font-medium text-pine underline underline-offset-4" :disabled="saving || uploading" @click="edit(destination)">编辑</button><button :data-test="`status-${destination.id}`" class="text-ink-soft underline underline-offset-4" :disabled="changing !== null || saving || uploading" @click="toggle(destination)">{{ destination.status === 'ACTIVE' ? '停用' : '启用' }}</button></div></td>
+              <td class="col-span-2 px-4 pb-4 sm:pt-4"><div class="flex flex-wrap gap-3"><button :data-test="`edit-${destination.id}`" class="btn-ghost" :disabled="saving || uploading" @click="edit(destination)">编辑</button><button :data-test="`status-${destination.id}`" class="btn-ghost" :disabled="changing !== null || saving || uploading" @click="toggle(destination)">{{ destination.status === 'ACTIVE' ? '停用' : '启用' }}</button></div></td>
             </tr></tbody>
           </table>
         </div>
