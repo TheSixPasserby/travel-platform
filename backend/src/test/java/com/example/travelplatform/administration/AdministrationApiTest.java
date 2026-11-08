@@ -115,7 +115,7 @@ class AdministrationApiTest {
         Account admin=h.account(true),author=h.account(false),reader=h.account(false);JsonNode g=guide(author,"published","PUBLISHED"),c=comment(reader,g,"comment");String id=g.path("id").asText();
         success(call("PUT",guidePath(g)+"/like",reader,null),200);success(call("PUT",guidePath(g)+"/favorite",reader,null),200);
         h.jdbc().update("INSERT INTO guide_images(guide_id,image_url,sort_order) VALUES (?, '/uploads/2026/11/00000000000000000000000000000001.png',0)",id);
-        JsonNode original=get(guidePath(g),null),hidden=patch("guides",id,"HIDDEN",admin);assertThat(hidden.path("status").asText()).isEqualTo("HIDDEN");assertThat(hidden.path("publishedAt")).isEqualTo(original.path("publishedAt"));assertThat(hidden.size()).isEqualTo(17);
+        JsonNode original=get(guidePath(g),null),hidden=patch("guides",id,"HIDDEN",admin);assertThat(hidden.path("status").asText()).isEqualTo("HIDDEN");assertThat(hidden.path("publishedAt")).isEqualTo(original.path("publishedAt"));assertThat(hidden.size()).isEqualTo(18);
         error(call("GET",guidePath(g),null,null),404,40401);error(call("GET",guidePath(g)+"/comments",null,null),404,40401);error(call("PUT",guidePath(g)+"/like",reader,null),404,40401);
         assertThat(get("/api/v1/users/me/favorites?keyword="+encoded(h.prefix()),reader).path("total").asInt()).isZero();
         for(String action:List.of("publish","unpublish"))error(call("POST",guidePath(g)+"/"+action,author,null),409,40902);
@@ -138,7 +138,7 @@ class AdministrationApiTest {
         assertThat(page("guides",admin,"&size=1").path("records").get(0).path("id")).isEqualTo(draft.path("id"));assertThat(page("guides",admin,"&status=HIDDEN").path("total").asInt()).isEqualTo(1);assertThat(page("guides",admin,"&status=DRAFT").path("total").asInt()).isEqualTo(1);
         assertThat(get("/api/v1/admin/guides?keyword="+encoded(g1.path("title").asText()),admin).path("total").asInt()).isEqualTo(1);
         JsonNode comments=page("comments",admin,"&size=1");assertThat(comments.path("total").asInt()).isEqualTo(2);assertThat(comments.path("records").get(0).path("id")).isEqualTo(c2.path("id"));
-        JsonNode exact=get("/api/v1/admin/comments?keyword="+encoded(c1.path("content").asText()),admin).path("records").get(0);assertThat(exact.propertyStream().map(Map.Entry::getKey).toList()).containsExactlyInAnyOrder("id","guideId","guideTitle","author","content","status","createdAt","updatedAt");assertThat(exact.path("author").size()).isEqualTo(4);assertThat(exact.path("guideTitle")).isEqualTo(g1.path("title"));assertThat(exact.path("id").isTextual()).isTrue();
+        JsonNode exact=get("/api/v1/admin/comments?keyword="+encoded(c1.path("content").asText()),admin).path("records").get(0);assertThat(exact.propertyStream().map(Map.Entry::getKey).toList()).containsExactlyInAnyOrder("id","guideId","guideTitle","author","content","status","createdAt","updatedAt");assertThat(exact.path("author").size()).isEqualTo(5);assertThat(exact.path("guideTitle")).isEqualTo(g1.path("title"));assertThat(exact.path("id").isTextual()).isTrue();
         JsonNode beyond=page("comments",admin,"&page=999&size=1");assertThat(beyond.path("records").isEmpty()).isTrue();assertThat(beyond.path("total").asInt()).isEqualTo(2);assertThat(beyond.path("current").asInt()).isEqualTo(999);
     }
     @Test void commentHidingChangesOnlyPublicCountAndDeletedCommentsNeverRevive(){

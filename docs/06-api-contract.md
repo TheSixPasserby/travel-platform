@@ -137,7 +137,7 @@ SpringDoc 生成接口文档；前端类型与响应一致；不返回 password_
 
 username 为 3–50 个 ASCII 字母、数字或下划线，去首尾空白并统一小写后查重；账号唯一性依赖数据库约束。password 不 trim，至少 8 个 Unicode 码点且 UTF-8 不超过 72 字节，不得全空白。nickname 去首尾空白后为 1–50 字符；bio 最多 300 字符，可用 null 清空；avatarUrl 可用 null 清空，否则必须是有效的受管图片路径且长度不超过 500。
 
-当前用户安全资料仅含 id、username、nickname、avatarUrl、bio、role、status、createdAt；公开用户资料仅含 id、nickname、avatarUrl、bio。密码和 password_hash 不进入任何 VO。请求只接受白名单字段，夹带 userId、role、status、password_hash 等字段返回 400；字符串字段不接受数字或布尔值的隐式转换。PATCH 未提供的字段保持原值。
+当前用户安全资料仅含 id、username、nickname、avatarUrl、bio、role、status、createdAt；公开用户资料仅含 id、nickname、avatarUrl、bio、username（M10 兼容新增；已注销作者为 null）。密码和 password_hash 不进入任何 VO。请求只接受白名单字段，夹带 userId、role、status、password_hash 等字段返回 400；字符串字段不接受数字或布尔值的隐式转换。PATCH 未提供的字段保持原值。
 
 不存在账号与密码错误均返回 401/40102 和同一通用提示。被禁用或逻辑删除的用户不能登录；已登录用户每次受保护访问都检查账号可用状态，禁用后旧 token 不得继续访问受保护业务。禁用账号不自动下架既有公开攻略或公开资料，内容治理独立执行。管理员不得禁用自己或最后一个可用 ADMIN，并发状态更新也需维持该约束。
 
@@ -270,7 +270,7 @@ destination为null或{id,name,status}，无内部字段。所有ID/外键字符�
 
 - AdminUserVO恰八字段：id、username、nickname、avatarUrl、role、status、createdAt、updatedAt。
 - GuideSummaryVO沿第18节恰17字段，管理员可读实际DRAFT/PUBLISHED/HIDDEN；真实计数不变，无正文或内部字段。
-- AdminCommentVO恰八字段：id、guideId、guideTitle、author（id/nickname/avatarUrl/bio，复用PublicProfileVO）、content、status、createdAt、updatedAt。
+- AdminCommentVO恰八字段：id、guideId、guideTitle、author（id/nickname/avatarUrl/bio/username，复用PublicProfileVO）、content、status、createdAt、updatedAt。
 - AdminSummaryVO恰四数字：userCount、guideCount、destinationCount、commentCount，分别统计对应未逻辑删除行，管理口径包含全部状态，非公开平台统计。
 
 用户状态事务RC，先按id有序锁全部ADMIN当前行并清理会话缓存、重核操作者可用，再锁目标。不能禁用自己或最后一位可用ADMIN，40902；并发互相禁用不能把管理员全禁用，等待后操作者已失效则40101。保持M1实时账号校验：禁用期间旧token对全部受保护入口401；不新增永久撤销机制，启用后未过期令牌按原状态规则可用（浏览器401已清本地token，需重新登录）。不自动下架该账号公开内容。
@@ -316,3 +316,15 @@ POST /day-preview输入恰为requirements、targetDate、usedDestinationIds。ta
 候选最多40个，先包含想去/必须去，再补充其他可用候选。仅检索最多5篇公开攻略，每篇摘要最多1600字符，候选资料与摘要按序收缩，最终外呼JSON不超过24000字符。模型等待期间不持有数据库事务，返回前重新读取景点和父城状态。预览无业务写入。每用户滚动60秒最多2次、每用户1个并发、全局2个并发，最多记录10000个用户状态，过期空闲状态可回收。上游失败不会自动再发调用。
 
 错误码使用503/50310配置不可用、422/42210资料不足、429/42910本地限流、429/42911上游限流、504/50410超时、502/50210上游失败、502/50211非法输出。API请求校验仍为400/40001。AI关闭时私人手动行程接口继续可用。
+
+
+## M10：身份与 IP 属地兼容扩展
+
+- PublicProfileVO 增加 `username:string|null`；正常作者为唯一用户名，已注销作者不捏造用户名。Web 两行显示昵称与灰色 `@username`；空昵称回退用户名。现有登录规则、用户唯一索引及权限保持。
+- GuideSummaryVO、GuideDetailVO、CommentVO 新增 `ipRegion:string|null`。旧字段、分页结构、HTTP 状态码和状态机保留。后台 CommentVO 顶层保持原八字段；其公开作者投影同步扩展 username。
+- 创建已发布攻略或首次 `/publish` 时服务端生成属地，与首次 `publishedAt` 同时冻结；草稿不采集。编辑、撤回再发布、管理治理均不改写，首次 NULL 也不会后补。
+- 评论发表时服务端生成；历史数据保留 NULL，Web 显示“IP 属地：未知”。创建/更新请求夹带 `ipRegion`、原始 `ip` 等非白名单字段返回 HTTP 400 / 40001。
+- 当前没有已授权 GeoIP 数据源：默认解析器返回 NULL，既不访问第三方，也不请求 GPS。仅预留审计过的离线 IpRegionResolver 接口；未来启用前需核验许可/版本/省级或国家级输出与运行边界。
+- `server.forward-headers-strategy=none`。默认只取真实远端地址，忽略 XFF、X-Real-IP、Forwarded。只有 `IP_TRUSTED_PROXIES` 明确列出的直连代理才启用 XFF，从右向左剥离可信代理，首个不可信地址为客户端；不接受通配/CIDR/主机名。代理必须覆盖或追加实际来源，不能只透传任意客户端头。
+- 重复 XFF 合并后最多 20 跳/2048 字符；非法字面值、zone、端口、超限均降级。IPv4-mapped IPv6 归一化；回环/私网/链路本地/常见保留地址不查属地。不进行 DNS 查询，不保存原始 IP、不在错误或诊断日志输出。
+- 没有外部服务和运行时 IP 缓存：默认解析器无网络 I/O，查不到或运行异常即 NULL，基础业务仍可用。现有 uni-app 忽略这些兼容新增字段，页面布局不变。

@@ -18,6 +18,7 @@ import com.example.travelplatform.user.mapper.UserMapper;
 import com.example.travelplatform.user.service.UserService;
 import com.example.travelplatform.user.vo.PublicProfileVO;
 import org.springframework.stereotype.Service;
+import com.example.travelplatform.common.ip.RequestIpRegion;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.*;
@@ -29,13 +30,15 @@ import java.util.stream.Collectors;
 @Service
 public class GuideService {
     private static final Set<String> STATUSES=Set.of("DRAFT","PUBLISHED","HIDDEN");
+    private final RequestIpRegion ipRegions;
     private final GuideMapper guides;
     private final UserService session;
     private final UserMapper users;
     private final DestinationMapper destinations;
     private final ManagedImagePaths images;
     private final GuideDestinationsMapper spots;
-    public GuideService(GuideMapper guides,UserService session,UserMapper users,DestinationMapper destinations,ManagedImagePaths images,GuideDestinationsMapper spots) {
+    public GuideService(GuideMapper guides,UserService session,UserMapper users,DestinationMapper destinations,ManagedImagePaths images,GuideDestinationsMapper spots,RequestIpRegion ipRegions) {
+        this.ipRegions=ipRegions;
         this.guides=guides;this.session=session;this.users=users;this.destinations=destinations;this.images=images;this.spots=spots;
     }
 
@@ -124,7 +127,7 @@ public class GuideService {
         List<Long> scenicIds=resolveSpots(request,value.destinationId(),null,null);
         Guide guide=new Guide();guide.setAuthorId(author.getId());guide.setStatus(status);guide.setIsDeleted(0);
         guide.setCreatedAt(now());guide.setUpdatedAt(guide.getCreatedAt());
-        if(status.equals("PUBLISHED"))guide.setPublishedAt(guide.getCreatedAt());
+        if(status.equals("PUBLISHED")){guide.setPublishedAt(guide.getCreatedAt());guide.setIpRegion(ipRegions.current());}
         apply(guide,value);guides.insert(guide);replaceRelations(guide.getId(),value);replaceSpots(guide.getId(),scenicIds);
         return detail(required(guides.detail(guide.getId())));
     }
@@ -152,7 +155,7 @@ public class GuideService {
         if("PUBLISHED".equals(guide.getStatus()))return detail(required(guides.detail(guide.getId())));
         GuideValues value=stored(guide);GuideInputPolicy.requirePublishable(value);references(value,guide.getDestinationId());
         var update=Wrappers.<Guide>lambdaUpdate().eq(Guide::getId,guide.getId()).set(Guide::getStatus,"PUBLISHED").set(Guide::getUpdatedAt,now());
-        if(guide.getPublishedAt()==null)update.set(Guide::getPublishedAt,now());
+        if(guide.getPublishedAt()==null)update.set(Guide::getPublishedAt,now()).set(Guide::getIpRegion,ipRegions.current());
         if(guides.update(null,update)!=1)throw new ApiException(ErrorCode.STATE_CONFLICT);
         return detail(required(guides.detail(guide.getId())));
     }
@@ -238,12 +241,12 @@ public class GuideService {
         Map<Long,List<GuideTagRow>> tags=guides.tagsFor(ids).stream().collect(Collectors.groupingBy(GuideTagRow::guideId));
         return rows.stream().map(row->{
             User author=authors.get(row.getAuthorId());Destination destination=row.getDestinationId()==null?null:places.get(row.getDestinationId());
-            PublicProfileVO profile=author==null?new PublicProfileVO(row.getAuthorId().toString(),"已注销的旅行者",null,null):PublicProfileVO.from(author);
+            PublicProfileVO profile=author==null?new PublicProfileVO(row.getAuthorId().toString(),"已注销的旅行者",null,null,null):PublicProfileVO.from(author);
             GuideSummaryVO.DestinationRef place=destination==null?null:new GuideSummaryVO.DestinationRef(destination.getId().toString(),destination.getName(),destination.getStatus());
             List<TagVO> labels=tags.getOrDefault(row.getId(),List.of()).stream().map(t->new TagVO(t.id().toString(),t.name())).toList();
             return new GuideSummaryVO(row.getId().toString(),row.getTitle(),row.getSummary(),row.getCoverImageUrl(),profile,place,row.getTravelDays(),
                     row.getBudgetPerPerson()==null?null:row.getBudgetPerPerson().setScale(2).toPlainString(),row.getSeason(),labels,row.getStatus(),
-                    offset(row.getPublishedAt()),offset(row.getCreatedAt()),offset(row.getUpdatedAt()),row.getLikeCount(),row.getFavoriteCount(),row.getCommentCount());
+                    offset(row.getPublishedAt()),offset(row.getCreatedAt()),offset(row.getUpdatedAt()),row.getLikeCount(),row.getFavoriteCount(),row.getCommentCount(),row.getIpRegion());
         }).toList();
     }
     private static GuideRow required(GuideRow row) { if(row==null)throw new ApiException(ErrorCode.NOT_FOUND);return row; }

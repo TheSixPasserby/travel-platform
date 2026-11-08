@@ -18,6 +18,7 @@ import com.example.travelplatform.user.mapper.UserMapper;
 import com.example.travelplatform.user.service.UserService;
 import com.example.travelplatform.user.vo.PublicProfileVO;
 import org.springframework.stereotype.Service;
+import com.example.travelplatform.common.ip.RequestIpRegion;
 import org.springframework.transaction.annotation.*;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
@@ -27,11 +28,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class CommentService {
+    private final RequestIpRegion ipRegions;
     private final CommentMapper comments;
     private final GuideMapper guides;
     private final UserMapper users;
     private final UserService session;
-    public CommentService(CommentMapper comments,GuideMapper guides,UserMapper users,UserService session){this.comments=comments;this.guides=guides;this.users=users;this.session=session;}
+    public CommentService(CommentMapper comments,GuideMapper guides,UserMapper users,UserService session,RequestIpRegion ipRegions){this.ipRegions=ipRegions;this.comments=comments;this.guides=guides;this.users=users;this.session=session;}
     @Transactional(readOnly=true,isolation=Isolation.REPEATABLE_READ)
     public PageResponse<CommentVO> list(String id,String rawPage,String rawSize){
         long guide=RequestValues.positiveId(id),page=RequestValues.page(rawPage),size=RequestValues.size(rawSize),offset=RequestValues.offset(page,size);
@@ -40,7 +42,7 @@ public class CommentService {
         Map<Long,User> authors=rows.isEmpty()?Map.of():users.selectList(Wrappers.<User>lambdaQuery().in(User::getId,rows.stream().map(GuideComment::getUserId).distinct().toList()))
                 .stream().collect(Collectors.toMap(User::getId,Function.identity()));
         List<CommentVO> result=rows.stream().map(comment->{
-            User user=authors.get(comment.getUserId());PublicProfileVO author=user==null?new PublicProfileVO(comment.getUserId().toString(),"已注销的旅行者",null,null):PublicProfileVO.from(user);
+            User user=authors.get(comment.getUserId());PublicProfileVO author=user==null?new PublicProfileVO(comment.getUserId().toString(),"已注销的旅行者",null,null,null):PublicProfileVO.from(user);
             return CommentVO.from(comment,author);
         }).toList();
         return new PageResponse<>(result,total,page,size,total/size+(total%size==0?0:1));
@@ -50,7 +52,7 @@ public class CommentService {
         User user=session.requireCurrentUser();long guide=RequestValues.positiveId(id);visible(guides.lock(guide));
         String content=CommentInputPolicy.normalize(request==null?null:request.content());
         GuideComment comment=new GuideComment();comment.setGuideId(guide);comment.setUserId(user.getId());comment.setContent(content);
-        comment.setStatus("NORMAL");comment.setIsDeleted(0);comment.setCreatedAt(now());comment.setUpdatedAt(comment.getCreatedAt());comments.insert(comment);
+        comment.setIpRegion(ipRegions.current());comment.setStatus("NORMAL");comment.setIsDeleted(0);comment.setCreatedAt(now());comment.setUpdatedAt(comment.getCreatedAt());comments.insert(comment);
         return CommentVO.from(comment,PublicProfileVO.from(user));
     }
     @Transactional(isolation=Isolation.READ_COMMITTED)
@@ -89,7 +91,7 @@ public class CommentService {
         }
         return AdminCommentVO.from(current,parent.getTitle(),profile(current.getUserId(),users.selectById(current.getUserId())));
     }
-    private static PublicProfileVO profile(Long id,User user){return user==null?new PublicProfileVO(id.toString(),"已注销的旅行者",null,null):PublicProfileVO.from(user);}
+    private static PublicProfileVO profile(Long id,User user){return user==null?new PublicProfileVO(id.toString(),"已注销的旅行者",null,null,null):PublicProfileVO.from(user);}
     private static GuideComment required(GuideComment comment){
         if(comment==null||!Integer.valueOf(0).equals(comment.getIsDeleted()))throw new ApiException(ErrorCode.NOT_FOUND);return comment;
     }

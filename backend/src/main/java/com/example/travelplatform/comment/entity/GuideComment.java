@@ -9,6 +9,7 @@ public class GuideComment {
     private Long userId;
     private String content;
     private String status;
+    private String ipRegion;
     @TableLogic(value="0",delval="1")
     private Integer isDeleted;
     private LocalDateTime createdAt;
@@ -21,6 +22,8 @@ public class GuideComment {
     public void setUserId(Long value) { this.userId=value; }
     public String getContent() { return content; }
     public void setContent(String value) { this.content=value; }
+    public String getIpRegion() { return ipRegion; }
+    public void setIpRegion(String value) { this.ipRegion=value; }
     public String getStatus() { return status; }
     public void setStatus(String value) { this.status=value; }
     public Integer getIsDeleted() { return isDeleted; }

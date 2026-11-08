@@ -123,17 +123,19 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout(): Promise<void> {
+    const signingOutToken = token.value
     try {
       await logoutAccount()
     } catch (error) {
       if (error instanceof ApiError && error.status === 401) {
+        if (token.value !== signingOutToken) return
         // 令牌已失效，服务端会话本就不存在，本地清理即达成目的。
         clearSession()
         return
       }
       throw error
     }
-    clearSession()
+    if (token.value === signingOutToken) clearSession()
   }
 
   return {

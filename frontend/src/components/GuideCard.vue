@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import TravelArt from './TravelArt.vue'
-import UserAvatar from './UserAvatar.vue'
+import UserIdentity from './UserIdentity.vue'
 import type { GuideSummary } from '@/types/guide'
 const props=defineProps<{ guide:GuideSummary }>()
 const failed=ref(false)
@@ -19,7 +19,7 @@ watch(()=>props.guide.coverImageUrl,()=>{failed.value=false})
       <h2 class="mt-2 break-words font-serif text-2xl text-pine-deep">{{ guide.title }}</h2>
       <p class="mt-3 line-clamp-2 text-sm leading-relaxed text-ink-soft">{{ guide.summary||'打开手记，看看路上的风景与故事。' }}</p>
       <div class="mt-5 flex items-center justify-between gap-3 border-t border-pine/10 pt-4 text-xs text-ink-soft">
-        <span class="flex min-w-0 items-center gap-2"><UserAvatar :src="guide.author.avatarUrl" :name="guide.author.nickname" size="sm" /><span class="truncate">{{ guide.author.nickname }}</span></span>
+        <UserIdentity :user="guide.author" size="sm" />
         <span class="shrink-0">{{ guide.likeCount }} 赞 · {{ guide.favoriteCount }} 收藏</span>
       </div>
     </div>

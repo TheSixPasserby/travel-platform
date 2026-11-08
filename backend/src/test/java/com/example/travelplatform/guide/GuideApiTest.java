@@ -92,7 +92,7 @@ class GuideApiTest {
         error(get("/api/v1/users/me/guides",null),401,40101);
         Account a=h.account(false);
         JsonNode profile=success(get("/api/v1/users/"+a.id()+"/profile",null),200);
-        assertThat(profile.propertyStream().map(Map.Entry::getKey).toList()).containsExactlyInAnyOrder("id","nickname","avatarUrl","bio");
+        assertThat(profile.propertyStream().map(Map.Entry::getKey).toList()).containsExactlyInAnyOrder("id","nickname","avatarUrl","bio","username");
         h.jdbc().update("UPDATE users SET status='DISABLED' WHERE id=? AND username=?",a.id(),a.username());
         success(get("/api/v1/users/"+a.id()+"/profile",null),200);
     }
@@ -102,7 +102,7 @@ class GuideApiTest {
         JsonNode g=create(a,"private",Map.of("content",""));
         assertThat(g.path("id").isTextual()).isTrue(); assertThat(g.path("status").asText()).isEqualTo("DRAFT");
         assertThat(g.path("publishedAt").isNull()).isTrue(); assertThat(g.path("author").path("id").asText()).isEqualTo(a.id());
-        assertThat(g.propertyStream().map(Map.Entry::getKey).toList()).containsExactlyInAnyOrder("id","title","summary","coverImageUrl","author","destination","travelDays","budgetPerPerson","season","tags","status","publishedAt","createdAt","updatedAt","likeCount","favoriteCount","commentCount","content","images","scenicSpots");
+        assertThat(g.propertyStream().map(Map.Entry::getKey).toList()).containsExactlyInAnyOrder("id","title","summary","coverImageUrl","author","destination","travelDays","budgetPerPerson","season","tags","status","publishedAt","createdAt","updatedAt","likeCount","favoriteCount","commentCount","content","images","scenicSpots","ipRegion");
         assertThat(g.path("scenicSpots").isArray()).isTrue(); assertThat(g.path("scenicSpots").size()).isZero();
         success(get(ownUrl(g),a),200); error(get(url(g),null),404,40401);
         for (Account other : List.of(b,admin)) {

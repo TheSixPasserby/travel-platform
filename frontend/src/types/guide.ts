@@ -3,9 +3,10 @@ import type { DestinationStatus } from './destination'
 export type GuideStatus = 'DRAFT' | 'PUBLISHED' | 'HIDDEN'
 export type GuideSort = 'latest' | 'popular'
 export interface Tag { id: string; name: string }
-export interface PublicProfile { id: string; nickname: string; avatarUrl: string | null; bio: string | null }
+export interface PublicProfile { id: string; nickname: string; username?: string | null; avatarUrl: string | null; bio: string | null }
 export interface GuideDestination { id: string; name: string; status: DestinationStatus }
 export interface GuideSummary {
+  ipRegion?: string | null
   id: string
   title: string
   summary: string | null

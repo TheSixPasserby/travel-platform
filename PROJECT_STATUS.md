@@ -2,7 +2,25 @@
 
 **项目：** 旅游攻略分享与行程规划平台  
 **基线版本：** V1.1 审查稿（2026-11-02）  
-**当前阶段：** M9 代码阶段及本机浏览器/编译验证完成，微信与 Android 真机验收待进行。分支 `codex/m9-delivery` 从 M8 提交 `56052b5` 建立。硬截止 2026-11-10 23:59（Asia/Shanghai）。M8 成果与业务数据继续保留，当前进展见 [M9 交付状态](docs/M9-DELIVERY-STATUS.md)。
+**当前阶段：** M10 Web 与安全 IP 属地降级已编码并完成本地测试、浏览器和开发库增量迁移验收。M8/M9 成果保留，uni-app 布局未改；微信与 Android 真机验收待办继续保留。当前分支 `codex/m9-delivery`，基线 `712be1d`；2026-11-08 用户已授权提交推送，结果以本次 Git 提交及 GitHub Actions 记录为准。硬截止 2026-11-10 23:59（Asia/Shanghai）。进展见 [M10 交付状态](docs/M10-DELIVERY-STATUS.md)。
+
+## M10 本地验收（2026-11-07）
+
+- 已完整阅读 docs/m10 两份文档并逐张查看六张参考图；保留 M9 Token/ThemeStore，首页不重做。
+- 单行导航、所有尺寸抽屉、三态设置与账号浮层、互斥/焦点/滚动锁/外点/Escape/reduced-motion 均有测试；统一两行身份，评论保留原 CRUD/分页/治理/竞态。
+- PublicProfileVO 最小增加 username；攻略/评论增加可空 ipRegion，服务端可信代理解析、首次发布冻结、私网/畸形输入/解析异常降级。没有授权 GeoIP 来源，当前显示“未知”，不伪造、不上报第三方。
+- 后端 249/249、Web 337/337、Python 83/83、mobile 安全 16/16 通过；Web 构建及 mobile 类型/H5/微信小程序/App 资源构建通过。真实浏览器 24 组布局通过，截图六张，未捕获脚本异常。
+- 本机 MySQL 8.4.13 增量升级两个可空列；14 张表 133 行原列 SHA256、44 个上传文件 SHA256 与备份恢复副本一致。未操作生产库。
+- Codex 本机配置 gpt-6.1-sol/ultra；DSH buddy（CodeBuddy）/deepseek-v4.1-flash/max 配置与探测可核验，但正式任务两次均在准备阶段因 Max 参数时序失败、0 工具调用；没有改用 WorkBuddy，实际编码由主代理完成，不虚记 DSH 贡献。
+- M10 远端 CI、提交/推送、外部部署未执行；原有 8080 服务未替换，需要重启后加载 M10 后端。GeoIP 授权数据源、M9 原生真机/签名包验收仍待后续条件。
+
+## M10 提交前复验（2026-11-08）
+
+- 用户明确授权提交并推送当前 M10 到 `origin/codex/m9-delivery`；不合并 main，不强推，不新建 PR。
+- 重新运行后端 249/249、Web 337/337、Python 83/83、移动安全 16/16；Web 生产构建与移动类型检查通过。11-07 的完整移动目标构建和 24 组浏览器证据继续保留，uni-app 源码无变更。
+- Codex 本机配置仍为 gpt-6.1-sol/ultra；DSH 配置仍为 buddy/deepseek-v4.1-flash/max，不改用 WorkBuddy。沿用此前已证实的正式 Max 运行时阻塞记录，本轮不重复派发。
+- Codex 侧只读审查确认 CI 空库 schema、Python 导入边界和交付白名单覆盖 M10。原始资料 ZIP、备份、真实上传、client 凭据与构建目录不提交；提交范围及敏感扫描记录见 `docs/verification/2026-11-08-m10-prepush.json`。
+- 本轮允许 push 后执行远端 CI；最终 SHA、推送和 CI 状态以 Git/GitHub 记录为准，不预先宣称通过。
 
 ## M9 启动与源码实施（2026-11-07）
 

@@ -87,3 +87,12 @@ destinations 新增 address、DECIMAL(9,6) longitude/DECIMAL(8,6) latitude、rec
 destination_images 保留图片路径、说明、顺序、来源/作者/许可/许可链接/获取时间，唯一(destination_id,image_url)，顺序索引(destination_id,sort_order,id)。guide_destinations 唯一(guide_id,destination_id)，反向索引(destination_id,guide_id)。三条新外键均 RESTRICT；逻辑删除主体不物理级联。图库和攻略景点替换分别与主体同事务。
 
 itineraries 增加可空 client_request_id CHAR(36)，唯一(user_id,client_request_id)，供整程原子导入防重；原手动创建保持 NULL。没有新增 AI 行程表。DDL 与新空库 SQL 已在 MySQL 8.4.13 验证等价，精确 SQL 及哈希见 database/migrations/manifest.json。
+
+
+## 9. M10 可空属地快照
+
+`guides.ip_region`、`guide_comments.ip_region` 均为可空 `VARCHAR(64)`、utf8mb4_0900_ai_ci，仅保存省/直辖市/特别行政区或国家文本，不新增原始 IP 列。历史行保持 NULL；攻略以首次 published_at 为冻结标志，不另建重复状态或计数列。
+
+现有库仅执行 `database/migrations/V010_01__ip_regions.sql`，校验清单为 `manifest-m10.json`；`schema.sql` 只供新空库。新脚本 `scripts/m10_backup.py` 在本机明确目标/UUID下备份并恢复到全新测试克隆；`scripts/m10_migrate.py` 默认 dry-run，校验备份哈希、实例/库名、两张目标表的 InnoDB/字符集、列完整定义和全部原列行哈希，再执行两条 ADD COLUMN。支持重复执行及断点续跑，漂移即停。
+
+MySQL DDL 隐式提交；不自动 DROP 列或重放 schema。回退优先保留新增可空列，使用旧版本兼容代码；完整恢复先在全新克隆校验后由操作者切换。具体命令、执行环境和数据保护证据见 `docs/m10/MIGRATION.md` 与 M10 交付状态。

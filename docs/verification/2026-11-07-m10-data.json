@@ -1,0 +1,15 @@
+{
+  "database": "travel_platform",
+  "mysqlVersion": "8.4.13",
+  "tables": 14,
+  "originalRows": 133,
+  "allOriginalColumnsSha256Match": true,
+  "usernameUniqueIndexPreserved": true,
+  "historicalIpRegionsAllNull": true,
+  "uploadFiles": 44,
+  "uploadSha256Match": true,
+  "backupSqlAndArchiveSha256Match": true,
+  "migrationIdempotent": true,
+  "productionDatabaseTouched": false,
+  "backupDirectory": ".local/m10/backups/20261107-114951-fd6f1c"
+}

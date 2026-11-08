@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-08",
+  "timezone": "Asia/Shanghai",
+  "authorizedAction": "commit and push existing M10 work",
+  "branch": "codex/m9-delivery",
+  "remote": "origin",
+  "baselineSha": "712be1db66f4abb0bcc8225ad1940482fc22fed4",
+  "backend": {
+    "tests": 249,
+    "packagePassed": true
+  },
+  "web": {
+    "tests": 337,
+    "passed": true,
+    "buildPassed": true
+  },
+  "python": {
+    "tests": 83,
+    "passed": true
+  },
+  "mobile": {
+    "typeCheckPassed": true,
+    "safetyTests": 16,
+    "sourceChanged": false,
+    "priorAllTargetBuildEvidence": "2026-11-07-m10-local.json"
+  },
+  "candidateFilesBeforeThisSummary": 73,
+  "candidateTextFilesScanned": 61,
+  "knownCredentialOrPrivateKeyMatches": 0,
+  "sourceZipExcluded": true,
+  "localBackupUploadAndClientFilesExcluded": true,
+  "userPromptHardBreaksPreserved": 4,
+  "codexConfig": "gpt-6.1-sol/ultra",
+  "dshBinding": "buddy/deepseek-v4.1-flash/max",
+  "dshNoRedispatch": "Previously verified formal Max runtime error remains documented; no model change",
+  "staticReview": "No submission or CI blocker found; independent read-only review",
+  "ci": "Will be triggered by authorized push; result is not asserted before completion",
+  "publicationResult": "Use actual Git commit/ref and GitHub workflow records"
+}

@@ -111,7 +111,7 @@ class InteractionApiTest {
         JsonNode beyond=favorites(a,"&page=999&size=1");assertThat(beyond.path("records").isEmpty()).isTrue();assertThat(beyond.path("total").asLong()).isEqualTo(3);assertThat(beyond.path("current").asLong()).isEqualTo(999);
         String literal=URLEncoder.encode(h.named("literal%_!\\"),StandardCharsets.UTF_8);
         JsonNode filtered=success(request("GET","/api/v1/users/me/favorites?keyword="+literal,a),200);assertThat(filtered.path("total").asLong()).isEqualTo(1);
-        JsonNode summary=filtered.path("records").get(0);assertThat(summary.path("id").isTextual()).isTrue();assertThat(summary.path("author").path("id").isTextual()).isTrue();assertThat(summary.has("content")).isFalse();assertThat(summary.path("author").has("username")).isFalse();
+        JsonNode summary=filtered.path("records").get(0);assertThat(summary.path("id").isTextual()).isTrue();assertThat(summary.path("author").path("id").isTextual()).isTrue();assertThat(summary.has("content")).isFalse();assertThat(summary.path("author").path("username").asText()).isEqualTo(b.username());
         for(String query:List.of("page=0","size=51","page=9223372036854775807&size=50"))error(request("GET","/api/v1/users/me/favorites?"+query,a),400,40001);
         error(request("PUT","/api/v1/guides/0/like",a),400,40001);
     }

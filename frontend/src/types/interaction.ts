@@ -8,6 +8,7 @@ export interface GuideInteraction {
   commentCount:number
 }
 export interface GuideComment {
+  ipRegion?:string|null
   id:string
   guideId:string
   author:PublicProfile

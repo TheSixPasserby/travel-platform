@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 
 import { ApiError } from '@/api/client'
 import ImageUpload from '@/components/ImageUpload.vue'
-import UserAvatar from '@/components/UserAvatar.vue'
+import UserIdentity from '@/components/UserIdentity.vue'
 import { useAuthStore } from '@/stores/auth'
 import type { CurrentUser, ProfileUpdatePayload } from '@/types/auth'
 
@@ -189,15 +189,7 @@ onMounted(() => {
 
       <div v-else-if="user" class="surface-card mt-6 p-6 sm:p-8">
         <div class="flex flex-wrap items-center gap-5">
-          <UserAvatar
-            :src="avatarUrl"
-            :name="user.nickname"
-            size="lg"
-          />
-          <div>
-            <p class="font-serif text-xl text-pine-deep">{{ user.nickname }}</p>
-            <p class="mt-1 text-sm text-ink-soft">@{{ user.username }}</p>
-          </div>
+          <UserIdentity :user="{ ...user, avatarUrl }" size="lg" />
         </div>
 
         <form class="mt-8 space-y-5" novalidate @submit.prevent="handleSubmit">

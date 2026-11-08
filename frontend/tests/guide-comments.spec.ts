@@ -19,6 +19,18 @@ async function render(authenticated=false){
   const wrapper=mount(GuideComments,{ props:{ guideId:id },global:{ plugins:[pinia,router] } });await flushPromises();return { wrapper,auth,router }
 }
 beforeEach(()=>{vi.resetAllMocks();vi.mocked(fetchComments).mockResolvedValue(page([comment]));vi.mocked(createComment).mockResolvedValue(comment);vi.mocked(deleteComment).mockResolvedValue(null)})
+it('展示用户名、属地和按真实ID判断的作者标记',async()=>{
+  vi.mocked(fetchComments).mockResolvedValueOnce(page([
+    {...comment,author:{...comment.author,username:'forest'},ipRegion:'四川'},
+    {...comment,id:'22',author:{...comment.author,id:'2',username:'cloud'},ipRegion:null}
+  ]))
+  const {wrapper}=await render();await wrapper.setProps({guideAuthorId:'1'})
+  const rows=wrapper.findAll('[data-test="comment-row"]')
+  expect(rows[0].text()).toContain('@forest');expect(rows[0].text()).toContain('IP 属地：四川')
+  expect(rows[0].find('[data-test="guide-author-badge"]').exists()).toBe(true)
+  expect(rows[1].text()).toContain('IP 属地：未知');expect(rows[1].find('[data-test="guide-author-badge"]').exists()).toBe(false)
+  wrapper.unmount()
+})
 it('显示规范化后的码点长度，超限不发送且保留输入',async()=>{
   const { wrapper }=await render(true);const text=' '+ '🌿'.repeat(2001)+'\u00A0'
   await wrapper.get('textarea').setValue(text);expect(wrapper.text()).toContain('2001 / 2000')

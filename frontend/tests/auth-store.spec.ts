@@ -50,6 +50,15 @@ beforeEach(() => {
 })
 
 describe('登录状态', () => {
+  it('旧账号退出请求迟到时不清理新账号会话', async () => {
+    const store=useAuthStore();store.user=sampleUser();store.token='old-token'
+    let finish!:(value:null)=>void
+    vi.mocked(logoutAccount).mockReturnValueOnce(new Promise(resolve=>{finish=resolve}))
+    const job=store.logout()
+    store.user=sampleUser({id:'2',username:'other'});store.token='new-token'
+    finish(null);await job
+    expect(store.token).toBe('new-token');expect(store.user?.id).toBe('2')
+  })
   it('登录成功后写入用户与令牌，并只写入 sessionStorage', async () => {
     const data: LoginData = { tokenName: 'satoken', tokenValue: 'token-abc', user: sampleUser() }
     vi.mocked(loginAccount).mockResolvedValue(data)

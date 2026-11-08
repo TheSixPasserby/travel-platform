@@ -16,6 +16,7 @@ public class Guide {
     private BigDecimal budgetPerPerson;
     private String season;
     private String status;
+    private String ipRegion;
     private LocalDateTime publishedAt;
     @TableLogic(value="0", delval="1")
     private Integer isDeleted;
@@ -41,6 +42,8 @@ public class Guide {
     public void setBudgetPerPerson(BigDecimal v) { this.budgetPerPerson = v; }
     public String getSeason() { return season; }
     public void setSeason(String v) { this.season = v; }
+    public String getIpRegion() { return ipRegion; }
+    public void setIpRegion(String value) { this.ipRegion=value; }
     public String getStatus() { return status; }
     public void setStatus(String v) { this.status = v; }
     public LocalDateTime getPublishedAt() { return publishedAt; }

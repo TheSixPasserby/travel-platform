@@ -1,0 +1,240 @@
+{
+  "checkedLayouts": 24,
+  "checks": [
+    {
+      "state": "anonymous",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "anonymous",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "anonymous",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "anonymous",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "anonymous",
+      "theme": "light",
+      "width": 1024,
+      "scrollWidth": 1024,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "anonymous",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "anonymous",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "anonymous",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "anonymous",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "anonymous",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "anonymous",
+      "theme": "dark",
+      "width": 1024,
+      "scrollWidth": 1024,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "anonymous",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "user",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "user",
+      "theme": "light",
+      "width": 390,
+      "scrollWidth": 390,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "user",
+      "theme": "light",
+      "width": 430,
+      "scrollWidth": 430,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "user",
+      "theme": "light",
+      "width": 768,
+      "scrollWidth": 768,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "user",
+      "theme": "light",
+      "width": 1024,
+      "scrollWidth": 1024,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "user",
+      "theme": "light",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "user",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "user",
+      "theme": "dark",
+      "width": 390,
+      "scrollWidth": 390,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "user",
+      "theme": "dark",
+      "width": 430,
+      "scrollWidth": 430,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "user",
+      "theme": "dark",
+      "width": 768,
+      "scrollWidth": 768,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "user",
+      "theme": "dark",
+      "width": 1024,
+      "scrollWidth": 1024,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    },
+    {
+      "state": "user",
+      "theme": "dark",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "rowHeight": 64,
+      "oneRow": true,
+      "targetsInViewport": true
+    }
+  ],
+  "themePersistence": true,
+  "systemThemeChanges": true,
+  "drawerFocusScrollInert": true,
+  "overlayMutualExclusion": true,
+  "backdropEscape": true,
+  "longIdentity": true,
+  "realLoginLogout": true,
+  "logoutFailurePreservesSession": true,
+  "publicUsername": true,
+  "unknownRegion": true,
+  "commentAuthorBadge": true,
+  "commentXss": true,
+  "commentFailureDraft": true,
+  "commentCreateDeletePagination": true,
+  "adminVisibilityFixture": true,
+  "realAdminForbidden": true,
+  "reducedMotion": true,
+  "uncaughtErrors": 0,
+  "isolatedDatabase": true
+}

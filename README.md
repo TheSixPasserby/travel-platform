@@ -2,7 +2,7 @@
 
 > 可运行的旅游攻略分享与私人行程平台，包含源码、设计与验收证据、数据库初始化、运行和毕业演示材料。采用Codex主导、DSH执行的分阶段规划、实现和审查流程。
 
-M9 正在现有 M8 上增量交付三态主题、移动 Web、轻量动效及 uni-app 移动源码，截止 2026-11-10 23:59（Asia/Shanghai）。已实现、真实测试与跨端工具链阻塞持续记录在 [M9 交付状态](docs/M9-DELIVERY-STATUS.md)。
+M10 已在 M8/M9 上完成 Web 单行顶栏、导航抽屉、设置/账号浮层、昵称与 @用户名、评论元信息及安全 IP 属地未知降级的本地验收。截止仍为 2026-11-10 23:59（Asia/Shanghai）。源码、实际测试、截图与边界见 [M10 交付状态](docs/M10-DELIVERY-STATUS.md)，原移动端成果及真机待办见 [M9 交付状态](docs/M9-DELIVERY-STATUS.md)。uni-app 布局本轮未改。
 
 代码仓库：[TheSixPasserby/travel-platform](https://github.com/TheSixPasserby/travel-platform)（私有，主分支`main`）。现有阶段基线按用户授权提交；仍有待补充核对的功能，阶段测试通过不等同最终全功能验收。
 

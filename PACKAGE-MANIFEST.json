@@ -8,8 +8,8 @@
   "model_sameness_required": false,
   "codex_primary_responsibilities": "总体规划、架构决策、任务拆分、代码整合、质量控制、最终验收",
   "dsh_subagent_responsibilities": "编码、测试、文档整理、专项审查",
-  "application_code_status": "M8 preserved; M9 code, local regression, 210 Web viewport/theme combinations and uni-app H5 API reads verified; mp-weixin/App/H5 resources compiled; native tool/device/package acceptance pending",
-  "database_schema_status": "14-table M8 additive schema implemented on isolated MySQL 8.4.13; M9 performs no schema or source business data changes",
+  "application_code_status": "M8/M9 preserved; M10 Web header/overlays/identity/comments and safe IP-region fallback implemented; local backend 249/Web337/Python83 and 24 browser layouts verified; native device acceptance pending",
+  "database_schema_status": "14-table MySQL 8.4.13; M10 adds nullable ip_region to guides/comments through verified additive migration; 133 original rows and 44 upload files preserved",
   "validated_database_version": "8.4.13",
   "delivery_documentation": [
     "docs/22-deployment-and-operations.md",
@@ -19,6 +19,7 @@
     "docs/26-thesis-and-defense-outline.md",
     "docs/27-m7-test-report.md",
     "docs/33-m8-final-report.md",
-    "docs/M9-DELIVERY-STATUS.md"
+    "docs/M9-DELIVERY-STATUS.md",
+    "docs/M10-DELIVERY-STATUS.md"
   ]
 }

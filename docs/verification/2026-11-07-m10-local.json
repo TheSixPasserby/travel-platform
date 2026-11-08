@@ -1,0 +1,55 @@
+{
+  "date": "2026-11-07",
+  "timezone": "Asia/Shanghai",
+  "deadline": "2026-11-10T23:59:00+08:00",
+  "branch": "codex/m9-delivery",
+  "baselineSha": "712be1db66f4abb0bcc8225ad1940482fc22fed4",
+  "backend": {
+    "command": "python3 scripts/backend.py package",
+    "tests": 249,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "package": "passed"
+  },
+  "web": {
+    "tests": 337,
+    "testFiles": 34,
+    "build": "passed"
+  },
+  "python": {
+    "tests": 83,
+    "failures": 0
+  },
+  "mobile": {
+    "sourceModified": false,
+    "typeCheck": "passed",
+    "safetyTests": 16,
+    "h5": "passed",
+    "mpWeixin": "resources compiled; native acceptance pending",
+    "app": "resources compiled; signed package/device acceptance pending"
+  },
+  "browserEvidence": "2026-11-07-m10-browser.json",
+  "dataEvidence": "2026-11-07-m10-data.json",
+  "geoip": {
+    "auditedDataSource": null,
+    "currentBehavior": "NULL / unknown; no external requests",
+    "rawIpBusinessStorage": false
+  },
+  "dsh": {
+    "provider": "buddy (CodeBuddy)",
+    "model": "deepseek-v4.1-flash",
+    "effort": "max",
+    "probe": "verified",
+    "formalJobs": [
+      "hub-2-mw5uccvg",
+      "hub-3-mw5us06d"
+    ],
+    "formalStatus": "failed before tool call",
+    "toolCalls": 0,
+    "workBuddyUsed": false
+  },
+  "ci": "not executed for M10; no push",
+  "deployed": false,
+  "committed": false
+}

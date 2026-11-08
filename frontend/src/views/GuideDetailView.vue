@@ -7,7 +7,7 @@ import GuideActions from '@/components/GuideActions.vue'
 import GuideComments from '@/components/GuideComments.vue'
 import SafeMarkdown from '@/components/SafeMarkdown.vue'
 import TravelArt from '@/components/TravelArt.vue'
-import UserAvatar from '@/components/UserAvatar.vue'
+import UserIdentity from '@/components/UserIdentity.vue'
 import { useAuthStore } from '@/stores/auth'
 import type { GuideDetail } from '@/types/guide'
 import type { GuideInteraction } from '@/types/interaction'
@@ -44,7 +44,7 @@ watch(()=>route.params.id,()=>{void load()},{ immediate:true })
           <div class="flex flex-wrap gap-3 text-xs text-pine"><RouterLink v-for="tag in guide.tags" :key="tag.id" :to="{ name:'guides',query:{ tagId:tag.id } }" class="rounded-full bg-pine-soft/50 px-3 py-1">#{{ tag.name }}</RouterLink></div>
           <h1 class="mt-4 break-words font-serif text-3xl leading-tight text-pine-deep sm:text-5xl">{{ guide.title }}</h1>
           <p v-if="guide.summary" class="mt-5 max-w-3xl text-lg leading-relaxed text-ink-soft">{{ guide.summary }}</p>
-          <div class="mt-7 flex flex-wrap items-center justify-between gap-4 border-t border-pine/10 pt-5"><div class="flex min-w-0 items-center gap-3"><UserAvatar :src="guide.author.avatarUrl" :name="guide.author.nickname" /><div class="min-w-0"><p class="break-words font-medium text-pine-deep">{{ guide.author.nickname }}</p><p class="mt-1 text-xs text-ink-soft">发布于 {{ guide.publishedAt?.slice(0,10) }}</p></div></div><RouterLink v-if="isAuthor" data-test="edit-guide" :to="{ name:'guide-edit',params:{ id:guide.id } }" class="btn-ghost">编辑这篇攻略</RouterLink></div>
+          <div class="mt-7 flex flex-wrap items-center justify-between gap-4 border-t border-pine/10 pt-5"><UserIdentity :user="guide.author"><p class="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-ink-soft"><span>发布于 {{ guide.publishedAt?.slice(0,10) }}</span><span>IP 属地：{{ guide.ipRegion || '未知' }}</span></p></UserIdentity><RouterLink v-if="isAuthor" data-test="edit-guide" :to="{ name:'guide-edit',params:{ id:guide.id } }" class="btn-ghost">编辑这篇攻略</RouterLink></div>
           <dl class="mt-6 flex flex-wrap gap-x-10 gap-y-4 text-sm"><div v-if="guide.destination"><dt class="text-xs text-ink-soft">目的地</dt><dd class="mt-1"><RouterLink :to="{ name:'destination-detail',params:{ id:guide.destination.id } }" class="text-pine hover:underline">{{ guide.destination.name }}{{ guide.destination.status==='INACTIVE'?'（历史目的地）':'' }}</RouterLink></dd></div><div v-if="guide.travelDays"><dt class="text-xs text-ink-soft">旅行天数</dt><dd class="mt-1 text-pine-deep">{{ guide.travelDays }} 天</dd></div><div v-if="guide.budgetPerPerson!==null"><dt class="text-xs text-ink-soft">人均预算</dt><dd class="mt-1 text-pine-deep">¥ {{ guide.budgetPerPerson }}</dd></div><div v-if="guide.season"><dt class="text-xs text-ink-soft">旅行季节</dt><dd class="mt-1 text-pine-deep">{{ guide.season }}</dd></div></dl>
         </header>
       </div>
@@ -57,12 +57,12 @@ watch(()=>route.params.id,()=>{void load()},{ immediate:true })
           </li>
         </ul>
       </section>
-      <GuideActions :guide-id="guide.id" :like-count="guide.likeCount" :favorite-count="guide.favoriteCount" :comment-count="guide.commentCount" @change="updateInteraction" />
+      <GuideActions :guide-id="guide.id" :guide-author-id="guide.author.id" :like-count="guide.likeCount" :favorite-count="guide.favoriteCount" :comment-count="guide.commentCount" @change="updateInteraction" />
       <div class="mt-7 grid items-start gap-7 lg:grid-cols-[minmax(0,1fr)_17rem]">
         <div class="surface-card min-w-0 p-6 sm:p-9 lg:p-12"><SafeMarkdown :content="guide.content" /><section v-if="guide.images.length" class="mt-10 border-t border-pine/10 pt-6"><h2 class="font-serif text-xl text-pine-deep">沿途影像</h2><div class="mt-4 grid gap-4 sm:grid-cols-2"><figure v-for="image in guide.images" :key="image.url"><img v-if="!failedImages.has(image.url)" :src="image.url" :alt="image.altText||'攻略中的旅行影像'" class="aspect-[4/3] w-full rounded-xl object-cover" loading="lazy" @error="failedImages.add(image.url)" /><div v-else class="flex aspect-[4/3] items-center justify-center rounded-xl bg-pine-soft/30 p-4 text-sm text-ink-soft">图片暂时无法显示</div><figcaption v-if="image.altText" class="mt-2 text-sm text-ink-soft">{{ image.altText }}</figcaption></figure></div></section></div>
-        <aside class="surface-card p-6"><p class="text-xs tracking-[0.25em] text-ember">A NOTE FROM THE AUTHOR</p><h2 class="mt-4 font-serif text-xl text-pine-deep">{{ guide.author.nickname }}</h2><p class="mt-3 whitespace-pre-line text-sm leading-relaxed text-ink-soft">{{ guide.author.bio||'把路上的风景，写成值得回看的手记。' }}</p><p class="mt-6 border-t border-pine/10 pt-4 text-xs text-ink-soft">{{ guide.likeCount }} 赞 · {{ guide.favoriteCount }} 收藏 · {{ guide.commentCount }} 评论</p></aside>
+        <aside class="surface-card p-6"><p class="text-xs tracking-[0.25em] text-ember">A NOTE FROM THE AUTHOR</p><UserIdentity class="mt-4" :user="guide.author" :show-avatar="false" /><p class="mt-3 whitespace-pre-line text-sm leading-relaxed text-ink-soft">{{ guide.author.bio||'把路上的风景，写成值得回看的手记。' }}</p><p class="mt-6 border-t border-pine/10 pt-4 text-xs text-ink-soft">{{ guide.likeCount }} 赞 · {{ guide.favoriteCount }} 收藏 · {{ guide.commentCount }} 评论</p></aside>
       </div>
-      <GuideComments class="mt-7" :guide-id="guide.id" @count-changed="updateCommentCount" />
+      <GuideComments class="mt-7" :guide-id="guide.id" :guide-author-id="guide.author.id" @count-changed="updateCommentCount" />
     </article>
   </section>
 </template>
