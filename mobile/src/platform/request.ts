@@ -1,7 +1,7 @@
 import type { ApiResponse } from '../../../frontend/src/types/api.ts'
 import { readToken, writeToken } from '../services/token.ts'
 import { ApiError, NETWORK_ERROR_MESSAGE, SERVER_ERROR_MESSAGE, REQUEST_ERROR_MESSAGE } from './errors.ts'
-import { requestUrl } from './url.ts'
+import { endpointVersion, requestUrl } from './url.ts'
 
 interface RequestOptions {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
@@ -26,6 +26,7 @@ export function unwrapResponse<T>(status: number, raw: unknown, token: string | 
 }
 
 export function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
+  const endpoint = endpointVersion.value
   let url = requestUrl(path)
   if (options.query) {
     const query = Object.entries(options.query)
@@ -40,10 +41,17 @@ export function request<T>(path: string, options: RequestOptions = {}): Promise<
       data: options.data as Record<string, unknown> | undefined,
       header: { 'Content-Type': 'application/json', ...(token ? { satoken: token } : {}) },
       success(response) {
-        try { resolve(unwrapResponse<T>(response.statusCode, response.data, token)) }
+        try {
+          if (endpoint !== endpointVersion.value) throw new ApiError('服务器地址已更改，请重试')
+          resolve(unwrapResponse<T>(response.statusCode, response.data, token))
+        }
         catch (error) { reject(error) }
       },
-      fail() { reject(new ApiError(NETWORK_ERROR_MESSAGE, { isNetworkError: true })) }
+      fail() {
+        reject(endpoint !== endpointVersion.value
+          ? new ApiError('服务器地址已更改，请重试')
+          : new ApiError(NETWORK_ERROR_MESSAGE, { isNetworkError: true }))
+      }
     })
   })
 }

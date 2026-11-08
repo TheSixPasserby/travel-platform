@@ -2,6 +2,7 @@ import { onBeforeUnmount, ref, shallowRef, watch } from 'vue'
 import { onHide, onShow } from '@dcloudio/uni-app'
 import { sessionVersion, restoreSession } from '../services/session.ts'
 import { errorMessage } from '../platform/errors.ts'
+import { endpointVersion } from '../platform/url.ts'
 
 /** Invalidate old requests and clear private content when a page hides or an account changes. */
 export function useResource<T>(fetcher: () => Promise<T>, privateData = false) {
@@ -43,6 +44,10 @@ export function useResource<T>(fetcher: () => Promise<T>, privateData = false) {
   onBeforeUnmount(invalidate)
   watch(sessionVersion, () => {
     if (!privateData) return
+    invalidate()
+    if (visible) void load()
+  }, { flush: 'sync' })
+  watch(endpointVersion, () => {
     invalidate()
     if (visible) void load()
   }, { flush: 'sync' })

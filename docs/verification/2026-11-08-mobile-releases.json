@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-08",
+  "scope": "mobile releases and runtime server configuration",
+  "local": {
+    "pythonTests": {
+      "passed": 93,
+      "failed": 0
+    },
+    "mobileSafety": {
+      "passed": 22,
+      "failed": 0
+    },
+    "mobileTypeCheck": "passed",
+    "resourceBuilds": {
+      "h5": "passed",
+      "mp-weixin": "passed",
+      "app": "passed"
+    },
+    "actionlint": "passed",
+    "diffCheck": "passed",
+    "browser": {
+      "checksPassed": 7,
+      "viewport": "390x844",
+      "api": "mocked empty public responses; not a live backend test",
+      "screenshot": "output/playwright/mobile-release/server-settings.png"
+    }
+  },
+  "remoteBaseline": {
+    "runId": 42491784546,
+    "result": "success",
+    "sha": "e538fbf839d2f0bbcbc9806bf68c244d854d9c34"
+  },
+  "newWorkflow": "pending first push",
+  "android": {
+    "appid": "__UNI__284320D",
+    "packageName": "io.github.thesixpasserby.travel",
+    "fixedSigningSecretsConfigured": true,
+    "appkey": "blocked by DCloud verification",
+    "officialSdk": "awaiting client download; official alternative reached visit limit",
+    "gradleBuild": "not executed",
+    "apkSignatureVerification": "not executed",
+    "deviceInstallation": "not executed"
+  },
+  "scopePreserved": [
+    "backend and Web unchanged",
+    "original mobile page layouts preserved except authorized server settings entry",
+    "no development database or uploaded files modified"
+  ]
+}

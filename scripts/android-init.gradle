@@ -1,0 +1,26 @@
+// Applied only to the SHA-pinned official DCloud SDK template in an isolated runner directory.
+allprojects { project ->
+    project.plugins.withId('com.android.application') {
+        project.extensions.getByName('androidComponents').finalizeDsl { android ->
+            android.compileSdkVersion 36
+            android.buildToolsVersion '36.0.0'
+            android.defaultConfig.applicationId = System.getenv('ANDROID_PACKAGE_NAME')
+            android.defaultConfig.versionCode = Integer.parseInt(System.getenv('TRAVEL_VERSION_CODE'))
+            android.defaultConfig.versionName = System.getenv('TRAVEL_VERSION_NAME')
+            android.defaultConfig.minSdkVersion 21
+            android.defaultConfig.targetSdkVersion 36
+            def signing = android.signingConfigs.maybeCreate('travelCi')
+            signing.storeFile = new File(System.getenv('TRAVEL_KEYSTORE_PATH'))
+            signing.storePassword = System.getenv('ANDROID_KEYSTORE_PASSWORD')
+            signing.keyAlias = System.getenv('ANDROID_KEY_ALIAS')
+            signing.keyPassword = System.getenv('ANDROID_KEY_PASSWORD')
+            signing.v1SigningEnabled = true
+            signing.v2SigningEnabled = true
+            android.buildTypes.named('release') {
+                signingConfig = signing
+                minifyEnabled = false
+                debuggable = false
+            }
+        }
+    }
+}

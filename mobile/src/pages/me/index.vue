@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { session, logout, restoreSession } from '../../services/session'
-import { openLogin, openPrivatePage } from '../../platform/navigation'
+import { openLogin, openPrivatePage, openServerSettings } from '../../platform/navigation'
 import { errorMessage } from '../../platform/errors'
 const busy = ref(false), error = ref('')
 async function restore(): Promise<void> {
@@ -27,6 +27,7 @@ onShow(() => { void restore() })
     <button v-else @tap="openLogin">登录已有账号</button>
     <button class="secondary" @tap="openPrivatePage('favorites')">我的收藏</button>
     <button class="secondary" @tap="openPrivatePage('itineraries')">我的行程</button>
+    <button class="secondary" @tap="openServerSettings()">服务器设置</button>
     <text class="muted">移动端行程目前支持只读查看。完整编辑可在 Web 使用。</text>
   </view>
 </template>

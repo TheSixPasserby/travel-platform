@@ -6,6 +6,11 @@ export function openDetail(kind: keyof typeof detailPages, id: string): void {
   uni.navigateTo({ url: `/pages/${detailPages[kind]}/detail?id=${encodeURIComponent(id)}` })
 }
 export function openLogin(): void { uni.navigateTo({ url: '/pages/login/index' }) }
+export function openServerSettings(firstLaunch = false): void {
+  const url = '/pages/settings/server'
+  if (firstLaunch) uni.reLaunch({ url })
+  else uni.navigateTo({ url })
+}
 export function openPrivatePage(kind: 'favorites' | 'itineraries'): void {
   uni.navigateTo({ url: `/pages/${kind}/index` })
 }

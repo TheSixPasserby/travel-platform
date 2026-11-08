@@ -1,0 +1,177 @@
+name: Mobile packages and releases
+
+on:
+  push:
+    branches: ['**']
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: Release channel
+        type: choice
+        required: true
+        default: beta
+        options: [beta, release]
+      version:
+        description: Base version (X.Y.Z); manual releases run from main
+        type: string
+        required: true
+        default: '0.1.0'
+
+permissions:
+  contents: read
+
+# Each push gets an immutable tag; no shared concurrency group drops pending builds.
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      native_ready: ${{ steps.plan.outputs.native_ready }}
+      channel: ${{ steps.plan.outputs.channel }}
+      tag: ${{ steps.plan.outputs.tag }}
+      prefix: ${{ steps.plan.outputs.prefix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Validate event, version and native configuration
+        id: plan
+        env:
+          RELEASE_CHANNEL: ${{ inputs.channel }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          DCLOUD_UNI_APPID: ${{ vars.DCLOUD_UNI_APPID }}
+          DCLOUD_ANDROID_SDK_URL: ${{ vars.DCLOUD_ANDROID_SDK_URL }}
+          DCLOUD_ANDROID_SDK_SHA256: ${{ vars.DCLOUD_ANDROID_SDK_SHA256 }}
+          ANDROID_PACKAGE_NAME: ${{ vars.ANDROID_PACKAGE_NAME }}
+          ANDROID_CERT_SHA1: ${{ vars.ANDROID_CERT_SHA1 }}
+          DCLOUD_ANDROID_APPKEY: ${{ secrets.DCLOUD_ANDROID_APPKEY }}
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: python3 scripts/mobile_release.py plan
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mobile-plan
+          path: mobile-plan.json
+          if-no-files-found: error
+          retention-days: 14
+
+  resources:
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+      - uses: actions/download-artifact@v4
+        with:
+          name: mobile-plan
+      - run: npm --prefix mobile ci
+      - run: npm --prefix mobile run type-check
+      - run: npm --prefix mobile run check:safety
+      - run: python3 -m unittest discover -s scripts/tests
+      - name: Apply generated release version after source safety checks
+        env:
+          DCLOUD_UNI_APPID: ${{ vars.DCLOUD_UNI_APPID }}
+          WECHAT_APPID: ${{ vars.WECHAT_APPID }}
+        run: python3 scripts/mobile_release.py prepare
+      - run: npm --prefix mobile run build:h5
+      - run: npm --prefix mobile run build:mp-weixin
+      - run: npm --prefix mobile run build:app
+      - run: python3 scripts/mobile_release.py bundle
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mobile-resource-bundles
+          path: mobile-release/
+          if-no-files-found: error
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: needs.plan.outputs.native_ready == 'true'
+        with:
+          name: native-app-resources
+          path: mobile/dist/build/app/
+          if-no-files-found: error
+          retention-days: 1
+
+  android:
+    needs: [plan, resources]
+    if: needs.plan.outputs.native_ready == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/download-artifact@v4
+        with:
+          name: mobile-plan
+      - uses: actions/download-artifact@v4
+        with:
+          name: native-app-resources
+          path: native-resources
+      - name: Install matching Android build tools
+        run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0'
+      - name: Build and verify signed Android APK
+        env:
+          DCLOUD_UNI_APPID: ${{ vars.DCLOUD_UNI_APPID }}
+          DCLOUD_ANDROID_SDK_URL: ${{ vars.DCLOUD_ANDROID_SDK_URL }}
+          DCLOUD_ANDROID_SDK_SHA256: ${{ vars.DCLOUD_ANDROID_SDK_SHA256 }}
+          ANDROID_PACKAGE_NAME: ${{ vars.ANDROID_PACKAGE_NAME }}
+          ANDROID_CERT_SHA1: ${{ vars.ANDROID_CERT_SHA1 }}
+          DCLOUD_ANDROID_APPKEY: ${{ secrets.DCLOUD_ANDROID_APPKEY }}
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: >-
+          python3 scripts/android_package.py --plan mobile-plan.json
+          --resources native-resources --workspace "$RUNNER_TEMP/travel-native"
+          --output android-output
+      - uses: actions/upload-artifact@v4
+        with:
+          name: signed-android-apk
+          path: android-output/
+          if-no-files-found: error
+          retention-days: 14
+
+  publish:
+    needs: [plan, resources, android]
+    if: >-
+      always() && needs.plan.result == 'success' && needs.resources.result == 'success' &&
+      (needs.android.result == 'success' ||
+      (needs.plan.outputs.channel == 'nightly' && needs.plan.outputs.native_ready == 'false' && needs.android.result == 'skipped'))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: mobile-plan
+      - uses: actions/download-artifact@v4
+        with:
+          name: mobile-resource-bundles
+          path: mobile-release
+      - uses: actions/download-artifact@v4
+        if: needs.android.result == 'success'
+        with:
+          name: signed-android-apk
+          path: mobile-release
+      - name: Publish GitHub release only after asset verification
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/mobile_release.py publish

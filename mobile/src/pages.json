@@ -60,6 +60,12 @@
       "style": {
         "navigationBarTitleText": "行程详情"
       }
+    },
+    {
+      "path": "pages/settings/server",
+      "style": {
+        "navigationBarTitleText": "服务器设置"
+      }
     }
   ],
   "globalStyle": {

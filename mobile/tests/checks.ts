@@ -2,7 +2,9 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { watch } from 'vue'
+import type { CurrentUser } from '../../frontend/src/types/auth.ts'
 import { normalizeApiBase, requestUrl, imageUrl } from '../src/platform/url.ts'
+import * as server from '../src/platform/url.ts'
 import { readStorage, writeStorage } from '../src/platform/storage.ts'
 import { readToken, writeToken } from '../src/services/token.ts'
 import { request, unwrapResponse } from '../src/platform/request.ts'
@@ -30,7 +32,7 @@ function take(): PendingRequest {
 function respond(call: PendingRequest, data: unknown, status = 200): void {
   call.success({ statusCode: status, data: { code: status < 300 ? 0 : status * 100 + 1, message: 'test', data } })
 }
-const user = { id: '2', username: 'test', nickname: '旅人', avatarUrl: null, bio: null, role: 'USER', status: 'ACTIVE', createdAt: '' }
+const user: CurrentUser = { id: '2', username: 'test', nickname: '旅人', avatarUrl: null, bio: null, role: 'USER', status: 'ACTIVE', createdAt: '' }
 const currentUserId = () => session.user?.id
 
 test('HTTPS base is canonical and contains no credentials or unrelated paths', () => {
@@ -40,6 +42,9 @@ test('HTTPS base is canonical and contains no credentials or unrelated paths', (
   }
   assert.throws(() => normalizeApiBase('/api/v1'))
   assert.equal(normalizeApiBase('/api/v1', true), '/api/v1')
+  for (const value of ['http://host:0/api/v1', 'http://host:65536/api/v1', 'https://-bad.example/api/v1', 'https://a..example/api/v1', 'http://999.1.2.3/api/v1', 'http://[:::]/api/v1', 'http://[fe80::1%en0]/api/v1']) {
+    assert.throws(() => normalizeApiBase(value), value)
+  }
 })
 
 test('requests cannot send a session to an absolute or protocol-relative URL', () => {
@@ -161,7 +166,7 @@ test('logout network failure preserves the account, a successful retry clears it
 
 test('all registered MVP pages exist and native manifests have no invented AppID', () => {
   const pages = JSON.parse(readFileSync('src/pages.json', 'utf8'))
-  assert.equal(pages.pages.length, 9)
+  assert.equal(pages.pages.length, 10)
   for (const page of pages.pages) assert.ok(readFileSync('src/' + page.path + '.vue', 'utf8').length)
   const manifest = JSON.parse(readFileSync('src/manifest.json', 'utf8'))
   assert.equal(manifest.appid, '')
@@ -177,4 +182,102 @@ test('H5 manifest leaves the Vite command-line port effective', () => {
 test('H5 dev server explicitly restricts filesystem access', () => {
   const config = readFileSync('vite.config.ts', 'utf8')
   assert.match(config, /fs:\s*\{\s*strict:\s*true\s*\}/)
+})
+
+test('saved server URL is persisted and invalid input cannot replace it', () => {
+  const api = server as unknown as {
+    saveApiBase: (value: string) => void
+    getApiBase: () => string | null
+    resetApiBase: () => void
+  }
+  assert.equal(typeof api.saveApiBase, 'function', 'runtime server configuration must be implemented')
+  const originalSet = uni.setStorageSync, originalRemove = uni.removeStorageSync
+  const persisted = new Map<string, unknown>()
+  uni.setStorageSync = (key, value) => { persisted.set(key, value) }
+  uni.removeStorageSync = key => { persisted.delete(key) }
+  try {
+    api.saveApiBase('https://first.example/api/v1')
+    assert.equal(api.getApiBase(), 'https://first.example/api/v1')
+    assert.equal(readStorage('travel-notes.mobile.api-base'), 'https://first.example/api/v1')
+    assert.equal(persisted.get('travel-notes.mobile.api-base'), 'https://first.example/api/v1')
+    assert.equal(requestUrl('/guides'), 'https://first.example/api/v1/guides')
+    writeToken('still-this-server'); session.user = user
+    api.saveApiBase('https://FIRST.example/api/v1/')
+    assert.equal(readToken(), 'still-this-server')
+    assert.equal(session.user?.id, user.id)
+    assert.throws(() => api.saveApiBase('https://user:password@other.example/api/v1'))
+    assert.equal(api.getApiBase(), 'https://first.example/api/v1')
+    assert.equal(readToken(), 'still-this-server')
+    api.resetApiBase()
+    assert.equal(persisted.has('travel-notes.mobile.api-base'), false)
+  } finally {
+    uni.setStorageSync = originalSet; uni.removeStorageSync = originalRemove
+  }
+})
+
+test('changing servers clears account state before a new request can send the previous token', async () => {
+  const api = server as unknown as { saveApiBase: (value: string) => void; resetApiBase: () => void }
+  assert.equal(typeof api.saveApiBase, 'function')
+  api.saveApiBase('https://old.example/api/v1')
+  writeToken('old-server-token'); session.user = user
+  const version = sessionVersion.value
+  api.saveApiBase('https://new.example/api/v1')
+  assert.equal(readToken(), null)
+  assert.equal(session.user, null)
+  assert.ok(sessionVersion.value > version)
+  const call = request('/guides')
+  const transport = take()
+  assert.equal(transport.url, 'https://new.example/api/v1/guides')
+  assert.equal(transport.header.satoken, undefined)
+  respond(transport, [])
+  assert.deepEqual(await call, [])
+  api.resetApiBase()
+})
+
+test('late old-server success and 401 cannot replace or clear a new server session', async () => {
+  const api = server as unknown as { saveApiBase: (value: string) => void; resetApiBase: () => void }
+  assert.equal(typeof api.saveApiBase, 'function')
+  api.saveApiBase('https://old.example/api/v1')
+  writeToken('same-token-value')
+  const first = request('/guides', { auth: false }), firstTransport = take()
+  const privateCall = request('/users/me'), privateTransport = take()
+  const firstRejection = assert.rejects(first, /服务器.*更改|服务器.*切换/)
+  const privateRejection = assert.rejects(privateCall, /服务器.*更改|服务器.*切换/)
+  api.saveApiBase('https://new.example/api/v1')
+  writeToken('same-token-value'); session.user = user
+  respond(firstTransport, ['old public data'])
+  respond(privateTransport, null, 401)
+  await firstRejection; await privateRejection
+  assert.equal(readToken(), 'same-token-value')
+  assert.equal(session.user?.id, user.id)
+  api.resetApiBase()
+})
+
+test('ten real pages include a reachable server settings page without changing AppID ownership', () => {
+  const pages = JSON.parse(readFileSync('src/pages.json', 'utf8'))
+  assert.equal(pages.pages.length, 10)
+  assert.equal(pages.pages[0].path, 'pages/guides/index', 'H5 must retain the existing public landing page')
+  assert.ok(pages.pages.some((page: { path: string }) => page.path === 'pages/settings/server'))
+  assert.ok(readFileSync('src/pages/settings/server.vue', 'utf8').length)
+})
+
+test('unconfigured native settings resolve to no endpoint, while H5 can keep the same-origin default', () => {
+  const api = server as unknown as { resolveApiBase: (saved: string | null, fallback: string | null, allowRelative?: boolean) => string | null }
+  assert.equal(typeof api.resolveApiBase, 'function')
+  assert.equal(api.resolveApiBase(null, null), null)
+  assert.equal(api.resolveApiBase('javascript:alert(1)', null), null)
+  assert.equal(api.resolveApiBase(null, '/api/v1', true), '/api/v1')
+  assert.equal(api.resolveApiBase('https://saved.example/api/v1', '/api/v1', true), 'https://saved.example/api/v1')
+  assert.equal(api.resolveApiBase(null, 'https://invalid.example/other', false), null)
+})
+
+test('settings accept a server origin and canonical valid IPv4 or IPv6 addresses without a Web URL API', () => {
+  const api = server as unknown as { normalizeServerAddress: (value: string) => string }
+  assert.equal(typeof api.normalizeServerAddress, 'function')
+  assert.equal(api.normalizeServerAddress('  HTTPS://TRAVEL.Example:00443/  '), 'https://travel.example:443/api/v1')
+  assert.equal(api.normalizeServerAddress('http://192.168.1.5:8080'), 'http://192.168.1.5:8080/api/v1')
+  assert.equal(api.normalizeServerAddress('http://[::1]:8080'), 'http://[::1]:8080/api/v1')
+  assert.equal(api.normalizeServerAddress('https://[2001:db8::8]'), 'https://[2001:db8::8]/api/v1')
+  assert.equal(api.normalizeServerAddress('http://[::ffff:192.168.1.5]'), 'http://[::ffff:192.168.1.5]/api/v1')
+  for (const invalid of ['http://host/other', 'http://[1:2:3:4:5:6:7:8:9]', 'http://[1::2::3]', 'http://bad-.example', 'http://host:65536']) assert.throws(() => api.normalizeServerAddress(invalid))
 })

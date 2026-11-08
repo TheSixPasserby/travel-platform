@@ -2,7 +2,17 @@
 
 **项目：** 旅游攻略分享与行程规划平台  
 **基线版本：** V1.1 审查稿（2026-11-02）  
-**当前阶段：** M10 Web 与安全 IP 属地降级已编码并完成本地测试、浏览器和开发库增量迁移验收。M8/M9 成果保留，uni-app 布局未改；微信与 Android 真机验收待办继续保留。2026-11-08 用户已授权提交推送并将所有分支整合到 `main`；当前分支为 `main`，完整功能提交为 `a12f054`，结果以 Git 提交及 GitHub Actions 记录为准。硬截止 2026-11-10 23:59（Asia/Shanghai）。进展见 [M10 交付状态](docs/M10-DELIVERY-STATUS.md)。
+**当前阶段：** M10 已整合到 main，合并后 CI 已通过；M8/M9 成果保留。2026-11-08 按用户新要求增加移动分渠道 Actions 发布与应用内服务器设置；本地测试已执行，真实 APK/Android 真机验收仍待官方 SDK 和 DCloud 验证条件。硬截止 2026-11-10 23:59（Asia/Shanghai）。进展见 [M10 交付状态](docs/M10-DELIVERY-STATUS.md)与[移动发布说明](docs/MOBILE_RELEASES.md)。
+
+## 移动 Actions 发布与服务器设置（2026-11-08）
+
+- 用户确认先做 Android APK，并输出 H5/微信工程；分支 push 为 nightly，main 手动选择 beta/release。nightly/beta 为 GitHub 预发布，正式版更新 latest；PR 不签名或发布，标签不触发递归 nightly。创建草稿、上传全部附件后才发布，已有 tag/Release 一律拒绝覆盖。
+- 新增分版本/资源打包/原生打包脚本与独立 workflow，保留 ci.yml。beta/正式缺少原生配置或缺少已核验 APK 时停止；nightly 缺配置时只发布明确标注的资源包及缺项，不将 App 资源冒充安装包。真实 APK 要验证固定证书、包名、版本和 SHA256。
+- 已在用户本人 DCloud 账号创建 `__UNI__284320D`，登记包名 `io.github.thesixpasserby.travel` 与固定签名指纹；本机私有目录生成一次性固定 PKCS12，四项签名凭据已写入 GitHub Secrets，公共身份写入 Variables。未提交证书、密码、AppKey 或账户信息。
+- 受用户“进入应用后自行填写”授权，增加一个服务器设置页及“我的”入口，其他移动布局保留。App/微信未配置时首启引导；H5 保留同源默认。严格校验地址，切换时清旧令牌、账号和缓存，隔离旧服务器迟到响应。
+- 本轮已执行 Python **93/93**、移动安全 **22/22**、移动类型检查、H5/微信/App 三目标资源构建、actionlint、diff 检查。真实 H5 浏览器 **7 项**通过，390×844 无横向溢出；截图本机 `output/playwright/mobile-release/server-settings.png`。后端/Web 未改，本轮未重跑其本地测试；main 基线 [CI](https://github.com/TheSixPasserby/travel-platform/actions/runs/42491784546) 已 success。
+- 当前外部阻碍：官方百度 SDK 下载要求客户端，官方中国移动分享提示浏览上限；创建离线 Key 返回验证码校验失败，已请求用户在官方页面完成验证及下载。未运行 Android Gradle/签名 APK/真机安装；本次新增 Actions 的真实执行与发布结果待 push 后记录。微信工程不等于上传或线上发布，真实微信 AppID 仍待用户具备。
+- DSH 延续已核实的 CodeBuddy V4.1 Flash/Max 准备阶段阻塞，不换成 WorkBuddy、不降级；本轮由 Codex 与 Codex 协作代理完成实现和只读审查，未虚记 DSH 执行。
 
 ## M10 本地验收（2026-11-07）
 

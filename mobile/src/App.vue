@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { onLaunch } from '@dcloudio/uni-app'
 import { restoreSession } from './services/session'
-onLaunch(() => { void restoreSession().catch(() => undefined) })
+import { hasApiBase } from './platform/url'
+import { openServerSettings } from './platform/navigation'
+onLaunch(() => {
+  if (!hasApiBase()) { openServerSettings(true); return }
+  void restoreSession().catch(() => undefined)
+})
 </script>
 
 <style>

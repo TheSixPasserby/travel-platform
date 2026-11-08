@@ -1,8 +1,9 @@
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import type { CurrentUser, LoginData, LoginPayload } from '../../../frontend/src/types/auth.ts'
 import { request, setUnauthorizedHandler } from '../platform/request.ts'
 import { readToken, writeToken } from './token.ts'
 import { ApiError, errorMessage } from '../platform/errors.ts'
+import { endpointVersion } from '../platform/url.ts'
 
 export const session = reactive({ user: null as CurrentUser | null, error: '', restoring: false })
 export const sessionVersion = ref(0)
@@ -17,6 +18,7 @@ function clearSession(): void {
   sessionVersion.value++
 }
 setUnauthorizedHandler(clearSession)
+watch(endpointVersion, clearSession, { flush: 'sync' })
 
 export async function login(payload: LoginPayload): Promise<void> {
   const version = ++sessionVersion.value
