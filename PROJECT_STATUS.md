@@ -11,7 +11,8 @@
 - 已在用户本人 DCloud 账号创建 `__UNI__284320D`，登记包名 `io.github.thesixpasserby.travel` 与固定签名指纹；本机私有目录生成一次性固定 PKCS12，四项签名凭据已写入 GitHub Secrets，公共身份写入 Variables。未提交证书、密码、AppKey 或账户信息。
 - 受用户“进入应用后自行填写”授权，增加一个服务器设置页及“我的”入口，其他移动布局保留。App/微信未配置时首启引导；H5 保留同源默认。严格校验地址，切换时清旧令牌、账号和缓存，隔离旧服务器迟到响应。
 - 本轮已执行 Python **93/93**、移动安全 **22/22**、移动类型检查、H5/微信/App 三目标资源构建、actionlint、diff 检查。真实 H5 浏览器 **7 项**通过，390×844 无横向溢出；截图本机 `output/playwright/mobile-release/server-settings.png`。后端/Web 未改，本轮未重跑其本地测试；main 基线 [CI](https://github.com/TheSixPasserby/travel-platform/actions/runs/42491784546) 已 success。
-- 当前外部阻碍：官方百度 SDK 下载要求客户端，官方中国移动分享提示浏览上限；创建离线 Key 返回验证码校验失败，已请求用户在官方页面完成验证及下载。未运行 Android Gradle/签名 APK/真机安装；本次新增 Actions 的真实执行与发布结果待 push 后记录。微信工程不等于上传或线上发布，真实微信 AppID 仍待用户具备。
+- 当前外部阻碍：官方百度 SDK 下载要求客户端，官方中国移动分享提示浏览上限；离线 AppKey 已创建并安全写入 GitHub Secrets，当前只缺 SDK 下载与 SHA256。未运行 Android Gradle/签名 APK/真机安装。微信工程不等于上传或线上发布，真实微信 AppID 仍待用户具备。
+- 功能提交 `c8cfa254` 已推送 main：[完整 CI](https://github.com/TheSixPasserby/travel-platform/actions/runs/42495703282)与[首个 nightly](https://github.com/TheSixPasserby/travel-platform/actions/runs/42495703308) success；[Release](https://github.com/TheSixPasserby/travel-platform/releases/tag/v0.1.0-nightly.20261108.1.1) 为预发布/非 Latest，三类资源 ZIP、来源与 5 项 SHA256 下载校验一致。beta 手动门禁实际在缺原生配置时失败并跳过发布，属预期拒绝；无 APK、无 beta/正式版产出。机器证据见 `docs/verification/2026-11-08-mobile-releases.json`。
 - DSH 延续已核实的 CodeBuddy V4.1 Flash/Max 准备阶段阻塞，不换成 WorkBuddy、不降级；本轮由 Codex 与 Codex 协作代理完成实现和只读审查，未虚记 DSH 执行。
 
 ## M10 本地验收（2026-11-07）

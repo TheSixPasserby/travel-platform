@@ -95,7 +95,13 @@ H5 默认仍使用本站同源 `/api/v1`，设置页可恢复该默认。自定�
 
 ## 当前状态与待验收
 
-2026-11-08：服务器设置功能已编码，本地移动安全测试 22/22 和类型检查通过。AppID、包名、签名指纹已经登记，固定签名已准备并放入构建配置；SDK 下载与 AppKey 配置、远端工作流及真实 APK 编译验证仍在进行中。此记录不能作为“已产出 APK”“远端 CI 已通过”或“真机安装已验收”的证明。
+2026-11-08：服务器设置已完成；Python 93/93、移动安全 22/22、类型与三个资源目标构建通过，H5 浏览器 7 项通过。AppID、包名、签名指纹与离线 AppKey 均已在用户本人 DCloud 账号登记；固定签名及 AppKey 已存入 GitHub Secrets。
+
+功能提交 `c8cfa254` 的[完整 CI](https://github.com/TheSixPasserby/travel-platform/actions/runs/42495703282)与[首个 nightly](https://github.com/TheSixPasserby/travel-platform/actions/runs/42495703308)均通过。[实际 Release](https://github.com/TheSixPasserby/travel-platform/releases/tag/v0.1.0-nightly.20261108.1.1)为预发布、非 Latest，含三个资源 ZIP；下载后 5 个附件 SHA256 全部匹配，原生资源内 AppID／版本／编译器及设置路由已核对。该次构建开始时 AppKey 尚未注入，历史缺项清单保留，不改写既有 Release。
+
+[手动 beta 门禁](https://github.com/TheSixPasserby/travel-platform/actions/runs/42495829445)已实际验证：缺原生配置时 plan 按预期失败，其余构建及发布跳过，没有生成不完整 beta。
+
+当前仍缺官方 SDK 归档及其校验值：百度网盘要求客户端下载，中国移动官方分享已达浏览上限，已请求用户下载 `Android-SDK@5.34.82692_20261030.zip` 后提供本机路径。Android Gradle 构建、真实 APK 验签和真机安装均未执行；尚不能声称已产出 APK。
 
 微信 AppID／合法域名和线上发布尚待对应条件。iOS IPA 未纳入当前流水线；需要另行准备 Apple 签名、描述文件和对应构建环境。原 M9、M10 验收历史保持原记录。
 

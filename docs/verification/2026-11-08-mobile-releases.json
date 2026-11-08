@@ -30,20 +30,51 @@
     "result": "success",
     "sha": "e538fbf839d2f0bbcbc9806bf68c244d854d9c34"
   },
-  "newWorkflow": "pending first push",
+  "newWorkflow": {
+    "runId": 42495703308,
+    "result": "success",
+    "sha": "c8cfa25474eea54e025289a10e955aee736892c2",
+    "nightlyTag": "v0.1.0-nightly.20261108.1.1",
+    "prerelease": true,
+    "latest": false,
+    "resourceZips": 3,
+    "downloadedChecksumsVerified": 5,
+    "compiledAppIdVerified": "__UNI__284320D",
+    "compiledVersionCodeVerified": 101,
+    "compiledCompilerVerified": "5.34",
+    "serverSettingsRouteInNativeResources": true,
+    "apkProduced": false
+  },
   "android": {
     "appid": "__UNI__284320D",
     "packageName": "io.github.thesixpasserby.travel",
     "fixedSigningSecretsConfigured": true,
-    "appkey": "blocked by DCloud verification",
+    "appkey": "created in owner DCloud account and saved to GitHub Secrets",
     "officialSdk": "awaiting client download; official alternative reached visit limit",
     "gradleBuild": "not executed",
     "apkSignatureVerification": "not executed",
-    "deviceInstallation": "not executed"
+    "deviceInstallation": "not executed",
+    "remainingRequiredConfiguration": [
+      "DCLOUD_ANDROID_SDK_URL",
+      "DCLOUD_ANDROID_SDK_SHA256"
+    ]
   },
   "scopePreserved": [
     "backend and Web unchanged",
     "original mobile page layouts preserved except authorized server settings entry",
     "no development database or uploaded files modified"
-  ]
+  ],
+  "fullCi": {
+    "runId": 42495703282,
+    "result": "success",
+    "allBuildAndTestSteps": "success",
+    "sha": "c8cfa25474eea54e025289a10e955aee736892c2"
+  },
+  "manualBetaGate": {
+    "runId": 42495829445,
+    "result": "expected failure",
+    "reason": "native configuration incomplete",
+    "publish": "skipped",
+    "apkProduced": false
+  }
 }

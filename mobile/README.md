@@ -66,6 +66,6 @@ H5 仍默认使用本站 `/api/v1` 和原攻略首页；服务器设置中可选
 
 ## 实际验收状态
 
-服务器设置源码已编码，移动安全测试 22/22 与类型检查已在本地通过。新的 Actions 发布、DCloud SDK／AppKey 配置和真实 APK 构建仍在验收，不据此声称已生成 APK 或远端 CI 已通过。原 M9 的编译、H5、微信／Android 真机及签名验收记录仍见 [M9 交付状态](../docs/M9-DELIVERY-STATUS.md)；本次发布范围与待办见 [移动构建与发布](../docs/MOBILE_RELEASES.md)。
+服务器设置已通过本地安全 22/22、类型检查、三目标资源构建与 H5 浏览器 7 项验证。功能提交 `c8cfa254` 的完整 CI、nightly 构建和 GitHub 预发布均通过，资源附件下载后校验和一致；AppKey 与固定签名已配置。APK 仍等待官方 SDK 下载，原生 Gradle、APK 验签和 Android 真机安装尚未执行。详细证据和下载入口见 [移动构建与发布](../docs/MOBILE_RELEASES.md)；原 M9 真机待办继续保留。
 
 依赖基于 DCloud 官方 Vue3/Vite/TS 模板的同版工具包，所有 DCloud 编译包固定 `3.0.0-5030420261029002`，Vue 3.4.21、Vite 5.2.8、TypeScript 5.9.3。版本来源见 [官方 CLI 指南](https://uniapp.dcloud.net.cn/quickstart-cli.html) 和 [官方 TypeScript 模板](https://github.com/dcloudio/uni-preset-vue/tree/vite-ts)。
