@@ -94,3 +94,11 @@ uni-app 构建输出提示未配置 Appid/uni statistics；不影响本轮资源
 后端 249/249、Web 337/337、Python 83/83、移动安全 16/16、Web 生产构建与 mobile 类型检查重新通过。无 uni-app 源码修改。此次采用已有 noreply 作者身份且仅对 Git 命令生效；不改全局配置，不强推，不合并 main。
 
 提交包含 M10 源码、增量迁移、测试、文档、六张用户参考图及六张脱敏验收截图；原始 ZIP 保留在本机提交之外。旧的 11-07 验收 JSON、ZIP 仍表示当时的本地快照，不冒充包含本次发布说明。最新提交前摘要见 `docs/verification/2026-11-08-m10-prepush.json`；最终 commit SHA / push / CI 结果以实际 Git 与 GitHub 记录为准。
+
+## 2026-11-08 main 整合
+
+M10 功能提交 `a12f0547db11e4e21bc3ffaeac655f959b48f48b` 已推送，Actions [42458907128](https://github.com/TheSixPasserby/travel-platform/actions/runs/42458907128) 真实结果为 success。随后用户授权“合并所有分支到main”。
+
+重新 fetch 与逐分支祖先检查确认：M8 分支 `56052b5`、M9/M10 分支 `a12f054` 和原 main `864ea1c` 构成一条完整祖先链。因此 main 直接快进到 a12f054，即包含所有本地/远端分支成果，无需制造重复合并提交。快进后的 tree 与已通过 CI 的功能提交一致；仅追加这次整合文档/证据，不修改业务源码或数据库。
+
+源分支保留、不强推、未触及原始 ZIP 和本地数据；当前工作分支为 main。main 推送后的 SHA 与 CI 状态以实际 Git/GitHub 记录为准。整合前提与验证见 `docs/verification/2026-11-08-main-integration.json`。

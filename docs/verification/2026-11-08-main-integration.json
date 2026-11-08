@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-08",
+  "timezone": "Asia/Shanghai",
+  "authorizedAction": "Merge all branches into main and push",
+  "targetBranch": "main",
+  "previousMain": "864ea1cbdd66a0768d01ff7e26216c2f5a4f1e8b",
+  "integratedBranches": {
+    "codex/m8-upgrade": "56052b58ff64644d2a5370f2dc85981b52c46364",
+    "codex/m9-delivery": "a12f0547db11e4e21bc3ffaeac655f959b48f48b"
+  },
+  "remoteRefsRefreshed": true,
+  "allLocalAndRemoteBranchHeadsContained": true,
+  "integrationMethod": "fast-forward; full M8 ancestor already included in M9/M10",
+  "integratedFeatureCommit": "a12f0547db11e4e21bc3ffaeac655f959b48f48b",
+  "verifiedTreeBeforeDocumentation": "ca318a42cbdea76e0d6c1eb3680798a7c968e1bb",
+  "conflicts": false,
+  "sourceBranchesDeleted": false,
+  "forcePush": false,
+  "businessSourceChangedAfterIntegration": false,
+  "databaseModifiedForIntegration": false,
+  "sourceCommitCI": {
+    "runId": 42458907128,
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/TheSixPasserby/travel-platform/actions/runs/42458907128"
+  },
+  "testStrategy": "Exact tested feature tree retained; additional changes only document integration",
+  "mainPushAndCI": "Use actual Git remote SHA and GitHub Actions records"
+}

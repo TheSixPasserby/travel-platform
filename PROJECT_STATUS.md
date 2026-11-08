@@ -2,7 +2,7 @@
 
 **项目：** 旅游攻略分享与行程规划平台  
 **基线版本：** V1.1 审查稿（2026-11-02）  
-**当前阶段：** M10 Web 与安全 IP 属地降级已编码并完成本地测试、浏览器和开发库增量迁移验收。M8/M9 成果保留，uni-app 布局未改；微信与 Android 真机验收待办继续保留。当前分支 `codex/m9-delivery`，基线 `712be1d`；2026-11-08 用户已授权提交推送，结果以本次 Git 提交及 GitHub Actions 记录为准。硬截止 2026-11-10 23:59（Asia/Shanghai）。进展见 [M10 交付状态](docs/M10-DELIVERY-STATUS.md)。
+**当前阶段：** M10 Web 与安全 IP 属地降级已编码并完成本地测试、浏览器和开发库增量迁移验收。M8/M9 成果保留，uni-app 布局未改；微信与 Android 真机验收待办继续保留。2026-11-08 用户已授权提交推送并将所有分支整合到 `main`；当前分支为 `main`，完整功能提交为 `a12f054`，结果以 Git 提交及 GitHub Actions 记录为准。硬截止 2026-11-10 23:59（Asia/Shanghai）。进展见 [M10 交付状态](docs/M10-DELIVERY-STATUS.md)。
 
 ## M10 本地验收（2026-11-07）
 
@@ -21,6 +21,14 @@
 - Codex 本机配置仍为 gpt-6.1-sol/ultra；DSH 配置仍为 buddy/deepseek-v4.1-flash/max，不改用 WorkBuddy。沿用此前已证实的正式 Max 运行时阻塞记录，本轮不重复派发。
 - Codex 侧只读审查确认 CI 空库 schema、Python 导入边界和交付白名单覆盖 M10。原始资料 ZIP、备份、真实上传、client 凭据与构建目录不提交；提交范围及敏感扫描记录见 `docs/verification/2026-11-08-m10-prepush.json`。
 - 本轮允许 push 后执行远端 CI；最终 SHA、推送和 CI 状态以 Git/GitHub 记录为准，不预先宣称通过。
+
+## 所有分支整合到 main（2026-11-08）
+
+- 用户明确授权合并所有分支。重新 fetch 后，仓库仅有 main、codex/m8-upgrade、codex/m9-delivery；本地与远端源分支一致。
+- `codex/m8-upgrade@56052b5` 已完整包含于 `codex/m9-delivery@a12f054`；原 `main@864ea1c` 也为其祖先，没有遗漏的独立提交。
+- main 以 `--ff-only` 快进到 `a12f054`，无冲突、无历史重写；各源分支保留。快进后 main 与已验证的 M10 功能提交 tree 完全一致。
+- 功能提交的 [远端 CI](https://github.com/TheSixPasserby/travel-platform/actions/runs/42458907128) 已 completed/success；合并后仅补充整合文档和机器证据，不修改任何业务源码/数据库，不重复运行同一代码的测试。main 推送触发的新 CI 结果以实际 Actions 记录为准。
+- 本轮仅提交 PROJECT_STATUS、M10 交付状态与 main 整合证据；原始 ZIP 保持本机未跟踪状态，凭据、备份、上传和构建目录继续排除。未删除分支，未强推。
 
 ## M9 启动与源码实施（2026-11-07）
 
