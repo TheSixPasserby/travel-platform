@@ -5,6 +5,7 @@ import unittest
 import zipfile
 import base64
 import json
+import subprocess
 from unittest.mock import patch
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
@@ -12,6 +13,51 @@ import android_package as android
 
 
 class AndroidPackageTests(unittest.TestCase):
+    def test_apk_verification_tools_receive_only_required_runtime_paths(self):
+        runtime = {'PATH': '/synthetic/bin', 'JAVA_HOME': '/synthetic/jdk',
+                   'ANDROID_HOME': '/synthetic/sdk', 'ANDROID_SDK_ROOT': '/synthetic/sdk'}
+        environment = dict(runtime, GH_TOKEN='synthetic-download-token',
+                           DCLOUD_ANDROID_APPKEY='synthetic-app-key',
+                           ANDROID_KEYSTORE_BASE64='synthetic-keystore',
+                           ANDROID_KEYSTORE_PASSWORD='synthetic-store-password',
+                           ANDROID_KEY_ALIAS='synthetic-alias', ANDROID_KEY_PASSWORD='synthetic-key-password',
+                           JAVA_TOOL_OPTIONS='-Dsynthetic.secret=do-not-forward',
+                           UNRELATED_SECRET='synthetic-future-secret',
+                           ANDROID_CERT_SHA1='11' * 20, ANDROID_PACKAGE_NAME='io.example.travel',
+                           DCLOUD_UNI_APPID='__UNI__123456')
+        plan = {'version': '0.1.0', 'versionCode': 123, 'sha': 'a' * 40}
+        manifest = ('<manifest xmlns:android="http://schemas.android.com/apk/res/android" '
+                    'android:versionName="0.1.0"><uses-permission android:name="android.permission.INTERNET"/>'
+                    '<application android:debuggable="false"><meta-data android:name="dcloud_appkey" '
+                    'android:value="synthetic-app-key"/></application></manifest>')
+
+        def verifier(arguments, **options):
+            self.assertEqual(options.get('env'), runtime)
+            if 'apksigner' in arguments[0]:
+                output = 'Signer #1 certificate SHA-1 digest: ' + '11' * 20
+            elif arguments[2] == 'application-id':
+                output = 'io.example.travel'
+            elif arguments[2] == 'version-code':
+                output = '123'
+            else:
+                self.assertEqual(arguments[1:3], ['manifest', 'print'])
+                output = manifest
+            return subprocess.CompletedProcess(arguments, 0, output, '')
+
+        with tempfile.TemporaryDirectory() as tmp:
+            apk = Path(tmp) / 'synthetic.apk'
+            with zipfile.ZipFile(apk, 'w') as archive:
+                archive.writestr('AndroidManifest.xml', manifest)
+                archive.writestr('classes.dex', b'synthetic dex')
+                archive.writestr('assets/apps/__UNI__123456/www/manifest.json', json.dumps({
+                    'id': '__UNI__123456', 'version': {'code': 123, 'name': '0.1.0'}}))
+            with patch.dict(android.os.environ, environment, clear=True), \
+                    patch.object(android.subprocess, 'run', side_effect=verifier) as run:
+                receipt = android.verify_apk(apk, plan, environment, Path(runtime['ANDROID_HOME']))
+            self.assertEqual(run.call_count, 4)
+            self.assertTrue(receipt['signatureVerified'])
+            self.assertEqual(receipt['sha256'], hashlib.sha256(apk.read_bytes()).hexdigest())
+
     def test_gradle_diagnostics_redact_signing_and_application_keys(self):
         values={'DCLOUD_ANDROID_APPKEY':'example-sensitive-appkey','ANDROID_KEYSTORE_PASSWORD':'example-password','ANDROID_KEY_PASSWORD':'other-password','GH_TOKEN':'example-gh-token'}
         raw='Build failed: '+','.join(values.values())+' Missing dependency'

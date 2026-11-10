@@ -222,6 +222,17 @@ class AndroidSmokeTests(unittest.TestCase):
             self.assertEqual(result['classification'], 'privacy_prompt')
             self.assertTrue((folder / 'startup-summary.json').is_file())
 
+    def test_appkey_error_never_saves_a_screenshot_with_sensitive_dialog_text(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp)
+            xml = ui(('AppKey invalid: synthetic-secret', PACKAGE, {}))
+            result = self.run_with_emulator_fixture(folder, xml)
+            self.assertEqual(result['classification'], 'appkey_error')
+            self.assertNotIn('screenshot', result['artifacts'])
+            self.assertFalse((folder/'first-launch.png').exists())
+            self.assertNotIn('synthetic-secret',(folder/'first-launch.xml').read_text())
+            self.assertTrue((folder / 'startup-summary.json').is_file())
+
     def test_unconfirmed_ui_times_out_and_retains_failure_summary(self):
         with tempfile.TemporaryDirectory() as tmp:
             result = self.run_with_emulator_fixture(Path(tmp), ui(('Loading', PACKAGE, {})))

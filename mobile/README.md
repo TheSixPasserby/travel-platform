@@ -46,13 +46,14 @@ H5 仍默认使用本站 `/api/v1` 和原攻略首页；服务器设置中可选
 
 源码 manifest 保持 AppID 占位，Actions 在源码安全检查通过后从仓库 Variables 注入真实 AppID 和版本。微信 AppID 尚待配置；微信开发者工具可导入 `dist/build/mp-weixin` 工程，无 AppID 不代表已完成线上发布。正式配置保持 `urlCheck=true`，填写服务器地址不能绕过 request、downloadFile 和图片合法域名规则。
 
-当前先接入 Android APK、H5 站点和微信工程产物。App 资源仍需匹配的 DCloud 5.34 离线 SDK、AppKey 和原生签名链生成 APK；iOS IPA 未接入此次流水线，不能用 App 资源 ZIP 代替真机安装包。
+当前先接入 Android APK、H5 站点和微信工程产物。匹配的 DCloud 5.34 离线 SDK 已取得，保存在私有构建依赖 Release `build-dependency-dcloud-5.34`，下载地址与 SHA256 已配置；该依赖归档与应用安装包 Release 分开管理。AppKey 和固定签名已配置，原生构建及启动验收正在执行。iOS IPA 未接入此次流水线，不能用 App 资源 ZIP 代替真机安装包。
 
 ## Actions 渠道
 
 - 每次分支 push 的最新提交自动构建 `nightly`，发布为 GitHub 预发布版本。
 - 在 `main` 手动运行 **Mobile packages and releases**，选择 `beta` 或 `release`，输入 `X.Y.Z` 基础版本。beta 为预发布，release 为正式发布并更新 Latest。
 - 原生配置未齐时，nightly 可发布明确标注“未生成 APK”的资源产物；beta／正式版会停止，不能发布不完整安装包。
+- 原生配置齐全时，签名 APK 还须通过 `android-smoke` 模拟器启动检查才能发布。首启截图、UI XML 和 JSON 摘要保存在 Actions 的 `android-startup-evidence` artifact；烟测不注入签名 Secrets，不自动同意应用权限或隐私提示。
 
 完整渠道、版本号、附件说明与配置清单见 [MOBILE_RELEASES.md](../docs/MOBILE_RELEASES.md)。
 
@@ -66,6 +67,8 @@ H5 仍默认使用本站 `/api/v1` 和原攻略首页；服务器设置中可选
 
 ## 实际验收状态
 
-服务器设置已通过本地安全 22/22、类型检查、三目标资源构建与 H5 浏览器 7 项验证。功能提交 `c8cfa254` 的完整 CI、nightly 构建和 GitHub 预发布均通过，资源附件下载后校验和一致；AppKey 与固定签名已配置。APK 仍等待官方 SDK 下载，原生 Gradle、APK 验签和 Android 真机安装尚未执行。详细证据和下载入口见 [移动构建与发布](../docs/MOBILE_RELEASES.md)；原 M9 真机待办继续保留。
+服务器设置已通过本地安全 22/22、类型检查、三目标资源构建与 H5 浏览器 7 项验证。功能提交 `c8cfa254` 的完整 CI、nightly 构建和 GitHub 预发布均通过，资源附件下载后校验和一致。
+
+2026-11-10：官方 SDK、AppKey 和固定签名已配置；首轮原生工作流因缺少 `sdkmanager` 失败，现已新增 Android 工具初始化。重跑 [Actions 42789409101](https://github.com/TheSixPasserby/travel-platform/actions/runs/42789409101) 正在验收，尚不能据此声称 APK、模拟器启动或真机安装通过。详细证据和下载入口见 [移动构建与发布](../docs/MOBILE_RELEASES.md)；原 M9／M10 历史与真机待办继续保留。
 
 依赖基于 DCloud 官方 Vue3/Vite/TS 模板的同版工具包，所有 DCloud 编译包固定 `3.0.0-5030420261029002`，Vue 3.4.21、Vite 5.2.8、TypeScript 5.9.3。版本来源见 [官方 CLI 指南](https://uniapp.dcloud.net.cn/quickstart-cli.html) 和 [官方 TypeScript 模板](https://github.com/dcloudio/uni-preset-vue/tree/vite-ts)。

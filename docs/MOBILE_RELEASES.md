@@ -41,7 +41,7 @@ nightly 日期按北京时间生成；末尾数字为 workflow run number 和 at
 | `android-verified.json` | APK 签名验证、包名、内部版本号、文件 SHA256 等核验记录 |
 | `build-info.json`、`SHA256SUMS` | 本次来源、状态和附件完整性校验 |
 
-资源和最终包同时保留为 Actions artifacts；资源／APK 保留 14 天，原生构建使用的中间 App 资源保留 1 天。GitHub Release 附件与 Actions 临时 artifacts 是不同存储位置，不能用 artifacts 过期状态推断 Release 是否存在。
+资源和最终包同时保留为 Actions artifacts；资源／APK 保留 14 天，原生构建使用的中间 App 资源保留 1 天。`android-startup-evidence` artifact 保存首启 `first-launch.png`、`first-launch.xml` 和 `startup-summary.json`，保留 14 天；它是 Actions 验收证据，不是应用 Release 下载附件。原生构建失败时另保留经过脱敏的 `android-build-diagnostics`，保留 7 天。GitHub Release 附件与 Actions 临时 artifacts 是不同存储位置，不能用 artifacts 过期状态推断 Release 是否存在。
 
 ## 应用内服务器配置
 
@@ -82,16 +82,24 @@ H5 默认仍使用本站同源 `/api/v1`，设置页可恢复该默认。自定�
 
 不要求给 APK 配置固定服务器 URL：使用者进入应用后填写。源码安全检查先运行，之后才由构建步骤临时向 manifest 注入真实 AppID 和版本，不需要把 Secrets 写入 manifest 源码。
 
+DCloud 5.34 SDK 已取得并上传到私有仓库的[构建依赖 Release `build-dependency-dcloud-5.34`](https://github.com/TheSixPasserby/travel-platform/releases/tag/build-dependency-dcloud-5.34)。这是原生编译输入，不是 Android 安装包或应用版本发布。`DCLOUD_ANDROID_SDK_URL` 与 `DCLOUD_ANDROID_SDK_SHA256` 已配置，固定归档 SHA256 为 `9afdb29e46d52c3b0a09825a453bf1953887358e1861051037a861611dadc97e`；构建下载后仍逐次校验，不把固定签名或 AppKey 放入该依赖归档。
+
 ## 原生构建与发布门禁
 
 原生打包使用 DCloud 官方 `HBuilder-Integrate-AS/simpleDemo` 模板与匹配的 5.34 SDK。工具链使用 Android compileSdk／targetSdk 36、Build Tools 36.0.0、Gradle 8.14.3、Android Gradle Plugin 8.12.0、Java 17 构建环境；资源编译器仍使用项目锁定的 uni-app 版本。
+
+[setup_android.sh](../scripts/setup_android.sh) 初始化 Google Android command-line tools，处理 hosted runner 未安装 `sdkmanager` 或未将其加入 PATH 的情况，再安装指定的平台与 Build Tools。模拟器使用 Android API 35、`google_apis`、x86_64 系统镜像，与 APK 的编译目标版本分开配置。
 
 执行前校验完整配置和归档 SHA256，拒绝不安全解压路径、资源符号链接、错误 AppID 或不匹配的资源编译器。构建后通过 `apksigner` 和 `apkanalyzer` 核对真实 APK、签名指纹、包名与内部版本号，再产生 APK SHA256 和核验记录；不能把任意 ZIP 改后缀作为安装包。
 
 - 原生配置未齐：nightly 可以发布 H5、微信工程、App 资源，Summary、Release Notes 和 `build-info.json` 明确标为未生成 APK，并列缺失配置名。
 - beta／正式版：原生配置不全或缺少验证后的签名 APK 即停止，不发布只有资源的 beta／正式版。
-- 配置齐全但原生构建或校验失败：不会继续公开 Release；Actions 已成功的资源 artifacts 可供排查。
-- 构建工作默认只有 `contents: read`；只有 publish job 获得 `contents: write`。签名密码不进入命令行参数或公开构建信息，私有构建诊断不作为发布附件上传。
+- 配置齐全但原生构建、APK 校验或 `android-smoke` 失败：不会继续公开 Release；Actions 已成功的资源 artifacts 可供排查。
+- 构建工作默认只有 `contents: read`；只有 publish job 获得 `contents: write`。签名密码不进入命令行参数或公开构建信息，原始私有构建日志不作为发布附件上传。
+
+`android-smoke` 下载已验证的签名 APK，在已启动的 x86_64 模拟器中安装、清除应用数据，并启动 `io.dcloud.PandoraEntry`。启动轮询最多 90 秒，连续两次从目标包的 UI XML 确认“连接你的旅行平台”或“保存并进入”才算通过；截图存在本身不代表通过。进程退出、FATAL／ANR、AppKey 错误或运行／编译版本不匹配均阻止发布。
+
+烟测不连接后端、不登录账号，不向该 job 注入签名 Secrets 或 AppKey。应用权限或隐私提示阻塞时记录失败并交由人工分析，不点击同意；终端只输出简短错误分类，不输出完整 logcat 或 Key 值。成功与失败均尝试保留首启 PNG、UI XML 与 JSON 摘要；AppKey 错误场景只保留脱敏 XML 和错误分类，跳过可能包含 Key 的截图。无法正向确认设置页时返回非零退出码，供发布门禁使用。
 
 ## 当前状态与待验收
 
@@ -101,7 +109,9 @@ H5 默认仍使用本站同源 `/api/v1`，设置页可恢复该默认。自定�
 
 [手动 beta 门禁](https://github.com/TheSixPasserby/travel-platform/actions/runs/42495829445)已实际验证：缺原生配置时 plan 按预期失败，其余构建及发布跳过，没有生成不完整 beta。
 
-2026-11-10：用户已提供官方 SDK，CRC 与归档结构已检查，SHA256 已固定为 `9afdb29e46d52c3b0a09825a453bf1953887358e1861051037a861611dadc97e`。归档仅保存于用户私有仓库的构建依赖 Release，下载通过本仓库 GitHub API 资产地址及短期 Actions token 完成，token 不传入 Gradle。真实 SDK 项目准备已验证，正在执行首次原生构建；此时尚未确认 APK 或真机安装通过。
+2026-11-10：用户已提供官方 SDK，CRC 与归档结构已检查，固定 SHA256、私有构建依赖 Release 和仓库 Variables 已配置。下载通过本仓库 GitHub API 资产地址及短期 Actions token 完成，token 不传入 Gradle。真实 SDK 项目准备已验证；烟测纯测试 25/25、Python 全套 122/122 已在本地通过。
+
+首轮原生 [Actions 42788320944](https://github.com/TheSixPasserby/travel-platform/actions/runs/42788320944) 因缺少 `sdkmanager` 失败，新增工具初始化后，[Actions 42789409101](https://github.com/TheSixPasserby/travel-platform/actions/runs/42789409101) 正在运行。此记录尚未确认 APK 编译与验签、模拟器启动或真机安装通过；后续结果应追加实际证据，不改写 M9／M10 或早期资源 nightly 的历史验收。
 
 微信 AppID／合法域名和线上发布尚待对应条件。iOS IPA 未纳入当前流水线；需要另行准备 Apple 签名、描述文件和对应构建环境。原 M9、M10 验收历史保持原记录。
 

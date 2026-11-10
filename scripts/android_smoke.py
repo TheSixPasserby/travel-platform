@@ -281,15 +281,18 @@ def run_smoke(apk, package, output, serial):
                     xml = adb.ui(timeout=8)
                 except SmokeFailure:
                     summary['diagnostics'].append('ui_capture_unavailable')
-            try:
-                image = adb.run('exec-out', 'screencap', '-p', timeout=8)
-                if image.returncode == 0 and image.stdout.startswith(PNG_HEADER):
-                    (output / 'first-launch.png').write_bytes(image.stdout)
-                    summary['artifacts']['screenshot'] = 'first-launch.png'
-                else:
+            if summary['classification'] == 'appkey_error' or _key_error(xml):
+                summary['diagnostics'].append('screenshot_omitted_sensitive_ui')
+            else:
+                try:
+                    image = adb.run('exec-out', 'screencap', '-p', timeout=8)
+                    if image.returncode == 0 and image.stdout.startswith(PNG_HEADER):
+                        (output / 'first-launch.png').write_bytes(image.stdout)
+                        summary['artifacts']['screenshot'] = 'first-launch.png'
+                    else:
+                        summary['diagnostics'].append('screenshot_unavailable')
+                except (SmokeFailure, OSError):
                     summary['diagnostics'].append('screenshot_unavailable')
-            except (SmokeFailure, OSError):
-                summary['diagnostics'].append('screenshot_unavailable')
         if summary['status'] == 'passed' and 'screenshot' not in summary['artifacts']:
             summary.update(status='failed', classification='screenshot_unavailable')
         (output / 'first-launch.xml').write_text(redact_ui(xml, summary['classification']), encoding='utf-8')

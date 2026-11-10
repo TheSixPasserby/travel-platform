@@ -154,7 +154,9 @@ def prepare_project(archive, resources, workspace, plan, environment):
 
 def verify_apk(apk, plan, environment, sdk):
     tools=sdk/'build-tools/36.0.0';analyzer=sdk/'cmdline-tools/latest/bin/apkanalyzer'
-    def run(args):return subprocess.run([str(a) for a in args],check=True,capture_output=True,text=True).stdout.strip()
+    # Verification needs only the toolchain paths, never download or signing credentials.
+    tool_env={name:environment[name] for name in ('PATH','JAVA_HOME','ANDROID_HOME','ANDROID_SDK_ROOT') if environment.get(name)}
+    def run(args):return subprocess.run([str(a) for a in args],check=True,capture_output=True,text=True,env=tool_env).stdout.strip()
     text=run([tools/'apksigner','verify','--verbose','--print-certs',apk])
     match=re.search(r'certificate SHA-1 digest:\s*([a-fA-F0-9:]+)',text)
     expected=environment['ANDROID_CERT_SHA1'].replace(':','').lower()

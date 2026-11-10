@@ -23,6 +23,8 @@
 - 本机使用真实 SDK 与既有已编译资源完成 prepare_project 验证（使用合成 Key，未调用真实签名）。Python 97/97、actionlint 已通过；准备推送进行首次真实签名构建，尚未声称已生成 APK 或模拟器验收通过。
 - 首次真实构建 `42788320944` 在 SDK 工具初始化时因 `sdkmanager: command not found` 停止，尚未执行 Gradle。已补 Google 官方命令行工具的确定性初始化与归档哈希校验，不依赖 Runner PATH；本次完整 CI `42788320943` 已 success。
 - 新增独立模拟器首启验收任务（不注入签名 Secrets），安装已验签 APK 后检查崩溃、AppKey、版本和服务器设置页，并保存截图/UI/JSON；准备完成，尚未实际运行。新增脚本和边界测试后，Python 122/122、Bash语法、actionlint/diff检查通过。
+- `08b272b` 的完整 CI `42789408905` 已 success；真实 SDK 下载、Gradle编译、签名和APK身份/权限核验已在 `42789409101` 成功，签名APK artifact约32.3MB。模拟器环境等待boot超时，应用首启步骤未执行，Release正确跳过；下一轮补模拟器进程早退检测与宿主日志，不降低发布门禁。
+- 独立审查补齐验签子进程凭据白名单与AppKey错误截图隔离；Python124/124通过。首启和真机状态仍待验证，不将已编译APK等同于可运行验收。
 
 ## M10 本地验收（2026-11-07）
 
