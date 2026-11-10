@@ -124,6 +124,7 @@ jobs:
         run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0'
       - name: Build and verify signed Android APK
         env:
+          GH_TOKEN: ${{ github.token }}
           DCLOUD_UNI_APPID: ${{ vars.DCLOUD_UNI_APPID }}
           DCLOUD_ANDROID_SDK_URL: ${{ vars.DCLOUD_ANDROID_SDK_URL }}
           DCLOUD_ANDROID_SDK_SHA256: ${{ vars.DCLOUD_ANDROID_SDK_SHA256 }}
@@ -144,6 +145,13 @@ jobs:
           path: android-output/
           if-no-files-found: error
           retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: android-build-diagnostics
+          path: ${{ runner.temp }}/travel-native/gradle-diagnostics.log
+          if-no-files-found: ignore
+          retention-days: 7
 
   publish:
     needs: [plan, resources, android]

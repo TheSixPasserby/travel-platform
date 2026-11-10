@@ -15,6 +15,13 @@
 - 功能提交 `c8cfa254` 已推送 main：[完整 CI](https://github.com/TheSixPasserby/travel-platform/actions/runs/42495703282)与[首个 nightly](https://github.com/TheSixPasserby/travel-platform/actions/runs/42495703308) success；[Release](https://github.com/TheSixPasserby/travel-platform/releases/tag/v0.1.0-nightly.20261108.1.1) 为预发布/非 Latest，三类资源 ZIP、来源与 5 项 SHA256 下载校验一致。beta 手动门禁实际在缺原生配置时失败并跳过发布，属预期拒绝；无 APK、无 beta/正式版产出。机器证据见 `docs/verification/2026-11-08-mobile-releases.json`。
 - DSH 延续已核实的 CodeBuddy V4.1 Flash/Max 准备阶段阻塞，不换成 WorkBuddy、不降级；本轮由 Codex 与 Codex 协作代理完成实现和只读审查，未虚记 DSH 执行。
 
+## Android 原生打包接续（2026-11-10）
+
+- 用户已把官方 `Android-SDK@5.34.82692_20261030.zip` 放入 Downloads；实际文件 307409525 字节，CRC 无错误，SHA256 为 `9afdb29e46d52c3b0a09825a453bf1953887358e1861051037a861611dadc97e`。
+- SDK 已作为用户私有仓库的构建依赖资产保存，下载 URL 与哈希已写入 Variables；此前 AppID、AppKey、固定签名全部保留。原生配置缺项现已解除，不需用户再次创建 Key 或签名。
+- 真实 SDK 含 macOS 元数据、旧版示例 Gradle 和新版 GIF AAR；脚本按实际归档处理，并仅在隔离复制项目中应用官网要求的 Gradle8.14.3/AGP8.12/SDK36。修复示例名称、内部入口及库合并带入的未用权限，保留 DCloudApplication 与运行时组件。
+- 本机使用真实 SDK 与既有已编译资源完成 prepare_project 验证（使用合成 Key，未调用真实签名）。Python 97/97、actionlint 已通过；准备推送进行首次真实签名构建，尚未声称已生成 APK 或模拟器验收通过。
+
 ## M10 本地验收（2026-11-07）
 
 - 已完整阅读 docs/m10 两份文档并逐张查看六张参考图；保留 M9 Token/ThemeStore，首页不重做。

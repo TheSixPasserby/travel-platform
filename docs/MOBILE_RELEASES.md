@@ -101,7 +101,7 @@ H5 默认仍使用本站同源 `/api/v1`，设置页可恢复该默认。自定�
 
 [手动 beta 门禁](https://github.com/TheSixPasserby/travel-platform/actions/runs/42495829445)已实际验证：缺原生配置时 plan 按预期失败，其余构建及发布跳过，没有生成不完整 beta。
 
-当前仍缺官方 SDK 归档及其校验值：百度网盘要求客户端下载，中国移动官方分享已达浏览上限，已请求用户下载 `Android-SDK@5.34.82692_20261030.zip` 后提供本机路径。Android Gradle 构建、真实 APK 验签和真机安装均未执行；尚不能声称已产出 APK。
+2026-11-10：用户已提供官方 SDK，CRC 与归档结构已检查，SHA256 已固定为 `9afdb29e46d52c3b0a09825a453bf1953887358e1861051037a861611dadc97e`。归档仅保存于用户私有仓库的构建依赖 Release，下载通过本仓库 GitHub API 资产地址及短期 Actions token 完成，token 不传入 Gradle。真实 SDK 项目准备已验证，正在执行首次原生构建；此时尚未确认 APK 或真机安装通过。
 
 微信 AppID／合法域名和线上发布尚待对应条件。iOS IPA 未纳入当前流水线；需要另行准备 Apple 签名、描述文件和对应构建环境。原 M9、M10 验收历史保持原记录。
 
