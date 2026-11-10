@@ -181,7 +181,11 @@ jobs:
           test -c /dev/kvm
           sudo chmod a+rw /dev/kvm
           "$ANDROID_HOME/emulator/emulator" -accel-check
-          printf 'no\n' | avdmanager create avd -n travel-smoke -k 'system-images;android-35;google_apis;x86_64'
+          export ANDROID_AVD_HOME="$RUNNER_TEMP/travel-avds"
+          mkdir -p "$ANDROID_AVD_HOME"
+          avdmanager create avd -n travel-smoke -k 'system-images;android-35;google_apis;x86_64' -d pixel_5 -p "$ANDROID_AVD_HOME/travel-smoke.avd"
+          test -f "$ANDROID_AVD_HOME/travel-smoke.ini"
+          "$ANDROID_HOME/emulator/emulator" -list-avds | rg '^travel-smoke$'
           "$ANDROID_HOME/emulator/emulator" -avd travel-smoke -port 5554 -no-window -no-audio -no-boot-anim -gpu software -no-snapshot -wipe-data -accel on > "$RUNNER_TEMP/emulator.log" 2>&1 &
           TRAVEL_EMULATOR_PID=$!
           TRAVEL_BOOT_DEADLINE=$((SECONDS + 240))
