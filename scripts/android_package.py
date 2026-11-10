@@ -121,6 +121,8 @@ def prepare_project(archive, resources, workspace, plan, environment):
     build_path=project/'build.gradle'
     build,count=re.subn(r'com\.android\.tools\.build:gradle:[0-9.]+','com.android.tools.build:gradle:8.12.0',build_path.read_text())
     if count!=1:raise ValueError('Expected one Android Gradle plugin in the official template')
+    build=re.sub(r"(?m)^\s*maven\s*\{url 'https://maven\.aliyun\.com/[^']+'\}\s*$",'',build)
+    build=build.replace('google()','google()\n        mavenCentral()')
     build_path.write_text(build)
     module_build=module/'build.gradle'
     dependencies=module_build.read_text().replace('androidx.core:core:1.1.0','androidx.core:core:1.6.0').replace('fresco:2.5.0','fresco:3.4.0').replace('animated-gif:2.5.0','animated-gif:3.4.0')

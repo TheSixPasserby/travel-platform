@@ -21,6 +21,8 @@
 - SDK 已作为用户私有仓库的构建依赖资产保存，下载 URL 与哈希已写入 Variables；此前 AppID、AppKey、固定签名全部保留。原生配置缺项现已解除，不需用户再次创建 Key 或签名。
 - 真实 SDK 含 macOS 元数据、旧版示例 Gradle 和新版 GIF AAR；脚本按实际归档处理，并仅在隔离复制项目中应用官网要求的 Gradle8.14.3/AGP8.12/SDK36。修复示例名称、内部入口及库合并带入的未用权限，保留 DCloudApplication 与运行时组件。
 - 本机使用真实 SDK 与既有已编译资源完成 prepare_project 验证（使用合成 Key，未调用真实签名）。Python 97/97、actionlint 已通过；准备推送进行首次真实签名构建，尚未声称已生成 APK 或模拟器验收通过。
+- 首次真实构建 `42788320944` 在 SDK 工具初始化时因 `sdkmanager: command not found` 停止，尚未执行 Gradle。已补 Google 官方命令行工具的确定性初始化与归档哈希校验，不依赖 Runner PATH；本次完整 CI `42788320943` 已 success。
+- 新增独立模拟器首启验收任务（不注入签名 Secrets），安装已验签 APK 后检查崩溃、AppKey、版本和服务器设置页，并保存截图/UI/JSON；准备完成，尚未实际运行。新增脚本和边界测试后，Python 122/122、Bash语法、actionlint/diff检查通过。
 
 ## M10 本地验收（2026-11-07）
 
