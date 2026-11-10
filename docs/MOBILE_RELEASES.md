@@ -103,6 +103,10 @@ DCloud 5.34 SDK 已取得并上传到私有仓库的[构建依赖 Release `build
 
 ## 当前状态与待验收
 
+2026-11-10 最终验收：`28ee71b` 的完整 CI、自动 nightly 与手动 beta 均通过。已发布 [签名 APK Beta 10.1](https://github.com/TheSixPasserby/travel-platform/releases/tag/v0.1.0-beta.10.1) 与 [Nightly 9.1](https://github.com/TheSixPasserby/travel-platform/releases/tag/v0.1.0-nightly.20261110.9.1)，同时包含 H5／微信工程／App 资源与校验清单，均为预发布、非 Latest。API35 x86_64 模拟器完成安装及首启服务器设置页验证，真实截图已目视验收；本地 Python124/124。详细[机器证据](verification/2026-11-10-android-releases.json)记录各 run、签名、版本、哈希及首启结果。Android真机和微信线上验收仍未执行。
+
+以下记录为实施历史，保留当时结果。
+
 2026-11-08：服务器设置已完成；Python 93/93、移动安全 22/22、类型与三个资源目标构建通过，H5 浏览器 7 项通过。AppID、包名、签名指纹与离线 AppKey 均已在用户本人 DCloud 账号登记；固定签名及 AppKey 已存入 GitHub Secrets。
 
 功能提交 `c8cfa254` 的[完整 CI](https://github.com/TheSixPasserby/travel-platform/actions/runs/42495703282)与[首个 nightly](https://github.com/TheSixPasserby/travel-platform/actions/runs/42495703308)均通过。[实际 Release](https://github.com/TheSixPasserby/travel-platform/releases/tag/v0.1.0-nightly.20261108.1.1)为预发布、非 Latest，含三个资源 ZIP；下载后 5 个附件 SHA256 全部匹配，原生资源内 AppID／版本／编译器及设置路由已核对。该次构建开始时 AppKey 尚未注入，历史缺项清单保留，不改写既有 Release。

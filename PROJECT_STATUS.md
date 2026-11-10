@@ -2,7 +2,7 @@
 
 **项目：** 旅游攻略分享与行程规划平台  
 **基线版本：** V1.1 审查稿（2026-11-02）  
-**当前阶段：** M10 已整合到 main，合并后 CI 已通过；M8/M9 成果保留。2026-11-08 按用户新要求增加移动分渠道 Actions 发布与应用内服务器设置；本地测试已执行，真实 APK/Android 真机验收仍待官方 SDK 和 DCloud 验证条件。硬截止 2026-11-10 23:59（Asia/Shanghai）。进展见 [M10 交付状态](docs/M10-DELIVERY-STATUS.md)与[移动发布说明](docs/MOBILE_RELEASES.md)。
+**当前阶段：** M10 已整合到 main，合并后 CI 已通过；M8/M9 成果保留。2026-11-08 按用户新要求增加移动分渠道 Actions 发布与应用内服务器设置；Android 已产出固定签名 APK，自动 nightly 与手动 beta 均已完成模拟器首启和 GitHub 预发布验收；Android 真机及微信线上验收仍待实际设备/平台条件。硬截止 2026-11-10 23:59（Asia/Shanghai）。进展见 [M10 交付状态](docs/M10-DELIVERY-STATUS.md)与[移动发布说明](docs/MOBILE_RELEASES.md)。
 
 ## 移动 Actions 发布与服务器设置（2026-11-08）
 
@@ -14,6 +14,15 @@
 - 当前外部阻碍：官方百度 SDK 下载要求客户端，官方中国移动分享提示浏览上限；离线 AppKey 已创建并安全写入 GitHub Secrets，当前只缺 SDK 下载与 SHA256。未运行 Android Gradle/签名 APK/真机安装。微信工程不等于上传或线上发布，真实微信 AppID 仍待用户具备。
 - 功能提交 `c8cfa254` 已推送 main：[完整 CI](https://github.com/TheSixPasserby/travel-platform/actions/runs/42495703282)与[首个 nightly](https://github.com/TheSixPasserby/travel-platform/actions/runs/42495703308) success；[Release](https://github.com/TheSixPasserby/travel-platform/releases/tag/v0.1.0-nightly.20261108.1.1) 为预发布/非 Latest，三类资源 ZIP、来源与 5 项 SHA256 下载校验一致。beta 手动门禁实际在缺原生配置时失败并跳过发布，属预期拒绝；无 APK、无 beta/正式版产出。机器证据见 `docs/verification/2026-11-08-mobile-releases.json`。
 - DSH 延续已核实的 CodeBuddy V4.1 Flash/Max 准备阶段阻塞，不换成 WorkBuddy、不降级；本轮由 Codex 与 Codex 协作代理完成实现和只读审查，未虚记 DSH 执行。
+
+## Android 安装包发布验收（2026-11-10）
+
+- 源码 `28ee71b` 的[完整CI](https://github.com/TheSixPasserby/travel-platform/actions/runs/42793531451)、[自动nightly](https://github.com/TheSixPasserby/travel-platform/actions/runs/42793531405)、[手动beta](https://github.com/TheSixPasserby/travel-platform/actions/runs/42793605393) 均 success；资源、原生打包、核验、模拟器和发布全部执行。
+- [Nightly 9.1](https://github.com/TheSixPasserby/travel-platform/releases/tag/v0.1.0-nightly.20261110.9.1) 与 [Beta 10.1](https://github.com/TheSixPasserby/travel-platform/releases/tag/v0.1.0-beta.10.1) 均为预发布/非Latest；各含真实签名APK、H5/微信/App资源、签名回执及SHA256清单。正式版仍由main手动选择release，不自动发布。
+- Android API35 x86_64模拟器安装后，连续两次确认服务器设置页，未见崩溃/AppKey/版本错误；截图已目视检查。Nightly用时54.68秒、Beta用时59.23秒。APK仅含网络权限与AndroidX包内接收器签名保护权限。
+- 本机已独立复核初次APK的下载SHA256、v1签名及固定证书SHA1，内置AppID/版本和x86_64库匹配；未发现签名文件或已知口令混入。最终nightly/beta发布元数据哈希及完整源SHA已下载核对一致。
+- Python124/124、actionlint/Bash语法/diff通过；源码与配置中不含AppKey/签名秘密。SDK、AppKey、固定证书已全部配置，无需用户再次申请。M8/M9/Web后端成果与开发库/上传文件保持保留。
+- [机器证据](docs/verification/2026-11-10-android-releases.json)／[首启截图](docs/verification/2026-11-10-android-first-launch.png)。Android真机、填写真实后端后的真机业务联调、微信线上发布、iOS包未执行；不将模拟器测试表述为真机验收。
 
 ## Android 原生打包接续（2026-11-10）
 

@@ -67,6 +67,10 @@ H5 仍默认使用本站 `/api/v1` 和原攻略首页；服务器设置中可选
 
 ## 实际验收状态
 
+2026-11-10 最终验收：`28ee71b` 的完整 CI、自动 nightly 与手动 beta 均通过。已发布 [签名 APK Beta 10.1](https://github.com/TheSixPasserby/travel-platform/releases/tag/v0.1.0-beta.10.1) 与 [Nightly 9.1](https://github.com/TheSixPasserby/travel-platform/releases/tag/v0.1.0-nightly.20261110.9.1)，同时包含 H5／微信工程／App 资源与校验清单，均为预发布、非 Latest。API35 x86_64 模拟器完成安装及首启服务器设置页验证，真实截图已目视验收；本地 Python124/124。详细[机器证据](../docs/verification/2026-11-10-android-releases.json)记录各 run、签名、版本、哈希及首启结果。Android真机和微信线上验收仍未执行。
+
+以下记录为实施历史，保留当时结果。
+
 服务器设置已通过本地安全 22/22、类型检查、三目标资源构建与 H5 浏览器 7 项验证。功能提交 `c8cfa254` 的完整 CI、nightly 构建和 GitHub 预发布均通过，资源附件下载后校验和一致。
 
 2026-11-10：官方 SDK、AppKey 和固定签名已配置；首轮原生工作流因缺少 `sdkmanager` 失败，现已新增 Android 工具初始化。重跑 [Actions 42789409101](https://github.com/TheSixPasserby/travel-platform/actions/runs/42789409101) 正在验收，尚不能据此声称 APK、模拟器启动或真机安装通过。详细证据和下载入口见 [移动构建与发布](../docs/MOBILE_RELEASES.md)；原 M9／M10 历史与真机待办继续保留。

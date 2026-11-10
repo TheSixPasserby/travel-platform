@@ -1,0 +1,148 @@
+{
+  "date": "2026-11-10",
+  "sourceSha": "28ee71b95730f28c9ff5a3260d81ba90ba3842e8",
+  "sdk": {
+    "version": "5.34",
+    "archiveSha256": "9afdb29e46d52c3b0a09825a453bf1953887358e1861051037a861611dadc97e",
+    "crc": "passed",
+    "privateBuildDependencyAsset": 724421730
+  },
+  "localTests": {
+    "pythonPassed": 124,
+    "actionlint": "passed",
+    "bashSyntax": "passed",
+    "mobileSafetyBaseline": 22,
+    "mobileBrowserSettingsChecksBaseline": 7
+  },
+  "fullCi": {
+    "runId": 42793531451,
+    "result": "success"
+  },
+  "nightly": {
+    "runId": 42793531405,
+    "result": "success",
+    "tag": "v0.1.0-nightly.20261110.9.1",
+    "prerelease": true,
+    "latest": false,
+    "verifiedApk": {
+      "signatureVerified": true,
+      "sha256": "5b4621e99f47397831e22b21d809bb777bfccaee71141ee245c580b14a3f6459",
+      "packageName": "io.github.thesixpasserby.travel",
+      "versionCode": 109,
+      "versionName": "0.1.0-nightly.20261110.9.1",
+      "sourceSha": "28ee71b95730f28c9ff5a3260d81ba90ba3842e8",
+      "appId": "__UNI__284320D",
+      "permissions": [
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.INTERNET",
+        "io.github.thesixpasserby.travel.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+      ],
+      "debuggable": false,
+      "certificateSha1": "24:46:D5:21:34:6A:6F:AC:59:15:6B:39:D4:82:2D:0C:A2:5E:27:00",
+      "sdkVersion": "5.34"
+    },
+    "startup": {
+      "schemaVersion": 1,
+      "package": "io.github.thesixpasserby.travel",
+      "serial": "emulator-5554",
+      "status": "passed",
+      "classification": "server_settings",
+      "apkX86_64": true,
+      "bootCompleted": true,
+      "processObserved": true,
+      "pollCount": 4,
+      "artifacts": {
+        "screenshot": "first-launch.png",
+        "ui": "first-launch.xml"
+      },
+      "diagnostics": [],
+      "durationSeconds": 54.68
+    },
+    "releaseMetadataHashVerification": "passed"
+  },
+  "beta": {
+    "runId": 42793605393,
+    "event": "workflow_dispatch",
+    "result": "success",
+    "tag": "v0.1.0-beta.10.1",
+    "prerelease": true,
+    "latest": false,
+    "verifiedApk": {
+      "signatureVerified": true,
+      "sha256": "c1192430b6301a6b96b8916f70c261d1d5563ea44fa89c273718c2be740941ac",
+      "packageName": "io.github.thesixpasserby.travel",
+      "versionCode": 110,
+      "versionName": "0.1.0-beta.10.1",
+      "sourceSha": "28ee71b95730f28c9ff5a3260d81ba90ba3842e8",
+      "appId": "__UNI__284320D",
+      "permissions": [
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.INTERNET",
+        "io.github.thesixpasserby.travel.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+      ],
+      "debuggable": false,
+      "certificateSha1": "24:46:D5:21:34:6A:6F:AC:59:15:6B:39:D4:82:2D:0C:A2:5E:27:00",
+      "sdkVersion": "5.34"
+    },
+    "startup": {
+      "schemaVersion": 1,
+      "package": "io.github.thesixpasserby.travel",
+      "serial": "emulator-5554",
+      "status": "passed",
+      "classification": "server_settings",
+      "apkX86_64": true,
+      "bootCompleted": true,
+      "processObserved": true,
+      "pollCount": 5,
+      "artifacts": {
+        "screenshot": "first-launch.png",
+        "ui": "first-launch.xml"
+      },
+      "diagnostics": [],
+      "durationSeconds": 59.23
+    },
+    "releaseMetadataHashVerification": "passed"
+  },
+  "independentLocalApkVerification": {
+    "date": "2026-11-10",
+    "sourceSha": "08b272bf8034436afe6e9ab7c83b4a510dc30c2e",
+    "runId": 42789409101,
+    "apk": {
+      "version": "0.1.0-nightly.20261110.5.1",
+      "versionCode": 105,
+      "bytes": 33010572,
+      "sha256": "f2c4557bd6c64d42d012d463ccac1cead2658fa2d4ddc615f816de4f380ade50",
+      "certificateSha1": "24:46:D5:21:34:6A:6F:AC:59:15:6B:39:D4:82:2D:0C:A2:5E:27:00",
+      "packageName": "io.github.thesixpasserby.travel",
+      "appId": "__UNI__284320D",
+      "permissions": [
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.INTERNET",
+        "io.github.thesixpasserby.travel.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+      ],
+      "debuggable": false
+    },
+    "verification": {
+      "actionsApksigner": "passed",
+      "actionsApkanalyzerAndResourceIdentity": "passed",
+      "localDownloadedHash": "passed",
+      "localJarsignerV1": "passed",
+      "localCertificateFingerprint": "passed",
+      "x86_64NativeLibraries": "present",
+      "signingFilesAndKnownPasswords": "no hits"
+    },
+    "startup": "not executed: emulator host could not find AVD",
+    "release": "not published; startup gate blocked",
+    "physicalDevice": "not executed"
+  },
+  "screenshot": "2026-11-10-android-first-launch.png",
+  "manualFormalRelease": "configured and policy-tested; not published",
+  "physicalDeviceInstallation": "not executed",
+  "wechatOnlineRelease": "not executed; compiled project artifact only",
+  "ios": "out of current scope",
+  "historicalRunnerIssues": [
+    "sdkmanager not on PATH: initialized SDK command-line tools",
+    "AVD not discoverable: explicit AVD home/path and device profile",
+    "AVD check required rg absent on hosted image: use standard grep"
+  ]
+}
