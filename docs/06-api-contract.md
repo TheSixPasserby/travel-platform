@@ -2,6 +2,22 @@
 
 统一前缀 `/api/v1`；JSON；Sa-Token；服务端分页。
 
+## M13 公开连续加载契约
+
+GET `/guides/feed` 接受 `size`（默认 12，1–50）、`keyword`、`destinationId`、`tagId`、`sort`（latest 或 popular）和可选 `cursor`。GET `/users/by-username/{username}/guides/feed` 接受 `size` 和 `cursor`，仅返回该用户的公开攻略。成功的 data 如下。
+
+```json
+{"records":[],"nextCursor":null,"hasMore":false}
+```
+
+客户端追加 records 并按 ID 去重，hasMore 为 false 时结束。下一请求传回 nextCursor，筛选变化时丢弃旧游标。游标包含读取时刻、ID 上界、最后的发布时间/ID/热度键，并绑定筛选和排序，无效游标返回 HTTP 400 和业务码 40001，可刷新重新读取。旧分页接口继续兼容已有调用方。
+
+latest 按 published_at、id 倒序。popular 按快照时刻之前创建且仍存在的点赞数、published_at、id 倒序。游标读取不会加入快照后的新文章或新点赞，实时显示计数仍反映实际数据库。撤销历史点赞可能使已读文章再次落入后续排序范围，前端 ID 去重处理。每次读取都重新过滤草稿、隐藏和已删除文章。所有查询在数据库执行。
+
+公开创作者响应新增 `likeCount`、`favoriteCount`，仅聚合该作者已发布且未删除的攻略。资料字段白名单为 id、username、nickname、avatarUrl、bio、publishedGuideCount、likeCount、favoriteCount。
+
+Web `/me` 恢复登录态后跳转本人 `/users/:username`，资料编辑入口为 `/me/settings`，本人草稿入口使用 `/me/guides?status=DRAFT`，私有列表通过 URL 保留状态筛选。会话暂时无法恢复时保留资料设置的重试入口。
+
 ## 1. 统一响应
 ```json
 {"code":0,"message":"success","data":{}}

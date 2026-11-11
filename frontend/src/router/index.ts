@@ -37,6 +37,12 @@ const routes = [
     path: '/me',
     name: 'me',
     component: () => import('@/views/ProfileView.vue'),
+    meta: { requiresAuth: true, title: '我的主页 · 山水间' }
+  },
+  {
+    path: '/me/settings',
+    name: 'profile-settings',
+    component: () => import('@/views/ProfileView.vue'),
     meta: { requiresAuth: true, title: '我的资料 · 山水间' }
   },
   {
@@ -156,7 +162,16 @@ const routes = [
  * 守卫只负责体验层拦截，接口权限始终由后端再校验。
  */
 export function createAppRouter(history: RouterHistory): Router {
-  const router = createRouter({ history, routes })
+  const router = createRouter({
+    history,
+    routes,
+    scrollBehavior(to, from, savedPosition) {
+      if (to.path === from.path && to.name === 'guide-detail') return false
+      if (savedPosition) return savedPosition
+      if (to.fullPath === from.fullPath) return false
+      return { left: 0, top: 0 }
+    }
+  })
 
   router.beforeEach(async (to) => {
     const auth = useAuthStore()
@@ -168,6 +183,11 @@ export function createAppRouter(history: RouterHistory): Router {
       }
       if (status === 'authenticated' && to.meta.requiresAdmin && auth.user?.role !== 'ADMIN') {
         return { name: 'home' }
+      }
+      if (to.name === 'me') {
+        return status === 'authenticated' && auth.user
+          ? { name: 'creator', params: { username: auth.user.username }, query: to.query, hash: to.hash }
+          : { name: 'profile-settings', query: to.query, hash: to.hash }
       }
       // 网络不可用时不判定为登出，允许进入页面并由页面给出重试入口。
       return true

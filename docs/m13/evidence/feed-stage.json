@@ -1,0 +1,14 @@
+{
+  "first": 12,
+  "afterScroll": 20,
+  "responses": [
+    {
+      "count": 12,
+      "cursor": false
+    },
+    {
+      "count": 8,
+      "cursor": true
+    }
+  ]
+}

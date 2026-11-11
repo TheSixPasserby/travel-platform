@@ -1,10 +1,13 @@
 import { apiClient } from './client'
 import type { PageResult } from '@/types/api'
-import type { GuideCreate, GuideDetail, GuideInput, GuideQuery, GuideSummary, MyGuideQuery, Tag } from '@/types/guide'
+import type { GuideCreate, GuideDetail, GuideFeedPage, GuideInput, GuideQuery, GuideSummary, MyGuideQuery, Tag } from '@/types/guide'
 
 const path = (id: string) => `/guides/${encodeURIComponent(id)}`
 export function fetchGuides(params: GuideQuery = {}): Promise<PageResult<GuideSummary>> {
   return apiClient.get<PageResult<GuideSummary>,PageResult<GuideSummary>>('/guides',{ params })
+}
+export function fetchGuideFeed(params: GuideQuery & { cursor?: string } = {}, signal?: AbortSignal): Promise<GuideFeedPage> {
+  return apiClient.get<GuideFeedPage, GuideFeedPage>('/guides/feed', { params, signal })
 }
 export function fetchGuide(id: string): Promise<GuideDetail> { return apiClient.get<GuideDetail,GuideDetail>(path(id)) }
 export function fetchMyGuides(params: MyGuideQuery = {}): Promise<PageResult<GuideSummary>> {

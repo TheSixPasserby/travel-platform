@@ -8,6 +8,37 @@ import java.util.List;
 
 @Mapper
 public interface GuideMapper extends BaseMapper<Guide> {
+    @Select("SELECT COALESCE(MAX(id),0) FROM guides")
+    long highestId();
+
+    @Select("<script>SELECT ranked.* FROM (SELECT g.*, " + COUNTS + """
+        , (SELECT COUNT(*) FROM guide_likes ranked_like WHERE ranked_like.guide_id=g.id AND ranked_like.created_at &lt;= #{cursor.snapshotAt}) AS rank_count
+        FROM guides g
+        """ + FILTER + """
+        AND g.id &lt;= #{cursor.upperId} AND g.published_at &lt;= #{cursor.snapshotAt}
+        ) ranked
+        <if test="cursor.publishedAt != null">
+          WHERE
+          <if test="filter.popular">(rank_count &lt; #{cursor.rank} OR (rank_count = #{cursor.rank} AND</if>
+          (published_at &lt; #{cursor.publishedAt} OR (published_at = #{cursor.publishedAt} AND id &lt; #{cursor.id}))
+          <if test="filter.popular">))</if>
+        </if>
+        ORDER BY <if test="filter.popular">rank_count DESC,</if> published_at DESC,id DESC
+        LIMIT #{limit}</script>
+        """)
+    List<GuideRow> feed(@Param("filter") GuideSearch filter,@Param("cursor") com.example.travelplatform.guide.service.FeedCursor cursor,@Param("limit") long limit);
+
+    @Select("""
+        SELECT COUNT(*) FROM guide_likes l JOIN guides g ON g.id=l.guide_id
+        WHERE g.author_id=#{author} AND g.status='PUBLISHED' AND g.is_deleted=0
+        """)
+    long publicLikeCount(@Param("author") long author);
+
+    @Select("""
+        SELECT COUNT(*) FROM guide_favorites f JOIN guides g ON g.id=f.guide_id
+        WHERE g.author_id=#{author} AND g.status='PUBLISHED' AND g.is_deleted=0
+        """)
+    long publicFavoriteCount(@Param("author") long author);
     String RELATED_FILTER="""
         WHERE g.is_deleted=0 AND g.status='PUBLISHED' AND
         <choose><when test="type == 'CITY'">

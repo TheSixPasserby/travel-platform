@@ -13,6 +13,12 @@ import org.springframework.web.bind.annotation.*;
 public class GuideController {
     private final GuideService guides;
     public GuideController(GuideService guides) { this.guides=guides; }
+    @GetMapping("/feed") @SecurityRequirements @Operation(summary="公开攻略连续加载，游标绑定筛选、快照时刻与稳定排序键")
+    public ApiResponse<FeedResponse<GuideSummaryVO>> feed(@RequestParam(required=false) String size,
+            @RequestParam(required=false) String keyword,@RequestParam(required=false) String destinationId,
+            @RequestParam(required=false) String tagId,@RequestParam(required=false) String sort,@RequestParam(required=false) String cursor) {
+        return ApiResponse.success(guides.publicFeed(new GuideFeedQuery(size,keyword,destinationId,tagId,sort,cursor),null));
+    }
     @GetMapping @SecurityRequirements @Operation(summary="公开攻略搜索分页")
     public ApiResponse<PageResponse<GuideSummaryVO>> list(@RequestParam(required=false) String page,@RequestParam(required=false) String size,
             @RequestParam(required=false) String keyword,@RequestParam(required=false) String destinationId,

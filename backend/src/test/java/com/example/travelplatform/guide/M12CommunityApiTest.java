@@ -31,7 +31,7 @@ class M12CommunityApiTest {
         var deleted=guide(a,"PUBLISHED","deleted");success(h.json("DELETE","/api/v1/guides/"+deleted,a.token(),null),200);
         guide(b,"PUBLISHED","other");
         var profile=success(h.json("GET",creator(a),null,null),200);
-        assertThat(profile.propertyStream().map(Map.Entry::getKey).toList()).containsExactlyInAnyOrder("id","username","nickname","avatarUrl","bio","publishedGuideCount");
+        assertThat(profile.propertyStream().map(Map.Entry::getKey).toList()).containsExactlyInAnyOrder("id","username","nickname","avatarUrl","bio","publishedGuideCount","likeCount","favoriteCount");
         assertThat(profile.path("publishedGuideCount").asLong()).isEqualTo(1);
         var page=success(h.json("GET",creator(a)+"/guides?page=1&size=1",null,null),200);
         assertThat(page.path("total").asLong()).isEqualTo(1);

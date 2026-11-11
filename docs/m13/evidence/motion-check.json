@@ -1,0 +1,46 @@
+{
+  "opening": [
+    {
+      "transform": "matrix(1, 0, 0, 1, 416, 0)",
+      "opacity": "0",
+      "duration": "0.24s, 0.24s",
+      "at": 269.40000000596046
+    },
+    {
+      "transform": "matrix(1, 0, 0, 1, 24.1869, 0)",
+      "opacity": "0.941858",
+      "duration": "0.24s, 0.24s",
+      "at": 442.09999999403954
+    },
+    {
+      "transform": "matrix(1, 0, 0, 1, 0, 0)",
+      "opacity": "1",
+      "duration": "0.24s, 0.24s",
+      "at": 801.5
+    }
+  ],
+  "closing": [
+    {
+      "transform": "matrix(1, 0, 0, 1, 0, 0)",
+      "opacity": "1",
+      "duration": "0.24s, 0.24s",
+      "at": 979
+    },
+    {
+      "transform": "matrix(1, 0, 0, 1, 416, 0)",
+      "opacity": "0",
+      "duration": "0.24s, 0.24s",
+      "at": 1266.4000000059605
+    }
+  ],
+  "reduced": {
+    "transform": "matrix(1, 0, 0, 1, 0, 0)",
+    "opacity": "1",
+    "duration": "0s",
+    "at": 1316.0999999940395
+  },
+  "runningAnimationsInReducedMotion": 0,
+  "listScrollKeepsOpen": true,
+  "touchClosed": true,
+  "failedImages": 12
+}

@@ -1,3 +1,4 @@
+import { clearFeedCache } from '@/composables/useInfiniteFeed'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
@@ -16,7 +17,7 @@ import { ApiError } from '@/api/client'
 import { useAuthStore } from '@/stores/auth'
 import type { GuideDetail, GuideSummary } from '@/types/guide'
 
-vi.mock('@/api/guides', () => ({ fetchRelatedGuides:vi.fn(),fetchGuides:vi.fn(),fetchGuide:vi.fn(),fetchOwnGuide:vi.fn(),fetchMyGuides:vi.fn(),fetchTags:vi.fn(),createGuide:vi.fn(),updateGuide:vi.fn(),deleteGuide:vi.fn(),publishGuide:vi.fn(),unpublishGuide:vi.fn() }))
+vi.mock('@/api/guides', () => ({ fetchGuideFeed:vi.fn(),fetchRelatedGuides:vi.fn(),fetchGuides:vi.fn(),fetchGuide:vi.fn(),fetchOwnGuide:vi.fn(),fetchMyGuides:vi.fn(),fetchTags:vi.fn(),createGuide:vi.fn(),updateGuide:vi.fn(),deleteGuide:vi.fn(),publishGuide:vi.fn(),unpublishGuide:vi.fn() }))
 vi.mock('@/api/destinations', () => ({ fetchDestinations:vi.fn(),fetchDestination:vi.fn() }))
 vi.mock('@/api/interactions',()=>({ fetchInteraction:vi.fn(),fetchComments:vi.fn(),setGuideLike:vi.fn(),setGuideFavorite:vi.fn(),createComment:vi.fn(),deleteComment:vi.fn() }))
 const guide: GuideDetail = { id:'9007199254740993',title:'山谷里的清晨',summary:'沿溪慢行',coverImageUrl:null,
@@ -39,7 +40,7 @@ async function render(component: typeof GuidesView, path:string, loggedIn=false)
   const wrapper=mount(RouterView,{ global:{ plugins:[pinia,router] } });await flushPromises();return { wrapper,router,auth }
 }
 beforeEach(() => {
-  vi.resetAllMocks();vi.mocked(api.fetchRelatedGuides).mockResolvedValue([]);vi.mocked(api.fetchGuides).mockResolvedValue(page([guide]));vi.mocked(api.fetchMyGuides).mockResolvedValue(page([guide]));
+  clearFeedCache();vi.resetAllMocks();vi.mocked(api.fetchGuideFeed).mockResolvedValue({records:[guide],nextCursor:null,hasMore:false});vi.mocked(api.fetchRelatedGuides).mockResolvedValue([]);vi.mocked(api.fetchGuides).mockResolvedValue(page([guide]));vi.mocked(api.fetchMyGuides).mockResolvedValue(page([guide]));
   vi.mocked(api.fetchGuide).mockResolvedValue(structuredClone(guide));vi.mocked(api.fetchOwnGuide).mockResolvedValue(guide);vi.mocked(api.fetchTags).mockResolvedValue(guide.tags);
   vi.mocked(interactions.fetchInteraction).mockResolvedValue({ guideId:guide.id,liked:false,favorited:false,likeCount:0,favoriteCount:0,commentCount:0 });
   vi.mocked(interactions.fetchComments).mockResolvedValue({ records:[],total:0,current:1,size:10,pages:0 });
@@ -50,22 +51,25 @@ beforeEach(() => {
 })
 
 describe('攻略浏览与编辑', () => {
+  it('主页草稿入口按URL状态读取本人草稿',async()=>{
+    const {wrapper}=await render(MyGuidesView,'/me/guides?status=DRAFT',true)
+    expect((wrapper.get('[data-test="my-guide-status"]').element as HTMLSelectElement).value).toBe('DRAFT')
+    expect(api.fetchMyGuides).toHaveBeenLastCalledWith(expect.objectContaining({status:'DRAFT',page:1}))
+    wrapper.unmount()
+  })
   it('评论更新后，互动返回的旧评论计数不能回退父页',async()=>{
     const { wrapper }=await render(GuideDetailView,'/guides/'+guide.id,true)
     wrapper.getComponent(GuideComments).vm.$emit('count-changed',2);await flushPromises()
     wrapper.getComponent(GuideActions).vm.$emit('change',{ guideId:guide.id,liked:true,favorited:true,likeCount:3,favoriteCount:4,commentCount:0 });await flushPromises()
-    expect(wrapper.get('aside').text()).toContain('3 赞 · 4 收藏 · 2 评论')
+    expect(wrapper.get('.article-author').text()).toContain('3 赞 · 4 收藏 · 2 评论')
     expect(wrapper.getComponent(GuideActions).props('commentCount')).toBe(2)
     wrapper.unmount()
   })
-  it('末页之外保留真实分页结果，并提供显式回第一页入口',async()=>{
-    vi.mocked(api.fetchGuides).mockResolvedValueOnce(page([],{ total:3,current:999,pages:1 }))
+  it('历史页码链接从首批连续流开始，公开列表没有分页控件',async()=>{
     const { wrapper }=await render(GuidesView,'/guides?page=999')
-    expect(api.fetchGuides).toHaveBeenCalledWith(expect.objectContaining({ page:999 }))
-    const button=wrapper.findAll('button').find(item=>item.text()==='回到第一页')
-    expect(button).toBeDefined()
-    await button!.trigger('click');await flushPromises()
-    expect(api.fetchGuides).toHaveBeenLastCalledWith(expect.objectContaining({ page:1 }))
+    expect(api.fetchGuideFeed).toHaveBeenCalledWith(expect.objectContaining({size:12}),expect.anything())
+    expect(wrapper.find('[data-test="guide-card"]').exists()).toBe(true)
+    expect(wrapper.text()).not.toContain('上一页');expect(wrapper.text()).not.toContain('下一页')
     wrapper.unmount()
   })
 
@@ -133,21 +137,21 @@ describe('攻略浏览与编辑', () => {
     wrapper.unmount()
   })
 
-  it('列表使用服务端分页，筛选复位并保留字符串ID', async () => {
+  it('列表使用服务端游标，筛选复位并保留字符串ID', async () => {
     vi.mocked(api.fetchGuides).mockResolvedValue(page([guide],{ total:19,current:2,pages:3 }))
     const { wrapper }=await render(GuidesView,'/guides?page=2')
-    expect(api.fetchGuides).toHaveBeenCalledWith(expect.objectContaining({ page:2,size:12 }))
+    expect(api.fetchGuideFeed).toHaveBeenCalledWith(expect.objectContaining({size:12}),expect.anything())
     expect(wrapper.get('[data-test="guide-card"]').attributes('href')).toBe('/guides/9007199254740993')
     await wrapper.get('[data-test="guide-keyword"]').setValue('山谷')
     await wrapper.get('[data-test="guide-search"]').trigger('submit');await flushPromises()
-    expect(api.fetchGuides).toHaveBeenLastCalledWith(expect.objectContaining({ page:1,keyword:'山谷' }))
+    expect(api.fetchGuideFeed).toHaveBeenLastCalledWith(expect.objectContaining({keyword:'山谷'}),expect.anything())
     wrapper.unmount()
   })
   it('列表错误可重试，空结果不制造卡片', async () => {
-    vi.mocked(api.fetchGuides).mockRejectedValueOnce(new ApiError('暂时无法加载',{ status:503 }))
+    vi.mocked(api.fetchGuideFeed).mockRejectedValueOnce(new ApiError('暂时无法加载',{ status:503 }))
     const { wrapper }=await render(GuidesView,'/guides')
     expect(wrapper.get('[role="alert"]').text()).toContain('暂时无法加载')
-    vi.mocked(api.fetchGuides).mockResolvedValueOnce(page([]))
+    vi.mocked(api.fetchGuideFeed).mockResolvedValueOnce({records:[],nextCursor:null,hasMore:false})
     await wrapper.get('[data-test="retry-guides"]').trigger('click');await flushPromises()
     expect(wrapper.text()).toContain('还没有找到攻略');expect(wrapper.find('[data-test="guide-card"]').exists()).toBe(false)
     wrapper.unmount()

@@ -1,0 +1,10 @@
+{
+  "normal": {
+    "dy": -2,
+    "imageScale": 1.035
+  },
+  "reduced": {
+    "dy": 0,
+    "animations": 0
+  }
+}

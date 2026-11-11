@@ -24,7 +24,7 @@ onMounted(() => {
   <div class="flex min-h-dvh flex-col bg-cream">
     <SiteHeader />
 
-    <main id="main" class="min-w-0 flex-1">
+    <main id="main" class="min-h-[calc(100dvh-4rem)] min-w-0 flex-1">
       <RouterView v-slot="{ Component, route }">
         <Transition name="page" mode="out-in">
           <div :key="route.path" class="min-w-0">

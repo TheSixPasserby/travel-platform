@@ -1,0 +1,3529 @@
+--- a/frontend/src/components/GuideGrid.vue
++++ b/frontend/src/components/GuideGrid.vue
+@@ -1,10 +1,241 @@
+ <script setup lang="ts">
++import { computed, nextTick, onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue'
+ import GuideCard from './GuideCard.vue'
+ import type { GuideSummary } from '@/types/guide'
+-defineProps<{guides:GuideSummary[]}>()
++
++const props = withDefaults(defineProps<{ guides: GuideSummary[] }>(), { guides: () => [] })
++
++/**
++ * 真瀑布流：渲染若干列容器，每篇攻略落进当前最矮的一列。
++ * 只追加不回填，所以既有卡片不会在加载更多时换列；列内是普通文档流，
++ * 不会像 grid 行高瀑布流那样留下整行空洞。图片比例由 GuideCard 预留在
++ * 布局前就确定，因此首批放置也不需要等图片加载完成。
++ */
++const host = ref<HTMLElement | null>(null)
++const columnCount = ref(2)
++const columns = shallowRef<GuideSummary[][]>([[], []])
++
++let heights: number[] = [0, 0]
++const placed: string[] = []
++const placedSet = new Set<string>()
++const columnOf = new Map<string, number>()
++const estimated = new Map<string, number>()
++const measured = new Map<string, number>()
++const observed = new WeakSet<Element>()
++let heightObserver: ResizeObserver | null = null
++let widthObserver: ResizeObserver | null = null
++let windowListener: (() => void) | null = null
++let hostWidth = 0
++
++/** 列多时略放宽间距，列宽估算与 CSS 使用同一个值。 */
++const columnGap = computed(() => (columnCount.value >= 4 ? 20 : 16))
++
++/** 与 GuideCard.vue 中的比例表保持一致：同一篇攻略永远同一个图片比例。 */
++const RATIOS = [4 / 5, 1, 3 / 4, 4 / 3]
++
++function ratioFor(id: string): number {
++  let hash = 0
++  for (let index = 0; index < id.length; index += 1) {
++    hash = (hash * 31 + id.charCodeAt(index)) % 100003
++  }
++  return RATIOS[hash % RATIOS.length]
++}
++
++function columnWidth(): number {
++  const count = Math.max(1, columnCount.value)
++  const gap = columnGap.value
++  return hostWidth > 0 ? Math.max(120, (hostWidth - gap * (count - 1)) / count) : 240
++}
++
++/** 估算卡片高度，只用于「新卡片进哪一列」，已有卡片一旦落列就不再移动。 */
++function estimateOf(guide: GuideSummary): number {
++  const key = String(guide.id)
++  const known = measured.get(key)
++  if (known) {
++    return known
++  }
++  const title = Math.min(2, Math.max(1, Math.ceil((guide.title?.length ?? 0) / 11)))
++  const summary = guide.summary ? Math.min(2, Math.max(1, Math.ceil(guide.summary.length / 16))) : 0
++  const meta = guide.tags.length || guide.travelDays || guide.budgetPerPerson !== null ? 20 : 0
++  return columnWidth() / ratioFor(key) + 92 + title * 26 + summary * 21 + meta
++}
++
++function shortestIndex(list: number[]): number {
++  let target = 0
++  for (let index = 1; index < list.length; index += 1) {
++    if (list[index] < list[target] - 0.5) {
++      target = index
++    }
++  }
++  return target
++}
++
++function resetPlacement(): void {
++  const count = Math.max(1, columnCount.value)
++  columns.value = Array.from({ length: count }, () => [])
++  heights = new Array(count).fill(0)
++  placed.length = 0
++  placedSet.clear()
++  columnOf.clear()
++  estimated.clear()
++}
++
++function place(guide: GuideSummary, cols: GuideSummary[][], list: number[]): void {
++  const key = String(guide.id)
++  if (placedSet.has(key)) {
++    return
++  }
++  const target = shortestIndex(list)
++  cols[target].push(guide)
++  const height = estimateOf(guide)
++  list[target] += height
++  placed.push(key)
++  placedSet.add(key)
++  columnOf.set(key, target)
++  estimated.set(key, height)
++}
++
++function rebuild(): void {
++  resetPlacement()
++  const cols = columns.value.map(column => column.slice())
++  const list = heights.slice()
++  for (const guide of props.guides) {
++    place(guide, cols, list)
++  }
++  columns.value = cols
++  heights = list
++}
++
++/** 仅在 props 是既有列表的「前缀延长」时做增量追加，否则重建。 */
++function sync(): void {
++  const ids = props.guides.map(guide => String(guide.id))
++  const prefixKept =
++    ids.length >= placed.length && placed.every((id, index) => ids[index] === id)
++  if (!prefixKept || columnCount.value !== columns.value.length) {
++    rebuild()
++    return
++  }
++  if (ids.length === placed.length) {
++    return
++  }
++  const cols = columns.value.map(column => column.slice())
++  const list = heights.slice()
++  for (const guide of props.guides) {
++    place(guide, cols, list)
++  }
++  columns.value = cols
++  heights = list
++}
++
++/**
++ * 断点按容器实测宽度取：>=1300 五列（仅超宽屏突破限宽后出现）、>=1100 四列、
++ * >=700 三列，其余两列。390/360 手机因此稳定两列，1440 桌面四列。
++ */
++function measureWidth(): void {
++  const element = host.value
++  const fallback = typeof window === 'undefined' ? 0 : Math.max(0, window.innerWidth - 40)
++  const width = element && element.clientWidth > 0 ? element.clientWidth : fallback
++  hostWidth = width
++  const next = width >= 1300 ? 5 : width >= 1100 ? 4 : width >= 700 ? 3 : 2
++  if (next !== columnCount.value) {
++    columnCount.value = next
++    rebuild()
++  }
++}
++
++function observeCards(): void {
++  if (!heightObserver || !host.value) {
++    return
++  }
++  for (const element of host.value.querySelectorAll<HTMLElement>('[data-guide-id]')) {
++    if (observed.has(element)) {
++      continue
++    }
++    observed.add(element)
++    heightObserver.observe(element)
++  }
++}
++
++function onCardResize(entries: ResizeObserverEntry[]): void {
++  for (const entry of entries) {
++    const id = (entry.target as HTMLElement).dataset.guideId
++    const height = entry.borderBoxSize?.[0]?.blockSize ?? entry.contentRect.height
++    if (!id || !height || measured.has(id)) {
++      continue
++    }
++    const column = columnOf.get(id)
++    const base = estimated.get(id)
++    if (column === undefined || base === undefined || column >= heights.length) {
++      continue
++    }
++    measured.set(id, height)
++    // 已落列的卡片不移动，只把真实高度差计入列高，供后续追加参考。
++    heights[column] += height - base
++  }
++}
++
++watch(
++  () => props.guides,
++  () => {
++    sync()
++    void nextTick(observeCards)
++  }
++)
++
++onMounted(() => {
++  measureWidth()
++  sync()
++  if (typeof ResizeObserver !== 'undefined') {
++    widthObserver = new ResizeObserver(() => measureWidth())
++    if (host.value) {
++      widthObserver.observe(host.value)
++    }
++    heightObserver = new ResizeObserver(onCardResize)
++  }
++  if (typeof window !== 'undefined') {
++    windowListener = () => measureWidth()
++    window.addEventListener('resize', windowListener, { passive: true })
++  }
++  void nextTick(observeCards)
++})
++
++onBeforeUnmount(() => {
++  widthObserver?.disconnect()
++  heightObserver?.disconnect()
++  widthObserver = null
++  heightObserver = null
++  if (windowListener && typeof window !== 'undefined') {
++    window.removeEventListener('resize', windowListener)
++  }
++})
+ </script>
+-<template><div class="guide-grid"><GuideCard v-for="guide in guides" :key="guide.id" :guide="guide" /></div></template>
++
++<template>
++  <div ref="host" class="masonry" :style="{ '--masonry-gap': columnGap + 'px' }">
++    <div v-for="(column, index) in columns" :key="index" class="masonry-column">
++      <GuideCard v-for="guide in column" :key="guide.id" :guide="guide" :data-guide-id="guide.id" />
++    </div>
++  </div>
++</template>
++
+ <style scoped>
+-.guide-grid{display:grid;grid-template-columns:1fr;gap:1.5rem;align-items:start}.guide-grid>:nth-child(3n+2){--card-ratio:1}.guide-grid>:nth-child(3n){--card-ratio:4/3}
+-@media(min-width:600px){.guide-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(min-width:960px){.guide-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(min-width:1280px){.guide-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
++.masonry {
++  display: flex;
++  align-items: flex-start;
++  gap: var(--masonry-gap, 1rem);
++}
++.masonry-column {
++  display: flex;
++  flex: 1 1 0;
++  flex-direction: column;
++  gap: var(--masonry-gap, 1rem);
++  min-width: 0;
++}
++/* 超宽屏给五列留出空间：只在 >=1600 时轻微突破限宽容器，两侧仍留 2rem，不产生横向滚动。 */
++@media (min-width: 1600px) {
++  .masonry {
++    width: min(96rem, calc(100vw - 4rem));
++    margin-inline: calc((100% - min(96rem, calc(100vw - 4rem))) / 2);
++  }
++}
+ </style>
+--- a/frontend/src/components/GuideCard.vue
++++ b/frontend/src/components/GuideCard.vue
+@@ -2,26 +2,242 @@
+ import { computed, ref, watch } from 'vue'
+ import UserIdentity from './UserIdentity.vue'
+ import type { GuideSummary } from '@/types/guide'
+-const props=defineProps<{guide:GuideSummary}>()
+-const failed=ref(false),location=computed(()=>({name:'guide-detail',params:{id:props.guide.id}}))
+-watch(()=>props.guide.coverImageUrl,()=>failed.value=false)
++
++const props = defineProps<{ guide: GuideSummary }>()
++const failed = ref(false)
++const location = computed(() => ({ name: 'guide-detail', params: { id: props.guide.id } }))
++
++/** 与 GuideGrid.vue 的比例表保持一致：稳定的伪随机比例，加载更多时不会换比例。 */
++const RATIOS = [4 / 5, 1, 3 / 4, 4 / 3]
++
++function ratioFor(id: string): number {
++  let hash = 0
++  for (let index = 0; index < id.length; index += 1) {
++    hash = (hash * 31 + id.charCodeAt(index)) % 100003
++  }
++  return RATIOS[hash % RATIOS.length]
++}
++
++const ratio = computed(() => ratioFor(String(props.guide.id)))
++const hasMeta = computed(
++  () => props.guide.tags.length > 0 || Boolean(props.guide.travelDays) || props.guide.budgetPerPerson !== null
++)
++
++watch(
++  () => props.guide.coverImageUrl,
++  () => {
++    failed.value = false
++  }
++)
+ </script>
++
+ <template>
+- <article class="guide-note surface-card min-w-0 overflow-hidden">
+-  <RouterLink :to="location" data-test="guide-card" class="note-photo" :aria-label="`阅读：${guide.title}`">
+-   <img v-if="guide.coverImageUrl&&!failed" :src="guide.coverImageUrl" :alt="guide.title" loading="lazy" decoding="async" @error="failed=true" />
+-   <div v-else data-test="card-placeholder" class="note-placeholder"><svg viewBox="0 0 160 96" aria-hidden="true"><path d="M0 96 45 32 74 68 108 12 160 96Z" fill="currentColor" opacity=".3"/><path d="m0 96 72-42 88 42Z" fill="currentColor" opacity=".15"/></svg><span>翻开这篇旅行手记</span></div>
+-   <span v-if="guide.destination" class="note-location">{{ guide.destination.name }}</span>
+-  </RouterLink>
+-  <div class="p-4">
+-   <RouterLink :to="location" class="note-title"><h2 class="line-clamp-2 break-words font-serif text-xl leading-snug text-pine-deep">{{ guide.title }}</h2></RouterLink>
+-   <p v-if="guide.summary" class="mt-2 line-clamp-2 text-sm leading-6 text-ink-soft">{{ guide.summary }}</p>
+-   <div v-if="guide.tags.length||guide.travelDays||guide.budgetPerPerson!==null" class="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs text-pine"><span v-for="tag in guide.tags.slice(0,2)" :key="tag.id">#{{ tag.name }}</span><span v-if="guide.travelDays">{{ guide.travelDays }}天</span><span v-if="guide.budgetPerPerson!==null">人均 ¥{{ guide.budgetPerPerson }}</span></div>
+-   <div class="mt-4 min-w-0 border-t border-pine/10 pt-3"><UserIdentity :user="guide.author" size="sm" linked /><p class="mt-3 flex items-center gap-4 text-xs text-ink-soft"><span :aria-label="`${guide.likeCount} 人点赞`">♡ {{ guide.likeCount }}</span><span>{{ guide.favoriteCount }} 收藏</span></p></div>
+-  </div>
+- </article>
++  <article class="guide-note surface-card min-w-0 overflow-hidden" :style="{ '--card-ratio': ratio }">
++    <RouterLink :to="location" data-test="guide-card" class="note-photo" :aria-label="`阅读：${guide.title}`">
++      <img
++        v-if="guide.coverImageUrl && !failed"
++        :src="guide.coverImageUrl"
++        :alt="guide.title"
++        loading="lazy"
++        decoding="async"
++        @error="failed = true"
++      />
++      <div v-else data-test="card-placeholder" class="note-placeholder">
++        <svg viewBox="0 0 160 96" aria-hidden="true">
++          <path d="M0 96 45 32 74 68 108 12 160 96Z" fill="currentColor" opacity=".3" />
++          <path d="m0 96 72-42 88 42Z" fill="currentColor" opacity=".15" />
++        </svg>
++        <span>翻开这篇旅行手记</span>
++      </div>
++      <span v-if="guide.destination" class="note-location">{{ guide.destination.name }}</span>
++    </RouterLink>
++
++    <div class="note-body">
++      <RouterLink :to="location" class="note-title">
++        <h2 class="line-clamp-2 break-words font-serif leading-snug text-pine-deep">{{ guide.title }}</h2>
++      </RouterLink>
++      <p v-if="guide.summary" class="note-summary line-clamp-2">{{ guide.summary }}</p>
++      <div v-if="hasMeta" class="note-meta">
++        <span v-for="tag in guide.tags.slice(0, 2)" :key="tag.id">#{{ tag.name }}</span>
++        <span v-if="guide.travelDays">{{ guide.travelDays }}天</span>
++        <span v-if="guide.budgetPerPerson !== null">人均 ¥{{ guide.budgetPerPerson }}</span>
++      </div>
++
++      <footer class="note-foot">
++        <div class="note-author">
++          <UserIdentity :user="guide.author" size="sm" linked />
++        </div>
++        <p class="note-stats">
++          <span :aria-label="`${guide.likeCount} 人点赞`">♡ {{ guide.likeCount }}</span>
++          <span class="note-dot" aria-hidden="true">·</span>
++          <span :aria-label="`${guide.favoriteCount} 人收藏`">{{ guide.favoriteCount }} 收藏</span>
++        </p>
++      </footer>
++    </div>
++  </article>
+ </template>
++
+ <style scoped>
+-.guide-note{--card-ratio:4/5;box-shadow:none;transition:border-color .15s}.guide-note:hover{border-color:var(--color-pine)}.note-photo{position:relative;display:block;aspect-ratio:var(--card-ratio);overflow:hidden;background:var(--color-pine-soft)}.note-photo img{width:100%;height:100%;display:block;object-fit:cover}.note-location{position:absolute;bottom:12px;left:12px;max-width:calc(100% - 24px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:var(--color-surface);border-radius:99px;padding:4px 10px;color:var(--color-pine-deep);font-size:12px}.note-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:1rem;gap:1rem;color:var(--color-pine);font-size:13px}.note-placeholder svg{width:65%;max-width:160px}.note-title:hover{text-decoration:underline;text-underline-offset:4px}.note-photo:focus-visible,.note-title:focus-visible{outline:3px solid var(--color-pine);outline-offset:-3px}
+-@media(prefers-reduced-motion:reduce){.guide-note{transition:none}}
++.guide-note {
++  --card-ratio: 0.8;
++  box-shadow: none;
++  animation: card-rise 0.32s ease both;
++  transition:
++    border-color 0.15s ease,
++    transform 0.18s ease,
++    box-shadow 0.18s ease;
++}
++.guide-note:hover {
++  border-color: var(--color-pine);
++  transform: translateY(-2px);
++  box-shadow: 0 10px 24px -18px var(--color-pine-deep);
++}
++@keyframes card-rise {
++  from {
++    opacity: 0;
++    transform: translateY(6px);
++  }
++  to {
++    opacity: 1;
++    transform: none;
++  }
++}
++.note-photo {
++  position: relative;
++  display: block;
++  aspect-ratio: var(--card-ratio);
++  overflow: hidden;
++  background: var(--color-pine-soft);
++}
++.note-photo img {
++  display: block;
++  width: 100%;
++  height: 100%;
++  object-fit: cover;
++}
++.note-location {
++  position: absolute;
++  bottom: 10px;
++  left: 10px;
++  max-width: calc(100% - 20px);
++  overflow: hidden;
++  padding: 4px 10px;
++  border-radius: 99px;
++  background: var(--color-surface);
++  color: var(--color-pine-deep);
++  font-size: 12px;
++  text-overflow: ellipsis;
++  white-space: nowrap;
++}
++.note-placeholder {
++  display: flex;
++  flex-direction: column;
++  align-items: center;
++  justify-content: center;
++  height: 100%;
++  gap: 0.75rem;
++  padding: 1rem;
++  color: var(--color-pine);
++  font-size: 13px;
++}
++.note-placeholder svg {
++  width: 60%;
++  max-width: 140px;
++}
++.note-body {
++  padding: 0.85rem 0.9rem 0.9rem;
++}
++.note-title {
++  display: block;
++  min-width: 0;
++}
++.note-title h2 {
++  font-size: 1.0625rem;
++  overflow-wrap: anywhere;
++  word-break: break-word;
++  hyphens: auto;
++}
++.note-title:hover {
++  text-decoration: underline;
++  text-underline-offset: 4px;
++}
++.note-summary {
++  margin-top: 0.4rem;
++  font-size: 0.8125rem;
++  line-height: 1.5;
++  color: var(--color-ink-soft);
++  overflow-wrap: anywhere;
++}
++.note-meta {
++  display: flex;
++  flex-wrap: wrap;
++  gap: 0.25rem 0.6rem;
++  margin-top: 0.5rem;
++  font-size: 0.75rem;
++  color: var(--color-pine);
++}
++.note-foot {
++  display: flex;
++  align-items: center;
++  gap: 0.5rem;
++  min-width: 0;
++  margin-top: 0.6rem;
++  padding-top: 0.6rem;
++  border-top: 1px solid color-mix(in srgb, var(--color-pine) 12%, transparent);
++}
++.note-author {
++  display: flex;
++  flex: 1 1 auto;
++  align-items: center;
++  min-width: 0;
++  overflow: hidden;
++}
++.note-author :deep(*) {
++  min-width: 0;
++}
++.note-author :deep(a) {
++  overflow: hidden;
++}
++.note-stats {
++  display: flex;
++  flex: none;
++  align-items: center;
++  gap: 0.25rem;
++  font-size: 0.75rem;
++  color: var(--color-ink-soft);
++  white-space: nowrap;
++}
++.note-dot {
++  opacity: 0.5;
++}
++.note-photo:focus-visible,
++.note-title:focus-visible {
++  outline: 3px solid var(--color-pine);
++  outline-offset: -3px;
++}
++@media (max-width: 479px) {
++  .note-body {
++    padding: 0.7rem 0.7rem 0.75rem;
++  }
++  .note-title h2 {
++    font-size: 0.975rem;
++  }
++  .note-summary {
++    font-size: 0.78125rem;
++    -webkit-line-clamp: 2;
++  }
++  .note-stats {
++    font-size: 0.7rem;
++  }
++}
++@media (prefers-reduced-motion: reduce) {
++  .guide-note {
++    animation: none;
++    transition: border-color 0.15s ease;
++  }
++  .guide-note:hover {
++    transform: none;
++    box-shadow: none;
++  }
++}
+ </style>
+--- a/frontend/src/components/GuideFeed.vue
++++ b/frontend/src/components/GuideFeed.vue
+@@ -1,5 +1,5 @@
+ <script setup lang="ts">
+-import { onBeforeUnmount, onMounted, ref } from 'vue'
++import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+ import { fetchTags } from '@/api/guides'
+ import { fetchDestinations } from '@/api/destinations'
+ import { useGuideFeed, type FeedOrder } from '@/composables/useGuideFeed'
+@@ -7,41 +7,385 @@
+ import GuideGrid from './GuideGrid.vue'
+ import type { Tag } from '@/types/guide'
+ import type { Destination } from '@/types/destination'
+-const props=withDefaults(defineProps<{discovery?:boolean}>(),{discovery:false})
+-const {keyword,destinationId,tagId,order,page,result,loading,error,load,search,turn,selectOrder,selectTag,selectCity}=useGuideFeed(props.discovery)
+-const tags=ref<Tag[]>([]),cities=ref<Destination[]>([]),topicsError=ref('')
+-let disposed=false,topicsVersion=0
+-const orders:Array<{value:FeedOrder;label:string}>=[{value:'recommended',label:'推荐'},{value:'latest',label:'最新'},{value:'popular',label:'热门'}]
+-async function loadTopics(){
+- const request=++topicsVersion;topicsError.value=''
+- const results=await Promise.allSettled([fetchTags(),...(props.discovery?[fetchDestinations({page:1,size:8,destinationType:'CITY'})]:[])])
+- if(disposed||request!==topicsVersion)return
+- const labels=results[0];if(labels?.status==='fulfilled')tags.value=labels.value as Tag[];else topicsError.value='主题暂时无法加载'
+- const places=results[1];if(places?.status==='fulfilled')cities.value=(places.value as {records:Destination[]}).records;else if(props.discovery)topicsError.value='目的地或主题暂时无法加载'
+-}
+-onMounted(()=>void loadTopics());onBeforeUnmount(()=>{disposed=true;topicsVersion++})
++
++const props = withDefaults(defineProps<{ discovery?: boolean }>(), { discovery: false })
++
++const {
++  keyword,
++  destinationId,
++  tagId,
++  order,
++  items,
++  loading,
++  loadingMore,
++  error,
++  moreError,
++  hasMore,
++  exhausted,
++  limitReached,
++  maxItems,
++  loadMore,
++  retry,
++  refresh,
++  search,
++  selectOrder,
++  selectTag,
++  selectCity
++} = useGuideFeed(props.discovery)
++
++const tags = ref<Tag[]>([])
++const cities = ref<Destination[]>([])
++const topicsError = ref('')
++let disposed = false
++let topicsVersion = 0
++
++const orders: Array<{ value: FeedOrder; label: string }> = [
++  { value: 'latest', label: '最新' },
++  { value: 'popular', label: '热门' }
++]
++
++const orderHint = computed(() =>
++  order.value === 'latest' ? '按发布时间排列' : '按点赞与发布时间的热度排列，不是个性化推荐'
++)
++
++async function loadTopics(): Promise<void> {
++  const request = ++topicsVersion
++  topicsError.value = ''
++  const results = await Promise.allSettled([
++    fetchTags(),
++    ...(props.discovery ? [fetchDestinations({ page: 1, size: 8, destinationType: 'CITY' })] : [])
++  ])
++  if (disposed || request !== topicsVersion) {
++    return
++  }
++  const labels = results[0]
++  if (labels?.status === 'fulfilled') {
++    tags.value = labels.value as Tag[]
++  } else {
++    topicsError.value = '主题暂时无法加载'
++  }
++  const places = results[1]
++  if (places?.status === 'fulfilled') {
++    cities.value = (places.value as { records: Destination[] }).records
++  } else if (props.discovery) {
++    topicsError.value = '目的地或主题暂时无法加载'
++  }
++}
++
++/* 预取哨兵：只在「进入视口」时触发一次，离开视口后才重新武装，避免连续连发。 */
++const sentinel = ref<HTMLElement | null>(null)
++let observer: IntersectionObserver | null = null
++let armed = true
++
++function canPrefetch(): boolean {
++  return hasMore.value && !loading.value && !loadingMore.value && !moreError.value && !limitReached.value
++}
++
++function onIntersect(entries: IntersectionObserverEntry[]): void {
++  const entry = entries[entries.length - 1]
++  if (!entry) {
++    return
++  }
++  if (!entry.isIntersecting) {
++    armed = true
++    return
++  }
++  if (!armed || !canPrefetch()) {
++    return
++  }
++  armed = false
++  void loadMore()
++}
++
++function startObserver(): void {
++  if (typeof IntersectionObserver === 'undefined' || !sentinel.value) {
++    return
++  }
++  observer = new IntersectionObserver(onIntersect, { rootMargin: '480px 0px' })
++  observer.observe(sentinel.value)
++}
++
++function stopObserver(): void {
++  observer?.disconnect()
++  observer = null
++}
++
++watch(moreError, value => {
++  // 追加失败后不自动重发，等用户点重试；重试成功后允许再次预取。
++  if (!value) {
++    armed = true
++  }
++})
++
++/* 哨兵随首批数据出现/消失，ref 变化时重建观察器，否则首批渲染后永远不会预取。 */
++watch(sentinel, element => {
++  stopObserver()
++  if (element) {
++    startObserver()
++  }
++})
++
++onMounted(() => {
++  void loadTopics()
++  startObserver()
++})
++
++onBeforeUnmount(() => {
++  disposed = true
++  topicsVersion += 1
++  stopObserver()
++})
++
++async function onManualLoad(): Promise<void> {
++  await loadMore()
++}
++
++async function onRetryMore(): Promise<void> {
++  moreError.value = ''
++  armed = true
++  await retry()
++}
++
++async function onRefresh(): Promise<void> {
++  armed = true
++  await refresh()
++}
+ </script>
++
+ <template>
+- <div>
+-  <form data-test="guide-search" class="feed-search" @submit.prevent="search()">
+-   <div :class="discovery?'min-w-0 flex-1':'min-w-0'"><label :for="discovery?'discover-search':'guide-search-keyword'" class="field-label">搜索标题或摘要</label><input :id="discovery?'discover-search':'guide-search-keyword'" v-model="keyword" data-test="guide-keyword" type="search" class="field-input" placeholder="想去哪里，想看什么" /></div>
+-   <template v-if="!discovery"><DestinationPicker v-model="destinationId" label="目的地筛选" :allow-inactive-selection="true" /><div><label for="guide-search-tag" class="field-label">旅行主题</label><select id="guide-search-tag" v-model="tagId" class="field-input" @change="search()"><option value="">全部主题</option><option v-for="tag in tags" :key="tag.id" :value="tag.id">{{ tag.name }}</option></select></div><div><label for="guide-search-sort" class="field-label">排序</label><select id="guide-search-sort" v-model="order" class="field-input" @change="search()"><option value="latest">最新发布</option><option value="popular">最多点赞</option></select></div></template>
+-   <button type="submit" class="btn-primary shrink-0" :disabled="loading">{{ loading?'寻找中…':'寻找攻略' }}</button>
+-  </form>
+-  <template v-if="discovery">
+-   <nav aria-label="旅行内容排序" class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-pine/15 pb-3"><button v-for="option in orders" :key="option.value" type="button" :data-test="`order-${option.value}`" class="feed-order" :class="{selected:order===option.value}" :aria-pressed="order===option.value" @click="selectOrder(option.value)">{{ option.label }}</button><span class="ml-auto text-xs text-ink-soft">{{ order==='latest'?'按发布时间排列':'按点赞与发布时间排列' }}</span></nav>
+-   <div v-if="cities.length||tags.length" class="my-5 flex flex-wrap gap-2" aria-label="目的地与旅行主题"><button v-for="city in cities" :key="'city-'+city.id" type="button" class="topic-pill" :aria-pressed="destinationId===city.id" @click="selectCity(city.id)">{{ city.name }}</button><button v-for="tag in tags.slice(0,6)" :key="'tag-'+tag.id" type="button" :data-test="`topic-${tag.id}`" class="topic-pill" :aria-pressed="tagId===tag.id" @click="selectTag(tag.id)">#{{ tag.name }}</button></div>
+-  </template>
+-  <p v-if="topicsError" class="my-3 text-xs text-ink-soft">{{ topicsError }} <button type="button" class="min-h-11 text-pine underline" @click="loadTopics">重试</button></p>
+-  <div v-if="loading" role="status" class="surface-card my-6 p-12 text-center text-ink-soft">正在翻开路上的故事…</div>
+-  <div v-else-if="error" role="alert" class="surface-card my-6 p-8"><p>{{ error }}</p><button type="button" data-test="retry-guides" class="btn-ghost mt-4" @click="load">重新加载</button></div>
+-  <div v-else-if="!result.records.length" class="surface-card my-6 p-10 text-center"><h2 class="font-serif text-2xl text-pine-deep">{{ result.total?'这一页暂时没有攻略':'还没有找到攻略' }}</h2><p class="mt-3 text-sm text-ink-soft">{{ result.total?'回到第一页，继续浏览路上的故事。':'试试其他地点或主题，也欢迎分享你的第一篇手记。' }}</p><button v-if="result.total" type="button" class="btn-ghost mt-5" @click="turn(1)">回到第一页</button><RouterLink v-else :to="{name:'guide-new'}" class="btn-ghost mt-5">开始记录</RouterLink></div>
+-  <template v-else><p class="my-5 text-xs text-ink-soft">{{ result.total }} 篇旅行手记</p><GuideGrid :guides="result.records" /></template>
+-  <nav v-if="result.pages>1" aria-label="攻略分页" class="mt-8 flex items-center justify-center gap-3"><button type="button" class="btn-ghost" :disabled="loading||page<=1" @click="turn(page-1)">上一页</button><span class="text-sm text-ink-soft">{{ result.current }} / {{ result.pages }}</span><button type="button" class="btn-ghost" :disabled="loading||page>=result.pages" @click="turn(page+1)">下一页</button></nav>
+- </div>
++  <div>
++    <form data-test="guide-search" class="feed-search" @submit.prevent="search()">
++      <div :class="discovery ? 'min-w-0 flex-1' : 'min-w-0'">
++        <label :for="discovery ? 'discover-search' : 'guide-search-keyword'" class="field-label">搜索标题或摘要</label>
++        <input
++          :id="discovery ? 'discover-search' : 'guide-search-keyword'"
++          v-model="keyword"
++          data-test="guide-keyword"
++          type="search"
++          class="field-input"
++          placeholder="想去哪里，想看什么"
++        />
++      </div>
++      <template v-if="!discovery">
++        <DestinationPicker v-model="destinationId" label="目的地筛选" :allow-inactive-selection="true" />
++        <div>
++          <label for="guide-search-tag" class="field-label">旅行主题</label>
++          <select id="guide-search-tag" v-model="tagId" class="field-input" @change="search()">
++            <option value="">全部主题</option>
++            <option v-for="tag in tags" :key="tag.id" :value="tag.id">{{ tag.name }}</option>
++          </select>
++        </div>
++        <div>
++          <label for="guide-search-sort" class="field-label">排序</label>
++          <select id="guide-search-sort" v-model="order" class="field-input" @change="search()">
++            <option value="latest">最新发布</option>
++            <option value="popular">按热度（点赞）</option>
++          </select>
++        </div>
++      </template>
++      <button type="submit" class="btn-primary shrink-0" :disabled="loading">
++        {{ loading ? '寻找中…' : '寻找攻略' }}
++      </button>
++    </form>
++
++    <template v-if="discovery">
++      <nav
++        aria-label="旅行内容排序"
++        class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-pine/15 pb-3"
++      >
++        <button
++          v-for="option in orders"
++          :key="option.value"
++          type="button"
++          :data-test="`order-${option.value}`"
++          class="feed-order"
++          :class="{ selected: order === option.value }"
++          :aria-pressed="order === option.value"
++          @click="selectOrder(option.value)"
++        >
++          {{ option.label }}
++        </button>
++        <span class="ml-auto text-xs text-ink-soft">{{ orderHint }}</span>
++      </nav>
++      <div
++        v-if="cities.length || tags.length"
++        class="my-5 flex flex-wrap gap-2"
++        aria-label="目的地与旅行主题"
++      >
++        <button
++          v-for="city in cities"
++          :key="'city-' + city.id"
++          type="button"
++          class="topic-pill"
++          :aria-pressed="destinationId === city.id"
++          @click="selectCity(city.id)"
++        >
++          {{ city.name }}
++        </button>
++        <button
++          v-for="tag in tags.slice(0, 6)"
++          :key="'tag-' + tag.id"
++          type="button"
++          :data-test="`topic-${tag.id}`"
++          class="topic-pill"
++          :aria-pressed="tagId === tag.id"
++          @click="selectTag(tag.id)"
++        >
++          #{{ tag.name }}
++        </button>
++      </div>
++    </template>
++
++    <p v-if="topicsError" class="my-3 text-xs text-ink-soft">
++      {{ topicsError }}
++      <button type="button" class="min-h-11 text-pine underline" @click="loadTopics">重试</button>
++    </p>
++
++    <div
++      v-if="loading && !items.length"
++      role="status"
++      class="surface-card my-6 p-12 text-center text-ink-soft"
++    >
++      正在翻开路上的故事…
++    </div>
++    <div v-else-if="error" role="alert" class="surface-card my-6 p-8">
++      <p>{{ error }}</p>
++      <button type="button" data-test="retry-guides" class="btn-ghost mt-4" @click="retry">重新加载</button>
++    </div>
++    <div v-else-if="!items.length" class="surface-card my-6 p-10 text-center">
++      <h2 class="font-serif text-2xl text-pine-deep">还没有找到攻略</h2>
++      <p class="mt-3 text-sm text-ink-soft">试试其他地点或主题，也欢迎分享你的第一篇手记。</p>
++      <RouterLink :to="{ name: 'guide-new' }" class="btn-ghost mt-5">开始记录</RouterLink>
++    </div>
++    <template v-else>
++      <p class="feed-count">
++        已显示 {{ items.length }} 篇
++        <template v-if="hasMore"> · 继续下滑自动加载</template>
++      </p>
++      <GuideGrid :guides="items" />
++
++      <div ref="sentinel" class="feed-sentinel" aria-hidden="true"></div>
++      <p v-if="loadingMore" role="status" class="feed-more-hint">正在加载更多…</p>
++      <div v-else-if="moreError" role="alert" class="feed-more surface-card">
++        <p>{{ moreError }}</p>
++        <button type="button" data-test="retry-more" class="btn-ghost mt-3" @click="onRetryMore">
++          重试加载更多
++        </button>
++      </div>
++      <div v-else-if="limitReached" class="feed-more">
++        <p>已加载最多 {{ maxItems }} 篇，刷新后可从最新开始。</p>
++        <button type="button" data-test="refresh-feed" class="btn-ghost mt-3" @click="onRefresh">
++          刷新列表
++        </button>
++      </div>
++      <p v-else-if="exhausted" class="feed-end">已经看完</p>
++      <div v-else-if="hasMore" class="feed-more">
++        <button type="button" data-test="load-more" class="btn-ghost" :disabled="loadingMore" @click="onManualLoad">
++          加载更多
++        </button>
++      </div>
++    </template>
++  </div>
+ </template>
++
+ <style scoped>
+-.feed-search{display:flex;flex-wrap:wrap;align-items:end;gap:1rem;margin-block:1.5rem}.feed-search>*{min-width:0}.feed-order{min-height:44px;padding:.4rem 0;font-size:1rem;color:var(--color-ink-soft);cursor:pointer}.feed-order.selected{font-weight:600;color:var(--color-pine-deep);box-shadow:0 3px 0 var(--color-pine)}.topic-pill{min-height:44px;border:1px solid transparent;border-radius:99px;padding:8px 14px;font-size:13px;color:var(--color-ink-soft);cursor:pointer;background:var(--color-cream-deep)}.topic-pill[aria-pressed=true]{background:var(--color-pine-soft);color:var(--color-pine-deep);border-color:var(--color-pine)}
+-@media(min-width:1024px){.feed-search:has(#guide-search-keyword){display:grid;grid-template-columns:1.2fr 1fr 9rem 8rem auto}}
+-@media(max-width:599px){.feed-search{display:grid;grid-template-columns:1fr}.feed-search:has(#discover-search){grid-template-columns:minmax(0,1fr) auto}.feed-order{font-size:1rem}}
++.feed-search {
++  display: flex;
++  flex-wrap: wrap;
++  align-items: end;
++  gap: 1rem;
++  margin-block: 1.5rem;
++}
++.feed-search > * {
++  min-width: 0;
++}
++.feed-order {
++  min-height: 44px;
++  padding: 0.4rem 0;
++  font-size: 1rem;
++  color: var(--color-ink-soft);
++  cursor: pointer;
++}
++.feed-order.selected {
++  font-weight: 600;
++  color: var(--color-pine-deep);
++  box-shadow: 0 3px 0 var(--color-pine);
++}
++.topic-pill {
++  min-height: 44px;
++  padding: 8px 14px;
++  border: 1px solid transparent;
++  border-radius: 99px;
++  background: var(--color-cream-deep);
++  color: var(--color-ink-soft);
++  font-size: 13px;
++  cursor: pointer;
++}
++.topic-pill[aria-pressed='true'] {
++  border-color: var(--color-pine);
++  background: var(--color-pine-soft);
++  color: var(--color-pine-deep);
++}
++.feed-count {
++  margin-block: 1.25rem 1rem;
++  font-size: 12px;
++  letter-spacing: 0.02em;
++  color: var(--color-ink-soft);
++}
++.feed-sentinel {
++  height: 1px;
++  margin-top: 1px;
++}
++.feed-more {
++  display: flex;
++  flex-direction: column;
++  align-items: center;
++  gap: 0.5rem;
++  margin-top: 2rem;
++  padding: 1rem;
++  text-align: center;
++  font-size: 0.875rem;
++  color: var(--color-ink-soft);
++}
++.feed-more-hint {
++  margin-top: 2rem;
++  text-align: center;
++  font-size: 0.875rem;
++  color: var(--color-ink-soft);
++}
++.feed-end {
++  margin-top: 2rem;
++  text-align: center;
++  font-size: 0.8125rem;
++  letter-spacing: 0.12em;
++  color: var(--color-ink-soft);
++}
++.feed-end::before,
++.feed-end::after {
++  content: '';
++  display: inline-block;
++  width: 2.5rem;
++  height: 1px;
++  margin: 0 0.75rem;
++  vertical-align: middle;
++  background: color-mix(in srgb, var(--color-pine) 25%, transparent);
++}
++@media (min-width: 1024px) {
++  .feed-search:has(#guide-search-keyword) {
++    display: grid;
++    grid-template-columns: 1.2fr 1fr 9rem 8rem auto;
++  }
++}
++@media (max-width: 599px) {
++  .feed-search {
++    display: grid;
++    grid-template-columns: 1fr;
++  }
++  .feed-search:has(#discover-search) {
++    grid-template-columns: minmax(0, 1fr) auto;
++  }
++  .feed-order {
++    font-size: 1rem;
++  }
++}
+ </style>
+--- a/frontend/src/composables/useGuideFeed.ts
++++ b/frontend/src/composables/useGuideFeed.ts
+@@ -1,35 +1,273 @@
+-import { computed, onBeforeUnmount, ref, watch } from 'vue'
++import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+ import { useRoute, useRouter } from 'vue-router'
+-import { fetchGuides } from '@/api/guides'
+-import { ApiError } from '@/api/client'
++import { fetchGuideFeed } from '@/api/guides'
++import { readToken } from '@/api/token'
+ import type { GuideSummary } from '@/types/guide'
+-import type { PageResult } from '@/types/api'
+-export type FeedOrder='recommended'|'latest'|'popular'
+-/** Shared URL-backed discovery/search pagination. Draft inputs never change an in-flight query. */
+-export function useGuideFeed(discovery=false){
+- const route=useRoute(),router=useRouter()
+- const keyword=ref(''),destinationId=ref<string|null>(null),tagId=ref(''),order=ref<FeedOrder>(discovery?'recommended':'latest'),page=ref(1)
+- const result=ref<PageResult<GuideSummary>>({records:[],total:0,current:1,size:12,pages:0}),loading=ref(false),error=ref('')
+- let version=0
+- const query=computed(()=>{
+-  const text=(key:string)=>typeof route.query[key]==='string'?route.query[key] as string:''
+-  const requested=Number(text('page')),sort=text('sort')
+-  return {keyword:text('keyword'),destinationId:text('destinationId')||null,tagId:text('tagId'),page:Number.isSafeInteger(requested)&&requested>0?requested:1,order:(sort==='popular'||sort==='latest'?sort:discovery?'recommended':'latest') as FeedOrder}
+- })
+- async function load(){
+-  const request=++version,q=query.value;loading.value=true;error.value=''
+-  try{const data=await fetchGuides({page:q.page,size:12,keyword:q.keyword.trim()||undefined,destinationId:q.destinationId||undefined,tagId:q.tagId||undefined,sort:q.order==='latest'?'latest':'popular'});if(request===version)result.value=data}
+-  catch(e){if(request===version)error.value=e instanceof ApiError?e.message:'攻略暂时无法加载，请稍后重试'}finally{if(request===version)loading.value=false}
+- }
+- async function search(reset=true){
+-  const target={path:route.path,query:{page:String(reset?1:page.value),keyword:keyword.value.trim()||undefined,destinationId:destinationId.value||undefined,tagId:tagId.value||undefined,sort:order.value===(discovery?'recommended':'latest')?undefined:order.value}}
+-  if(router.resolve(target).fullPath===route.fullPath)await load();else await router.push(target)
+- }
+- function turn(value:number){page.value=value;void search(false)}
+- function selectOrder(value:FeedOrder){order.value=value;void search()}
+- function selectTag(value:string){tagId.value=tagId.value===value?'':value;void search()}
+- function selectCity(value:string){destinationId.value=destinationId.value===value?null:value;void search()}
+- watch(()=>route.fullPath,()=>{const q=query.value;keyword.value=q.keyword;destinationId.value=q.destinationId;tagId.value=q.tagId;page.value=q.page;order.value=q.order;void load()},{immediate:true})
+- onBeforeUnmount(()=>version++)
+- return {keyword,destinationId,tagId,order,page,result,loading,error,load,search,turn,selectOrder,selectTag,selectCity}
+-}
++import { useInfiniteFeed } from './useInfiniteFeed'
++
++export type FeedOrder = 'latest' | 'popular'
++
++const PAGE_SIZE = 12
++const MAX_ITEMS = 240
++const SCROLL_ENTRIES = 6
++/** 只记录最近几条列表的滚动位置，避免长会话无限增长。 */
++const scrollMemory = new Map<string, number>()
++
++function tokenScope(): string {
++  const token = readToken() ?? ''
++  let hash = 2166136261
++  for (let index = 0; index < token.length; index += 1) {
++    hash ^= token.charCodeAt(index)
++    hash = Math.imul(hash, 16777619)
++  }
++  return (hash >>> 0).toString(36)
++}
++
++/** 当前 history 条目位置，用于区分「返回同一个列表」与「新开一次列表」。 */
++function entryPosition(): number | null {
++  if (typeof window === 'undefined') {
++    return null
++  }
++  const state = window.history.state as { position?: unknown } | null
++  return state && typeof state.position === 'number' ? state.position : null
++}
++
++function scrollKey(filter: string, position: number | null): string {
++  return filter + '@' + (position ?? 'fresh')
++}
++
++function rememberScroll(filter: string, position: number | null, top: number): void {
++  const id = scrollKey(filter, position)
++  if (!scrollMemory.has(id) && scrollMemory.size >= SCROLL_ENTRIES) {
++    const oldest = scrollMemory.keys().next().value
++    if (oldest !== undefined) {
++      scrollMemory.delete(oldest)
++    }
++  }
++  scrollMemory.set(id, top)
++}
++
++function readScroll(filter: string, position: number | null): number | null {
++  const value = scrollMemory.get(scrollKey(filter, position))
++  return typeof value === 'number' && value > 0 ? value : null
++}
++
++/**
++ * 公开发现流：筛选条件留在 URL（不再保留 page），内容用游标连续追加。
++ * 单请求锁与版本号在 useInfiniteFeed 内，本层只负责草稿/已生效筛选、缓存隔离与返回滚动。
++ */
++export function useGuideFeed(discovery = false) {
++  const route = useRoute()
++  const router = useRouter()
++  const keyword = ref('')
++  const destinationId = ref<string | null>(null)
++  const tagId = ref('')
++  const defaultOrder: FeedOrder = discovery ? 'popular' : 'latest'
++  const order = ref<FeedOrder>(defaultOrder)
++  const applied = ref({
++    keyword: '',
++    destinationId: null as string | null,
++    tagId: '',
++    order: defaultOrder
++  })
++
++  const query = computed(() => {
++    const text = (key: string) => (typeof route.query[key] === 'string' ? (route.query[key] as string) : '')
++    const sort = text('sort')
++    return {
++      keyword: text('keyword').trim(),
++      destinationId: text('destinationId') || null,
++      tagId: text('tagId'),
++      order: (sort === 'latest' || sort === 'popular' ? sort : defaultOrder) as FeedOrder
++    }
++  })
++
++  const filterKey = computed(() => {
++    const value = applied.value
++    return value.keyword + '|' + (value.destinationId ?? '') + '|' + value.tagId + '|' + value.order
++  })
++
++  const feed = useInfiniteFeed<GuideSummary>({
++    keyOf: guide => guide.id,
++    maxItems: MAX_ITEMS,
++    cacheScope: tokenScope,
++    cacheKey: () => filterKey.value,
++    fetchPage: (cursor, signal) =>
++      fetchGuideFeed(
++        {
++          size: PAGE_SIZE,
++          keyword: applied.value.keyword || undefined,
++          destinationId: applied.value.destinationId || undefined,
++          tagId: applied.value.tagId || undefined,
++          sort: applied.value.order,
++          cursor
++        },
++        signal
++      )
++  })
++
++  let position: number | null = entryPosition()
++  /** 只允许本次实例的首批命中短期缓存；筛选变化必须重新取数，避免旧筛选结果盖住新查询。 */
++  let cacheAllowed = true
++  let lastScroll = typeof window === 'undefined' ? 0 : window.scrollY
++  let scrollFrame = 0
++  let restored = false
++
++  function onScroll(): void {
++    if (scrollFrame || typeof window === 'undefined') {
++      return
++    }
++    scrollFrame = requestAnimationFrame(() => {
++      scrollFrame = 0
++      if (typeof window !== 'undefined') {
++        lastScroll = window.scrollY
++      }
++    })
++  }
++
++  function storeScroll(): void {
++    if (typeof window === 'undefined') {
++      return
++    }
++    const top = Math.round(window.scrollY || lastScroll)
++    if (top > 0) {
++      rememberScroll(tokenScope() + '|' + filterKey.value, position, top)
++    }
++  }
++
++  /** 只在数据渲染后恢复一次，避免把新开的列表也拽到历史位置。 */
++  function scheduleRestore(): void {
++    if (restored || typeof window === 'undefined') {
++      return
++    }
++    restored = true
++    const target = readScroll(tokenScope() + '|' + filterKey.value, position)
++    if (target === null) {
++      return
++    }
++    let attempts = 0
++    const apply = () => {
++      window.scrollTo({ top: target, left: 0, behavior: 'auto' })
++      attempts += 1
++      if (attempts < 6 && Math.abs(window.scrollY - target) > 2) {
++        requestAnimationFrame(apply)
++      }
++    }
++    requestAnimationFrame(apply)
++  }
++
++  function applyDrafts(): void {
++    const fromRoute = query.value
++    keyword.value = fromRoute.keyword
++    destinationId.value = fromRoute.destinationId
++    tagId.value = fromRoute.tagId
++    order.value = fromRoute.order
++  }
++
++  function snapshot(): void {
++    applied.value = {
++      keyword: keyword.value.trim(),
++      destinationId: destinationId.value,
++      tagId: tagId.value,
++      order: order.value
++    }
++  }
++
++  async function load(force = false): Promise<void> {
++    snapshot()
++    const skipCache = force || !cacheAllowed
++    cacheAllowed = false
++    await feed.loadFirst(skipCache)
++    scheduleRestore()
++  }
++
++  watch(
++    () => route.fullPath,
++    () => {
++      applyDrafts()
++      position = entryPosition()
++      restored = false
++      void load()
++    },
++    { immediate: true }
++  )
++
++  /** 筛选不动时直接刷新当前列表，否则把筛选写回 URL 后由路由驱动首批。 */
++  function navigate(): Promise<void> {
++    const next: Record<string, string> = {}
++    const text = keyword.value.trim()
++    if (text) {
++      next.keyword = text
++    }
++    if (destinationId.value) {
++      next.destinationId = destinationId.value
++    }
++    if (tagId.value) {
++      next.tagId = tagId.value
++    }
++    if (order.value !== defaultOrder) {
++      next.sort = order.value
++    }
++    const target = { path: route.path, query: next }
++    if (router.resolve(target).fullPath === route.fullPath) {
++      return load(true)
++    }
++    storeScroll()
++    return router.push(target).then(() => undefined)
++  }
++
++  function search(): Promise<void> {
++    return navigate()
++  }
++  function selectOrder(value: FeedOrder): void {
++    order.value = value
++    void navigate()
++  }
++  function selectTag(value: string): void {
++    tagId.value = tagId.value === value ? '' : value
++    void navigate()
++  }
++  function selectCity(value: string): void {
++    destinationId.value = destinationId.value === value ? null : value
++    void navigate()
++  }
++
++  onMounted(() => {
++    if (typeof window !== 'undefined') {
++      window.addEventListener('scroll', onScroll, { passive: true })
++    }
++  })
++  onBeforeUnmount(() => {
++    storeScroll()
++    if (typeof window !== 'undefined') {
++      window.removeEventListener('scroll', onScroll)
++    }
++    if (scrollFrame) {
++      cancelAnimationFrame(scrollFrame)
++    }
++    feed.dispose()
++  })
++
++  return {
++    keyword,
++    destinationId,
++    tagId,
++    order,
++    items: feed.items,
++    loading: feed.loading,
++    loadingMore: feed.loadingMore,
++    error: feed.error,
++    moreError: feed.moreError,
++    hasMore: feed.hasMore,
++    exhausted: feed.exhausted,
++    limitReached: feed.limitReached,
++    maxItems: feed.maxItems,
++    loadMore: feed.loadMore,
++    retry: feed.retry,
++    refresh: feed.refresh,
++    search,
++    selectOrder,
++    selectTag,
++    selectCity
++  }
++}
+--- /dev/null
++++ b/frontend/src/composables/useInfiniteFeed.ts
+@@ -0,0 +1,268 @@
++import { computed, ref, shallowRef } from 'vue'
++import { ApiError } from '@/api/client'
++
++/** 一页连续加载结果，与后端 GuideFeedPage 契约一致。 */
++export interface FeedPage<T> {
++  records: T[]
++  nextCursor: string | null
++  hasMore: boolean
++}
++
++export interface InfiniteFeedOptions<T> {
++  /** 拉取一页；cursor 为空表示首批，signal 用于取消过期请求。 */
++  fetchPage: (cursor: string | undefined, signal: AbortSignal) => Promise<FeedPage<T>>
++  /** 列表项稳定 ID，用于跨页去重。 */
++  keyOf: (item: T) => string
++  /** 缓存键（筛选条件、作者等），同一键在短期内直接复用。 */
++  cacheKey?: () => string
++  /** 缓存隔离域，默认按登录令牌指纹隔离。 */
++  cacheScope?: () => string
++  /** DOM 元素上限，默认 240。 */
++  maxItems?: number
++}
++
++interface FeedCacheEntry<T> {
++  at: number
++  items: T[]
++  nextCursor: string | null
++  hasMore: boolean
++}
++
++/** 短期缓存：从详情返回时直接复用最近一屏，不再打接口。 */
++export const FEED_CACHE_TTL_MS = 180_000
++export const FEED_MAX_ITEMS = 240
++const FEED_CACHE_ENTRIES = 4
++const feedCache = new Map<string, FeedCacheEntry<unknown>>()
++let cachedScope = ''
++
++export function clearFeedCache(): void {
++  feedCache.clear()
++  cachedScope = ''
++}
++
++function currentScope(read?: () => string): string {
++  const scope = read?.() ?? 'public'
++  if (scope !== cachedScope) {
++    // 账号切换后，旧会话的内容快照不能再被新账号复用。
++    feedCache.clear()
++    cachedScope = scope
++  }
++  return scope
++}
++
++function cacheId(scope: string, key: string): string {
++  return scope + '\u0000' + key
++}
++
++function readCache<T>(id: string): FeedCacheEntry<T> | null {
++  const entry = feedCache.get(id) as FeedCacheEntry<T> | undefined
++  if (!entry) {
++    return null
++  }
++  if (Date.now() - entry.at > FEED_CACHE_TTL_MS) {
++    feedCache.delete(id)
++    return null
++  }
++  // 命中即刷新 LRU 顺序。
++  feedCache.delete(id)
++  feedCache.set(id, entry)
++  return entry
++}
++
++function writeCache<T>(id: string, entry: FeedCacheEntry<T>): void {
++  feedCache.delete(id)
++  feedCache.set(id, entry as FeedCacheEntry<unknown>)
++  while (feedCache.size > FEED_CACHE_ENTRIES) {
++    const oldest = feedCache.keys().next().value
++    if (oldest === undefined) {
++      break
++    }
++    feedCache.delete(oldest)
++  }
++}
++
++function isCancel(error: unknown): boolean {
++  return error instanceof Error && (error.name === 'CanceledError' || error.name === 'AbortError')
++}
++
++function messageOf(error: unknown, fallback: string): string {
++  return error instanceof ApiError ? error.message : fallback
++}
++
++/**
++ * 游标连续加载引擎：单请求锁 + 版本号/AbortController 防竞态、ID 去重、
++ * 有上限的短期缓存、DOM 上限与失败保留旧列表。公共攻略流与创作者作品流共用。
++ */
++export function useInfiniteFeed<T>(options: InfiniteFeedOptions<T>) {
++  const maxItems = options.maxItems ?? FEED_MAX_ITEMS
++  const items = shallowRef<T[]>([])
++  const loading = ref(false)
++  const loadingMore = ref(false)
++  const error = ref('')
++  const moreError = ref('')
++  const nextCursor = ref<string | null>(null)
++  const hasMore = ref(false)
++  const limitReached = computed(() => items.value.length >= maxItems)
++  const exhausted = computed(
++    () => !loading.value && !hasMore.value && !limitReached.value && items.value.length > 0
++  )
++
++  const seen = new Set<string>()
++  let version = 0
++  let controller: AbortController | null = null
++  let disposed = false
++
++  function cacheKey(): string {
++    return cacheId(currentScope(options.cacheScope), options.cacheKey?.() ?? 'feed')
++  }
++
++  function saveSnapshot(): void {
++    if (disposed || !items.value.length) {
++      return
++    }
++    writeCache(cacheKey(), {
++      at: Date.now(),
++      items: items.value,
++      nextCursor: nextCursor.value,
++      hasMore: hasMore.value
++    })
++  }
++
++  /** 合并一页：跳过重复 ID，超过上限截断并停止继续加载。 */
++  function absorb(page: FeedPage<T>): number {
++    const fresh: T[] = []
++    for (const record of page.records) {
++      const id = options.keyOf(record)
++      if (!id || seen.has(id)) {
++        continue
++      }
++      seen.add(id)
++      fresh.push(record)
++    }
++    const merged = items.value.length ? [...items.value, ...fresh] : fresh
++    const capped = merged.length > maxItems ? merged.slice(0, maxItems) : merged
++    items.value = capped
++    nextCursor.value = page.nextCursor
++    hasMore.value =
++      page.records.length > 0 &&
++      fresh.length > 0 &&
++      page.hasMore &&
++      Boolean(page.nextCursor) &&
++      capped.length < maxItems
++    return fresh.length
++  }
++
++  async function loadFirst(force = false): Promise<void> {
++    const request = ++version
++    controller?.abort()
++    controller = new AbortController()
++    const signal = controller.signal
++    loading.value = true
++    loadingMore.value = false
++    error.value = ''
++    moreError.value = ''
++    items.value = []
++    seen.clear()
++    nextCursor.value = null
++    hasMore.value = false
++    try {
++      if (!force) {
++        const cached = readCache<T>(cacheKey())
++        if (cached) {
++          items.value = cached.items
++          cached.items.forEach(item => seen.add(options.keyOf(item)))
++          nextCursor.value = cached.nextCursor
++          hasMore.value = cached.hasMore
++          return
++        }
++      }
++      const page = await options.fetchPage(undefined, signal)
++      if (request !== version || disposed) {
++        return
++      }
++      absorb(page)
++      saveSnapshot()
++    } catch (caught) {
++      if (request !== version || disposed || isCancel(caught)) {
++        return
++      }
++      error.value = messageOf(caught, '攻略暂时无法加载，请稍后重试')
++    } finally {
++      if (request === version) {
++        loading.value = false
++      }
++    }
++  }
++
++  /** 追加下一批；并发调用共享同一次请求，失败保留旧列表。 */
++  async function loadMore(): Promise<void> {
++    if (loading.value || loadingMore.value || !hasMore.value || limitReached.value) {
++      return
++    }
++    const cursor = nextCursor.value
++    if (!cursor) {
++      return
++    }
++    if (!controller) {
++      controller = new AbortController()
++    }
++    const request = version
++    const signal = controller.signal
++    loadingMore.value = true
++    moreError.value = ''
++    try {
++      const page = await options.fetchPage(cursor, signal)
++      if (request !== version || disposed) {
++        return
++      }
++      absorb(page)
++      saveSnapshot()
++    } catch (caught) {
++      if (request !== version || disposed || isCancel(caught)) {
++        return
++      }
++      moreError.value = messageOf(caught, '更多攻略暂时加载失败，请重试')
++    } finally {
++      if (request === version) {
++        loadingMore.value = false
++      }
++    }
++  }
++
++  /** 失败重试：首批失败重新首批，追加失败只重试下一批。 */
++  function retry(): Promise<void> {
++    if (moreError.value && items.value.length) {
++      moreError.value = ''
++      return loadMore()
++    }
++    return loadFirst(true)
++  }
++
++  function refresh(): Promise<void> {
++    return loadFirst(true)
++  }
++
++  function dispose(): void {
++    disposed = true
++    version += 1
++    controller?.abort()
++    controller = null
++  }
++
++  return {
++    items,
++    loading,
++    loadingMore,
++    error,
++    moreError,
++    hasMore,
++    exhausted,
++    limitReached,
++    maxItems,
++    loadFirst,
++    loadMore,
++    retry,
++    refresh,
++    dispose
++  }
++}
+--- a/frontend/src/components/GuideActions.vue
++++ b/frontend/src/components/GuideActions.vue
+@@ -7,14 +7,26 @@
+ import { useAuthStore } from '@/stores/auth'
+ import type { GuideInteraction } from '@/types/interaction'
+ 
+-const props = defineProps<{
+-  guideId: string
+-  likeCount: number
+-  favoriteCount: number
+-  commentCount: number
++const props = withDefaults(
++  defineProps<{
++    guideId: string
++    likeCount: number
++    favoriteCount: number
++    commentCount: number
++    /** inline：详情页旧胶囊按钮；rail：右侧竖排图标栏。 */
++    layout?: 'inline' | 'rail'
++    /** 分享地址，缺省用当前页面地址。 */
++    shareUrl?: string
++    /** 评论抽屉是否已展开，用于 aria-expanded。 */
++    commentsOpen?: boolean
++  }>(),
++  { layout: 'inline', shareUrl: undefined, commentsOpen: false }
++)
++
++const emit = defineEmits<{
++  change: [interaction: GuideInteraction]
++  'open-comments': []
+ }>()
+-
+-const emit = defineEmits<{ change: [interaction: GuideInteraction] }>()
+ 
+ const auth = useAuthStore()
+ const route = useRoute()
+@@ -59,6 +71,69 @@
+ const actionLocked = computed(
+   () => busy.value || (auth.isAuthenticated && interaction.value === null)
+ )
++
++/** 点赞真实成功后的轻弹提示，300ms 后自动复位。 */
++const bumped = ref<'like' | null>(null)
++let bumpTimer: ReturnType<typeof setTimeout> | null = null
++function bump(): void {
++  bumped.value = 'like'
++  if (bumpTimer) {
++    clearTimeout(bumpTimer)
++  }
++  bumpTimer = setTimeout(() => {
++    bumped.value = null
++  }, 300)
++}
++
++type ShareState = 'idle' | 'shared' | 'copied' | 'failed'
++const shareState = ref<ShareState>('idle')
++let shareTimer: ReturnType<typeof setTimeout> | null = null
++function settleShare(state: ShareState): void {
++  shareState.value = state
++  if (shareTimer) {
++    clearTimeout(shareTimer)
++  }
++  shareTimer = setTimeout(() => {
++    shareState.value = 'idle'
++  }, 4200)
++}
++
++async function copyLink(url: string): Promise<boolean> {
++  if (typeof navigator === 'undefined' || typeof navigator.clipboard?.writeText !== 'function') {
++    return false
++  }
++  try {
++    await navigator.clipboard.writeText(url)
++    return true
++  } catch {
++    return false
++  }
++}
++
++/** 优先系统分享面板，其次剪贴板；都不可用或失败时给出可操作提示。 */
++async function share(): Promise<void> {
++  const url =
++    props.shareUrl ||
++    (typeof window !== 'undefined' ? window.location.href : '')
++  const title = typeof document !== 'undefined' && document.title ? document.title : '旅行手记'
++  if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
++    try {
++      await navigator.share({ title, url })
++      settleShare('shared')
++      return
++    } catch (cause) {
++      // 用户主动取消分享不算错误。
++      if (cause instanceof DOMException && cause.name === 'AbortError') {
++        return
++      }
++    }
++  }
++  if (await copyLink(url)) {
++    settleShare('copied')
++    return
++  }
++  settleShare('failed')
++}
+ 
+ function messageOf(cause: unknown, fallback: string): string {
+   return cause instanceof ApiError && cause.message ? cause.message : fallback
+@@ -133,6 +208,9 @@
+     }
+     interaction.value = next
+     emit('change', next)
++    if (kind === 'like') {
++      bump()
++    }
+   } catch (cause) {
+     if (ticket !== version) {
+       return
+@@ -161,21 +239,173 @@
+ 
+ onBeforeUnmount(() => {
+   version += 1
++  if (bumpTimer) {
++    clearTimeout(bumpTimer)
++  }
++  if (shareTimer) {
++    clearTimeout(shareTimer)
++  }
+ })
+ </script>
+ 
+ <template>
+   <section
++    v-if="layout === 'rail'"
++    class="action-rail"
++    aria-label="攻略互动"
++    data-test="guide-actions"
++    data-layout="rail"
++  >
++    <div class="action-rail__stack">
++      <button
++        type="button"
++        data-test="like-guide"
++        class="action-rail__btn"
++        :class="{ 'is-active': likeActive, 'is-bumped': bumped === 'like' }"
++        :disabled="actionLocked"
++        :aria-pressed="likePressed"
++        :aria-busy="pending === 'like' ? 'true' : undefined"
++        :aria-label="likeActive ? '取消点赞' : '点赞'"
++        @click="toggle('like')"
++      >
++        <svg
++          viewBox="0 0 24 24"
++          aria-hidden="true"
++          class="h-5 w-5"
++          :fill="likeActive ? 'currentColor' : 'none'"
++          stroke="currentColor"
++          stroke-width="1.7"
++          stroke-linecap="round"
++          stroke-linejoin="round"
++        >
++          <path d="M7 10.5v9H4.6A1.6 1.6 0 0 1 3 17.9v-5.8a1.6 1.6 0 0 1 1.6-1.6H7Z" />
++          <path
++            d="M7 10.8 10.9 3.9a1.9 1.9 0 0 1 3.4 1.6l-.9 3.4h4.9a2 2 0 0 1 1.95 2.45l-1 5.1A2 2 0 0 1 17.3 18.2H7"
++          />
++        </svg>
++        <span class="action-rail__count tabular-nums">{{ likeTotal }}</span>
++      </button>
++
++      <button
++        type="button"
++        data-test="favorite-guide"
++        class="action-rail__btn"
++        :class="{ 'is-active': favoriteActive }"
++        :disabled="actionLocked"
++        :aria-pressed="favoritePressed"
++        :aria-busy="pending === 'favorite' ? 'true' : undefined"
++        :aria-label="favoriteActive ? '取消收藏' : '收藏'"
++        @click="toggle('favorite')"
++      >
++        <svg
++          viewBox="0 0 24 24"
++          aria-hidden="true"
++          class="h-5 w-5"
++          :fill="favoriteActive ? 'currentColor' : 'none'"
++          stroke="currentColor"
++          stroke-width="1.7"
++          stroke-linecap="round"
++          stroke-linejoin="round"
++        >
++          <path d="M12 20.3 5.4 14a4.6 4.6 0 0 1 6.6-6.4l.02.02.02-.02A4.6 4.6 0 0 1 18.6 14Z" />
++        </svg>
++        <span class="action-rail__count tabular-nums">{{ favoriteTotal }}</span>
++      </button>
++
++      <button
++        type="button"
++        data-test="comment-count"
++        class="action-rail__btn"
++        aria-controls="guide-comments-drawer"
++        :aria-expanded="commentsOpen ? 'true' : 'false'"
++        aria-label="查看评论"
++        @click="emit('open-comments')"
++      >
++        <svg
++          viewBox="0 0 24 24"
++          aria-hidden="true"
++          class="h-5 w-5"
++          fill="none"
++          stroke="currentColor"
++          stroke-width="1.7"
++          stroke-linecap="round"
++          stroke-linejoin="round"
++        >
++          <path d="M20 12a7.4 7.4 0 0 1-8 7.3 8.6 8.6 0 0 1-2.6-.4L4 20.5l1.4-4A7.3 7.3 0 0 1 4 12a7.4 7.4 0 0 1 8-7.3 7.4 7.4 0 0 1 8 7.3Z" />
++        </svg>
++        <span class="action-rail__count tabular-nums">{{ props.commentCount }}</span>
++      </button>
++
++      <button
++        type="button"
++        data-test="share-guide"
++        class="action-rail__btn"
++        aria-label="分享这篇攻略"
++        @click="share"
++      >
++        <svg
++          viewBox="0 0 24 24"
++          aria-hidden="true"
++          class="h-5 w-5"
++          fill="none"
++          stroke="currentColor"
++          stroke-width="1.7"
++          stroke-linecap="round"
++          stroke-linejoin="round"
++        >
++          <path d="M12 3.5 16.5 8M12 3.5 7.5 8M12 3.5V15" />
++          <path d="M5 13v5.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V13" />
++        </svg>
++        <span class="action-rail__label">分享</span>
++      </button>
++    </div>
++
++    <p v-if="shareState === 'copied'" role="status" class="action-rail__note">链接已复制</p>
++    <p v-else-if="shareState === 'shared'" role="status" class="action-rail__note">已打开分享</p>
++    <p v-else-if="shareState === 'failed'" role="alert" class="action-rail__note is-error">
++      当前浏览器无法直接分享，请复制地址栏链接。
++    </p>
++
++    <div v-if="error" role="alert" class="action-rail__error">
++      <p>{{ error }}</p>
++      <button
++        v-if="sessionExpired"
++        type="button"
++        data-test="login-entry"
++        class="action-rail__link"
++        @click="goLogin"
++      >
++        前往登录
++      </button>
++      <button
++        v-else
++        type="button"
++        data-test="retry-interaction"
++        class="action-rail__link"
++        @click="loadInteraction"
++      >
++        重试
++      </button>
++    </div>
++    <p v-else-if="!auth.isAuthenticated && !restoring" class="action-rail__note">
++      登录后可点赞与收藏
++    </p>
++    <p v-if="loading" class="action-rail__note" aria-live="polite">加载中…</p>
++  </section>
++
++  <section
++    v-else
+     class="surface-card mt-8 flex flex-col gap-3 px-5 py-4"
+     aria-label="攻略互动"
+     data-test="guide-actions"
++    data-layout="inline"
+   >
+     <div class="flex flex-wrap items-center gap-2.5">
+       <button
+         type="button"
+         data-test="like-guide"
+         class="btn-ghost disabled:cursor-not-allowed disabled:opacity-60"
+-        :class="likeActive ? 'border-pine bg-pine-soft/70 text-pine-deep' : ''"
++        :class="[likeActive ? 'border-pine bg-pine-soft/70 text-pine-deep' : '', bumped === 'like' ? 'is-bumped' : '']"
+         :disabled="actionLocked"
+         :aria-pressed="likePressed"
+         :aria-busy="pending === 'like' ? 'true' : undefined"
+@@ -226,9 +456,14 @@
+         <span class="tabular-nums">{{ favoriteTotal }}</span>
+       </button>
+ 
+-      <span
++      <button
++        type="button"
+         class="inline-flex items-center gap-1.5 rounded-full border border-pine/15 px-4 py-2 text-sm text-ink-soft"
+         data-test="comment-count"
++        aria-controls="guide-comments-drawer"
++        :aria-expanded="commentsOpen ? 'true' : 'false'"
++        :aria-label="`查看评论，共 ${props.commentCount} 条`"
++        @click="emit('open-comments')"
+       >
+         <svg
+           viewBox="0 0 24 24"
+@@ -244,10 +479,39 @@
+         </svg>
+         <span>评论</span>
+         <span class="tabular-nums">{{ props.commentCount }}</span>
+-      </span>
++      </button>
++
++      <button
++        type="button"
++        data-test="share-guide"
++        class="inline-flex items-center gap-1.5 rounded-full border border-pine/15 px-4 py-2 text-sm text-ink-soft hover:text-pine"
++        aria-label="分享这篇攻略"
++        @click="share"
++      >
++        <svg
++          viewBox="0 0 24 24"
++          aria-hidden="true"
++          class="h-4 w-4"
++          fill="none"
++          stroke="currentColor"
++          stroke-width="1.7"
++          stroke-linecap="round"
++          stroke-linejoin="round"
++        >
++          <path d="M12 3.5 16.5 8M12 3.5 7.5 8M12 3.5V15" />
++          <path d="M5 13v5.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V13" />
++        </svg>
++        <span>分享</span>
++      </button>
+ 
+       <span v-if="loading" class="text-xs text-ink-soft" aria-live="polite">互动状态加载中…</span>
+     </div>
++
++    <p v-if="shareState === 'copied'" role="status" class="text-xs text-pine">链接已复制，可以分享给旅伴了。</p>
++    <p v-else-if="shareState === 'shared'" role="status" class="text-xs text-pine">已打开系统分享。</p>
++    <p v-else-if="shareState === 'failed'" role="alert" class="text-xs text-ember">
++      当前浏览器无法直接分享，请手动复制地址栏链接。
++    </p>
+ 
+     <div
+       v-if="error"
+@@ -281,3 +545,147 @@
+     </p>
+   </section>
+ </template>
++
++<style scoped>
++.action-rail {
++  display: flex;
++  flex-direction: column;
++  align-items: center;
++  gap: 0.85rem;
++  min-width: 0;
++}
++
++.action-rail__stack {
++  display: flex;
++  flex-direction: column;
++  align-items: center;
++  gap: 0.35rem;
++  padding: 0.5rem 0.35rem;
++  border-radius: 999px;
++  background: var(--color-surface);
++  border: 1px solid color-mix(in srgb, var(--color-pine) 16%, transparent);
++  box-shadow: 0 12px 30px -22px color-mix(in srgb, var(--color-pine-deep) 55%, transparent);
++}
++
++.action-rail__btn {
++  display: flex;
++  flex-direction: column;
++  align-items: center;
++  justify-content: center;
++  gap: 0.15rem;
++  width: 3.4rem;
++  min-height: 3.4rem;
++  padding: 0.45rem 0.25rem;
++  border: 0;
++  border-radius: 999px;
++  background: transparent;
++  color: var(--color-ink-soft);
++  cursor: pointer;
++  transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
++}
++
++.action-rail__btn:hover:not(:disabled) {
++  background: color-mix(in srgb, var(--color-pine-soft) 55%, transparent);
++  color: var(--color-pine-deep);
++}
++
++.action-rail__btn:focus-visible {
++  outline: 2px solid var(--color-pine);
++  outline-offset: 2px;
++}
++
++.action-rail__btn:disabled {
++  cursor: not-allowed;
++  opacity: 0.55;
++}
++
++.action-rail__btn.is-active {
++  color: var(--color-ember);
++}
++
++.action-rail__btn.is-bumped {
++  animation: rail-bump 300ms ease-out;
++}
++
++.action-rail__count {
++  font-size: 0.72rem;
++  line-height: 1;
++  letter-spacing: 0.01em;
++}
++
++.action-rail__label {
++  font-size: 0.7rem;
++  line-height: 1;
++}
++
++.action-rail__note {
++  margin: 0;
++  max-width: 9rem;
++  text-align: center;
++  font-size: 0.7rem;
++  line-height: 1.4;
++  color: var(--color-ink-soft);
++}
++
++.action-rail__note.is-error {
++  color: var(--color-ember);
++}
++
++.action-rail__error {
++  max-width: 10rem;
++  padding: 0.5rem 0.6rem;
++  border-radius: 0.75rem;
++  border: 1px solid color-mix(in srgb, var(--color-ember) 35%, transparent);
++  background: color-mix(in srgb, var(--color-ember) 10%, transparent);
++  font-size: 0.7rem;
++  line-height: 1.45;
++  color: var(--color-ink);
++  text-align: center;
++}
++
++.action-rail__error p {
++  margin: 0;
++}
++
++.action-rail__link {
++  margin-top: 0.3rem;
++  padding: 0;
++  border: 0;
++  background: none;
++  color: var(--color-pine);
++  font-size: 0.7rem;
++  text-decoration: underline;
++  text-underline-offset: 2px;
++  cursor: pointer;
++  min-height: 1.75rem;
++}
++
++.is-bumped {
++  animation: rail-bump 300ms ease-out;
++}
++
++@keyframes rail-bump {
++  0% {
++    transform: scale(1);
++  }
++  35% {
++    transform: scale(1.18) translateY(-2px);
++  }
++  70% {
++    transform: scale(0.96);
++  }
++  100% {
++    transform: scale(1);
++  }
++}
++
++@media (prefers-reduced-motion: reduce) {
++  .action-rail__btn,
++  .is-bumped,
++  .action-rail__btn.is-bumped {
++    animation: none;
++    transition: none;
++    transform: none;
++  }
++}
++</style>
+--- a/frontend/src/components/GuideComments.vue
++++ b/frontend/src/components/GuideComments.vue
+@@ -10,7 +10,11 @@
+ import type { GuideComment } from '@/types/interaction'
+ import { commentLength,normalizeComment } from '@/utils/comment'
+ 
+-const props=defineProps<{ guideId:string; guideAuthorId?:string }>()
++/**
++ * panel：沿用详情页原有评论卡片；drawer：嵌进右侧评论抽屉，列表内部滚动、
++ * 输入区固定在底部。两种模式共用同一套分页/发布/删除/草稿/账号切换逻辑。
++ */
++const props=withDefaults(defineProps<{ guideId:string; guideAuthorId?:string; layout?:'panel'|'drawer' }>(),{ layout:'panel' })
+ const emit=defineEmits<{ 'count-changed':[value:number] }>()
+ const auth=useAuthStore(),route=useRoute(),inputId=useId()
+ const page=ref(1),loading=ref(true),loadError=ref(''),writeError=ref(''),notice=ref(''),text=ref(''),pending=ref(false),confirmId=ref<string|null>(null)
+@@ -58,20 +62,94 @@
+ onBeforeUnmount(()=>{contextVersion++;listVersion++})
+ </script>
+ <template>
+-  <section class="surface-card min-w-0 p-6 sm:p-9" aria-label="攻略评论">
+-    <div class="flex flex-wrap items-center justify-between gap-3"><h2 class="font-serif text-2xl text-pine-deep">旅人的留言</h2><span class="text-sm text-ink-soft">{{ result.total }} 条评论</span></div>
+-    <form v-if="auth.isAuthenticated||text" data-test="comment-form" class="mt-6" @submit.prevent="submit">
+-      <label :for="inputId" class="field-label">写下你的旅行建议</label>
+-      <textarea :id="inputId" v-model="text" class="field-input min-h-28" rows="4" :disabled="pending" :readonly="!auth.isAuthenticated" placeholder="分享一条有用的经验，或留下一句想说的话。" />
+-      <div class="mt-2 flex flex-wrap items-center justify-between gap-3"><span class="text-xs text-ink-soft">{{ length }} / 2000</span><button v-if="auth.isAuthenticated" type="submit" class="btn-primary" :disabled="pending">{{ pending?'正在处理…':'发表评论' }}</button><RouterLink v-else :to="loginLocation" class="btn-ghost">登录后继续</RouterLink></div>
+-    </form>
+-    <p v-else class="mt-5 text-sm text-ink-soft"><RouterLink :to="loginLocation" class="text-pine underline underline-offset-4">登录后评论</RouterLink>，和走过这里的人聊聊。</p>
+-    <p v-if="writeError" role="alert" class="mt-4 rounded-xl bg-ember/10 p-3 text-sm text-ember">{{ writeError }}</p>
+-    <p v-if="notice" role="status" class="mt-4 text-sm text-pine">{{ notice }}</p>
+-    <div v-if="loading" role="status" class="mt-6 py-6 text-center text-sm text-ink-soft">正在读取旅人的留言…</div>
+-    <div v-else-if="loadError" role="alert" class="mt-6 rounded-xl border border-ember/20 p-4"><p class="text-sm text-ink">{{ loadError }}</p><button type="button" data-test="retry-comments" class="btn-ghost mt-3" @click="load">重新加载</button></div>
+-    <div v-else-if="!result.records.length" class="mt-7 rounded-2xl bg-pine-soft/20 p-7 text-center"><p class="text-sm text-ink-soft">{{ result.total>0?'这一页暂时没有评论':'还没有评论，留下第一条旅行建议吧。' }}</p><button v-if="result.total>0" type="button" class="btn-ghost mt-4" @click="firstPage">回到第一页</button></div>
+-    <ol v-else class="mt-7 divide-y divide-pine/10"><li v-for="comment in result.records" :key="comment.id" data-test="comment-row" class="py-5 first:pt-0"><div class="flex items-start gap-3"><UserAvatar :src="comment.author.avatarUrl" :name="comment.author.nickname?.trim() || comment.author.username || '旅行者'" /><div class="min-w-0 flex-1"><div class="flex min-w-0 items-start gap-2"><UserIdentity class="flex-1" :user="comment.author" :show-avatar="false" linked /><span v-if="guideAuthorId === comment.author.id" data-test="guide-author-badge" class="shrink-0 rounded-md bg-pine-soft px-2 py-0.5 text-xs font-medium text-pine">作者</span></div><div class="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-ink-soft"><time :datetime="comment.createdAt">{{ comment.createdAt.slice(0,16).replace('T',' ') }}</time></div><p class="mt-3 whitespace-pre-wrap break-words text-sm leading-relaxed text-ink [overflow-wrap:anywhere]">{{ comment.content }}</p><button v-if="owns(comment)" type="button" :data-test="'delete-comment-'+comment.id" class="mt-3 -ml-2 min-h-11 px-2 text-xs text-ember underline underline-offset-4" :disabled="pending" @click="confirmId=confirmId===comment.id?null:comment.id">删除</button><div v-if="confirmId===comment.id&&owns(comment)" class="mt-3 rounded-xl border border-ember/20 p-3"><p class="text-sm text-ink">确认删除这条评论？</p><div class="mt-3 flex gap-3"><button type="button" :data-test="'confirm-delete-comment-'+comment.id" class="btn-ghost text-ember" :disabled="pending" @click="remove(comment)">确认删除</button><button type="button" class="btn-ghost" :disabled="pending" @click="confirmId=null">保留评论</button></div></div></div></div></li></ol>
+-    <nav v-if="result.pages>1" aria-label="评论分页" class="mt-5 flex items-center justify-center gap-3"><button type="button" class="btn-ghost" :disabled="loading||pending||page<=1" @click="turn(-1)">上一页</button><span class="text-sm text-ink-soft">{{ result.current }} / {{ result.pages }}</span><button type="button" data-test="comments-next" class="btn-ghost" :disabled="loading||pending||page>=result.pages" @click="turn(1)">下一页</button></nav>
++  <section :class="layout==='drawer' ? 'comments comments--drawer' : 'surface-card min-w-0 p-6 sm:p-9'" aria-label="攻略评论" :data-layout="layout">
++    <div v-if="layout==='panel'" class="flex flex-wrap items-center justify-between gap-3"><h2 class="font-serif text-2xl text-pine-deep">旅人的留言</h2><span class="text-sm text-ink-soft">{{ result.total }} 条评论</span></div>
++    <div class="comments__stream">
++      <div v-if="loading" role="status" class="mt-6 py-6 text-center text-sm text-ink-soft">正在读取旅人的留言…</div>
++      <div v-else-if="loadError" role="alert" class="mt-6 rounded-xl border border-ember/20 p-4"><p class="text-sm text-ink">{{ loadError }}</p><button type="button" data-test="retry-comments" class="btn-ghost mt-3" @click="load">重新加载</button></div>
++      <div v-else-if="!result.records.length" class="mt-7 rounded-2xl bg-pine-soft/20 p-7 text-center"><p class="text-sm text-ink-soft">{{ result.total>0?'这一页暂时没有评论':'还没有评论，留下第一条旅行建议吧。' }}</p><button v-if="result.total>0" type="button" class="btn-ghost mt-4" @click="firstPage">回到第一页</button></div>
++      <template v-else>
++        <ol class="mt-7 divide-y divide-pine/10"><li v-for="comment in result.records" :key="comment.id" data-test="comment-row" class="py-5 first:pt-0"><div class="flex items-start gap-3"><UserAvatar :src="comment.author.avatarUrl" :name="comment.author.nickname?.trim() || comment.author.username || '旅行者'" /><div class="min-w-0 flex-1"><div class="flex min-w-0 items-start gap-2"><UserIdentity class="flex-1" :user="comment.author" :show-avatar="false" linked /><span v-if="guideAuthorId === comment.author.id" data-test="guide-author-badge" class="shrink-0 rounded-md bg-pine-soft px-2 py-0.5 text-xs font-medium text-pine">作者</span></div><div class="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-ink-soft"><time :datetime="comment.createdAt">{{ comment.createdAt.slice(0,16).replace('T',' ') }}</time></div><p class="mt-3 whitespace-pre-wrap break-words text-sm leading-relaxed text-ink [overflow-wrap:anywhere]">{{ comment.content }}</p><button v-if="owns(comment)" type="button" :data-test="'delete-comment-'+comment.id" class="mt-3 -ml-2 min-h-11 px-2 text-xs text-ember underline underline-offset-4" :disabled="pending" @click="confirmId=confirmId===comment.id?null:comment.id">删除</button><div v-if="confirmId===comment.id&&owns(comment)" class="mt-3 rounded-xl border border-ember/20 p-3"><p class="text-sm text-ink">确认删除这条评论？</p><div class="mt-3 flex gap-3"><button type="button" :data-test="'confirm-delete-comment-'+comment.id" class="btn-ghost text-ember" :disabled="pending" @click="remove(comment)">确认删除</button><button type="button" class="btn-ghost" :disabled="pending" @click="confirmId=null">保留评论</button></div></div></div></div></li></ol>
++        <nav v-if="result.pages>1" aria-label="评论分页" class="mt-5 flex items-center justify-center gap-3"><button type="button" class="btn-ghost" :disabled="loading||pending||page<=1" @click="turn(-1)">上一页</button><span class="text-sm text-ink-soft">{{ result.current }} / {{ result.pages }}</span><button type="button" data-test="comments-next" class="btn-ghost" :disabled="loading||pending||page>=result.pages" @click="turn(1)">下一页</button></nav>
++      </template>
++    </div>
++    <div class="comments__feedback">
++      <p v-if="writeError" role="alert" class="mt-4 rounded-xl bg-ember/10 p-3 text-sm text-ember">{{ writeError }}</p>
++      <p v-if="notice" role="status" class="mt-4 text-sm text-pine">{{ notice }}</p>
++    </div>
++    <div class="comments__compose">
++      <form v-if="auth.isAuthenticated||text" data-test="comment-form" class="mt-6" @submit.prevent="submit">
++        <label :for="inputId" class="field-label">写下你的旅行建议</label>
++        <textarea :id="inputId" v-model="text" class="field-input min-h-28" rows="4" :disabled="pending" :readonly="!auth.isAuthenticated" placeholder="分享一条有用的经验，或留下一句想说的话。" />
++        <div class="mt-2 flex flex-wrap items-center justify-between gap-3"><span class="text-xs text-ink-soft">{{ length }} / 2000</span><button v-if="auth.isAuthenticated" type="submit" class="btn-primary" :disabled="pending">{{ pending?'正在处理…':'发表评论' }}</button><RouterLink v-else :to="loginLocation" class="btn-ghost">登录后继续</RouterLink></div>
++      </form>
++      <p v-else class="mt-5 text-sm text-ink-soft"><RouterLink :to="loginLocation" class="text-pine underline underline-offset-4">登录后评论</RouterLink>，和走过这里的人聊聊。</p>
++    </div>
+   </section>
+ </template>
++<style scoped>
++section[data-layout='panel'] {
++  display: flex;
++  flex-direction: column;
++}
++
++section[data-layout='panel'] .comments__compose {
++  order: 1;
++}
++
++section[data-layout='panel'] .comments__feedback {
++  order: 2;
++}
++
++section[data-layout='panel'] .comments__stream {
++  order: 3;
++}
++
++.comments--drawer {
++  display: flex;
++  flex-direction: column;
++  height: 100%;
++  min-height: 0;
++  padding: 0 1.1rem;
++  background: var(--color-surface);
++}
++
++.comments--drawer .comments__stream {
++  order: 1;
++  flex: 1 1 auto;
++  min-height: 0;
++  overflow-y: auto;
++  overscroll-behavior: contain;
++  -webkit-overflow-scrolling: touch;
++  padding-bottom: 0.5rem;
++}
++
++.comments--drawer .comments__feedback {
++  order: 2;
++  flex: none;
++}
++
++.comments--drawer .comments__compose {
++  order: 3;
++  flex: none;
++  margin-top: 0.35rem;
++  padding: 0.85rem 0 calc(0.9rem + env(safe-area-inset-bottom));
++  border-top: 1px solid color-mix(in srgb, var(--color-pine) 14%, transparent);
++  background: var(--color-surface);
++}
++
++.comments--drawer .comments__compose .field-input {
++  min-height: 4.5rem;
++  background: color-mix(in srgb, var(--color-cream) 72%, var(--color-surface));
++}
++
++.comments--drawer .comments__compose > .mt-5 {
++  margin-top: 0;
++}
++
++@media (max-width: 767px) {
++  .comments--drawer {
++    padding: 0 0.9rem;
++  }
++}
++</style>--- /dev/null
++++ b/frontend/src/components/CommentDrawer.vue
+@@ -0,0 +1,453 @@
++<script setup lang="ts">
++import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
++
++import GuideComments from './GuideComments.vue'
++
++/**
++ * 详情页右侧评论抽屉。
++ *
++ * - 常驻挂载，只切换可见性：关闭不会卸载 GuideComments，评论草稿因此保留；
++ * - >=1440px 为非模态侧栏：无遮罩、不锁 body 滚动、不做 focus trap，正文仍可阅读；
++ * - 更窄视口退化为模态抽屉：遮罩 + Esc + focus trap + 焦点恢复 + body 滚动锁；
++ * - 顶部触控右滑可关闭；高度用 100dvh，兼容移动端软键盘。
++ */
++const props = withDefaults(
++  defineProps<{
++    open: boolean
++    guideId: string
++    /** 与服务端同步的评论总数，打开时展示在标题旁。 */
++    commentCount?: number
++    guideAuthorId?: string
++  }>(),
++  { commentCount: 0, guideAuthorId: undefined }
++)
++
++const emit = defineEmits<{
++  close: []
++  'count-changed': [value: number]
++}>()
++
++const panel = ref<HTMLElement | null>(null)
++const wide = ref(false)
++/** 关闭动画期间仍需保留 DOM，故用独立可见性标记。 */
++const visible = ref(props.open)
++let hideTimer: ReturnType<typeof setTimeout> | null = null
++
++const total = computed(() => props.commentCount)
++/** 宽屏非模态、窄屏模态，决定角色语义与交互约束。 */
++const modal = computed(() => !wide.value)
++
++function readWide(): boolean {
++  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
++    return false
++  }
++  try {
++    return window.matchMedia('(min-width: 1440px)').matches
++  } catch {
++    return false
++  }
++}
++
++let media: MediaQueryList | null = null
++function onMediaChange(event: MediaQueryListEvent): void {
++  wide.value = event.matches
++  if (!props.open) {
++    return
++  }
++  if (event.matches) {
++    unlockScroll()
++  } else {
++    lockScroll()
++    void focusPanel()
++  }
++}
++
++/* ---------------------------- body 滚动锁（仅模态） ---------------------------- */
++
++let scrollLocked = false
++let previousOverflow = ''
++
++function lockScroll(): void {
++  if (typeof document === 'undefined' || scrollLocked) {
++    return
++  }
++  previousOverflow = document.body.style.overflow
++  document.body.style.overflow = 'hidden'
++  scrollLocked = true
++}
++
++function unlockScroll(): void {
++  if (typeof document === 'undefined' || !scrollLocked) {
++    return
++  }
++  document.body.style.overflow = previousOverflow
++  scrollLocked = false
++}
++
++/* ------------------------------ 焦点管理（仅模态） ------------------------------ */
++
++let restoreTarget: HTMLElement | null = null
++
++function focusable(): HTMLElement[] {
++  const root = panel.value
++  if (!root) {
++    return []
++  }
++  return Array.from(
++    root.querySelectorAll<HTMLElement>(
++      'button:not(:disabled), [href], input:not(:disabled), textarea:not(:disabled), select:not(:disabled), [tabindex]:not([tabindex="-1"])'
++    )
++  )
++}
++
++async function focusPanel(): Promise<void> {
++  await nextTick()
++  const first = focusable()[0] ?? panel.value
++  first?.focus({ preventScroll: true })
++}
++
++function restoreFocus(): void {
++  const target = restoreTarget
++  restoreTarget = null
++  if (target && typeof target.focus === 'function' && document.contains(target)) {
++    target.focus({ preventScroll: true })
++  }
++}
++
++function onKeydown(event: KeyboardEvent): void {
++  if (!props.open) {
++    return
++  }
++  if (event.key === 'Escape') {
++    event.preventDefault()
++    emit('close')
++    return
++  }
++  if (!modal.value || event.key !== 'Tab') {
++    return
++  }
++  const items = focusable()
++  if (!items.length) {
++    event.preventDefault()
++    panel.value?.focus({ preventScroll: true })
++    return
++  }
++  const first = items[0]
++  const last = items[items.length - 1]
++  const active = document.activeElement as HTMLElement | null
++  if (!active || !panel.value?.contains(active)) {
++    event.preventDefault()
++    first.focus({ preventScroll: true })
++    return
++  }
++  if (event.shiftKey && active === first) {
++    event.preventDefault()
++    last.focus({ preventScroll: true })
++  } else if (!event.shiftKey && active === last) {
++    event.preventDefault()
++    first.focus({ preventScroll: true })
++  }
++}
++
++/* --------------------------------- 触控右滑关闭 -------------------------------- */
++
++let touchStart: { x: number; y: number } | null = null
++
++function onTouchStart(event: TouchEvent): void {
++  const point = event.touches[0]
++  touchStart = point ? { x: point.clientX, y: point.clientY } : null
++}
++
++function onTouchEnd(event: TouchEvent): void {
++  const start = touchStart
++  touchStart = null
++  const point = event.changedTouches[0]
++  if (!start || !point) {
++    return
++  }
++  const dx = point.clientX - start.x
++  const dy = point.clientY - start.y
++  if (dx > 60 && dx > Math.abs(dy) * 1.5) {
++    emit('close')
++  }
++}
++
++/* ----------------------------------- 生命周期 ---------------------------------- */
++
++function openDrawer(): void {
++  if (hideTimer) {
++    clearTimeout(hideTimer)
++    hideTimer = null
++  }
++  visible.value = true
++  wide.value = readWide()
++  if (!wide.value) {
++    restoreTarget = document.activeElement as HTMLElement | null
++    lockScroll()
++    void focusPanel()
++  }
++}
++
++function closeDrawer(): void {
++  // 非模态下焦点从未被抽屉接管，不做恢复，避免抢走用户的阅读焦点。
++  if (!wide.value) {
++    restoreFocus()
++  }
++  unlockScroll()
++  if (hideTimer) {
++    clearTimeout(hideTimer)
++  }
++  hideTimer = setTimeout(() => {
++    visible.value = false
++    hideTimer = null
++  }, 260)
++}
++
++watch(
++  () => props.open,
++  (open) => {
++    if (open) {
++      openDrawer()
++    } else {
++      closeDrawer()
++    }
++  },
++  { immediate: true }
++)
++
++function onMountedSetup(): void {
++  wide.value = readWide()
++  if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
++    media = window.matchMedia('(min-width: 1440px)')
++    media.addEventListener?.('change', onMediaChange)
++  }
++  document.addEventListener('keydown', onKeydown, true)
++  if (props.open) {
++    openDrawer()
++  }
++}
++onMounted(onMountedSetup)
++
++onBeforeUnmount(() => {
++  document.removeEventListener('keydown', onKeydown, true)
++  media?.removeEventListener?.('change', onMediaChange)
++  unlockScroll()
++  if (hideTimer) {
++    clearTimeout(hideTimer)
++  }
++})
++</script>
++
++<template>
++  <div class="comment-drawer-root" :class="{ 'is-open': open }">
++    <div
++      v-if="modal"
++      class="comment-drawer__scrim"
++      :class="{ 'is-visible': open && visible }"
++      data-test="comment-scrim"
++      aria-hidden="true"
++      @click="emit('close')"
++    />
++
++    <aside
++      id="guide-comments-drawer"
++      ref="panel"
++      class="comment-drawer"
++      :class="{ 'is-visible': visible, 'is-wide': wide }"
++      :role="modal ? 'dialog' : 'region'"
++      :aria-modal="modal ? 'true' : undefined"
++      :aria-label="`评论，共 ${total} 条`"
++      :aria-hidden="open ? undefined : 'true'"
++      data-test="comment-drawer"
++      :data-modal="modal ? 'true' : 'false'"
++      tabindex="-1"
++      @touchstart.passive="onTouchStart"
++      @touchend.passive="onTouchEnd"
++    >
++      <header class="comment-drawer__header">
++        <div class="comment-drawer__title">
++          <h2 class="font-serif text-lg text-pine-deep">评论</h2>
++          <span class="tabular-nums text-sm text-ink-soft">{{ total }}</span>
++        </div>
++        <button
++          type="button"
++          class="comment-drawer__close"
++          data-test="comment-drawer-close"
++          aria-label="关闭评论"
++          @click="emit('close')"
++        >
++          <svg
++            viewBox="0 0 24 24"
++            aria-hidden="true"
++            class="h-4 w-4"
++            fill="none"
++            stroke="currentColor"
++            stroke-width="1.8"
++            stroke-linecap="round"
++          >
++            <path d="M6 6l12 12M18 6 6 18" />
++          </svg>
++        </button>
++      </header>
++
++      <div class="comment-drawer__body">
++        <GuideComments
++          layout="drawer"
++          :guide-id="guideId"
++          :guide-author-id="guideAuthorId"
++          @count-changed="emit('count-changed', $event)"
++        />
++      </div>
++    </aside>
++  </div>
++</template>
++
++<style scoped>
++.comment-drawer-root {
++  position: fixed;
++  inset: 0;
++  z-index: 60;
++  pointer-events: none;
++  visibility: hidden;
++}
++
++.comment-drawer-root.is-open {
++  visibility: visible;
++}
++
++.comment-drawer__scrim {
++  position: absolute;
++  inset: 0;
++  background: color-mix(in srgb, var(--color-scrim) 55%, transparent);
++  opacity: 0;
++  transition: opacity 240ms ease;
++  pointer-events: none;
++}
++
++.comment-drawer__scrim.is-visible {
++  opacity: 1;
++  pointer-events: auto;
++}
++
++.comment-drawer {
++  position: absolute;
++  top: 0;
++  right: 0;
++  display: flex;
++  flex-direction: column;
++  width: min(26rem, 100vw);
++  height: 100dvh;
++  max-height: 100dvh;
++  overflow: hidden;
++  background: var(--color-surface);
++  border-left: 1px solid color-mix(in srgb, var(--color-pine) 16%, transparent);
++  box-shadow: -18px 0 48px -32px color-mix(in srgb, var(--color-pine-deep) 60%, transparent);
++  transform: translateX(100%);
++  opacity: 0;
++  transition: transform 240ms ease, opacity 240ms ease;
++  pointer-events: none;
++  outline: none;
++}
++
++.comment-drawer.is-wide {
++  top: 1.25rem;
++  right: 1.25rem;
++  height: calc(100dvh - 2.5rem);
++  max-height: calc(100dvh - 2.5rem);
++  border: 1px solid color-mix(in srgb, var(--color-pine) 16%, transparent);
++  border-radius: var(--radius-card);
++  box-shadow: 0 24px 60px -36px color-mix(in srgb, var(--color-pine-deep) 70%, transparent);
++}
++
++.comment-drawer.is-visible {
++  transform: translateX(0);
++  opacity: 1;
++  pointer-events: auto;
++}
++
++.comment-drawer__header {
++  flex: none;
++  display: flex;
++  align-items: center;
++  justify-content: space-between;
++  gap: 0.75rem;
++  padding: 1rem 1.1rem;
++  border-bottom: 1px solid color-mix(in srgb, var(--color-pine) 12%, transparent);
++  background: var(--color-surface);
++}
++
++.comment-drawer__title {
++  display: flex;
++  align-items: baseline;
++  gap: 0.4rem;
++  min-width: 0;
++}
++
++.comment-drawer__title h2 {
++  margin: 0;
++}
++
++.comment-drawer__close {
++  display: inline-flex;
++  align-items: center;
++  justify-content: center;
++  width: 2.2rem;
++  height: 2.2rem;
++  border: 1px solid color-mix(in srgb, var(--color-pine) 18%, transparent);
++  border-radius: 999px;
++  background: transparent;
++  color: var(--color-ink-soft);
++  cursor: pointer;
++  transition: background-color 160ms ease, color 160ms ease;
++}
++
++.comment-drawer__close:hover {
++  background: color-mix(in srgb, var(--color-pine-soft) 55%, transparent);
++  color: var(--color-pine-deep);
++}
++
++.comment-drawer__close:focus-visible {
++  outline: 2px solid var(--color-pine);
++  outline-offset: 2px;
++}
++
++.comment-drawer__body {
++  flex: 1 1 auto;
++  min-height: 0;
++  display: flex;
++  flex-direction: column;
++  overflow: hidden;
++}
++
++.comment-drawer__body > :deep(section) {
++  flex: 1 1 auto;
++  min-height: 0;
++  height: 100%;
++}
++
++@media (max-width: 767px) {
++  .comment-drawer {
++    width: 100vw;
++    border-left: 0;
++  }
++
++  .comment-drawer.is-wide {
++    top: 0;
++    right: 0;
++    height: 100dvh;
++    max-height: 100dvh;
++    border-radius: 0;
++  }
++}
++
++@media (prefers-reduced-motion: reduce) {
++  .comment-drawer,
++  .comment-drawer__scrim {
++    transition: none;
++  }
++
++  .comment-drawer {
++    transform: none;
++  }
++}
++</style>
+--- a/frontend/src/views/CreatorView.vue
++++ b/frontend/src/views/CreatorView.vue
+@@ -1,50 +1,703 @@
+ <script setup lang="ts">
+-import { computed, onBeforeUnmount, ref, watch } from 'vue'
++import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+ import { useRoute, useRouter } from 'vue-router'
+-import { fetchCreator, fetchCreatorGuides } from '@/api/creators'
++import { fetchCreator, fetchCreatorFeed, fetchCreatorGuides } from '@/api/creators'
+ import { ApiError } from '@/api/client'
+ import { useAuthStore } from '@/stores/auth'
++import GuideGrid from '@/components/GuideGrid.vue'
++import SiteIcon from '@/components/SiteIcon.vue'
++import UserAvatar from '@/components/UserAvatar.vue'
+ import UserIdentity from '@/components/UserIdentity.vue'
+-import GuideCard from '@/components/GuideCard.vue'
+ import type { CreatorProfile } from '@/types/creator'
+-import type { PageResult } from '@/types/api'
+ import type { GuideSummary } from '@/types/guide'
+-const route=useRoute(),router=useRouter(),auth=useAuthStore()
+-const creator=ref<CreatorProfile|null>(null),result=ref<PageResult<GuideSummary>|null>(null),loading=ref(true),error=ref('')
+-let version=0
+-const page=computed(()=>{const value=Number(route.query.page);return Number.isSafeInteger(value)&&value>0?value:1})
+-const mine=computed(()=>creator.value?.id===auth.user?.id)
+-async function load(){
+- const request=++version;loading.value=true;error.value='';creator.value=null;result.value=null
+- const username=String(route.params.username??'')
+- try{
+-  const [profile,notes]=await Promise.all([fetchCreator(username),fetchCreatorGuides(username,{page:page.value,size:12})])
+-  if(request===version){creator.value=profile;result.value=notes}
+- }catch(e){if(request===version)error.value=e instanceof ApiError?e.message:'创作者资料暂时无法加载，请重试'}
+- finally{if(request===version)loading.value=false}
+-}
+-function turn(value:number){void router.push({path:route.path,query:{page:String(value)}})}
+-watch([()=>route.params.username,page],()=>void load(),{immediate:true})
+-onBeforeUnmount(()=>version++)
++
++/** 每页手记数：与发现流保持一致的 12 篇。 */
++const PAGE_SIZE = 12
++const SCROLL_PREFIX = 'travel-notes.creator-scroll:'
++
++const route = useRoute()
++const router = useRouter()
++const auth = useAuthStore()
++
++const creator = ref<CreatorProfile | null>(null)
++const notes = ref<GuideSummary[]>([])
++const loading = ref(true)
++const feedLoading = ref(false)
++const profileError = ref('')
++const feedError = ref('')
++const loadingMore = ref(false)
++const hasMore = ref(false)
++const cursor = ref<string | null>(null)
++const sentinel = ref<HTMLElement | null>(null)
++
++let version = 0
++let controller: AbortController | null = null
++let observer: IntersectionObserver | null = null
++let legacyMode = false
++let legacyPage = 0
++let legacyPages = 0
++let legacyTotal = 0
++
++const username = computed(() => String(route.params.username ?? '').trim())
++const mine = computed(() => Boolean(creator.value && auth.user && creator.value.id === auth.user.id))
++const displayName = computed(() => creator.value?.nickname?.trim() || creator.value?.username?.trim() || '旅行者')
++const guideCountText = computed(() => (creator.value?.publishedGuideCount ?? 0) + ' 篇公开手记')
++const metrics = computed(() => [
++  { label: '公开笔记', value: creator.value?.publishedGuideCount ?? 0 },
++  { label: '获得点赞', value: creator.value?.likeCount ?? 0 },
++  { label: '被收藏', value: creator.value?.favoriteCount ?? 0 }
++])
++const showEmpty = computed(
++  () => !feedLoading.value && !feedError.value && notes.value.length === 0 && !hasMore.value
++)
++/** 旧分页接口下，当前页为空但存在更早的手记时，给出「回到第一页」的入口。 */
++const showFirstPage = computed(
++  () => legacyMode && notes.value.length === 0 && !feedError.value && legacyTotal > 0
++)
++
++function format(value: number): string {
++  return new Intl.NumberFormat('zh-CN').format(Number.isFinite(value) ? value : 0)
++}
++
++function scrollKey(): string {
++  return SCROLL_PREFIX + username.value
++}
++
++/** 返回位置：离开主页时记下滚动位置，回到同一作者时还原。 */
++function saveScroll(): void {
++  try {
++    const top = window.scrollY || document.documentElement.scrollTop || 0
++    if (top > 0) sessionStorage.setItem(scrollKey(), String(Math.round(top)))
++  } catch {
++    // 隐私模式下 storage 不可用时静默跳过，不影响浏览。
++  }
++}
++
++function restoreScroll(): void {
++  try {
++    const top = Number(sessionStorage.getItem(SCROLL_PREFIX + username.value))
++    if (!Number.isSafeInteger(top) || top <= 0) return
++    document.documentElement.scrollTop = top
++    document.body.scrollTop = top
++  } catch {
++    // 同 saveScroll。
++  }
++}
++
++function isAbort(error: unknown): boolean {
++  if (error instanceof DOMException) return error.name === 'AbortError'
++  return Boolean(error && typeof error === 'object' && (error as { code?: string }).code === 'ERR_CANCELED')
++}
++
++function isMissingFeed(error: unknown): boolean {
++  return error instanceof ApiError && error.status === 404
++}
++
++/** 按 id 去重后再追加，避免游标翻页返回重复笔记。 */
++function merge(current: GuideSummary[], incoming: GuideSummary[] | undefined): GuideSummary[] {
++  if (!Array.isArray(incoming) || incoming.length === 0) return current.slice()
++  const seen = new Set(current.map((item) => item.id))
++  const merged = current.slice()
++  for (const item of incoming) {
++    if (!item || seen.has(item.id)) continue
++    seen.add(item.id)
++    merged.push(item)
++  }
++  return merged
++}
++
++function stopStreaming(): void {
++  controller?.abort()
++  controller = null
++  observer?.disconnect()
++  observer = null
++}
++
++/** 触底自动追加；浏览器不支持 IntersectionObserver 时保留「加载更多」按钮。 */
++function observeMore(): void {
++  observer?.disconnect()
++  observer = null
++  if (typeof IntersectionObserver !== 'function' || !sentinel.value) return
++  observer = new IntersectionObserver(
++    (entries) => {
++      if (entries.some((entry) => entry.isIntersecting)) void loadMore()
++    },
++    { rootMargin: '320px 0px' }
++  )
++  observer.observe(sentinel.value)
++}
++
++/**
++ * 读取游标流接口。Vitest 里若 mock 未导出该函数，直接取用会抛错，
++ * 因此统一包一层，拿不到就返回 null 并退回分页接口。
++ */
++function feedApi(): ((name: string, params: { size?: number; cursor?: string }, signal?: AbortSignal) => Promise<import('@/types/guide').GuideFeedPage>) | null {
++  try {
++    return typeof fetchCreatorFeed === 'function' ? fetchCreatorFeed : null
++  } catch {
++    return null
++  }
++}
++
++function guidesApi(): typeof fetchCreatorGuides | null {
++  try {
++    return typeof fetchCreatorGuides === 'function' ? fetchCreatorGuides : null
++  } catch {
++    return null
++  }
++}
++
++async function loadLegacyPage(request: number, name: string, page: number): Promise<boolean> {
++  const api = guidesApi()
++  if (!api) {
++    feedError.value = '手记暂时没有加载出来，请重试'
++    return false
++  }
++  try {
++    const result = await api(name, { page, size: PAGE_SIZE })
++    if (request !== version) return false
++    legacyMode = true
++    legacyPage = result.current || page
++    legacyPages = result.pages || 0
++    legacyTotal = result.total || 0
++    notes.value = page <= 1 ? merge([], result.records) : merge(notes.value, result.records)
++    hasMore.value = legacyPage < legacyPages
++    cursor.value = null
++    feedError.value = ''
++    return true
++  } catch {
++    if (request !== version) return false
++    feedError.value = '手记暂时没有加载出来，请重试'
++    return false
++  }
++}
++
++/** 「回到第一页」：同步 URL 上的 page，再按第一页重新拉取。 */
++async function gotoFirstPage(): Promise<void> {
++  const request = ++version
++  const name = username.value
++  notes.value = []
++  hasMore.value = false
++  legacyTotal = 0
++  feedError.value = ''
++  await router.replace({ query: { ...route.query, page: '1' } })
++  if (request !== version) return
++  await loadLegacyPage(request, name, 1)
++}
++
++async function startStream(request: number, name: string, startPage: number): Promise<void> {
++  controller = new AbortController()
++  feedLoading.value = true
++  const api = feedApi()
++  try {
++    if (!api) {
++      await loadLegacyPage(request, name, startPage)
++      return
++    }
++    const page = await api(name, { size: PAGE_SIZE }, controller.signal)
++    if (request !== version) return
++    notes.value = merge([], page?.records)
++    cursor.value = page?.nextCursor ?? null
++    hasMore.value = Boolean(page?.hasMore && page?.nextCursor)
++    feedError.value = ''
++  } catch (error) {
++    if (request !== version || isAbort(error)) return
++    // 旧后端没有游标流接口（404/未实现/mock 未导出）时退回分页接口，保证主页仍可用。
++    if (!isMissingFeed(error)) {
++      // 其它错误也先尝试分页接口：分页同样失败时才整体报错。
++      const ok = await loadLegacyPage(request, name, startPage)
++      if (ok) return
++    } else {
++      await loadLegacyPage(request, name, startPage)
++      return
++    }
++    feedError.value = '手记暂时没有加载出来，请重试'
++  } finally {
++    if (request === version) feedLoading.value = false
++  }
++}
++
++async function load(): Promise<void> {
++  const request = ++version
++  stopStreaming()
++  loading.value = true
++  feedLoading.value = false
++  profileError.value = ''
++  feedError.value = ''
++  notes.value = []
++  cursor.value = null
++  hasMore.value = false
++  loadingMore.value = false
++  legacyMode = false
++  legacyPage = 0
++  legacyPages = 0
++  legacyTotal = 0
++  const name = username.value
++  if (!name) {
++    loading.value = false
++    profileError.value = '没有找到这位旅人'
++    return
++  }
++  try {
++    const profile = await fetchCreator(name)
++    if (request !== version) return
++    creator.value = profile
++  } catch {
++    if (request !== version) return
++    creator.value = null
++    loading.value = false
++    profileError.value = '旅人的主页暂时无法加载，请重试'
++    return
++  }
++  loading.value = false
++  const startPage = Math.max(1, Number(route.query.page) || 1)
++  await startStream(request, name, startPage)
++  if (request !== version) return
++  await nextTick()
++  restoreScroll()
++  observeMore()
++}
++
++async function loadMore(): Promise<void> {
++  if (loading.value || loadingMore.value || !hasMore.value) return
++  const request = version
++  const name = username.value
++  loadingMore.value = true
++  feedError.value = ''
++  try {
++    if (legacyMode) {
++      await loadLegacyPage(request, name, legacyPage + 1)
++      return
++    }
++    const api = feedApi()
++    if (!api || !cursor.value) {
++      hasMore.value = false
++      return
++    }
++    const page = await api(name, { size: PAGE_SIZE, cursor: cursor.value }, controller?.signal)
++    if (request !== version) return
++    notes.value = merge(notes.value, page?.records)
++    cursor.value = page?.nextCursor ?? null
++    hasMore.value = Boolean(page?.hasMore && page?.nextCursor)
++  } catch (error) {
++    if (request !== version || isAbort(error)) return
++    // 流接口中途不可用时切到分页接口续读，避免整段手记卡死。
++    legacyMode = true
++    const nextPage = Math.floor(notes.value.length / PAGE_SIZE) + 1
++    const ok = await loadLegacyPage(request, name, nextPage)
++    if (!ok) feedError.value = '更多手记暂时没有加载出来，请重试'
++  } finally {
++    if (request === version) loadingMore.value = false
++  }
++}
++
++async function retryFeed(): Promise<void> {
++  if (loading.value) return
++  const request = ++version
++  stopStreaming()
++  notes.value = []
++  cursor.value = null
++  hasMore.value = false
++  feedError.value = ''
++  loadingMore.value = false
++  await startStream(request, username.value, 1)
++  if (request !== version) return
++  await nextTick()
++  observeMore()
++}
++
++/** 任何 username / 登录态变化都重新加载，避免串号或看到上一账号的快捷入口。 */
++watch(
++  [username, () => auth.user?.id, () => auth.token],
++  () => {
++    void load()
++  },
++  { immediate: true }
++)
++
++onBeforeUnmount(() => {
++  version++
++  saveScroll()
++  stopStreaming()
++})
+ </script>
++
+ <template>
+- <section class="app-container py-8 lg:py-12">
+-  <RouterLink to="/" class="text-sm text-pine hover:underline">← 发现更多旅程</RouterLink>
+-  <div v-if="loading" role="status" class="surface-card mt-6 p-12 text-center text-ink-soft">正在打开旅人的主页…</div>
+-  <div v-else-if="error" role="alert" class="surface-card mt-6 p-8"><h1 class="font-serif text-2xl text-pine-deep">{{ error }}</h1><button type="button" data-test="creator-retry" class="btn-ghost mt-5" @click="load">重新加载</button></div>
+-  <template v-else-if="creator&&result">
+-   <header class="creator-header mt-6">
+-    <div class="min-w-0"><UserIdentity :user="creator" size="lg" /><h1 class="sr-only">{{ creator.nickname||creator.username }}的旅行主页</h1><p v-if="creator.bio" class="mt-5 max-w-2xl whitespace-pre-line break-words text-sm leading-7 text-ink-soft">{{ creator.bio }}</p><p class="mt-4 text-sm text-pine">{{ creator.publishedGuideCount }} 篇公开手记</p></div>
+-    <RouterLink v-if="mine" to="/me" class="btn-ghost shrink-0">编辑我的资料</RouterLink>
+-   </header>
+-   <div class="mb-6 mt-9 flex items-center justify-between gap-3"><h2 class="font-serif text-2xl text-pine-deep">走过的山水</h2><p class="text-xs text-ink-soft">按发布时间排列</p></div>
+-   <div v-if="result.records.length" class="creator-grid"><GuideCard v-for="guide in result.records" :key="guide.id" :guide="guide" /></div>
+-   <div v-else class="surface-card p-10 text-center"><p class="text-ink-soft">{{ result.total?'这一页暂时没有手记':'还没有公开的旅行手记' }}</p><button v-if="result.total" data-test="creator-first" type="button" class="btn-ghost mt-4" @click="turn(1)">回到第一页</button></div>
+-   <nav v-if="result.pages>1" class="mt-8 flex items-center justify-center gap-3" aria-label="创作者手记分页"><button type="button" class="btn-ghost" :disabled="page<=1" @click="turn(page-1)">上一页</button><span class="text-sm text-ink-soft">{{ result.current }} / {{ result.pages }}</span><button type="button" class="btn-ghost" :disabled="page>=result.pages" @click="turn(page+1)">下一页</button></nav>
+-  </template>
+- </section>
++  <section class="creator-page" aria-labelledby="creator-title">
++    <div class="stream-container py-5 lg:py-7">
++      <RouterLink to="/" class="back-link">← 发现更多旅程</RouterLink>
++
++      <div v-if="loading" role="status" class="surface-card mt-4 p-12 text-center text-ink-soft">
++        正在打开旅人的主页…
++      </div>
++
++      <div v-else-if="profileError" role="alert" class="surface-card mt-4 p-8">
++        <h1 class="font-serif text-2xl text-pine-deep">{{ profileError }}</h1>
++        <button type="button" data-test="creator-retry" class="btn-ghost mt-5" @click="load">重新加载</button>
++      </div>
++
++      <template v-else-if="creator">
++        <header class="profile-hero">
++          <div class="profile-cover" aria-hidden="true">
++            <span class="cover-sun"></span>
++            <svg class="cover-art" viewBox="0 0 1440 300" preserveAspectRatio="none" focusable="false">
++              <path d="M0 236 168 118 300 202 432 92 566 190 706 116 838 208 972 104 1112 198 1250 140 1440 226V300H0Z" opacity=".38" fill="currentColor"></path>
++              <path d="M0 268 136 182 262 246 404 158 540 232 690 166 820 240 964 170 1114 244 1272 176 1440 252V300H0Z" opacity=".6" fill="currentColor"></path>
++              <path d="M0 292 120 244 268 288 420 236 566 282 720 240 862 286 1010 232 1168 284 1310 240 1440 286V300H0Z" opacity=".9" fill="currentColor"></path>
++            </svg>
++          </div>
++
++          <div class="profile-content">
++            <div class="profile-avatar">
++              <UserAvatar :src="creator.avatarUrl" :name="displayName" size="lg" />
++            </div>
++            <div class="profile-id">
++              <h1 id="creator-title" class="sr-only">{{ displayName }}的公开主页</h1>
++              <UserIdentity :user="creator" :linked="true" :show-avatar="false" size="lg" class="profile-identity" />
++              <p class="profile-count">{{ guideCountText }}</p>
++              <p v-if="creator.bio" class="profile-bio">{{ creator.bio }}</p>
++            </div>
++          </div>
++
++          <dl class="profile-stats">
++            <div v-for="metric in metrics" :key="metric.label" class="profile-stat" data-test="creator-stat">
++              <dd class="stat-value">{{ format(metric.value) }}</dd>
++              <dt class="stat-label">{{ metric.label }}</dt>
++            </div>
++          </dl>
++
++          <nav v-if="mine" class="owner-tools" aria-label="我的创作快捷入口" data-test="creator-owner-tools">
++            <RouterLink to="/me/guides" class="owner-tool"><SiteIcon name="book" />草稿箱</RouterLink>
++            <RouterLink to="/me/favorites" class="owner-tool"><SiteIcon name="star" />我的收藏</RouterLink>
++            <RouterLink to="/me/itineraries" class="owner-tool"><SiteIcon name="calendar" />我的行程</RouterLink>
++            <RouterLink to="/me/settings" class="owner-tool"><SiteIcon name="settings" />编辑资料</RouterLink>
++          </nav>
++        </header>
++
++        <section class="notes-section" aria-labelledby="creator-notes-title">
++          <header class="notes-head">
++            <div>
++              <h2 id="creator-notes-title" class="font-serif">旅行笔记</h2>
++              <p class="notes-hint">按发布时间排列</p>
++            </div>
++            <button v-if="feedError" type="button" class="btn-ghost" data-test="creator-feed-retry" @click="retryFeed">
++              重试加载手记
++            </button>
++          </header>
++
++          <p v-if="feedError" role="alert" class="feed-alert">{{ feedError }}</p>
++
++          <div v-if="feedLoading" class="notes-skeleton" role="status" aria-label="正在加载旅行笔记">
++            <div v-for="n in 4" :key="n" class="skeleton-card"></div>
++          </div>
++          <GuideGrid v-else-if="notes.length" :guides="notes" />
++          <div v-else-if="showFirstPage" class="surface-card empty-notes" data-test="creator-first-panel">
++            <p>这一页暂时没有手记了。</p>
++            <button type="button" class="btn-ghost mt-3" data-test="creator-first" @click="gotoFirstPage">回到第一页</button>
++          </div>
++          <div v-else-if="showEmpty" class="surface-card empty-notes">
++            <p>这位旅人还没有公开的旅行手记</p>
++          </div>
++
++          <div v-if="notes.length && hasMore" class="notes-more">
++            <button
++              type="button"
++              class="btn-ghost"
++              data-test="creator-load-more"
++              :disabled="loadingMore"
++              @click="loadMore"
++            >
++              {{ loadingMore ? '正在加载更多…' : '加载更多手记' }}
++            </button>
++          </div>
++          <p v-else-if="notes.length" class="notes-end" data-test="creator-feed-end">已经看到全部公开手记</p>
++          <div ref="sentinel" class="notes-sentinel" aria-hidden="true"></div>
++        </section>
++      </template>
++    </div>
++  </section>
+ </template>
++
+ <style scoped>
+-.creator-header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.5rem;padding:2rem 0;border-bottom:1px solid color-mix(in srgb,var(--color-pine) 20%,transparent)}
+-.creator-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:1.5rem;align-items:start}
++.creator-page {
++  min-height: 60vh;
++}
++/* 与 main.css 的 .stream-container 同义；此处保留一份 scoped 兜底，避免样式表未加载时贴边。 */
++.stream-container {
++  width: 100%;
++  min-width: 0;
++  max-width: 96rem;
++  margin-inline: auto;
++  padding-inline: 1.25rem;
++}
++@media (min-width: 768px) {
++  .stream-container {
++    padding-inline: 2rem;
++  }
++}
++.back-link {
++  display: inline-flex;
++  min-height: 44px;
++  align-items: center;
++  font-size: 0.875rem;
++  color: var(--color-pine);
++  transition: opacity var(--motion-fast) var(--ease-standard);
++}
++.back-link:hover {
++  text-decoration: underline;
++  text-underline-offset: 4px;
++}
++.profile-hero {
++  overflow: hidden;
++  border: 1px solid color-mix(in srgb, var(--color-pine) 18%, var(--color-surface));
++  border-radius: 1.75rem;
++  background: var(--color-surface);
++  box-shadow: 0 26px 60px -46px color-mix(in srgb, var(--color-pine-deep) 60%, transparent);
++}
++.profile-cover {
++  position: relative;
++  height: 140px;
++  overflow: hidden;
++  color: var(--color-pine-deep);
++  background:
++    radial-gradient(120% 160% at 18% 0%, color-mix(in srgb, var(--color-pine-soft) 88%, var(--color-surface)) 0%, transparent 62%),
++    linear-gradient(118deg, color-mix(in srgb, var(--color-pine) 26%, var(--color-pine-soft)) 0%, color-mix(in srgb, var(--color-pine-soft) 74%, var(--color-surface)) 52%, color-mix(in srgb, var(--color-cream-deep) 82%, var(--color-surface)) 100%);
++}
++.cover-art {
++  position: absolute;
++  inset: auto 0 0;
++  width: 100%;
++  height: 78%;
++  color: color-mix(in srgb, var(--color-pine-deep) 82%, transparent);
++}
++.cover-sun {
++  position: absolute;
++  top: 18%;
++  right: 12%;
++  width: 64px;
++  height: 64px;
++  border-radius: 50%;
++  background: color-mix(in srgb, var(--color-surface) 72%, var(--color-ember));
++  opacity: 0.55;
++}
++.profile-content {
++  display: flex;
++  flex-wrap: wrap;
++  align-items: flex-end;
++  gap: 0.5rem 1.25rem;
++  padding: 0 1.25rem;
++}
++.profile-avatar {
++  margin-top: -2.75rem;
++  flex-shrink: 0;
++  padding: 4px;
++  border-radius: 999px;
++  background: var(--color-surface);
++  box-shadow: 0 10px 28px -18px color-mix(in srgb, var(--color-pine-deep) 80%, transparent);
++}
++.profile-id {
++  min-width: 0;
++  flex: 1 1 14rem;
++  padding-block: 0.25rem 0.5rem;
++}
++.profile-identity {
++  display: block;
++}
++.profile-count {
++  margin-top: 0.25rem;
++  font-size: 0.8125rem;
++  font-weight: 600;
++  letter-spacing: 0.02em;
++  color: var(--color-pine);
++}
++.profile-bio {
++  margin-top: 0.5rem;
++  max-width: 46rem;
++  white-space: pre-line;
++  overflow-wrap: anywhere;
++  font-size: 0.9375rem;
++  line-height: 1.8;
++  color: var(--color-ink-soft);
++}
++.profile-stats {
++  display: grid;
++  grid-template-columns: repeat(3, minmax(0, 1fr));
++  gap: 0.5rem;
++  margin: 1rem 1.25rem 0;
++  padding: 0.875rem 0 1rem;
++  border-top: 1px solid color-mix(in srgb, var(--color-pine) 16%, transparent);
++}
++.profile-stat {
++  min-width: 0;
++}
++.stat-value {
++  font-family: var(--font-serif);
++  font-size: 1.375rem;
++  line-height: 1.2;
++  font-weight: 600;
++  color: var(--color-pine-deep);
++  font-variant-numeric: tabular-nums;
++}
++.stat-label {
++  margin-top: 0.125rem;
++  font-size: 0.75rem;
++  letter-spacing: 0.04em;
++  color: var(--color-ink-soft);
++}
++.owner-tools {
++  display: flex;
++  flex-wrap: wrap;
++  gap: 0.5rem;
++  margin: 0 1.25rem 1.25rem;
++  padding-top: 0.75rem;
++  border-top: 1px solid color-mix(in srgb, var(--color-pine) 16%, transparent);
++}
++.owner-tool {
++  display: inline-flex;
++  align-items: center;
++  gap: 0.4rem;
++  min-height: 40px;
++  padding: 0.375rem 0.875rem;
++  border: 1px solid color-mix(in srgb, var(--color-pine) 26%, transparent);
++  border-radius: 999px;
++  font-size: 0.8125rem;
++  font-weight: 600;
++  color: var(--color-pine);
++  transition:
++    background-color var(--motion-fast) var(--ease-standard),
++    border-color var(--motion-fast) var(--ease-standard),
++    transform var(--motion-fast) var(--ease-out);
++}
++.owner-tool svg {
++  width: 18px;
++  height: 18px;
++}
++.owner-tool:hover {
++  border-color: var(--color-pine);
++  background: var(--color-pine-soft);
++  transform: translateY(-1px);
++}
++.notes-section {
++  margin-top: 2rem;
++}
++.notes-head {
++  display: flex;
++  flex-wrap: wrap;
++  align-items: center;
++  justify-content: space-between;
++  gap: 0.75rem;
++  margin-bottom: 1rem;
++}
++.notes-head h2 {
++  font-size: 1.375rem;
++  color: var(--color-pine-deep);
++}
++.notes-hint {
++  margin-top: 0.125rem;
++  font-size: 0.75rem;
++  color: var(--color-ink-soft);
++}
++.feed-alert {
++  margin-bottom: 1rem;
++  padding: 0.75rem 1rem;
++  border: 1px solid color-mix(in srgb, var(--color-ember) 40%, transparent);
++  border-radius: 0.875rem;
++  background: color-mix(in srgb, var(--color-ember) 8%, transparent);
++  font-size: 0.875rem;
++  color: var(--color-ember);
++}
++.empty-notes {
++  padding: 2.5rem 1.25rem;
++  text-align: center;
++  color: var(--color-ink-soft);
++}
++.notes-skeleton {
++  display: grid;
++  grid-template-columns: repeat(2, minmax(0, 1fr));
++  gap: 1.5rem;
++}
++.skeleton-card {
++  aspect-ratio: 4 / 5;
++  border-radius: var(--radius-card);
++  background: linear-gradient(
++    100deg,
++    color-mix(in srgb, var(--color-pine-soft) 55%, var(--color-surface)) 0%,
++    color-mix(in srgb, var(--color-cream-deep) 70%, var(--color-surface)) 48%,
++    color-mix(in srgb, var(--color-pine-soft) 55%, var(--color-surface)) 100%
++  );
++  animation: skeleton-shimmer 1.4s ease-in-out infinite;
++}
++@keyframes skeleton-shimmer {
++  0%, 100% { opacity: 0.55; }
++  50% { opacity: 1; }
++}
++.notes-more {
++  display: flex;
++  justify-content: center;
++  margin-top: 1.75rem;
++}
++.notes-end {
++  margin-top: 1.75rem;
++  text-align: center;
++  font-size: 0.8125rem;
++  letter-spacing: 0.04em;
++  color: var(--color-ink-soft);
++}
++.notes-sentinel {
++  height: 1px;
++}
++@media (min-width: 600px) {
++  .notes-skeleton {
++    grid-template-columns: repeat(2, minmax(0, 1fr));
++  }
++}
++@media (min-width: 960px) {
++  .notes-skeleton {
++    grid-template-columns: repeat(3, minmax(0, 1fr));
++  }
++}
++@media (min-width: 640px) {
++  .profile-cover {
++    height: 176px;
++  }
++  .profile-content {
++    padding-inline: 1.75rem;
++  }
++  .profile-stats {
++    margin-inline: 1.75rem;
++  }
++  .owner-tools {
++    margin-inline: 1.75rem;
++  }
++  .stat-value {
++    font-size: 1.625rem;
++  }
++}
++@media (min-width: 1024px) {
++  .profile-cover {
++    height: 232px;
++  }
++  .profile-avatar {
++    margin-top: -3.25rem;
++  }
++  .profile-stats {
++    grid-template-columns: repeat(3, minmax(0, 11rem));
++    justify-content: start;
++    gap: 2.5rem;
++  }
++  .notes-skeleton {
++    grid-template-columns: repeat(4, minmax(0, 1fr));
++  }
++}
++@media (prefers-reduced-motion: reduce) {
++  .owner-tool {
++    transition: none;
++  }
++  .owner-tool:hover {
++    transform: none;
++  }
++  .skeleton-card {
++    animation: none;
++  }
++}
+ </style>
+--- /dev/null
++++ b/frontend/tests/m13-feed.spec.ts
+@@ -0,0 +1,187 @@
++import { afterEach, describe, expect, it, vi } from 'vitest'
++import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
++import { createMemoryHistory, createRouter } from 'vue-router'
++import { clearFeedCache, useInfiniteFeed, type FeedPage } from '@/composables/useInfiniteFeed'
++import GuideFeed from '@/components/GuideFeed.vue'
++import { fetchGuideFeed, fetchTags } from '@/api/guides'
++import { fetchDestinations } from '@/api/destinations'
++import type { GuideFeedPage, GuideSummary } from '@/types/guide'
++
++vi.mock('@/api/guides', () => ({ fetchGuideFeed: vi.fn(), fetchTags: vi.fn() }))
++vi.mock('@/api/destinations', () => ({ fetchDestinations: vi.fn(), fetchDestination: vi.fn() }))
++
++interface Item {
++  id: string
++}
++
++function pageOf(ids: string[], nextCursor: string | null, hasMore: boolean): FeedPage<Item> {
++  return { records: ids.map(id => ({ id })), nextCursor, hasMore }
++}
++
++function deferred<T>() {
++  let resolve!: (value: T) => void
++  const promise = new Promise<T>(done => {
++    resolve = done
++  })
++  return { promise, resolve }
++}
++
++afterEach(() => {
++  clearFeedCache()
++  vi.resetAllMocks()
++})
++
++describe('游标连续流引擎', () => {
++  it('追加下一页并按 ID 去重', async () => {
++    const fetchPage = vi
++      .fn<(cursor: string | undefined) => Promise<FeedPage<Item>>>()
++      .mockResolvedValueOnce(pageOf(['a', 'b'], 'c2', true))
++      .mockResolvedValueOnce(pageOf(['b', 'c'], null, false))
++    const feed = useInfiniteFeed<Item>({ fetchPage, keyOf: item => item.id })
++
++    await feed.loadFirst()
++    expect(feed.items.value.map(item => item.id)).toEqual(['a', 'b'])
++    expect(feed.hasMore.value).toBe(true)
++
++    await feed.loadMore()
++    expect(fetchPage).toHaveBeenLastCalledWith('c2', expect.anything())
++    expect(feed.items.value.map(item => item.id)).toEqual(['a', 'b', 'c'])
++    expect(feed.hasMore.value).toBe(false)
++    expect(feed.exhausted.value).toBe(true)
++  })
++
++  it('达到 DOM 上限后停止追加', async () => {
++    const fetchPage = vi
++      .fn<(cursor: string | undefined) => Promise<FeedPage<Item>>>()
++      .mockResolvedValueOnce(pageOf(['a', 'b'], 'c2', true))
++    const feed = useInfiniteFeed<Item>({ fetchPage, keyOf: item => item.id, maxItems: 2 })
++
++    await feed.loadFirst()
++    expect(feed.limitReached.value).toBe(true)
++    expect(feed.hasMore.value).toBe(false)
++    await feed.loadMore()
++    expect(fetchPage).toHaveBeenCalledTimes(1)
++  })
++
++  it('竞态只接受最新一次首批结果', async () => {
++    const stale = deferred<FeedPage<Item>>()
++    const fetchPage = vi
++      .fn<(cursor: string | undefined) => Promise<FeedPage<Item>>>()
++      .mockReturnValueOnce(stale.promise)
++      .mockResolvedValueOnce(pageOf(['fresh'], null, false))
++    const feed = useInfiniteFeed<Item>({ fetchPage, keyOf: item => item.id })
++
++    const first = feed.loadFirst()
++    const second = feed.loadFirst(true)
++    await second
++    stale.resolve(pageOf(['stale'], null, false))
++    await first
++
++    expect(feed.items.value.map(item => item.id)).toEqual(['fresh'])
++    expect(feed.loading.value).toBe(false)
++  })
++
++  it('追加失败保留旧列表并可重试', async () => {
++    const fetchPage = vi
++      .fn<(cursor: string | undefined) => Promise<FeedPage<Item>>>()
++      .mockResolvedValueOnce(pageOf(['a', 'b'], 'c2', true))
++      .mockRejectedValueOnce(new Error('boom'))
++      .mockResolvedValueOnce(pageOf(['c'], null, false))
++    const feed = useInfiniteFeed<Item>({ fetchPage, keyOf: item => item.id })
++
++    await feed.loadFirst()
++    await feed.loadMore()
++    expect(feed.items.value.map(item => item.id)).toEqual(['a', 'b'])
++    expect(feed.moreError.value).toBe('更多攻略暂时加载失败，请重试')
++    expect(feed.loadingMore.value).toBe(false)
++
++    await feed.retry()
++    expect(feed.moreError.value).toBe('')
++    expect(fetchPage).toHaveBeenCalledTimes(3)
++    expect(feed.items.value.map(item => item.id)).toEqual(['a', 'b', 'c'])
++  })
++})
++
++function note(id: string, title: string): GuideSummary {
++  return {
++    id,
++    title,
++    summary: '沿街走走',
++    coverImageUrl: null,
++    author: { id: '12', nickname: '林间旅人', username: 'walker', avatarUrl: null, bio: null },
++    destination: { id: '1', name: '成都', status: 'ACTIVE' },
++    tags: [],
++    travelDays: null,
++    budgetPerPerson: null,
++    season: null,
++    likeCount: 2,
++    favoriteCount: 1,
++    commentCount: 0,
++    status: 'PUBLISHED',
++    publishedAt: '2026-11-01',
++    createdAt: '2026-11-01',
++    updatedAt: '2026-11-01'
++  } as GuideSummary
++}
++
++function feedPage(records: GuideSummary[], nextCursor: string | null, hasMore: boolean): GuideFeedPage {
++  return { records, nextCursor, hasMore }
++}
++
++describe('攻略连续流视图', () => {
++  const wrappers: VueWrapper[] = []
++  afterEach(() => {
++    wrappers.splice(0).forEach(wrapper => wrapper.unmount())
++  })
++
++  it('追加不重复、无翻页器、结束文案为已经看完', async () => {
++    vi.mocked(fetchTags).mockResolvedValue([{ id: '7', name: '慢旅行' } as never])
++    vi.mocked(fetchDestinations).mockResolvedValue({
++      records: [{ id: '1', name: '成都' }] as never[],
++      total: 1,
++      current: 1,
++      size: 8,
++      pages: 1
++    })
++    vi.mocked(fetchGuideFeed)
++      .mockResolvedValueOnce(feedPage([note('4', '成都两日慢行')], 'c2', true))
++      .mockResolvedValueOnce(feedPage([note('4', '成都两日慢行'), note('5', '青城山半日')], 'c3', true))
++      .mockResolvedValueOnce(feedPage([note('4', '成都两日慢行'), note('6', '山谷里的清晨')], null, false))
++
++    const router = createRouter({
++      history: createMemoryHistory(),
++      routes: [
++        { path: '/guides', component: GuideFeed },
++        { path: '/guides/new', name: 'guide-new', component: { template: '<p>编辑</p>' } },
++        { path: '/guides/:id', name: 'guide-detail', component: { template: '<p>攻略</p>' } },
++        { path: '/users/:username', component: { template: '<p>作者</p>' } }
++      ]
++    })
++    await router.push('/guides')
++    await router.isReady()
++    const wrapper = mount(GuideFeed, { global: { plugins: [router] } })
++    wrappers.push(wrapper)
++    await flushPromises()
++
++    expect(wrapper.findAll('[data-test="guide-card"]').length).toBe(1)
++    expect(wrapper.find('[data-test="load-more"]').exists()).toBe(true)
++
++    await wrapper.get('[data-test="load-more"]').trigger('click')
++    await flushPromises()
++    expect(wrapper.findAll('[data-test="guide-card"]').length).toBe(2)
++
++    await wrapper.get('[data-test="load-more"]').trigger('click')
++    await flushPromises()
++    const cards = wrapper.findAll('[data-test="guide-card"]')
++    expect(cards.length).toBe(3)
++    expect(new Set(cards.map(card => card.attributes('href'))).size).toBe(3)
++    expect(wrapper.text()).not.toContain('上一页')
++    expect(wrapper.text()).not.toContain('下一页')
++    expect(wrapper.text()).toContain('已经看完')
++    expect(fetchGuideFeed).toHaveBeenNthCalledWith(
++      2,
++      expect.objectContaining({ cursor: 'c2' }),
++      expect.anything()
++    )
++  })
++})

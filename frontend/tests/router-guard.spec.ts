@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import { createMemoryHistory, type Router } from 'vue-router'
+import { createMemoryHistory, type Router, type RouteLocationNormalized } from 'vue-router'
 
 import { createAppRouter } from '@/router'
 import { fetchCurrentUser } from '@/api/auth'
@@ -33,11 +33,29 @@ function routerWithHistory(): Router {
 }
 
 beforeEach(() => {
+  vi.spyOn(window,'scrollTo').mockImplementation(()=>undefined)
   setActivePinia(createPinia())
   vi.mocked(fetchCurrentUser).mockReset()
 })
 
 describe('路由守卫', () => {
+  it('新文章从顶部阅读，评论查询保留位置，返回列表交回历史位置',()=>{
+    const router=routerWithHistory()
+    const scroll=router.options.scrollBehavior
+    expect(scroll).toBeDefined()
+    const list=router.resolve('/guides') as RouteLocationNormalized,detail=router.resolve('/guides/4') as RouteLocationNormalized
+    expect(scroll?.(detail,list,null)).toEqual({left:0,top:0})
+    expect(scroll?.(router.resolve('/guides/4?comments=1') as RouteLocationNormalized,detail,null)).toBe(false)
+    expect(scroll?.(list,detail,{left:0,top:1200})).toEqual({left:0,top:1200})
+  })
+  it('旧个人中心进入本人公开主页，资料设置保持独立编辑路径',async()=>{
+    sessionStorage.setItem(TOKEN_STORAGE_KEY,'token-abc');vi.mocked(fetchCurrentUser).mockResolvedValue(user)
+    const router=routerWithHistory();await router.push('/me')
+    expect(router.currentRoute.value.name).toBe('creator')
+    expect(router.currentRoute.value.params.username).toBe('luna')
+    await router.push('/me/settings')
+    expect(router.currentRoute.value.name).toBe('profile-settings')
+  })
   it('取消未保存页面的导航后保持当前浏览器标题',async()=>{
     const router=routerWithHistory();await router.push('/guides');const title=document.title
     router.beforeEach(to=>to.name==='destinations'?false:true)
@@ -65,7 +83,7 @@ describe('路由守卫', () => {
     sessionStorage.setItem(TOKEN_STORAGE_KEY,'token-abc');vi.mocked(fetchCurrentUser).mockResolvedValue(user)
     const router=routerWithHistory()
     for(const redirect of ['/login','/register','//evil.example','https://evil.example']){
-      await router.push({ name:'login',query:{ redirect } });expect(router.currentRoute.value.name).toBe('me')
+      await router.push({ name:'login',query:{ redirect } });expect(router.currentRoute.value.name).toBe('creator')
     }
   })
 
@@ -155,7 +173,7 @@ describe('路由守卫', () => {
     await router.push('/me')
 
     expect(fetchCurrentUser).toHaveBeenCalledTimes(1)
-    expect(router.currentRoute.value.name).toBe('me')
+    expect(router.currentRoute.value.name).toBe('creator')
   })
 
   it('有令牌但接口返回 401 时被送回登录页并清除令牌', async () => {
@@ -180,7 +198,7 @@ describe('路由守卫', () => {
 
     await router.push('/me')
 
-    expect(router.currentRoute.value.name).toBe('me')
+    expect(router.currentRoute.value.name).toBe('profile-settings')
     expect(sessionStorage.getItem(TOKEN_STORAGE_KEY)).toBe('token-abc')
   })
 
@@ -193,7 +211,7 @@ describe('路由守卫', () => {
 
     await router.push('/me')
 
-    expect(router.currentRoute.value.name).toBe('me')
+    expect(router.currentRoute.value.name).toBe('profile-settings')
     expect(sessionStorage.getItem(TOKEN_STORAGE_KEY)).toBe('token-abc')
   })
 
@@ -206,6 +224,6 @@ describe('路由守卫', () => {
 
     await router.push('/login')
 
-    expect(router.currentRoute.value.name).toBe('me')
+    expect(router.currentRoute.value.name).toBe('creator')
   })
 })

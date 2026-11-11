@@ -1,0 +1,45 @@
+{
+  "cleanedPreviousQaComments": 0,
+  "articleStartsAtTop": true,
+  "backScroll": {
+    "before": 1200,
+    "after": 1200,
+    "cards": 20
+  },
+  "expiredCacheScroll": {
+    "before": 1600,
+    "after": 1600
+  },
+  "offlineKept": 12,
+  "retryTotal": 20,
+  "drawerScroll": {
+    "before": 400,
+    "after": 400
+  },
+  "focusRestored": true,
+  "draftKept": true,
+  "commentCreateDelete": true,
+  "focusTrap": true,
+  "keyboardViewport": {
+    "bottom": 560,
+    "height": 560
+  },
+  "escapeClosed": true,
+  "scrollUnlocked": true,
+  "likeRoundTrip": true,
+  "favoriteRoundTrip": true,
+  "copied": "http://127.0.0.1:15178/guides/4",
+  "guestPrivateTools": 0,
+  "guestWriteStatus": 401,
+  "otherAuthorEditStatus": 403,
+  "publicFields": [
+    "id",
+    "username",
+    "nickname",
+    "avatarUrl",
+    "bio",
+    "publishedGuideCount",
+    "likeCount",
+    "favoriteCount"
+  ]
+}

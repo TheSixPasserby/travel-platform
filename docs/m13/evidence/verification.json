@@ -1,0 +1,326 @@
+{
+  "recordedAt": "2026-11-11T21:10:20+08:00",
+  "baseCommit": "2f73d7f60b1de45b9ccb5bfb16a461d0de6f34e6",
+  "branch": "main",
+  "workingTree": "uncommitted changes",
+  "environment": {
+    "browser": "157.0.8103.39",
+    "java": "21",
+    "springBoot": "3.5.16",
+    "mysql": "8.4.13",
+    "frontend": "Vue 3 + TypeScript + Vite",
+    "browserOrigin": "http://127.0.0.1:15178",
+    "qaWrites": "isolated database and upload copy",
+    "defaultReadOnlyOrigin": "http://127.0.0.1:5173"
+  },
+  "tests": [
+    {
+      "command": "npm --prefix frontend test",
+      "executedAt": "2026-11-11T21:07:33+08:00",
+      "files": 45,
+      "passed": 419,
+      "failed": 0
+    },
+    {
+      "command": "npm --prefix frontend run build",
+      "executedAt": "2026-11-11T21:08:17+08:00",
+      "passed": true,
+      "invokedBy": "scripts/release.py"
+    },
+    {
+      "command": "python3 scripts/backend.py package",
+      "executedAt": "2026-11-11T21:08:17+08:00",
+      "passed": 265,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "invokedBy": "scripts/release.py"
+    },
+    {
+      "command": "python3 -m unittest discover -s scripts/tests",
+      "executedAt": "2026-11-11T21:02:36+08:00",
+      "passed": 92,
+      "failed": 0
+    }
+  ],
+  "sourceFiles": 47,
+  "sourceSha256": {
+    "backend/src/main/java/com/example/travelplatform/common/api/FeedResponse.java": "50012ce0ee65acbdf419156c01bbdadab39562481323cf7bc2d7268c4ad1214a",
+    "backend/src/main/java/com/example/travelplatform/guide/controller/GuideController.java": "931cfb710296ba49ec65dd5f7bbe311aad57e31428efd65743a9eff70fbd4e0e",
+    "backend/src/main/java/com/example/travelplatform/guide/dto/GuideFeedQuery.java": "0e0e9d47961e2624a7be17d89f767d171f99edf589c64911a1022a44e90dd1ac",
+    "backend/src/main/java/com/example/travelplatform/guide/mapper/GuideMapper.java": "c50d2a8f6ef801d8cd40601d1880c091061c657fef40106987dfef430e154cc3",
+    "backend/src/main/java/com/example/travelplatform/guide/mapper/GuideRow.java": "9f90956c20915714241e7628dac02176fd1632029fb102cf70144baed67bf31e",
+    "backend/src/main/java/com/example/travelplatform/guide/service/FeedCursor.java": "53a9018b2b87be3cbef04e9b4ef72657165809430da440233f6175139351560f",
+    "backend/src/main/java/com/example/travelplatform/guide/service/GuideService.java": "46c094b835edac26461dbb2d035527847767232c215d5525aa5b4a4d16b747cc",
+    "backend/src/main/java/com/example/travelplatform/security/AuthWebConfig.java": "dfbc2ad94fccc8cbfbdfc65f7f7e37627ebecadc3a8a6694009525c6b430fe8c",
+    "backend/src/main/java/com/example/travelplatform/user/controller/CreatorController.java": "48f546bb060380daa7bce8cf169769024f9e57802204cadba4587f470974794a",
+    "backend/src/main/java/com/example/travelplatform/user/vo/CreatorProfileVO.java": "560a0f9f8b3fc18a2d943c4f050ebacecbc396a557b22965a3f7a6f7e606dbdd",
+    "backend/src/test/java/com/example/travelplatform/guide/FeedCursorTest.java": "9ddf58ca01b4a1d549201a51661b73fa883481b4c88e1f88b22ce943b133f61a",
+    "backend/src/test/java/com/example/travelplatform/guide/M12CommunityApiTest.java": "4fb2a24736aab764bf0f06d0efc57ac766f3bdfe7af50c4254850e5c93db8206",
+    "backend/src/test/java/com/example/travelplatform/guide/M13FeedApiTest.java": "223a91a7ce538d26f7f53490c0810fd09c839d4f60dc270008de19aa18854a36",
+    "frontend/src/App.vue": "2f7ff38d780eb8cb158c4792170c1f57b70ee6036fe4b6403534f892610fd03d",
+    "frontend/src/api/creators.ts": "a4464f764eebd3367c7eae0a7d53e34d735e487dd7fca21560f3a494556dff3a",
+    "frontend/src/api/guides.ts": "7c1032da1ab854264a130e9c94550f99ff8a9df027ad168e330db8a0eb4f8bf3",
+    "frontend/src/components/CommentDrawer.vue": "c48a3efc59f2c65ba49907f8a5dc89baf15c32756720fc8f284e6ba8ff9b7ca5",
+    "frontend/src/components/CommunitySidebar.vue": "eef7ffa7a45633035b647ac4fc152162f9316267bab222467f8a8def10f38be9",
+    "frontend/src/components/ContentImage.vue": "b591544f0bc3866bc476f6939914e755a7002067c07e686864c1f1c2a0bf8fbb",
+    "frontend/src/components/GuideActions.vue": "c87b21631abb10594d6f391cc98853a0cb6e39341d9834ae07f3d8ee7cf2c69d",
+    "frontend/src/components/GuideCard.vue": "cdd48f4d0ead5d8c69f96ea70c49a8d19310dcabe7d1c9bed65ded4b531f2f06",
+    "frontend/src/components/GuideComments.vue": "ef0e9d8d82fb62dbfce56c2d4574f695e4f64f256f41b74bd3d67f2749f9bd73",
+    "frontend/src/components/GuideFeed.vue": "f31cde02e80860607c53dfa1d8ef384689cbd0ee49554004ade6f7ecee72f57c",
+    "frontend/src/components/GuideGrid.vue": "b261a9d8fed316a5169af50f125c23fe9e3df8b09613a2267148b91b591a7f58",
+    "frontend/src/components/ImageLightbox.vue": "5d53ba54d53f0d9e3e073fbc7a7f839af94feb2779020a5ac1a3721109b58264",
+    "frontend/src/components/RelatedGuides.vue": "83b27f0b817e519c3bef5cf94652c367a292e65b4c62767004df62bc5c39e705",
+    "frontend/src/components/SiteHeader.vue": "d064eebc06ba8134dae8707c995819d54784661ffaacf49ce182e529ccd71051",
+    "frontend/src/composables/useGuideFeed.ts": "bbf34480f1d1ba92c350e53561701c19763b0e9e0c0924812e21735343d85c52",
+    "frontend/src/composables/useInfiniteFeed.ts": "f9ce31709a6667b3b57099f7cf7e4e41ec0111ae25a38fc0ce8536dd091ec57c",
+    "frontend/src/router/index.ts": "703d26e62df2216f8dae79306431deedd0bf745c6f22ba5d16fb95d2739bcc7b",
+    "frontend/src/styles/main.css": "5f6e8ecc122ffeeae80a2b10d5ac871ef7832e2ca8d7bb9e36a4b862286d03cb",
+    "frontend/src/types/creator.ts": "cebc169d0e36225c80c8e613a4d3b6e82590f3780454222e3c86550d9311b9d5",
+    "frontend/src/types/guide.ts": "008544d27342022eddcbfa2b3d138fd2190ea95ffaa0ba2f549eb08111b81592",
+    "frontend/src/views/CreatorView.vue": "6bc57f69b2ec402b9c7ee24650dcbb13588a222c86d7aff1642bc41f9af2e160",
+    "frontend/src/views/GuideDetailView.vue": "895ce8beb3f9bb43d4f78da029828cbe343bdd93c77ef3fe8b73155a410ddc43",
+    "frontend/src/views/GuidesView.vue": "6caf4765be79a37dd02cdaf3e377756fa4368f493e8446574d0705786a3f9137",
+    "frontend/src/views/HomeView.vue": "351949a0119611076b638356cf96bc8b97c7573beb6827472c2fbafeedd4473f",
+    "frontend/src/views/MyGuidesView.vue": "ef34b12055632af05a420560f2981fa159be9a1f1bb3311cf42266dad37c2fa5",
+    "frontend/tests/guide-actions.spec.ts": "05ca0fcef2cec48c7fa41e61ec22c522fcd7db7517105bfd33f98fd169dededb",
+    "frontend/tests/guide-views.spec.ts": "5a3796a77667823ca5bb894072df8315ff970aa14b13b7c10f5cce1a024128ec",
+    "frontend/tests/header.spec.ts": "094974e9e5fad3d7661e62b93982303f7110605081e3aba32ef68604bbdc3ffb",
+    "frontend/tests/image-lightbox.spec.ts": "329b59a47c8536a83c98b9cf1715beb37ae96fdd837a47fe213f189637c9e744",
+    "frontend/tests/m12-community.spec.ts": "3bb69f1db9efb26a9630edd28060a043fabf47835cbe7b866706692850a78d5e",
+    "frontend/tests/m12-discovery.spec.ts": "8390bc20cf111bd7a45cd59c7c0bc8ad9cf9cba15f034397bfaba41ed0513f68",
+    "frontend/tests/m13-feed.spec.ts": "960d9af314f6165bae747b5af02c0d10533f99db5fa90de9f13bb7477189331c",
+    "frontend/tests/m13-integration.spec.ts": "d7a9958cfa0138cb63304d1a370dc013eeed6084f754f99e1864563c260c2322",
+    "frontend/tests/router-guard.spec.ts": "ae4726912608e3f7c6ea5c79ca2f9203ec87fb2e8920c3402ea843283bca75e5"
+  },
+  "sourceSetSha256": "367f942d2d408db646182b625da1a2007f3b58374d41d9e44fe07df553d97822",
+  "preservation": {
+    "tables": 14,
+    "rows": 290,
+    "uploadFiles": 44,
+    "schemaAndRowsUnchanged": true,
+    "uploadsUnchanged": true,
+    "privateConfigFiles": 2,
+    "privateConfigUnchanged": true,
+    "qaSnapshotClassesMatchFinalJar": true
+  },
+  "browser": {
+    "matrixCases": 56,
+    "matrixFailures": [],
+    "pageErrors": [],
+    "finalScreenshots": [
+      "01-discovery-dark-1440.png",
+      "02-discovery-light-1440.png",
+      "03-article-dark-1440.png",
+      "04-comments-dark-1440.png",
+      "05-creator-light-1440.png",
+      "06-discovery-light-390.png",
+      "07-comments-dark-390.png",
+      "08-motion-lightbox-dark-1440.png"
+    ],
+    "actualFeed": {
+      "first": 12,
+      "second": 8,
+      "hasMore": false
+    },
+    "longFeed": {
+      "fixtureRecords": 501,
+      "renderedNodes": 15,
+      "maxNodes": 96,
+      "endVisible": true,
+      "lastVisible": 1,
+      "overflow": false,
+      "focusStayedInList": true
+    },
+    "interactions": {
+      "cleanedPreviousQaComments": 0,
+      "articleStartsAtTop": true,
+      "backScroll": {
+        "before": 1200,
+        "after": 1200,
+        "cards": 20
+      },
+      "expiredCacheScroll": {
+        "before": 1600,
+        "after": 1600
+      },
+      "offlineKept": 12,
+      "retryTotal": 20,
+      "drawerScroll": {
+        "before": 400,
+        "after": 400
+      },
+      "focusRestored": true,
+      "draftKept": true,
+      "commentCreateDelete": true,
+      "focusTrap": true,
+      "keyboardViewport": {
+        "bottom": 560,
+        "height": 560
+      },
+      "escapeClosed": true,
+      "scrollUnlocked": true,
+      "likeRoundTrip": true,
+      "favoriteRoundTrip": true,
+      "copied": "http://127.0.0.1:15178/guides/4",
+      "guestPrivateTools": 0,
+      "guestWriteStatus": 401,
+      "otherAuthorEditStatus": 403,
+      "publicFields": [
+        "id",
+        "username",
+        "nickname",
+        "avatarUrl",
+        "bio",
+        "publishedGuideCount",
+        "likeCount",
+        "favoriteCount"
+      ]
+    },
+    "motion": {
+      "opening": [
+        {
+          "transform": "matrix(1, 0, 0, 1, 416, 0)",
+          "opacity": "0",
+          "duration": "0.24s, 0.24s",
+          "at": 269.40000000596046
+        },
+        {
+          "transform": "matrix(1, 0, 0, 1, 24.1869, 0)",
+          "opacity": "0.941858",
+          "duration": "0.24s, 0.24s",
+          "at": 442.09999999403954
+        },
+        {
+          "transform": "matrix(1, 0, 0, 1, 0, 0)",
+          "opacity": "1",
+          "duration": "0.24s, 0.24s",
+          "at": 801.5
+        }
+      ],
+      "closing": [
+        {
+          "transform": "matrix(1, 0, 0, 1, 0, 0)",
+          "opacity": "1",
+          "duration": "0.24s, 0.24s",
+          "at": 979
+        },
+        {
+          "transform": "matrix(1, 0, 0, 1, 416, 0)",
+          "opacity": "0",
+          "duration": "0.24s, 0.24s",
+          "at": 1266.4000000059605
+        }
+      ],
+      "reduced": {
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "opacity": "1",
+        "duration": "0s",
+        "at": 1316.0999999940395
+      },
+      "runningAnimationsInReducedMotion": 0,
+      "listScrollKeepsOpen": true,
+      "touchClosed": true,
+      "failedImages": 12
+    },
+    "cardMotion": {
+      "normal": {
+        "dy": -2,
+        "imageScale": 1.035
+      },
+      "reduced": {
+        "dy": 0,
+        "animations": 0
+      }
+    },
+    "performance": {
+      "frames": {
+        "frames": 120,
+        "over40ms": 0,
+        "p95ms": 18.600000000000023,
+        "maxMs": 18.699999999999818
+      },
+      "cls": 0,
+      "resources": 69,
+      "transferredBytes": 109756,
+      "renderedCards": 20,
+      "shiftDetails": [],
+      "resourceBodyBytes": 10729678,
+      "browser": "157.0.8103.39"
+    }
+  },
+  "proofMetadata": {
+    "api-smoke": {
+      "executedAt": "2026-11-11T17:04:55+08:00",
+      "artifact": "api-smoke.json"
+    },
+    "baseline-shots": {
+      "executedAt": "2026-11-11T17:05:43+08:00",
+      "artifact": "baseline-shots.json"
+    },
+    "feed-stage": {
+      "executedAt": "2026-11-11T17:36:40+08:00",
+      "artifact": "feed-stage.json"
+    },
+    "interaction-check": {
+      "executedAt": "2026-11-11T21:09:46+08:00",
+      "artifact": "interaction-check.json"
+    },
+    "motion-check": {
+      "executedAt": "2026-11-11T20:30:48+08:00",
+      "artifact": "motion-check.json"
+    },
+    "card-motion": {
+      "executedAt": "2026-11-11T20:34:27+08:00",
+      "artifact": "card-motion.json"
+    },
+    "long-feed": {
+      "executedAt": "2026-11-11T20:24:54+08:00",
+      "artifact": "long-feed.json"
+    },
+    "final-browser": {
+      "executedAt": "2026-11-11T21:08:30+08:00",
+      "artifact": "final-browser.json"
+    },
+    "performance": {
+      "executedAt": "2026-11-11T21:07:43+08:00",
+      "artifact": "performance.json"
+    }
+  },
+  "dshContributionEvidence": "DSH-CONTRIBUTIONS.json",
+  "githubActions": {
+    "thisRevisionExecuted": false,
+    "scope": "local workspace revision"
+  },
+  "unexecuted": [
+    "physical device IME and touch",
+    "Safari and Firefox",
+    "real external AI generation this milestone",
+    "GitHub Actions for this workspace revision"
+  ],
+  "optionalP1": [
+    "follow relationships",
+    "comment reply threads",
+    "comment likes"
+  ],
+  "userInputFiles": [
+    "docs/m13/README.md",
+    "docs/m13/M13-ACCEPTANCE.md",
+    "docs/m13/M13-CODEX-IMPLEMENTATION.md",
+    "docs/m13/M13-DSH-FRONTEND-BRIEF.md",
+    "docs/m13/M13-UI-REFERENCE-GUIDE.md",
+    "docs/m13/references/01-desktop-discovery-dark.png",
+    "docs/m13/references/02-desktop-discovery-light.png",
+    "docs/m13/references/03-article-right-action-rail.png",
+    "docs/m13/references/04-article-comment-drawer.png",
+    "docs/m13/references/05-creator-public-profile.png",
+    "docs/m13/references/06-mobile-infinite-discovery.png",
+    "docs/m13/references/07-mobile-comment-drawer.png",
+    "docs/m13/references/08-motion-interaction-guide.png",
+    "docs/m13/references/user-01-grid-gaps.png",
+    "docs/m13/references/user-02-short-actions.png",
+    "docs/m13/references/user-03-comment-side-panel.png"
+  ],
+  "inputReadmeChange": "appended links to completed delivery",
+  "deliveryEvidence": "delivery.json"
+}

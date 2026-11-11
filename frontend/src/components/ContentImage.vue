@@ -17,7 +17,9 @@ watch(()=>props.src,()=>{failed.value=false;close()})
 </template>
 <style scoped>
 .content-image{display:block;overflow:hidden;cursor:zoom-in;padding:0;border:0;background:var(--color-cream-deep)}
-.content-image img{width:100%;height:100%;object-fit:cover;display:block}
+.content-image img{transition:transform var(--motion-normal) var(--ease-standard);width:100%;height:100%;object-fit:cover;display:block}
 .content-image:focus-visible{outline:3px solid var(--color-pine);outline-offset:3px}
 .content-image-fallback{display:flex;align-items:center;justify-content:center;background:var(--color-cream-deep);color:var(--color-ink-soft);padding:1rem}
+.content-image:hover img{transform:scale(1.025)}
+@media(prefers-reduced-motion:reduce){.content-image img{transition:none}.content-image:hover img{transform:none}}
 </style>

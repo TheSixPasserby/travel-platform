@@ -2,6 +2,7 @@ package com.example.travelplatform.guide.service;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.travelplatform.common.api.PageResponse;
+import com.example.travelplatform.common.api.FeedResponse;
 import com.example.travelplatform.administration.dto.StatusPatchRequest;
 import com.example.travelplatform.common.error.*;
 import com.example.travelplatform.common.validation.RequestValues;
@@ -50,10 +51,31 @@ public class GuideService {
     }
 
     @Transactional(readOnly=true,isolation=Isolation.REPEATABLE_READ)
+    public FeedResponse<GuideSummaryVO> publicFeed(GuideFeedQuery query,String username) {
+        String sort=query.sort()==null?"latest":query.sort();
+        if(!Set.of("latest","popular").contains(sort)) throw invalid();
+        Long author=username==null?null:session.publicUserByUsername(username).getId();
+        var filter=new GuideSearch(author,"PUBLISHED",pattern(query.keyword()),id(query.destinationId()),id(query.tagId()),sort.equals("popular"));
+        long size=query.size()==null?12:RequestValues.size(query.size());
+        String key=FeedCursor.fingerprint(filter.toString());
+        var time=now();
+        var cursor=query.cursor()==null?new FeedCursor(time,guides.highestId(),null,0,0):FeedCursor.decode(query.cursor(),key,time);
+        List<GuideRow> rows=guides.feed(filter,cursor,size+1);
+        boolean hasMore=rows.size()>size;
+        List<GuideRow> visible=hasMore?rows.subList(0,(int)size):rows;
+        String next=null;
+        if(hasMore) {
+            var last=visible.getLast();
+            next=new FeedCursor(cursor.snapshotAt(),cursor.upperId(),last.getPublishedAt(),last.getId(),last.getRankCount()).encode(key);
+        }
+        return new FeedResponse<>(summaries(visible),next,hasMore);
+    }
+
+    @Transactional(readOnly=true,isolation=Isolation.REPEATABLE_READ)
     public com.example.travelplatform.user.vo.CreatorProfileVO creatorProfile(String username) {
         User author=session.publicUserByUsername(username);
         long count=guides.count(new GuideSearch(author.getId(),"PUBLISHED",null,null,null,false));
-        return new com.example.travelplatform.user.vo.CreatorProfileVO(author.getId().toString(),author.getUsername(),author.getNickname(),author.getAvatarUrl(),author.getBio(),count);
+        return new com.example.travelplatform.user.vo.CreatorProfileVO(author.getId().toString(),author.getUsername(),author.getNickname(),author.getAvatarUrl(),author.getBio(),count,guides.publicLikeCount(author.getId()),guides.publicFavoriteCount(author.getId()));
     }
 
     @Transactional(readOnly=true,isolation=Isolation.REPEATABLE_READ)

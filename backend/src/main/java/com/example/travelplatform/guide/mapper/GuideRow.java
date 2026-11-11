@@ -1,6 +1,9 @@
 package com.example.travelplatform.guide.mapper;
 import com.example.travelplatform.guide.entity.Guide;
 public class GuideRow extends Guide {
+    private long rankCount;
+    public long getRankCount() { return rankCount; }
+    public void setRankCount(long value) { this.rankCount=value; }
     private long likeCount;
     public long getLikeCount() { return likeCount; }
     public void setLikeCount(long v) { this.likeCount=v; }

@@ -1,0 +1,94 @@
+{
+  "codex": {
+    "model": "gpt-6.1-sol",
+    "effort": "ultra",
+    "verifiedBy": "current session turn_context"
+  },
+  "dsh": {
+    "provider": "buddy",
+    "model": "deepseek-v4.1-flash",
+    "effort": "max",
+    "routeCallable": true,
+    "toolCallVerified": true
+  },
+  "tasks": [
+    {
+      "id": "hub-8-mwbvwzga",
+      "toolCalls": 40,
+      "sourceFiles": 0,
+      "status": "cancelled by coordinator before file delivery"
+    },
+    {
+      "id": "hub-10-mwbweld3",
+      "toolCalls": 49,
+      "status": "cancelled by coordinator after partial code delivery",
+      "files": [
+        "frontend/src/components/GuideGrid.vue",
+        "frontend/src/components/GuideCard.vue",
+        "frontend/src/components/GuideFeed.vue",
+        "frontend/src/composables/useGuideFeed.ts",
+        "frontend/src/composables/useInfiniteFeed.ts",
+        "frontend/tests/m13-feed.spec.ts"
+      ]
+    },
+    {
+      "id": "hub-11-mwbwepkt",
+      "toolCalls": 51,
+      "status": "cancelled by coordinator after partial code delivery",
+      "files": [
+        "frontend/src/components/GuideActions.vue",
+        "frontend/src/components/GuideComments.vue",
+        "frontend/src/components/CommentDrawer.vue"
+      ]
+    },
+    {
+      "id": "hub-12-mwbwesix",
+      "toolCalls": 49,
+      "status": "cancelled by coordinator after partial code delivery",
+      "files": [
+        "frontend/src/views/CreatorView.vue"
+      ]
+    },
+    {
+      "id": "hub-9-mwbw6vnx",
+      "toolCalls": 5,
+      "status": "completed read-only backend review"
+    },
+    {
+      "id": "hub-13-mwbxegkw",
+      "toolCalls": 5,
+      "status": "completed read-only frontend review",
+      "findings": [
+        "append retry reset",
+        "cache miss scroll restoration",
+        "windowed focus handoff"
+      ],
+      "resolution": "fixed by Codex with regression and browser checks"
+    },
+    {
+      "id": "hub-14-mwc4p2ff",
+      "toolCalls": 18,
+      "status": "completed read-only final acceptance review",
+      "findings": [
+        "status documents outdated",
+        "eighth screenshot omitted from machine index",
+        "GitHub Actions execution status must be explicit"
+      ],
+      "resolution": "Codex updated status and delivery documentation, indexed all eight screenshots and explicitly marked current GitHub Actions unexecuted",
+      "metadataNote": "worker prose estimated 14 calls, coordinator result metadata reports 18"
+    }
+  ],
+  "integration": "Codex reviewed and revised the delivered files, completed remaining pages, backend contracts, navigation, motion and validation. No DSH test result is claimed as a completed autonomous handoff.",
+  "initialFileSha256": {
+    "frontend/src/components/GuideGrid.vue": "5a4af9d5072dc1d05981e0cdcce033eedf6e897fe2eb8e2d57ea5148fc898597",
+    "frontend/src/components/GuideCard.vue": "78842de3a7074670bc37fb002287ac638cabd4b04aaf6c6aa7ff6323cbce8469",
+    "frontend/src/components/GuideFeed.vue": "46104c599d9ac650599896263e514f84e0aff7e6438c5cfec6e9cfaf5f819913",
+    "frontend/src/composables/useGuideFeed.ts": "7e6e7ee525cf7b6a689508eddb24a92810e7f38e3fbe61c0708f35a461edd6c4",
+    "frontend/src/composables/useInfiniteFeed.ts": "b685085b8e158b496af6eacd3fe9ac6b88acedf3c2a70a4378b35358ea613694",
+    "frontend/src/components/GuideActions.vue": "77cea08c76780f3be3b45d76260141e5703a90f965cb67d386ba389e90866f95",
+    "frontend/src/components/GuideComments.vue": "673dd9e6b56de648372963006b8c48041339d08be98cb64dd5f37bea56a98dd9",
+    "frontend/src/components/CommentDrawer.vue": "74f8bec896d79c74afa3ed75bb435dd7e79a91747435519900d9ae7302630d20",
+    "frontend/src/views/CreatorView.vue": "a7a18a8c52473d50a3c5ec1aacdea7186c603b9f6914f24f8825ba511dd3f552",
+    "frontend/tests/m13-feed.spec.ts": "c655e17a2ed6017a239c0811201b554e20c54a529b45368d43039aa180c4b931"
+  }
+}

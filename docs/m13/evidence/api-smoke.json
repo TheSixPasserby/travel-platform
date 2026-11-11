@@ -1,0 +1,40 @@
+{
+  "output": [
+    {
+      "sort": "latest",
+      "first": 12,
+      "second": 8,
+      "unique": 20,
+      "hasMore": false,
+      "author": "demo_author_c456a7092c",
+      "profileKeys": [
+        "id",
+        "username",
+        "nickname",
+        "avatarUrl",
+        "bio",
+        "publishedGuideCount",
+        "likeCount",
+        "favoriteCount"
+      ]
+    },
+    {
+      "sort": "popular",
+      "first": 12,
+      "second": 8,
+      "unique": 20,
+      "hasMore": false,
+      "author": "demo_author_c456a7092c",
+      "profileKeys": [
+        "id",
+        "username",
+        "nickname",
+        "avatarUrl",
+        "bio",
+        "publishedGuideCount",
+        "likeCount",
+        "favoriteCount"
+      ]
+    }
+  ]
+}

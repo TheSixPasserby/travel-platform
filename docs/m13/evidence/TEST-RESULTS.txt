@@ -1,0 +1,28 @@
+M13 verification run on 2026-11-11T21:10:20+08:00
+Base 2f73d7f60b1de45b9ccb5bfb16a461d0de6f34e6
+Source set SHA256 367f942d2d408db646182b625da1a2007f3b58374d41d9e44fe07df553d97822
+
+{"command": "npm --prefix frontend test", "executedAt": "2026-11-11T21:07:33+08:00", "files": 45, "passed": 419, "failed": 0}
+{"command": "npm --prefix frontend run build", "executedAt": "2026-11-11T21:08:17+08:00", "passed": true, "invokedBy": "scripts/release.py"}
+{"command": "python3 scripts/backend.py package", "executedAt": "2026-11-11T21:08:17+08:00", "passed": 265, "failed": 0, "errors": 0, "skipped": 0, "invokedBy": "scripts/release.py"}
+{"command": "python3 -m unittest discover -s scripts/tests", "executedAt": "2026-11-11T21:02:36+08:00", "passed": 92, "failed": 0}
+
+Frontend test output
+> travel-notes-frontend@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 /Users/hachikei/Documents/travel-platform-codex-starter/frontend
+
+
+ Test Files  45 passed (45)
+      Tests  419 passed (419)
+   Start at  21:07:28
+   Duration  4.23s (transform 3.94s, setup 465ms, import 10.40s, tests 9.61s, environment 11.61s)
+
+Backend and delivery build output
+[INFO] Tests run: 265, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-11-11T21:08:12+08:00
+✓ built in 1.69s
+交付目录已生成，636文件；SHA256SUMS可用于核验。

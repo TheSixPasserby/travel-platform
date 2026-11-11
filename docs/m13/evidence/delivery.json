@@ -1,0 +1,21 @@
+{
+  "recordedBy": "Codex local assembly and independent SHA256 readback",
+  "output": ".local/m13/delivery/",
+  "buildEntrypoint": {
+    "command": "python3 scripts/release.py .local/m13/delivery-verified-build",
+    "passed": true,
+    "files": 636
+  },
+  "finalAssemblyEntrypoint": "scripts/release.py assemble(root, output)",
+  "files": 672,
+  "sha256Entries": 672,
+  "allSha256Verified": true,
+  "webDistPresent": true,
+  "backendJarPresent": true,
+  "uploadFiles": [
+    ".gitkeep"
+  ],
+  "deprecatedSourceIncluded": false,
+  "privateEnvIncluded": false,
+  "finalSourceSetSha256": "367f942d2d408db646182b625da1a2007f3b58374d41d9e44fe07df553d97822"
+}

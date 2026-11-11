@@ -43,5 +43,6 @@ export interface GuideInput {
 }
 export interface GuideCreate extends GuideInput { status?: 'DRAFT' | 'PUBLISHED' }
 export interface GuideQuery { page?: number; size?: number; keyword?: string; destinationId?: string; tagId?: string; sort?: GuideSort }
+export interface GuideFeedPage { records: GuideSummary[]; nextCursor: string | null; hasMore: boolean }
 export interface MyGuideQuery { page?: number; size?: number; keyword?: string; status?: GuideStatus }
 export const guideStatusLabels: Record<GuideStatus,string> = { DRAFT: '草稿', PUBLISHED: '已发布', HIDDEN: '已隐藏' }
