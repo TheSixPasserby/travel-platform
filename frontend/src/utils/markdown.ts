@@ -88,7 +88,7 @@ function inspectUrl(raw: string): string | null {
 }
 
 /** 只允许 http/https 绝对地址（必须有 host），或单个 / 开头的站内路径。 */
-function isSafeLinkTarget(raw: string): boolean {
+export function isSafeLinkTarget(raw: string): boolean {
   const value = raw.trim()
   const decoded = inspectUrl(raw)
   if (decoded === null) {
@@ -111,7 +111,7 @@ function isSafeLinkTarget(raw: string): boolean {
   }
 }
 
-function isManagedImageSource(value: string): boolean {
+export function isManagedImageSource(value: string): boolean {
   return MANAGED_IMAGE_PATTERN.test(value)
 }
 
@@ -227,4 +227,9 @@ export function renderMarkdown(source: string): string {
     return ''
   }
   return instance.sanitize(md.render(source), PURIFY_CONFIG)
+}
+
+/** 可视化编辑器粘贴沿用展示端同一白名单，不扩大可执行 HTML 范围。 */
+export function sanitizeEditorHtml(html: string): string {
+  return getPurifier()?.sanitize(html, PURIFY_CONFIG) ?? ''
 }

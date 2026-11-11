@@ -22,7 +22,7 @@ _spec = importlib.util.spec_from_file_location('travel_backend', Path(__file__).
 _backend = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_backend)
 load_dotenv = _backend.load_dotenv
-USAGE = '用法: ./start.sh [--mobile]\n默认启动后端与 Web，--mobile 同时启动 uni-app H5，均监听 0.0.0.0。'
+USAGE = '用法: ./start.sh\n仅启动后端与 Web（Web-only），均监听 0.0.0.0。'
 
 
 class StartError(Exception):
@@ -91,6 +91,29 @@ def is_ready(service):
         return False
 
 
+def cors_allows(service, origin):
+    """匿名预检实际运行配置；健康检查成功不代表允许当前局域网来源。"""
+    request = Request(service.url + '/api/v1/auth/login', method='OPTIONS', headers={
+        'Origin': origin,
+        'Access-Control-Request-Method': 'POST',
+        'Access-Control-Request-Headers': 'content-type,satoken'
+    })
+    try:
+        with build_opener(ProxyHandler({})).open(request, timeout=2) as response:
+            methods = {part.strip().upper() for part in response.headers.get('Access-Control-Allow-Methods', '').split(',')}
+            headers = {part.strip().lower() for part in response.headers.get('Access-Control-Allow-Headers', '').split(',')}
+            return (200 <= response.status < 300
+                    and response.headers.get('Access-Control-Allow-Origin') == origin
+                    and 'POST' in methods and {'content-type', 'satoken'} <= headers)
+    except (OSError, URLError, ValueError):
+        return False
+
+
+def require_web_origins(service, origins):
+    if service.kind == 'backend' and any(not cors_allows(service, origin) for origin in origins):
+        raise StartError('后端 CORS 白名单未允许当前 Web 来源；网络/IP 或配置可能已变更，请停止原后端实例后重新运行 ./start.sh')
+
+
 def check_dependencies(service, root, merged, process_env):
     if service.kind == 'backend':
         _backend.validate_environment(merged, 'run', (root / '.env').is_file())
@@ -110,7 +133,7 @@ def check_dependencies(service, root, merged, process_env):
     version = tuple(int(part) for part in result.stdout.strip().split('.')[:2])
     if version < (22, 12):
         raise StartError('Node.js 版本需要 22.12+ 或 24 LTS')
-    directory, executable = ('frontend', 'vite') if service.kind == 'web' else ('mobile', 'uni')
+    directory, executable = 'frontend', 'vite'
     if not (root / directory / 'node_modules' / '.bin' / executable).is_file():
         raise StartError('请先安装依赖: npm --prefix %s ci' % directory)
 
@@ -155,7 +178,10 @@ def run(argv=None, project_root=None, env=None):
     if argv in [['--help'], ['-h']]:
         print(USAGE)
         return 0
-    if argv not in [[], ['--mobile']]:
+    if argv == ['--mobile']:
+        print('uni-app 已停止维护；请使用手机浏览器访问 Web。', file=sys.stderr)
+        return 2
+    if argv:
         print(USAGE, file=sys.stderr)
         return 2
     root = Path(project_root or Path(__file__).resolve().parents[1]).resolve()
@@ -175,10 +201,15 @@ def run(argv=None, project_root=None, env=None):
             Service('后端', [sys.executable, str(root / 'scripts/backend.py'), 'run'], backend_url, port, 'backend'),
             Service('Web', ['npm', '--prefix', str(root / 'frontend'), 'run', 'dev', '--', '--host', '0.0.0.0'], 'http://127.0.0.1:5173', 5173, 'web')
         ]
-        if '--mobile' in argv:
-            services.append(Service('移动 H5', ['npm', '--prefix', str(root / 'mobile'), 'run', 'dev:h5', '--', '--host', '0.0.0.0'], 'http://127.0.0.1:5174', 5174, 'mobile'))
         if len({service.port for service in services}) != len(services):
-            raise StartError('SERVER_PORT 与 Web/H5 端口冲突，请调整后端端口')
+            raise StartError('SERVER_PORT 与 Web 端口冲突，请调整后端端口')
+
+        origins = [value.strip() for value in merged.get('CORS_ALLOWED_ORIGINS', '').split(',') if value.strip()]
+        browser_ports = {service.port for service in services if service.kind == 'web'}
+        origins.extend('http://%s:%s' % (address, browser_port)
+                       for address in ['localhost', '127.0.0.1'] + addresses
+                       for browser_port in sorted(browser_ports))
+        origins = list(dict.fromkeys(origins))
 
         pending = []
         # Check all occupied ports and dependencies before starting any process.
@@ -188,6 +219,7 @@ def run(argv=None, project_root=None, env=None):
                     raise StartError('%s 端口 %s 已占用，服务无法识别或尚未就绪' % (service.name, service.port))
                 if not all(is_listening(service, address) for address in addresses):
                     raise StartError('%s 尚未监听局域网，请在原终端按 Ctrl+C 后重新运行启动脚本' % service.name)
+                require_web_origins(service, origins)
                 print('复用已运行的 %s: %s' % (service.name, service.url), flush=True)
             else:
                 check_dependencies(service, root, merged, process_env)
@@ -200,12 +232,7 @@ def run(argv=None, project_root=None, env=None):
             child_env = dict(process_env)
             child_env['SERVER_ADDRESS'] = '0.0.0.0'
             child_env['TRAVEL_API_TARGET'] = backend_url
-            origins = [value.strip() for value in merged.get('CORS_ALLOWED_ORIGINS', '').split(',') if value.strip()]
-            browser_ports = {5173, 5174} | {service.port for service in services if service.kind != 'backend'}
-            origins.extend('http://%s:%s' % (address, browser_port)
-                           for address in ['localhost', '127.0.0.1'] + addresses
-                           for browser_port in sorted(browser_ports))
-            child_env['CORS_ALLOWED_ORIGINS'] = ','.join(dict.fromkeys(origins))
+            child_env['CORS_ALLOWED_ORIGINS'] = ','.join(origins)
             for service in pending:
                 logfile = logdir / (service.kind + '.log')
                 descriptor = os.open(logfile, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
@@ -216,6 +243,7 @@ def run(argv=None, project_root=None, env=None):
                 owned.append(process)
                 print('正在启动 %s…' % service.name, flush=True)
                 wait_ready(service, process, logfile)
+                require_web_origins(service, origins)
 
         print('\n服务已就绪', flush=True)
         for service in services:

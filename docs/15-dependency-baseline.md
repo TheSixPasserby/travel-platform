@@ -53,3 +53,15 @@ Spring Boot 3.5 支持 Java 21，参考 [系统要求](https://docs.spring.io/sp
 安装审计发现旧测试工具链8项(critical2)：根据[Vitest公告](https://github.com/advisories/GHSA-82fw-gwwq-j7x9)和[Tinypool公告](https://github.com/advisories/GHSA-85c8-ppgw-ccpr)，Codex核实Vitest4.1.12支持现有Vite7/Node24后升级，TestUtils固定2.4.11。未升级Vite/Vue/TypeScript或采用audit fix --force。现有105项测试及类型/生产构建在新工具链下通过，critical/high已为0。
 
 剩余4项moderate均属js-beautify→editorconfig/glob/minimatch开发依赖链；一次不带force的兼容audit fix未能消除，保留真实结果，不强制覆盖跨主版本依赖API。开发工具不部署进dist，使用vitest run而非公开测试服务；最终里程碑复核，不能声称完整审计0漏洞。运行时依赖审计另行验证。M1/M2历史记录的Vitest3.2.7/TestUtils2.5.1代表当时验收版本，不覆写历史证据。
+
+## M11 可视化 Markdown 编辑（2026-11-11）
+
+固定 `@milkdown/kit` **7.23.0**（MIT），通过官方 npm 元数据核实版本，依赖锁定在前端 package-lock.json。[官方文档](https://milkdown.dev/docs/guide/getting-started)、[源码](https://github.com/Milkdown/milkdown)。只使用 core、commonmark、gfm、history 与 ProseMirror 工具；自建轻量 Vue 工具栏，避免额外图片 URL 输入与上传旁路。没有使用 Beta Markdown 适配层，也没有更改后端格式。
+
+PoC 使用 `docs/m8/content/guide-4/5/6.md` 三篇真实旧文及多级标题、列表、链接、引用、受管图片、表格、代码块夹具；语义和图片 URL 往返验证通过。当前数据库这三篇内容与夹具逐字相同。无修改导入不重写原 Markdown；不支持的 HTML、扩展或来源保留源码模式。导入前检查实际解析节点，导入后检查实际序列化语义；首次装载不入撤销历史。
+
+## M12 活跃图文编辑器（2026-11-11）
+
+活跃攻略编辑页改用官方 **Vditor 4.0.1**（MIT，npm 正式版本，精确版本与 lockfile 固定）。[官方源码及许可](https://github.com/Vanessa219/vditor)、[官方配置说明](https://github.com/Vanessa219/vditor#options)。WYSIWYG 默认，IR 与源码可切换；正文仍为原 Markdown。`cache.enable=false`，无默认外部图床或公共 CDN。
+
+`frontend/build/vditorAssets.ts` 按固定白名单提供 `/vendor/vditor/4.0.1/` 下的 Lute、中文语言包、图标、主题和许可；dev 与 dist 使用相同路径，交付脚本收录构建插件。代码高亮、数学、图表、任务列表按钮和媒体能力不启用；粘贴 HTML 先经原有 DOMPurify 白名单。模式切换以原文安全渲染语义校验，无法无损载入时保留源码；M11 原编辑器保留仅供既有回归对照，不被活跃页面导入。

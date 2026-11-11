@@ -1,3 +1,4 @@
+import { vditorAssets } from './build/vditorAssets'
 import { fileURLToPath, URL } from 'node:url'
 
 import tailwindcss from '@tailwindcss/vite'
@@ -5,7 +6,7 @@ import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
-  plugins: [vue(), tailwindcss()],
+  plugins: [vue(), tailwindcss(), vditorAssets()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

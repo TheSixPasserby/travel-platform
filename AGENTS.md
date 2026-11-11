@@ -37,6 +37,10 @@
 ### 建议逻辑角色
 `requirements-reviewer`、`database-reviewer`、`backend-agent`、`frontend-agent`、`qa-agent`。名称只是逻辑角色，实际调用以当前 DSH 能力为准。
 
+## M11 平台范围
+
+自 2026-11-11 起只维护 Web 与后端，保留手机浏览器响应式支持。uni-app、微信小程序和原生 App 为 archived / deprecated / unsupported，源码与专用脚本/测试/工作流仅保留在 `deprecated/uni-app/`。不得恢复自动编译或发布，不以移动 SDK/真机作为 Web 交付门槛；历史 APK、Release、验收证据和业务数据保留。
+
 ## 4. 技术基线
 - 前端：Vue 3 + TypeScript + Vite、Vue Router、Pinia、Axios、Tailwind CSS；
 - 后端：Java 21、Spring Boot 3.x、Maven、MyBatis-Plus、Sa-Token、SpringDoc OpenAPI；

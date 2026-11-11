@@ -38,6 +38,11 @@ beforeEach(() => {
 })
 
 describe('路由守卫', () => {
+  it('取消未保存页面的导航后保持当前浏览器标题',async()=>{
+    const router=routerWithHistory();await router.push('/guides');const title=document.title
+    router.beforeEach(to=>to.name==='destinations'?false:true)
+    await router.push('/destinations');expect(router.currentRoute.value.name).toBe('guides');expect(document.title).toBe(title)
+  })
   it('治理页面游客回登录，普通用户拒绝，管理员可进入',async()=>{
     const paths=['/admin','/admin/users','/admin/guides','/admin/comments']
     let router=routerWithHistory();for(const path of paths){await router.push(path);expect(router.currentRoute.value.name).toBe('login');expect(router.currentRoute.value.query.redirect).toBe(path)}

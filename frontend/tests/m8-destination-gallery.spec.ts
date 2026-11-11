@@ -5,12 +5,12 @@ import type { DestinationImage } from '@/types/destination'
 
 const images: DestinationImage[] = [
   {
-    id: '2', url: '/uploads/2026/11/lake-b.png', altText: '湖岸清晨', sortOrder: 1,
+    id: '2', url: '/uploads/2026/11/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.png', altText: '湖岸清晨', sortOrder: 1,
     sourceUrl: 'https://example.com/source-b', author: '摄影者乙', license: 'CC BY 4.0',
     licenseUrl: 'https://creativecommons.org/licenses/by/4.0/', retrievedAt: '2026-11-01T10:00:00.000+08:00'
   },
   {
-    id: '1', url: '/uploads/2026/11/trail-a.png', altText: '山间步道', sortOrder: 0,
+    id: '1', url: '/uploads/2026/11/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png', altText: '山间步道', sortOrder: 0,
     sourceUrl: 'https://example.com/source-a', author: '摄影者甲', license: 'CC0 1.0',
     licenseUrl: 'https://creativecommons.org/publicdomain/zero/1.0/', retrievedAt: '2026-10-30T10:00:00.000+08:00'
   }
@@ -22,7 +22,7 @@ describe('目的地图库', () => {
     const figures = wrapper.findAll('[data-test="gallery-image"]')
     expect(figures).toHaveLength(2)
     expect(figures[0]!.get('img').attributes('alt')).toBe('山间步道')
-    expect(figures[0]!.get('img').attributes('src')).toBe('/uploads/2026/11/trail-a.png')
+    expect(figures[0]!.get('img').attributes('src')).toBe('/uploads/2026/11/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png')
     expect(figures[1]!.get('img').attributes('alt')).toBe('湖岸清晨')
     wrapper.unmount()
   })

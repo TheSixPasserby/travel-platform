@@ -7,7 +7,7 @@ import unittest
 from contextlib import redirect_stdout, redirect_stderr
 from pathlib import Path
 from types import SimpleNamespace
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 
 def module():
@@ -32,6 +32,9 @@ class StartTests(unittest.TestCase):
         self.addresses = patch.object(self.m, 'lan_addresses', return_value=['192.168.1.20'])
         self.addresses.start()
         self.addCleanup(self.addresses.stop)
+        self.cors = patch.object(self.m, 'cors_allows', return_value=True, create=True)
+        self.cors.start()
+        self.addCleanup(self.cors.stop)
 
     def invoke(self, args=()):
         output = io.StringIO()
@@ -43,7 +46,15 @@ class StartTests(unittest.TestCase):
         with patch.object(self.m, 'Popen') as spawn, patch.object(self.m, 'load_dotenv') as dotenv:
             code, output = self.invoke(['--help'])
         self.assertEqual(code, 0)
-        self.assertIn('--mobile', output)
+        self.assertIn('Web-only', output)
+        spawn.assert_not_called()
+        dotenv.assert_not_called()
+
+    def test_deprecated_mobile_flag_does_not_read_config_or_start(self):
+        with patch.object(self.m, 'Popen') as spawn, patch.object(self.m, 'load_dotenv') as dotenv:
+            code, output = self.invoke(['--mobile'])
+        self.assertEqual(code, 2)
+        self.assertIn('已停止维护', output)
         spawn.assert_not_called()
         dotenv.assert_not_called()
 
@@ -57,11 +68,39 @@ class StartTests(unittest.TestCase):
         with patch.object(self.m, 'is_listening', return_value=True), \
              patch.object(self.m, 'is_ready', return_value=True), \
              patch.object(self.m, 'Popen') as spawn, patch.object(self.m, 'stop_processes') as stop:
-            code, output = self.invoke(['--mobile'])
+            code, output = self.invoke()
         self.assertEqual(code, 0)
-        for port in [8080, 5173, 5174]: self.assertIn(str(port), output)
+        for port in [8080, 5173]: self.assertIn(str(port), output)
         spawn.assert_not_called()
         self.assertEqual(stop.call_args.args[0], [])
+
+    def test_healthy_backend_with_stale_lan_cors_is_not_reused_or_stopped(self):
+        with patch.object(self.m, 'is_listening', return_value=True), \
+             patch.object(self.m, 'is_ready', return_value=True), \
+             patch.object(self.m, 'cors_allows', return_value=False) as cors, \
+             patch.object(self.m, 'Popen') as spawn, patch.object(self.m, 'stop_processes') as stop:
+            code, output = self.invoke()
+        self.assertEqual(code, 2)
+        self.assertIn('CORS', output)
+        self.assertIn('重新运行', output)
+        self.assertNotIn('服务已就绪', output)
+        spawn.assert_not_called()
+        self.assertEqual(stop.call_args.args[0], [])
+        cors.assert_called()
+
+    def test_new_backend_must_allow_current_origins_before_ready(self):
+        backend = SimpleNamespace(pid=1234)
+        with patch.object(self.m, 'is_listening', return_value=False), \
+             patch.object(self.m, 'Popen', return_value=backend) as spawn, \
+             patch.object(self.m, 'monitor', side_effect=KeyboardInterrupt), \
+             patch.object(self.m, 'wait_ready'), \
+             patch.object(self.m, 'cors_allows', return_value=False), \
+             patch.object(self.m, 'stop_processes') as stop:
+            code, output = self.invoke()
+        self.assertEqual(code, 2)
+        self.assertIn('CORS', output)
+        self.assertEqual(spawn.call_count, 1)
+        self.assertEqual(stop.call_args.args[0], [backend])
 
     def test_unknown_port_occupant_is_refused_before_any_process_starts(self):
         with patch.object(self.m, 'is_listening', side_effect=[False, True]), \
@@ -115,29 +154,29 @@ class StartTests(unittest.TestCase):
         self.assertEqual(web_command[web_command.index('--host') + 1], '0.0.0.0')
         origins = spawn.call_args_list[0].kwargs['env']['CORS_ALLOWED_ORIGINS'].split(',')
         self.assertIn('http://192.168.1.20:5173', origins)
-        self.assertIn('http://192.168.1.20:5174', origins)
+        self.assertNotIn('http://192.168.1.20:5174', origins)
         self.assertIn('http://127.0.0.1:5173', origins)
 
-    def test_mobile_uses_all_interfaces_and_preserves_existing_cors_origins(self):
+    def test_web_uses_all_interfaces_and_preserves_existing_cors_origins(self):
         self.environment.update({'SERVER_ADDRESS': '127.0.0.1', 'CORS_ALLOWED_ORIGINS': 'https://configured.example'})
-        processes = [SimpleNamespace(pid=pid) for pid in [1234, 1235, 1236]]
+        processes = [SimpleNamespace(pid=pid) for pid in [1234, 1235]]
         with patch.object(self.m, 'is_listening', return_value=False), \
              patch.object(self.m, 'Popen', side_effect=processes) as spawn, \
              patch.object(self.m, 'wait_ready'), \
              patch.object(self.m, 'monitor', side_effect=KeyboardInterrupt), \
              patch.object(self.m, 'stop_processes'):
-            code, output = self.invoke(['--mobile'])
+            code, output = self.invoke()
         self.assertEqual(code, 0)
-        mobile_command = spawn.call_args_list[2].args[0]
-        self.assertEqual(mobile_command[mobile_command.index('--host') + 1], '0.0.0.0')
+        web_command = spawn.call_args_list[1].args[0]
+        self.assertEqual(web_command[web_command.index('--host') + 1], '0.0.0.0')
         child_env = spawn.call_args_list[0].kwargs['env']
         self.assertEqual(child_env['SERVER_ADDRESS'], '0.0.0.0')
         self.assertEqual(child_env['TRAVEL_API_TARGET'], 'http://127.0.0.1:8080')
         origins = child_env['CORS_ALLOWED_ORIGINS'].split(',')
         self.assertIn('https://configured.example', origins)
-        self.assertIn('http://192.168.1.20:5174', origins)
+        self.assertNotIn('http://192.168.1.20:5174', origins)
         self.assertNotIn('*', origins)
-        self.assertIn('http://192.168.1.20:5174', output)
+        self.assertNotIn('http://192.168.1.20:5174', output)
 
     def test_loopback_only_existing_service_requires_restart(self):
         with patch.object(self.m, 'is_listening', side_effect=lambda service, host=None: host is None), \
@@ -172,6 +211,28 @@ class StartTests(unittest.TestCase):
              patch.object(self.m.socket, 'create_connection', side_effect=ConnectionRefusedError):
             with self.assertRaisesRegex(self.m.StartError, 'MySQL'):
                 self.real_check_dependencies(service, self.root, values, {})
+
+
+class CorsProbeTests(unittest.TestCase):
+    def test_probe_uses_anonymous_options_and_requires_exact_grant(self):
+        m=module();probe=getattr(m,'cors_allows',None);self.assertIsNotNone(probe)
+        service=m.Service('后端',[], 'http://127.0.0.1:8080',8080,'backend')
+        response=MagicMock();response.status=200
+        response.headers={'Access-Control-Allow-Origin':'http://192.168.1.20:5173','Access-Control-Allow-Methods':'GET,POST','Access-Control-Allow-Headers':'Content-Type, SaToken'}
+        opener=MagicMock();opener.open.return_value.__enter__.return_value=response
+        with patch.object(m,'build_opener',return_value=opener):
+            self.assertTrue(probe(service,'http://192.168.1.20:5173'))
+            request=opener.open.call_args.args[0]
+            self.assertEqual(request.method,'OPTIONS');self.assertIsNone(request.data)
+            self.assertEqual(request.full_url,'http://127.0.0.1:8080/api/v1/auth/login')
+            self.assertEqual(request.get_header('Origin'),'http://192.168.1.20:5173')
+            self.assertFalse(any(key.lower() in {'authorization','cookie','satoken'} for key,_ in request.header_items()))
+            for key,bad in [('Access-Control-Allow-Origin','*'),('Access-Control-Allow-Origin','http://old.example'),('Access-Control-Allow-Methods','GET'),('Access-Control-Allow-Headers','Content-Type')]:
+                original=response.headers[key];response.headers[key]=bad
+                self.assertFalse(probe(service,'http://192.168.1.20:5173'))
+                response.headers[key]=original
+            opener.open.side_effect=m.URLError('synthetic refusal')
+            self.assertFalse(probe(service,'http://192.168.1.20:5173'))
 
 
 if __name__ == '__main__':

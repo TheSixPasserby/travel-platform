@@ -17,3 +17,6 @@ export function deleteGuide(id: string): Promise<null> { return apiClient.delete
 export function publishGuide(id: string): Promise<GuideDetail> { return apiClient.post<GuideDetail,GuideDetail>(`${path(id)}/publish`) }
 export function unpublishGuide(id: string): Promise<GuideDetail> { return apiClient.post<GuideDetail,GuideDetail>(`${path(id)}/unpublish`) }
 export function fetchTags(): Promise<Tag[]> { return apiClient.get<Tag[],Tag[]>('/tags') }
+export function fetchRelatedGuides(id: string): Promise<GuideSummary[]> {
+  return apiClient.get<GuideSummary[], GuideSummary[]>(`${path(id)}/related`, { params: { size: 4 } })
+}

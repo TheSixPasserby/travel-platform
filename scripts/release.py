@@ -16,11 +16,8 @@ _spec.loader.exec_module(_launcher)
 LauncherError,select_jar=_launcher.LauncherError,_launcher.select_jar
 
 ROOT_FILES=['AGENTS.md','README.md','PROJECT_STATUS.md','PACKAGE-MANIFEST.json','.env.example','.editorconfig','.gitignore','start.sh']
-PROJECT_FILES=['backend/pom.xml','backend/mvnw','backend/mvnw.cmd','frontend/package.json','frontend/package-lock.json','frontend/index.html','frontend/vite.config.ts','frontend/tsconfig.json','scripts/backend.py','scripts/start.py','scripts/release.py','scripts/m8_content.py','scripts/m8_data.py','scripts/m8_migrate.py','scripts/m10_migrate.py','scripts/m10_backup.py','scripts/mobile_release.py','scripts/android_package.py','scripts/android-init.gradle','scripts/setup_android.sh','scripts/android_smoke.py','.github/workflows/mobile-release.yml','scripts/requirements-maintenance.txt','.github/workflows/ci.yml']
-SOURCE_TREES=['backend/src','backend/.mvn','frontend/src','frontend/public','frontend/tests','scripts/tests','database','docs','prompts','deploy']
-MOBILE_FILES=['mobile/package.json','mobile/package-lock.json','mobile/index.html','mobile/vite.config.ts','mobile/tsconfig.json','mobile/README.md','mobile/.env.example','mobile/.gitignore']
-MOBILE_TREES=['mobile/src','mobile/tests']
-MOBILE_BUILDS=['mobile/dist/build/h5','mobile/dist/build/mp-weixin','mobile/dist/build/app']
+PROJECT_FILES=['backend/pom.xml','backend/mvnw','backend/mvnw.cmd','frontend/package.json','frontend/package-lock.json','frontend/index.html','frontend/vite.config.ts','frontend/tsconfig.json','scripts/backend.py','scripts/start.py','scripts/release.py','scripts/m8_content.py','scripts/m8_data.py','scripts/m8_migrate.py','scripts/m10_migrate.py','scripts/m10_backup.py','scripts/requirements-maintenance.txt','.github/workflows/ci.yml']
+SOURCE_TREES=['backend/src','backend/.mvn','frontend/src','frontend/build','frontend/public','frontend/tests','scripts/tests','database','docs','prompts','deploy']
 BANNED={'.git','.local','.superpowers','node_modules','__pycache__','.vite','coverage','.DS_Store'}
 
 
@@ -53,7 +50,7 @@ def assemble(root, output):
     root=Path(root).resolve();output=Path(output).absolute()
     if output.exists() or output.is_symlink():raise ReleaseError('交付输出已存在，拒绝覆盖')
     resolved=output.resolve()
-    if resolved==root or any(resolved.is_relative_to(root/tree) for tree in SOURCE_TREES+['frontend/dist','backend/target','mobile']):
+    if resolved==root or any(resolved.is_relative_to(root/tree) for tree in SOURCE_TREES+['frontend/dist','backend/target','deprecated']):
         raise ReleaseError('交付输出不得位于源文件树或构建目录中')
     try:jar=select_jar(root/'backend')
     except LauncherError as error:raise ReleaseError(str(error)) from None
@@ -71,9 +68,8 @@ def assemble(root, output):
             except UnicodeError:raise ReleaseError('应用配置编码无效，请使用UTF-8') from None
             check_config(source.name,content)
         sources[destination]=source
-    mobile=(root/'mobile/package.json').exists()
-    for name in ROOT_FILES+PROJECT_FILES+(MOBILE_FILES if mobile else []):include(root/name,name)
-    trees=SOURCE_TREES+['frontend/dist']+(MOBILE_TREES+MOBILE_BUILDS if mobile else [])
+    for name in ROOT_FILES+PROJECT_FILES:include(root/name,name)
+    trees=SOURCE_TREES+['frontend/dist']
     for name in trees:
         directory=root/name
         if directory.is_symlink() or not directory.is_dir():raise ReleaseError('缺少源码/构建目录或目录为符号链接')
@@ -114,8 +110,6 @@ def run(argv=None,root=None,runner=None):
     if output.exists() or output.is_symlink():
         print('交付输出已存在，拒绝覆盖',file=sys.stderr);return 2
     commands=[[sys.executable,str(root/'scripts/backend.py'),'package'],['npm','--prefix',str(root/'frontend'),'run','build']]
-    if (root/'mobile/package.json').exists():
-        commands.extend(['npm','--prefix',str(root/'mobile'),'run',script] for script in ['type-check','check:safety','build:h5','build:mp-weixin','build:app'])
     for command in commands:
         try:result=runner(command,cwd=str(root),shell=False)
         except OSError:

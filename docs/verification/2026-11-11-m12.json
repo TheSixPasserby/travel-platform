@@ -1,0 +1,179 @@
+{
+  "milestone": "M12",
+  "date": "2026-11-11",
+  "branch": "main",
+  "head": "29fa630bf097c2afd45b9711995fe655bfc4f7c6",
+  "includesUncommittedM11": true,
+  "models": {
+    "codex": "gpt-6.1-sol/ultra",
+    "dsh": "buddy/deepseek-v4.1-flash/max",
+    "configAndProbeVerified": true,
+    "implementationJob": "hub-1-mwb3qrn6 cancelled, no file delivery, Codex took ownership",
+    "completedReadOnlyReviews": [
+      "hub-2-mwb3r44v",
+      "hub-3-mwb4dt2k"
+    ]
+  },
+  "tests": {
+    "backendPackage": {
+      "passed": 252,
+      "failed": 0,
+      "skipped": 0
+    },
+    "frontend": {
+      "files": 40,
+      "passed": 389,
+      "failed": 0
+    },
+    "python": {
+      "passed": 92,
+      "failed": 0
+    },
+    "typecheckAndBuild": true,
+    "npmCi": true,
+    "runtimeAudit": {
+      "vulnerabilities": 0
+    },
+    "expiredSessionLastInputFlush": "Regression reproduced then fixed; current DOM retained before debounced input callback"
+  },
+  "browser": {
+    "engine": "Chromium",
+    "matrixChecks": 110,
+    "widths": [
+      360,
+      390,
+      430,
+      768,
+      1440
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "identities": [
+      "anonymous",
+      "author"
+    ],
+    "pageErrors": [],
+    "routeCleanup": true,
+    "oldGuideRoundTrips": {
+      "results": [
+        {
+          "id": "4",
+          "unchangedSave": true,
+          "modes": true,
+          "editSaveReopen": true,
+          "metadataPreserved": true,
+          "status": "PUBLISHED"
+        },
+        {
+          "id": "5",
+          "unchangedSave": true,
+          "modes": true,
+          "editSaveReopen": true,
+          "metadataPreserved": true,
+          "status": "PUBLISHED"
+        },
+        {
+          "id": "6",
+          "unchangedSave": true,
+          "modes": true,
+          "editSaveReopen": true,
+          "metadataPreserved": true,
+          "status": "DRAFT"
+        }
+      ],
+      "isolatedCloneOnly": true
+    },
+    "upload": {
+      "externalBodyImage": true,
+      "toolbarImage": true,
+      "pasteImage": true,
+      "dropImage": true,
+      "guideId": "8",
+      "draft": true,
+      "galleryCount": 4,
+      "lengthLimit": true
+    },
+    "nativeEditor": {
+      "externalRequests": [],
+      "undo": true,
+      "redo": true,
+      "wordTable": true,
+      "chinese": true,
+      "safePaste": true
+    },
+    "feedNavigation": {
+      "sortBackRefresh": true,
+      "queryRestored": true,
+      "emptyNoFakeCards": true,
+      "searchBackRestored": true
+    },
+    "defaultEntry": {
+      "origin": "http://127.0.0.1:5173",
+      "anonymous": true,
+      "publicIds": [
+        "5",
+        "4"
+      ],
+      "creatorStatus": 200,
+      "relatedStatus": 200,
+      "errors": []
+    }
+  },
+  "vditor": {
+    "version": "4.0.1",
+    "license": "MIT",
+    "default": "wysiwyg",
+    "modes": [
+      "wysiwyg",
+      "ir",
+      "sv"
+    ],
+    "assetBase": "/vendor/vditor/4.0.1/",
+    "cache": false,
+    "externalRequestsInEditorTest": 0,
+    "markdownStorageUnchanged": true
+  },
+  "dataPreservation": {
+    "tables": 14,
+    "rows": 137,
+    "files": 44,
+    "rowsSchemaAndFilesIdentical": true,
+    "snapshotSha256": "9fe7fb15b411651563cd513239adb8c0536f35cda07e984837bced9fddb01bc1"
+  },
+  "archive": {
+    "filesByteIdentical": 50,
+    "activeMobileBuilds": false,
+    "historicalArtifactsPreserved": true
+  },
+  "ipRegion": {
+    "publicDisplay": false,
+    "publicResponseNull": true,
+    "geoIpSourceVerified": false,
+    "historicalSnapshotsPreserved": true
+  },
+  "limitations": [
+    "Mode switches rebuild Vditor; undo history is per mode session. Markdown text/structure preserved.",
+    "Safari, Firefox, physical mobile browsers and native OS IME composition not executed.",
+    "Paid external AI provider and remote CI/deployment not executed.",
+    "Four existing moderate development-dependency findings; runtime audit zero."
+  ],
+  "delivery": {
+    "candidateFilesVerified": 567,
+    "command": "python3 scripts/release.py <unique-candidate-output>",
+    "finalPath": ".local/releases/m12-web-only-20261111-7f744024-final",
+    "manifest": "SHA256SUMS",
+    "receipt": ".local/m12/delivery-receipt.json"
+  },
+  "commit": false,
+  "push": false,
+  "deployment": false,
+  "runtime": {
+    "backend": "http://127.0.0.1:8080",
+    "web": "http://127.0.0.1:5173",
+    "startScriptReady": true,
+    "qaServicesStopped": true,
+    "unverifiedProcessesStopped": false
+  }
+}

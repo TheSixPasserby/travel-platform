@@ -1,7 +1,7 @@
 package com.example.travelplatform.ai.service;
 
 import com.example.travelplatform.ai.client.AiModelClient;
-import com.example.travelplatform.ai.config.AiProperties;
+import com.example.travelplatform.ai.config.AiSettingsStore;
 import com.example.travelplatform.ai.dto.*;
 import com.example.travelplatform.ai.validation.*;
 import com.example.travelplatform.ai.vo.AiPreview;
@@ -21,16 +21,16 @@ import java.util.*;
 @Service
 public class AiItineraryService {
     private static final DateTimeFormatter TIMESTAMP = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss.SSSXXX");
-    private final AiProperties properties;
+    private final AiSettingsStore settings;
     private final UserService session;
     private final AiCatalog catalog;
     private final AiModelClient client;
     private final AiGenerationGate gate;
     private final ObjectMapper json;
 
-    public AiItineraryService(AiProperties properties, UserService session, AiCatalog catalog,
+    public AiItineraryService(AiSettingsStore settings, UserService session, AiCatalog catalog,
                               AiModelClient client, AiGenerationGate gate, ObjectMapper json) {
-        this.properties=properties;
+        this.settings=settings;
         this.session=session;
         this.catalog=catalog;
         this.client=client;
@@ -40,6 +40,7 @@ public class AiItineraryService {
 
     public AiPreview.Capabilities capabilities() {
         session.requireCurrentUser();
+        var properties=settings.current();
         var configuration=properties.resolved();
         String reason=properties.available() ? null : "AI服务暂未配置或启用，可继续使用手动行程";
         return new AiPreview.Capabilities(properties.enabled(),properties.available(),reason,14,
@@ -72,7 +73,7 @@ public class AiItineraryService {
 
     private long ready() {
         long user=session.requireCurrentUser().getId();
-        if (!properties.available()) throw new ApiException(ErrorCode.AI_UNAVAILABLE);
+        if (!settings.current().available()) throw new ApiException(ErrorCode.AI_UNAVAILABLE);
         return user;
     }
 

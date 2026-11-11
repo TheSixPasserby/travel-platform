@@ -13,3 +13,7 @@ logging:
   level:
     # Avoid SQL bind-parameter logging, including fixture password hashes.
     com.example.travelplatform: INFO
+
+travel:
+  ai:
+    settings-file: ${AI_SETTINGS_TEST_FILE:${java.io.tmpdir}/travel-ai-test-${random.uuid}.json}

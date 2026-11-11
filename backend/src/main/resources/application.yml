@@ -59,6 +59,7 @@ travel:
   ip:
     trusted-proxies: ${IP_TRUSTED_PROXIES:}
   ai:
+    settings-file: ${AI_SETTINGS_FILE:./.local/ai-settings.json}
     enabled: ${AI_ENABLED:false}
     provider: ${AI_PROVIDER:custom}
     base-url: ${AI_BASE_URL:}

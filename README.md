@@ -2,7 +2,9 @@
 
 > 可运行的旅游攻略分享与私人行程平台，包含源码、设计与验收证据、数据库初始化、运行和毕业演示材料。采用Codex主导、DSH执行的分阶段规划、实现和审查流程。
 
-M10 已在 M8/M9 上完成 Web 单行顶栏、导航抽屉、设置/账号浮层、昵称与 @用户名、评论元信息及安全 IP 属地未知降级的本地验收。截止仍为 2026-11-10 23:59（Asia/Shanghai）。源码、实际测试、截图与边界见 [M10 交付状态](docs/M10-DELIVERY-STATUS.md)，原移动端成果及真机待办见 [M9 交付状态](docs/M9-DELIVERY-STATUS.md)。uni-app 布局本轮未改。
+M12 将山水间升级为 **Web 旅游内容分享与发现社区**：真实发现流、图文卡片、作者公开主页和同城/同主题推荐；Vditor 4.0.1 默认所见即所得，保留 Markdown 源码、受管上传与图片灯箱。全部原账号、攻略、互动、目的地、私人行程和后台继续保留。实现、截图、测试与限制见 [M12交付报告](docs/m12/M12-DELIVERY.md)，历史 [M11报告](docs/m11/ACCEPTANCE.md) 保留。
+
+uni-app、微信小程序、Android/iOS 原生应用已停止维护与自动构建发布，源码和专用工具见 [归档历史索引](docs/m11/ARCHIVE-INDEX.md)。既有 APK、Release 和历史验收证据保留。
 
 代码仓库：[TheSixPasserby/travel-platform](https://github.com/TheSixPasserby/travel-platform)（私有，主分支`main`）。现有阶段基线按用户授权提交；仍有待补充核对的功能，阶段测试通过不等同最终全功能验收。
 
@@ -13,11 +15,11 @@ M8交付见[最终报告](docs/33-m8-final-report.md)、[验收证据](docs/veri
 
 ## 运行与交付
 
-根目录提供 `./start.sh`，默认启动后端与 Web，均监听 `0.0.0.0`。`./start.sh --mobile` 同时以全接口监听启动 uni-app H5，`./start.sh --help` 查看用法。先准备运行中的 MySQL、根 `.env`、Java21 和已安装的 Node 依赖（`npm --prefix frontend ci`，移动端另执行 `npm --prefix mobile ci`）。
+根目录提供 `./start.sh`，仅启动后端与 Web，均监听 `0.0.0.0`；`./start.sh --help` 查看用法。先准备运行中的 MySQL、根 `.env`、Java21 和 Node 依赖（`npm --prefix frontend ci`）。旧移动参数仅返回弃用提示。
 
-本机入口为 Web `http://127.0.0.1:5173`、移动 H5 `http://127.0.0.1:5174`，局域网设备使用 `http://电脑局域网IP:5173` 或 `:5174`，启动时会打印实际地址。启动器将当前本机 IPv4 的两个页面来源追加到服务端精确 CORS 白名单，保留已有来源配置。H5 开发服务器使用严格文件访问边界。
+本机入口为 [Web](http://127.0.0.1:5173)，手机使用电脑局域网 IP 的 5173 端口。启动器打印实际地址，将当前 IPv4 的 Web 来源追加到精确 CORS 白名单，保留已有配置。
 
-启动器复用可识别且局域网可达的已有服务，日志位于忽略的 `.local/run/时间-PID/`。旧实例若仅监听本机，在原终端按 Ctrl+C 后重新启动以加载新监听地址。按 Ctrl+C 清理本次启动的进程组，已有实例继续由原启动方式管理。后端端口通过 `SERVER_PORT` 配置，启动器为 Web/H5 设置对应的回环代理地址。
+启动器复用可识别、局域网可达且当前 Web 来源通过 CORS 预检的已有服务。网络/IP 改变后，若旧后端白名单不匹配，会提示停止原后端并重新运行；不会因只读健康检查成功就误报就绪。日志位于忽略的 `.local/run/时间-PID/`。旧实例若仅监听本机，在原终端按 Ctrl+C 后重新启动。按 Ctrl+C 清理本次启动的进程组，已有实例由原启动方式管理。后端端口通过 `SERVER_PORT` 配置，Web 使用对应回环代理。
 
 已配置本机访问 `http://127.0.0.1:5173`。新机器先按[部署与运维](docs/22-deployment-and-operations.md)准备专用MySQL8.x、独立测试库及根`.env`，然后在项目根运行：
 

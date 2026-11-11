@@ -1,0 +1,126 @@
+{
+  "milestone": "M12 content additions and web AI settings",
+  "date": "2026-11-11",
+  "head": "29fa630bf097c2afd45b9711995fe655bfc4f7c6",
+  "models": {
+    "codex": "gpt-6.1-sol / ultra",
+    "dsh": "buddy / deepseek-v4.1-flash / max",
+    "runtimeVerified": true,
+    "dshTasks": [
+      "hub-4-mwbr01uh",
+      "hub-5-mwbrimai"
+    ]
+  },
+  "content": {
+    "addedArticles": 18,
+    "publishedTotal": 20,
+    "cities": 6,
+    "uniqueNewCovers": 18,
+    "source": "docs/m12/additions/editorial-notes.json",
+    "publishedIds": [
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23",
+      "24"
+    ]
+  },
+  "dataPreservation": {
+    "originalRowsPreserved": 137,
+    "uploadsPreserved": 44,
+    "schemaPreserved": true,
+    "newRows": {
+      "guide_destinations": 51,
+      "guide_images": 51,
+      "guide_tags": 33,
+      "guides": 18
+    },
+    "publishedArticles": 20,
+    "oldDraftPreserved": true
+  },
+  "backupSha256": "a275f883e9204143b1a3b9703077a5741b0c0f2ceb0dbacb11c10481d2c8b79e",
+  "aiSettings": {
+    "route": "/admin/ai",
+    "api": "/api/v1/admin/ai-settings",
+    "scope": "administrator managed global",
+    "privateFilePersistence": true,
+    "secretReturned": false,
+    "actualProcessRestartVerified": true,
+    "immediateModelChangeVerified": true,
+    "paidProviderCalled": false
+  },
+  "tests": {
+    "backend": {
+      "passed": 258,
+      "failed": 0,
+      "skipped": 0
+    },
+    "frontend": {
+      "files": 41,
+      "passed": 393,
+      "failed": 0
+    },
+    "python": {
+      "passed": 92,
+      "failed": 0
+    },
+    "typescriptAndViteBuild": "passed",
+    "browser": {
+      "checks": 62,
+      "pageErrors": 0,
+      "settingsWidths": [
+        360,
+        390,
+        430,
+        768,
+        1440
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ]
+    },
+    "gitDiffCheck": "passed"
+  },
+  "defaultService": {
+    "origin": "http://127.0.0.1:5173",
+    "settings": {
+      "status": 200,
+      "source": "environment",
+      "enabled": false,
+      "apiKeyConfigured": false,
+      "credentialFieldPresent": false
+    },
+    "publishedArticles": 20,
+    "errors": [],
+    "checks": 4
+  },
+  "screenshots": [
+    "docs/m12/additions/screenshots/discovery-390.png",
+    "docs/m12/additions/screenshots/discovery-1440.png",
+    "docs/m12/additions/screenshots/ai-settings-390.png",
+    "docs/m12/additions/screenshots/ai-settings-1440.png",
+    "docs/m12/additions/screenshots/ai-preview-local.png"
+  ],
+  "remaining": [
+    "Real paid AI provider request requires operator credentials",
+    "Safari/Firefox/physical phone not executed",
+    "Remote CI not executed"
+  ],
+  "commit": false,
+  "push": false,
+  "deployment": false
+}

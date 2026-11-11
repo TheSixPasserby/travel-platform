@@ -1,0 +1,151 @@
+{
+  "date": "2026-11-11",
+  "issue": "LAN login POST 403 Invalid CORS request",
+  "cause": "old running backend did not allow current LAN Origin; startup reuse checked readiness but not CORS",
+  "changes": [
+    "scripts/start.py: anonymous exact-Origin OPTIONS check before reuse and after new startup",
+    "scripts/tests/test_start.py: stale CORS, fresh startup verification, preflight whitelist tests",
+    "README.md: network-change restart note"
+  ],
+  "before": [
+    {
+      "target": "http://127.0.0.1:8080",
+      "origin": "http://localhost:5173",
+      "status": 400,
+      "allowOrigin": "http://localhost:5173",
+      "body": "{\"code\":40001,\"message\":\"请提供账号和密码\",\"data\":null}"
+    },
+    {
+      "target": "http://127.0.0.1:8080",
+      "origin": "http://192.168.1.200:5173",
+      "status": 403,
+      "allowOrigin": null,
+      "body": "Invalid CORS request"
+    },
+    {
+      "target": "http://127.0.0.1:5173",
+      "origin": "http://localhost:5173",
+      "status": 400,
+      "allowOrigin": "http://localhost:5173",
+      "body": "{\"code\":40001,\"message\":\"请提供账号和密码\",\"data\":null}"
+    },
+    {
+      "target": "http://127.0.0.1:5173",
+      "origin": "http://192.168.1.200:5173",
+      "status": 403,
+      "allowOrigin": null,
+      "body": "Invalid CORS request"
+    },
+    {
+      "target": "http://192.168.1.200:5173",
+      "origin": "http://localhost:5173",
+      "status": 400,
+      "allowOrigin": "http://localhost:5173",
+      "body": "{\"code\":40001,\"message\":\"请提供账号和密码\",\"data\":null}"
+    },
+    {
+      "target": "http://192.168.1.200:5173",
+      "origin": "http://192.168.1.200:5173",
+      "status": 403,
+      "allowOrigin": null,
+      "body": "Invalid CORS request"
+    }
+  ],
+  "after": [
+    {
+      "target": "http://127.0.0.1:8080",
+      "origin": "http://192.168.1.200:5173",
+      "method": "OPTIONS",
+      "status": 200,
+      "allowOrigin": "http://192.168.1.200:5173",
+      "body": ""
+    },
+    {
+      "target": "http://127.0.0.1:8080",
+      "origin": "http://192.168.1.200:5173",
+      "method": "POST",
+      "status": 400,
+      "allowOrigin": "http://192.168.1.200:5173",
+      "body": "{\"code\":40001,\"message\":\"请提供账号和密码\",\"data\":null}"
+    },
+    {
+      "target": "http://127.0.0.1:8080",
+      "origin": "https://untrusted.example",
+      "method": "OPTIONS",
+      "status": 403,
+      "allowOrigin": null,
+      "body": "Invalid CORS request"
+    },
+    {
+      "target": "http://127.0.0.1:8080",
+      "origin": "https://untrusted.example",
+      "method": "POST",
+      "status": 403,
+      "allowOrigin": null,
+      "body": "Invalid CORS request"
+    },
+    {
+      "target": "http://192.168.1.200:5173",
+      "origin": "http://192.168.1.200:5173",
+      "method": "OPTIONS",
+      "status": 204,
+      "allowOrigin": null,
+      "body": ""
+    },
+    {
+      "target": "http://192.168.1.200:5173",
+      "origin": "http://192.168.1.200:5173",
+      "method": "POST",
+      "status": 400,
+      "allowOrigin": "http://192.168.1.200:5173",
+      "body": "{\"code\":40001,\"message\":\"请提供账号和密码\",\"data\":null}"
+    },
+    {
+      "target": "http://192.168.1.200:5173",
+      "origin": "https://untrusted.example",
+      "method": "OPTIONS",
+      "status": 204,
+      "allowOrigin": null,
+      "body": ""
+    },
+    {
+      "target": "http://192.168.1.200:5173",
+      "origin": "https://untrusted.example",
+      "method": "POST",
+      "status": 403,
+      "allowOrigin": null,
+      "body": "Invalid CORS request"
+    }
+  ],
+  "browser": {
+    "ok": true,
+    "loginStatus": 200,
+    "url": "http://192.168.1.200:5173/me",
+    "authenticated": true
+  },
+  "tests": {
+    "pythonPassed": 91,
+    "pythonFailed": 0,
+    "backendFrontendSourceChanged": false,
+    "backendFrontendFullBuildRerun": false
+  },
+  "runtime": "backend gracefully restarted using ./start.sh; existing Web retained; current LAN origins allowed; external Origin still 403",
+  "dataHandling": {
+    "businessWritesPerformed": false,
+    "existingUploadsUnchanged": true,
+    "countsDifferFromEarlierMilestone": {
+      "guide_comments": {
+        "previousM11Rows": 3,
+        "currentRows": 4
+      },
+      "guide_likes": {
+        "previousM11Rows": 2,
+        "currentRows": 3
+      }
+    },
+    "unknownNewRowsRetained": true,
+    "note": "Earlier M11 snapshot is historical, not a baseline captured at this fix start; no attribution or cleanup of new rows."
+  },
+  "committed": false,
+  "pushed": false
+}

@@ -14,7 +14,7 @@ const { active, panel, toggle, close } = useHeaderOverlay()
 function setPanel(element: unknown) { panel.value = element as HTMLElement | null }
 const loggingOut = ref(false), logoutError = ref('')
 const discovery = [
-  { to: '/', label: '首页', quick: '探索', icon: 'explore' }, { to: '/guides', label: '攻略', quick: '攻略', icon: 'book' },
+  { to: '/', label: '发现', quick: '发现', icon: 'explore' }, { to: '/guides', label: '攻略', quick: '攻略', icon: 'book' },
   { to: '/destinations', label: '目的地', quick: '目的地', icon: 'pin' }, { to: '/itineraries/ai', label: 'AI 行程', quick: 'AI 行程', icon: 'sparkles' }
 ]
 const personal = [

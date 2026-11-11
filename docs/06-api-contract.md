@@ -107,6 +107,8 @@
 | GET | `/admin/comments` | 评论管理 | 管理员 |
 | PATCH | `/admin/comments/{id}/status` | 隐藏/恢复评论 | 管理员 |
 | GET | `/admin/dashboard/summary` | 基础统计 | 管理员 |
+| GET | `/admin/ai-settings` | 读取全站 AI 设置与密钥配置状态 | 管理员 |
+| PUT | `/admin/ai-settings` | 保存全站 AI 设置，后续请求立即生效 | 管理员 |
 
 ## 10. 契约要求
 SpringDoc 生成接口文档；前端类型与响应一致；不返回 password_hash；写接口必须认证和检查资源权限；限制最大 page size；API 变更同步更新本文件和测试。
@@ -328,3 +330,33 @@ POST /day-preview输入恰为requirements、targetDate、usedDestinationIds。ta
 - `server.forward-headers-strategy=none`。默认只取真实远端地址，忽略 XFF、X-Real-IP、Forwarded。只有 `IP_TRUSTED_PROXIES` 明确列出的直连代理才启用 XFF，从右向左剥离可信代理，首个不可信地址为客户端；不接受通配/CIDR/主机名。代理必须覆盖或追加实际来源，不能只透传任意客户端头。
 - 重复 XFF 合并后最多 20 跳/2048 字符；非法字面值、zone、端口、超限均降级。IPv4-mapped IPv6 归一化；回环/私网/链路本地/常见保留地址不查属地。不进行 DNS 查询，不保存原始 IP、不在错误或诊断日志输出。
 - 没有外部服务和运行时 IP 缓存：默认解析器无网络 I/O，查不到或运行异常即 NULL，基础业务仍可用。现有 uni-app 忽略这些兼容新增字段，页面布局不变。
+
+## M12 公开社区读取（2026-11-11）
+
+| Method | Path | 参数与响应 | 权限 |
+| --- | --- | --- | --- |
+| GET | `/users/by-username/{username}` | `id, username, nickname, avatarUrl, bio, publishedGuideCount` | 匿名可读；已删除/禁用/不存在用户404 |
+| GET | `/users/by-username/{username}/guides` | `page` 默认1、`size` 默认10（1–50）；标准分页 `GuideSummary` | 仅未删除 PUBLISHED；按 published_at、id 倒序 |
+| GET | `/guides/{id}/related` | `size` 默认4（1–12），`GuideSummary[]` | 当前文章须公开，否则404；排除当前、DRAFT/HIDDEN/删除 |
+
+相关内容必须同主目的地或至少一个相同标签；同主目的地优先，其后按实际点赞数、发布时间、ID倒序。不足时返回较少条目或空数组，不填充虚构内容。所有筛选和数量限制在数据库执行，值使用参数化查询；不开放作者私人收藏或行程。
+
+首页推荐与热门复用现有 `GET /guides?sort=popular`（点赞数、发布时间、ID倒序），最新使用 `latest`；界面不宣称个性化。搜索范围保持标题或摘要，`GuideSummary` 原字段不变。
+
+IP 属地输出由 `IpRegionVisibility.ENABLED=false` 全局关闭：攻略/评论 `ipRegion` 字段仍存在，但公开/本人响应为 null；原数据库快照、首次发布写入和可信代理解析逻辑保留。只有来源能力单独验收后才能修改披露策略。本轮没有 DDL 或内容格式迁移。
+
+
+## M12 管理员网页 AI 设置
+
+`GET /api/v1/admin/ai-settings` 与 `PUT /api/v1/admin/ai-settings` 要求 ACTIVE 管理员。匿名返回 401/40101，普通账号返回 403/40301。成功均为 200 与统一响应包。
+
+GET 的 data 包含 `version:number`、`enabled:boolean`、`provider:string`、`baseUrl:string`、`model:string`、`responseFormat:string`、`connectTimeoutSeconds:number`、`timeoutSeconds:number`、`maxOutputTokens:number`、`apiKeyConfigured:boolean`、`source:environment|saved`、`warning:string|null`、`presets:[]`。每个预设含 id、label、baseUrl、model、responseFormat。密钥状态通过 apiKeyConfigured 表达。普通用户使用的 capabilities 字段继续沿用第 25 节约定。
+
+PUT 接收上述 version、enabled、provider、baseUrl、model、responseFormat 与三个数值选项，另可传 `apiKey:string`、`clearApiKey:boolean`。初始 version=0，保存后递增。旧版本返回 409/40902，保存失败返回 500/50001，生效配置保持上次成功保存的版本。
+
+- provider 支持 openai、deepseek、qwen、custom，responseFormat 支持 auto、json_object、json_schema。预设默认值沿用既有 AiProperties，管理员可修改模型与兼容 API 地址。
+- 地址接受带 host 的 HTTP/HTTPS 根地址，拒绝用户名密码、query 与 fragment，最多 2000 字符。服务端追加 `/chat/completions`。
+- 连接超时 1–30 秒，请求超时 1–90 秒，输出上限 128–12000。模型名最多 120 字符，密钥最多 8192 字符，拒绝控制字符。无效输入返回 400/40001。
+- apiKey 留空或省略时沿用当前密钥。clearApiKey=true 时需留空 apiKey，网页同时取消启用。API 地址改变后需重新提供密钥，启用前须具备完整可用配置。
+- 成功响应采用 GET 的安全投影，输入密钥在页面内存中清空。配置通过服务账号私有文件原子保存。启动时读取持久化版本，文件损坏时关闭 AI 并向管理员显示恢复提示。
+- 已保存配置优先于启动环境默认值，后续生成请求取得一份不可变快照。手动行程与业务表继续使用现有规则。

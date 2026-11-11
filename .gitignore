@@ -32,3 +32,12 @@ Thumbs.db
 .playwright-cli/
 .playwright/
 output/playwright/
+
+# M11: historical mobile caches/artifacts remain local only.
+deprecated/uni-app/**/.npm-cache/
+deprecated/uni-app/**/unpackage/
+deprecated/uni-app/**/*.apk
+deprecated/uni-app/**/*.aab
+deprecated/uni-app/**/*.ipa
+deprecated/uni-app/**/*.keystore
+deprecated/uni-app/**/*.jks

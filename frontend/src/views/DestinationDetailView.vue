@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ContentImage from '@/components/ContentImage.vue'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { fetchDestination, fetchDestinationGuides, fetchDestinations } from '@/api/destinations'
@@ -211,7 +212,7 @@ onBeforeUnmount(()=>{active=false;version++;spotVersion++;guideVersion++;clearIt
     <article v-else-if="destination" class="surface-card overflow-hidden">
       <div class="grid lg:grid-cols-[1.05fr_1fr]">
         <div class="aspect-[4/3] overflow-hidden bg-pine-soft/30 lg:aspect-auto lg:min-h-[28rem]">
-          <img v-if="destination.coverImageUrl && !imageFailed" :src="destination.coverImageUrl" :alt="destination.name"
+          <ContentImage v-if="destination.coverImageUrl && !imageFailed" :src="destination.coverImageUrl" :alt="destination.name"
             class="h-full w-full object-cover" @error="imageFailed = true" />
           <TravelArt v-else variant="hero" class="h-full min-h-full w-full" aria-hidden="true" />
         </div>

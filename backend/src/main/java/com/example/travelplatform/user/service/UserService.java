@@ -98,6 +98,14 @@ public class UserService {
         return PublicProfileVO.from(user);
     }
 
+    /** Public creator lookup never returns disabled or logically deleted accounts. */
+    public User publicUserByUsername(String rawUsername) {
+        String username=UserInputPolicy.normalizeUsername(rawUsername);
+        User user=users.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername,username));
+        if(!active(user))throw new ApiException(ErrorCode.NOT_FOUND);
+        return user;
+    }
+
     @Transactional
     public CurrentUserVO updateProfile(ProfilePatchRequest request) {
         User user = requireCurrentUser();

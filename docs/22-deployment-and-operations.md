@@ -1,5 +1,7 @@
 # 交付、部署与运维
 
+> M11（2026-11-11）起仅交付 Web + 后端。uni-app/小程序/原生 App 的源码和专用工具已归档，当前 CI、启动器和交付包不安装移动 SDK、不构建或发布移动资源。历史 APK/Release 保留。手机通过响应式 Web 访问。
+
 软件形态为Java21可执行JAR、Vue生产dist、MySQL8.x与项目根uploads。已验证本机生产构建和数据库与上传成套备份恢复。Nginx模板、公网域名/TLS、异地恢复和其他操作系统部署尚未实测。
 
 ## 1. 环境与数据边界
@@ -31,7 +33,11 @@ mysql --host=127.0.0.1 --port=3307 --user=YOUR_OPERATOR --password --database=YO
 | UPLOAD_DIR | 直接运行JAR时须给持久化绝对目录；backend.py固定使用所在项目根uploads |
 | TRAVEL_API_TARGET | 仅Vite开发/preview的Node环境，默认http://127.0.0.1:8080；不会进入浏览器配置 |
 
-AI设置见[提供商预设](m8/ai-provider-presets.md)。`AI_ENABLED=false`为默认值，`AI_PROVIDER`支持openai、deepseek、qwen、custom，服务端读取`AI_API_KEY`及可覆盖的`AI_BASE_URL`、`AI_MODEL`。连接超时默认5秒，读取超时45秒。Key与数据库密码只配置到后端环境。管理员使用第6节的人工核对流程。
+管理员登录后可在 `/admin/ai` 的“AI 服务设置”页面配置全站行程助手，填写供应商、模型、API 根地址与密钥，保存后立即应用于后续生成请求。供应商预设沿用 [提供商预设](m8/ai-provider-presets.md)，可根据自己的服务控制台修改模型名称。
+
+首次启动使用 `AI_ENABLED=false` 等环境默认值。网页保存配置后，服务读取 `AI_SETTINGS_FILE` 指向的私有文件，默认相对 backend 工作目录的 `.local/ai-settings.json`。POSIX 文件权限为 0600，新建父目录为 0700。部署时将该文件放到服务账号可写的持久化目录，并在重建服务时保留，密钥备份按私有配置管理。仓库和交付脚本排除 `.local/`。
+
+网页保存值优先于环境默认值，重启后继续有效。密钥输入框留空可沿用，变更 API 地址需重新填写对应密钥，清除密钥同时关闭服务。多窗口保存使用版本校验，遇到冲突可重新加载。文件损坏时 AI 关闭，管理员页面显示恢复提示，可以重新填写并保存。管理员账号使用第6节的人工核对流程。
 
 ## 3. 构建与运行
 

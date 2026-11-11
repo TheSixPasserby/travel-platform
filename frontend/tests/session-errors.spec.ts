@@ -17,6 +17,7 @@ async function setup(path: string) {
     role: 'USER', status: 'ACTIVE', createdAt: '2026-11-03T00:00:00.000+08:00' }
   const router = createRouter({ history: createMemoryHistory(), routes: [
     { path: '/me', name: 'me', component: { template: '<div />' }, meta: { requiresAuth: true } },
+    { path: '/guides/new', name: 'guide-new', component: { template: '<div />' }, meta: { requiresAuth: true } },
     { path: '/login', name: 'login', component: { template: '<div />' } }
   ] })
   await router.push(path)
@@ -49,4 +50,10 @@ it('服务临时失败保留会话与当前页面', async () => {
   await expect(rejected(503)).rejects.toMatchObject({ status: 503 })
   expect(auth.isAuthenticated).toBe(true)
   expect(router.currentRoute.value.name).toBe('me')
+})
+
+it('攻略编辑中401清除失效会话但保留页面并通知显示草稿恢复提示',async()=>{
+  const {auth,router}=await setup('/guides/new')
+  let notified=false;const listener=()=>{notified=true};window.addEventListener('travel:editor-session-expired',listener)
+  try{await expect(rejected(401)).rejects.toMatchObject({status:401});await flushPromises();expect(auth.token).toBeNull();expect(router.currentRoute.value.name).toBe('guide-new');expect(notified).toBe(true)}finally{window.removeEventListener('travel:editor-session-expired',listener)}
 })

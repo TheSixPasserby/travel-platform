@@ -17,6 +17,7 @@ async function render() {
   const router = createRouter({ history: createMemoryHistory(), routes: [
     { path: '/admin/destinations', name: 'admin-destinations', component: AdminDestinationsView },
     { path: '/admin/users', name: 'admin-users', component: { template: '<div />' } },
+    { path: '/admin/ai', name: 'admin-ai-settings', component: { template: '<div />' } },
     { path: '/admin', name: 'admin-home', component: { template: '<div />' } },
     { path: '/admin/guides', name: 'admin-guides', component: { template: '<div />' } },
     { path: '/admin/comments', name: 'admin-comments', component: { template: '<div />' } },

@@ -1,0 +1,73 @@
+# M12 增量修改清单
+
+相对 `.local/m12/source-baseline.json`，起始M11未提交归档/编辑器实现继续保留，不计为M12新增。无数据库结构迁移；源码恢复快照保存在 `.local/m12/source-baseline.zip`。
+
+| 文件 | 操作 |
+| --- | --- |
+| `PACKAGE-MANIFEST.json` | 修改 |
+| `PROJECT_STATUS.md` | 修改 |
+| `README.md` | 修改 |
+| `backend/src/main/java/com/example/travelplatform/comment/vo/CommentVO.java` | 修改 |
+| `backend/src/main/java/com/example/travelplatform/common/ip/IpRegionVisibility.java` | 新增 |
+| `backend/src/main/java/com/example/travelplatform/guide/controller/GuideController.java` | 修改 |
+| `backend/src/main/java/com/example/travelplatform/guide/mapper/GuideMapper.java` | 修改 |
+| `backend/src/main/java/com/example/travelplatform/guide/service/GuideService.java` | 修改 |
+| `backend/src/main/java/com/example/travelplatform/guide/vo/GuideSummaryVO.java` | 修改 |
+| `backend/src/main/java/com/example/travelplatform/security/AuthWebConfig.java` | 修改 |
+| `backend/src/main/java/com/example/travelplatform/user/controller/CreatorController.java` | 新增 |
+| `backend/src/main/java/com/example/travelplatform/user/service/UserService.java` | 修改 |
+| `backend/src/main/java/com/example/travelplatform/user/vo/CreatorProfileVO.java` | 新增 |
+| `backend/src/test/java/com/example/travelplatform/guide/M10IpRegionApiTest.java` | 修改 |
+| `backend/src/test/java/com/example/travelplatform/guide/M12CommunityApiTest.java` | 新增 |
+| `docs/06-api-contract.md` | 修改 |
+| `docs/15-dependency-baseline.md` | 修改 |
+| `docs/23-user-manual.md` | 修改 |
+| `docs/m12/M12-CHANGES.md` | 新增 |
+| `docs/m12/M12-DELIVERY.md` | 新增 |
+| `docs/m12/M12-EXECUTION.md` | 新增 |
+| `docs/m12/screenshots/creator-light-1440.png` | 新增 |
+| `docs/m12/screenshots/detail-light-1440.png` | 新增 |
+| `docs/m12/screenshots/editor-dark-390-author.png` | 新增 |
+| `docs/m12/screenshots/editor-light-1440-author.png` | 新增 |
+| `docs/m12/screenshots/home-dark-1440-anonymous.png` | 新增 |
+| `docs/m12/screenshots/home-light-1440-anonymous.png` | 新增 |
+| `docs/m12/screenshots/home-light-390-anonymous.png` | 新增 |
+| `docs/m12/screenshots/lightbox-1440.png` | 新增 |
+| `docs/verification/2026-11-11-m12.json` | 新增 |
+| `frontend/build/vditorAssets.ts` | 新增 |
+| `frontend/package-lock.json` | 修改 |
+| `frontend/package.json` | 修改 |
+| `frontend/src/api/creators.ts` | 新增 |
+| `frontend/src/api/guides.ts` | 修改 |
+| `frontend/src/components/ContentImage.vue` | 修改 |
+| `frontend/src/components/DestinationGallery.vue` | 修改 |
+| `frontend/src/components/GuideCard.vue` | 修改 |
+| `frontend/src/components/GuideComments.vue` | 修改 |
+| `frontend/src/components/GuideFeed.vue` | 新增 |
+| `frontend/src/components/GuideGrid.vue` | 新增 |
+| `frontend/src/components/GuideRichEditor.vue` | 新增 |
+| `frontend/src/components/ImageLightbox.vue` | 修改 |
+| `frontend/src/components/RelatedGuides.vue` | 新增 |
+| `frontend/src/components/SiteHeader.vue` | 修改 |
+| `frontend/src/components/UserIdentity.vue` | 修改 |
+| `frontend/src/composables/useGuideFeed.ts` | 新增 |
+| `frontend/src/router/index.ts` | 修改 |
+| `frontend/src/types/creator.ts` | 新增 |
+| `frontend/src/utils/richEditor.ts` | 新增 |
+| `frontend/src/views/CreatorView.vue` | 新增 |
+| `frontend/src/views/GuideDetailView.vue` | 修改 |
+| `frontend/src/views/GuideEditorView.vue` | 修改 |
+| `frontend/src/views/GuidesView.vue` | 修改 |
+| `frontend/src/views/HomeView.vue` | 修改 |
+| `frontend/tests/guide-comments.spec.ts` | 修改 |
+| `frontend/tests/guide-views.spec.ts` | 修改 |
+| `frontend/tests/image-lightbox.spec.ts` | 修改 |
+| `frontend/tests/m12-community.spec.ts` | 新增 |
+| `frontend/tests/m12-discovery.spec.ts` | 新增 |
+| `frontend/tests/m12-rich-editor.spec.ts` | 新增 |
+| `frontend/vite.config.ts` | 修改 |
+| `scripts/release.py` | 修改 |
+| `scripts/tests/test_release.py` | 修改 |
+| `scripts/tests/test_web_only.py` | 修改 |
+
+Git完整工作区还包含起始M11改动与用户提供的原实施包，未自动提交。

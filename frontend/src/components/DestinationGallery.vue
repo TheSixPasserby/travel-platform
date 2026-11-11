@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ContentImage from '@/components/ContentImage.vue'
 import { computed, reactive } from 'vue'
 import type { DestinationImage } from '@/types/destination'
 
@@ -27,12 +28,14 @@ function photoDate(value: string): string {
     </p>
     <ul class="mt-5 grid gap-5 sm:grid-cols-2">
       <li
-        v-for="image in ordered"
+        v-for="(image,index) in ordered"
         :key="image.id"
         data-test="gallery-image"
         class="overflow-hidden rounded-2xl border border-pine/10 bg-cream/60"
       >
-        <img
+        <ContentImage
+          :images="ordered.map(i=>({src:i.url,alt:i.altText}))"
+          :position="index"
           v-if="!failed.has(image.id)"
           :src="image.url"
           :alt="image.altText"

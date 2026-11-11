@@ -14,6 +14,7 @@ declare module 'vue-router' {
 }
 
 const routes = [
+  { path: '/users/:username', name: 'creator', component: () => import('@/views/CreatorView.vue'), meta: { title: '旅人的主页 · 山水间' } },
   {
     path: '/',
     name: 'home',
@@ -75,6 +76,12 @@ const routes = [
     component: () => import('@/views/AdminModerationView.vue'),
     props: { resource: 'comments' },
     meta: { requiresAuth: true, requiresAdmin: true, title: '评论治理 · 山水间' }
+  },
+  {
+    path: '/admin/ai',
+    name: 'admin-ai-settings',
+    component: () => import('@/views/AdminAiSettingsView.vue'),
+    meta: { requiresAuth: true, requiresAdmin: true, title: 'AI 服务设置 · 山水间' }
   },
   {
     path: '/admin/destinations',
@@ -177,7 +184,8 @@ export function createAppRouter(history: RouterHistory): Router {
     return true
   })
 
-  router.afterEach((to) => {
+  router.afterEach((to, _from, failure) => {
+    if (failure) return
     const title = to.meta.title
     if (typeof title === 'string') {
       document.title = title

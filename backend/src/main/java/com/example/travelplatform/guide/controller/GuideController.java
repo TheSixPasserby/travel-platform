@@ -21,6 +21,10 @@ public class GuideController {
     }
     @GetMapping("/{id}") @SecurityRequirements @Operation(summary="公开攻略详情")
     public ApiResponse<GuideDetailVO> detail(@PathVariable String id) { return ApiResponse.success(guides.publicDetail(id)); }
+    @GetMapping("/{id}/related") @SecurityRequirements @Operation(summary="同城市或同主题的公开攻略，排除当前文章，按城市优先、点赞、发布时间和ID排序")
+    public ApiResponse<java.util.List<GuideSummaryVO>> related(@PathVariable String id,@RequestParam(required=false) String size) {
+        return ApiResponse.success(guides.recommendations(id,size));
+    }
     @PostMapping @ResponseStatus(HttpStatus.CREATED) @Operation(summary="创建草稿或直接发布攻略")
     public ApiResponse<GuideDetailVO> create(@RequestBody CreateGuideRequest request) { return ApiResponse.success(guides.create(request)); }
     @PutMapping("/{id}") @Operation(summary="作者完整编辑攻略")

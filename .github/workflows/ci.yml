@@ -42,9 +42,7 @@ jobs:
         with:
           node-version: '24'
           cache: npm
-          cache-dependency-path: |
-            frontend/package-lock.json
-            mobile/package-lock.json
+          cache-dependency-path: frontend/package-lock.json
       - name: Initialize disposable CI databases
         env:
           MYSQL_PWD: ephemeral_ci_password
@@ -56,12 +54,6 @@ jobs:
       - run: python3 scripts/backend.py package
       - run: npm --prefix frontend test
       - run: npm --prefix frontend run build
-      - run: npm --prefix mobile ci
-      - run: npm --prefix mobile run type-check
-      - run: npm --prefix mobile run check:safety
-      - run: npm --prefix mobile run build:h5
-      - run: npm --prefix mobile run build:mp-weixin
-      - run: npm --prefix mobile run build:app
       - run: python3 -m unittest discover -s scripts/tests
       - uses: actions/upload-artifact@v4
         if: failure()

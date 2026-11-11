@@ -50,6 +50,31 @@ public class GuideService {
     }
 
     @Transactional(readOnly=true,isolation=Isolation.REPEATABLE_READ)
+    public com.example.travelplatform.user.vo.CreatorProfileVO creatorProfile(String username) {
+        User author=session.publicUserByUsername(username);
+        long count=guides.count(new GuideSearch(author.getId(),"PUBLISHED",null,null,null,false));
+        return new com.example.travelplatform.user.vo.CreatorProfileVO(author.getId().toString(),author.getUsername(),author.getNickname(),author.getAvatarUrl(),author.getBio(),count);
+    }
+
+    @Transactional(readOnly=true,isolation=Isolation.REPEATABLE_READ)
+    public PageResponse<GuideSummaryVO> publicAuthor(String username,String rawPage,String rawSize) {
+        User author=session.publicUserByUsername(username);
+        long page=RequestValues.page(rawPage),size=RequestValues.size(rawSize),offset=RequestValues.offset(page,size);
+        GuideSearch filter=new GuideSearch(author.getId(),"PUBLISHED",null,null,null,false);
+        long total=guides.count(filter);
+        return new PageResponse<>(summaries(offset>=total?List.of():guides.publicAuthorPage(filter,size,offset)),total,page,size,total/size+(total%size==0?0:1));
+    }
+
+    @Transactional(readOnly=true,isolation=Isolation.REPEATABLE_READ)
+    public List<GuideSummaryVO> recommendations(String rawId,String rawSize) {
+        long size=rawSize==null?4:RequestValues.size(rawSize);
+        if(size>12)throw invalid();
+        GuideRow current=required(guides.detail(RequestValues.positiveId(rawId)));
+        if(!"PUBLISHED".equals(current.getStatus()))throw new ApiException(ErrorCode.NOT_FOUND);
+        return summaries(guides.recommendations(current.getId(),current.getDestinationId(),size));
+    }
+
+    @Transactional(readOnly=true,isolation=Isolation.REPEATABLE_READ)
     public PageResponse<GuideSummaryVO> mine(MyGuideQuery q) {
         long author=session.requireCurrentUser().getId();
         if(q.status()!=null&&!STATUSES.contains(q.status()))throw invalid();

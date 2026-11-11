@@ -62,6 +62,23 @@ public interface GuideMapper extends BaseMapper<Guide> {
             " ORDER BY saved.created_at DESC,saved.id DESC LIMIT #{limit} OFFSET #{offset}</script>")
     List<GuideRow> favorites(@Param("userId") long userId,@Param("keyword") String keyword,@Param("limit") long limit,@Param("offset") long offset);
 
+    @Select("<script>SELECT g.*, "+COUNTS+" FROM guides g "+FILTER+" ORDER BY g.published_at DESC,g.id DESC LIMIT #{limit} OFFSET #{offset}</script>")
+    List<GuideRow> publicAuthorPage(@Param("filter") GuideSearch filter,@Param("limit") long limit,@Param("offset") long offset);
+
+    @Select("""
+        SELECT g.*,
+        """+COUNTS+"""
+        FROM guides g
+        WHERE g.is_deleted=0 AND g.status='PUBLISHED' AND g.id != #{id}
+          AND ((#{destination} IS NOT NULL AND g.destination_id=#{destination})
+            OR EXISTS (SELECT 1 FROM guide_tags gt JOIN guide_tags own ON own.tag_id=gt.tag_id
+                       WHERE own.guide_id=#{id} AND gt.guide_id=g.id))
+        ORDER BY CASE WHEN #{destination} IS NOT NULL AND g.destination_id=#{destination} THEN 0 ELSE 1 END,
+                 like_count DESC,g.published_at DESC,g.id DESC
+        LIMIT #{limit}
+        """)
+    List<GuideRow> recommendations(@Param("id") long id,@Param("destination") Long destination,@Param("limit") long limit);
+
     @Select("SELECT g.*, " + COUNTS + " FROM guides g WHERE g.id=#{id} AND g.is_deleted=0")
     GuideRow detail(long id);
 

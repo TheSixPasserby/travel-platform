@@ -16,7 +16,7 @@ import { ApiError } from '@/api/client'
 import { useAuthStore } from '@/stores/auth'
 import type { GuideDetail, GuideSummary } from '@/types/guide'
 
-vi.mock('@/api/guides', () => ({ fetchGuides:vi.fn(),fetchGuide:vi.fn(),fetchOwnGuide:vi.fn(),fetchMyGuides:vi.fn(),fetchTags:vi.fn(),createGuide:vi.fn(),updateGuide:vi.fn(),deleteGuide:vi.fn(),publishGuide:vi.fn(),unpublishGuide:vi.fn() }))
+vi.mock('@/api/guides', () => ({ fetchRelatedGuides:vi.fn(),fetchGuides:vi.fn(),fetchGuide:vi.fn(),fetchOwnGuide:vi.fn(),fetchMyGuides:vi.fn(),fetchTags:vi.fn(),createGuide:vi.fn(),updateGuide:vi.fn(),deleteGuide:vi.fn(),publishGuide:vi.fn(),unpublishGuide:vi.fn() }))
 vi.mock('@/api/destinations', () => ({ fetchDestinations:vi.fn(),fetchDestination:vi.fn() }))
 vi.mock('@/api/interactions',()=>({ fetchInteraction:vi.fn(),fetchComments:vi.fn(),setGuideLike:vi.fn(),setGuideFavorite:vi.fn(),createComment:vi.fn(),deleteComment:vi.fn() }))
 const guide: GuideDetail = { id:'9007199254740993',title:'山谷里的清晨',summary:'沿溪慢行',coverImageUrl:null,
@@ -39,7 +39,7 @@ async function render(component: typeof GuidesView, path:string, loggedIn=false)
   const wrapper=mount(RouterView,{ global:{ plugins:[pinia,router] } });await flushPromises();return { wrapper,router,auth }
 }
 beforeEach(() => {
-  vi.resetAllMocks();vi.mocked(api.fetchGuides).mockResolvedValue(page([guide]));vi.mocked(api.fetchMyGuides).mockResolvedValue(page([guide]));
+  vi.resetAllMocks();vi.mocked(api.fetchRelatedGuides).mockResolvedValue([]);vi.mocked(api.fetchGuides).mockResolvedValue(page([guide]));vi.mocked(api.fetchMyGuides).mockResolvedValue(page([guide]));
   vi.mocked(api.fetchGuide).mockResolvedValue(structuredClone(guide));vi.mocked(api.fetchOwnGuide).mockResolvedValue(guide);vi.mocked(api.fetchTags).mockResolvedValue(guide.tags);
   vi.mocked(interactions.fetchInteraction).mockResolvedValue({ guideId:guide.id,liked:false,favorited:false,likeCount:0,favoriteCount:0,commentCount:0 });
   vi.mocked(interactions.fetchComments).mockResolvedValue({ records:[],total:0,current:1,size:10,pages:0 });
@@ -69,6 +69,14 @@ describe('攻略浏览与编辑', () => {
     wrapper.unmount()
   })
 
+  it('未保存修改时拒绝离开，并支持确认放弃',async()=>{
+    const {wrapper,router}=await render(GuideEditorView,'/guides/'+guide.id+'/edit',true)
+    await wrapper.get('[data-test="guide-title"]').setValue('未保存的标题')
+    const confirm=vi.spyOn(window,'confirm').mockReturnValue(false)
+    await router.push('/me/guides');expect(router.currentRoute.value.name).toBe('guide-edit');expect(confirm).toHaveBeenCalled()
+    confirm.mockReturnValue(true);await router.push('/me/guides');expect(router.currentRoute.value.name).toBe('my-guides')
+    confirm.mockRestore();wrapper.unmount()
+  })
   it('上传期间阻止离开编辑页，但允许会话失效前往登录',async()=>{
     const { wrapper,router }=await render(GuideEditorView,'/guides/'+guide.id+'/edit',true)
     wrapper.findAllComponents(ImageUpload)[0]!.vm.$emit('busy',true);await flushPromises()
@@ -78,6 +86,24 @@ describe('攻略浏览与编辑', () => {
     await router.push({ name:'login',query:{ redirect:'/guides/'+guide.id+'/edit' } })
     expect(router.currentRoute.value.name).toBe('login')
     wrapper.unmount()
+  })
+  it('独立正文上传先返回URL后解除busy仍能插图并关联图库',async()=>{
+    const {wrapper}=await render(GuideEditorView,'/guides/'+guide.id+'/edit',true)
+    const upload=wrapper.findAllComponents(ImageUpload)[1]!
+    upload.vm.$emit('busy',true);await flushPromises()
+    const url='/uploads/2026/11/0123456789abcdef0123456789abcdef.png'
+    upload.vm.$emit('update:modelValue',url);upload.vm.$emit('busy',false);await flushPromises()
+    expect((wrapper.get('[data-test="guide-content"]').element as HTMLTextAreaElement).value).toContain(url)
+    await wrapper.get('[data-test="save-guide"]').trigger('click');await flushPromises()
+    expect(api.updateGuide).toHaveBeenCalledWith(guide.id,expect.objectContaining({images:[{url,altText:'旅行影像'}]}))
+    wrapper.unmount()
+  })
+  it('正文上传会话失效保留当前未保存文字',async()=>{
+    const {wrapper,router}=await render(GuideEditorView,'/guides/'+guide.id+'/edit',true)
+    await wrapper.get('[data-test="guide-title"]').setValue('必须保留的标题')
+    wrapper.findAllComponents(ImageUpload)[1]!.vm.$emit('session-expired');await flushPromises()
+    expect(router.currentRoute.value.name).toBe('guide-edit');expect(wrapper.text()).toContain('未保存内容已保留')
+    expect((wrapper.get('[data-test="guide-title"]').element as HTMLInputElement).value).toBe('必须保留的标题');wrapper.unmount()
   })
   it('旧攻略加载结果不能覆盖后来打开的编辑对象',async()=>{
     let release!:(value:GuideDetail)=>void
@@ -110,7 +136,7 @@ describe('攻略浏览与编辑', () => {
   it('列表使用服务端分页，筛选复位并保留字符串ID', async () => {
     vi.mocked(api.fetchGuides).mockResolvedValue(page([guide],{ total:19,current:2,pages:3 }))
     const { wrapper }=await render(GuidesView,'/guides?page=2')
-    expect(api.fetchGuides).toHaveBeenCalledWith(expect.objectContaining({ page:2,size:9 }))
+    expect(api.fetchGuides).toHaveBeenCalledWith(expect.objectContaining({ page:2,size:12 }))
     expect(wrapper.get('[data-test="guide-card"]').attributes('href')).toBe('/guides/9007199254740993')
     await wrapper.get('[data-test="guide-keyword"]').setValue('山谷')
     await wrapper.get('[data-test="guide-search"]').trigger('submit');await flushPromises()
@@ -151,7 +177,6 @@ describe('攻略浏览与编辑', () => {
   it('新草稿提交完整白名单，预算保持字符串', async () => {
     const { wrapper }=await render(GuideEditorView,'/guides/new',true)
     await wrapper.get('[data-test="guide-title"]').setValue('新的清晨')
-    await wrapper.get('[data-test="guide-content"]').setValue('')
     await wrapper.get('[data-test="guide-budget"]').setValue('0.10')
     await wrapper.get('[data-test="save-guide"]').trigger('click');await flushPromises()
     expect(api.createGuide).toHaveBeenCalledWith(expect.objectContaining({ title:'新的清晨',content:'',budgetPerPerson:'0.10',status:'DRAFT',tagIds:[],images:[] }))

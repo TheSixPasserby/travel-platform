@@ -1,0 +1,71 @@
+{
+  "date": "2026-11-11",
+  "issue": "Configured AI unavailable",
+  "causes": [
+    "Saved enabled=false",
+    "Model ID missing DSH buddy/ route",
+    "30-second upstream timeout",
+    "Frontend masked AI timeout"
+  ],
+  "configuration": {
+    "enabled": true,
+    "model": "buddy/deepseek-v4.1-flash",
+    "timeoutSeconds": 90,
+    "keyPreserved": true
+  },
+  "realBrowserGeneration": {
+    "status": 200,
+    "code": 0,
+    "elapsedMs": 19569,
+    "errors": [],
+    "title": "成都老城一日慢行：人民公园、宽窄巷子与武侯祠",
+    "days": 1,
+    "items": 7,
+    "visibleTitleMatches": true
+  },
+  "browserErrorChecks": {
+    "timeoutMessage": "AI请求超时，已保留当前编辑内容",
+    "existingPreviewPreserved": true,
+    "internalDetailsHidden": true,
+    "model": "buddy/deepseek-v4.1-flash",
+    "enabled": true,
+    "timeoutSeconds": 90,
+    "credentialHidden": true,
+    "errors": [],
+    "checks": 7
+  },
+  "tests": {
+    "frontend": {
+      "files": 43,
+      "passed": 400,
+      "failed": 0
+    },
+    "backendAiRelated": {
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0
+    },
+    "typescriptViteBuild": "passed"
+  },
+  "dataPreservation": {
+    "originalRowsPreserved": 137,
+    "uploadsPreserved": 44,
+    "schemaPreserved": true,
+    "newRows": {
+      "guide_destinations": 51,
+      "guide_images": 51,
+      "guide_tags": 33,
+      "guides": 18
+    },
+    "publishedArticles": 20,
+    "oldDraftPreserved": true
+  },
+  "screenshots": [
+    "docs/m12/additions/screenshots/ai-preview-dsh.png",
+    "docs/m12/additions/screenshots/ai-settings-dsh.png"
+  ],
+  "dshReviewJob": "hub-6-mwbtwhcv",
+  "commit": false,
+  "push": false,
+  "deployment": false
+}

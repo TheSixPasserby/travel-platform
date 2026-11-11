@@ -36,15 +36,15 @@ class M10IpRegionApiTest {
         var a=h.account(false);var admin=h.account(true);var g=create(a,"DRAFT");
         assertThat(g.path("ipRegion").isNull()).isTrue();verifyNoInteractions(regions);
         var published=success(forwarded("POST",path(g)+"/publish",a,null),200);
-        assertThat(published.path("ipRegion").asText()).isEqualTo("四川");var time=published.path("publishedAt");
+        assertThat(published.path("ipRegion").isNull()).isTrue();var time=published.path("publishedAt");
         when(regions.resolve(any())).thenReturn("浙江");
         var edited=success(h.json("PUT",path(g),a.token(),Map.of("title",h.named("edited"),"content","新的正文")),200);
-        assertThat(edited.path("ipRegion").asText()).isEqualTo("四川");
+        assertThat(edited.path("ipRegion").isNull()).isTrue();
         success(h.json("POST",path(g)+"/unpublish",a.token(),null),200);
         var republished=success(forwarded("POST",path(g)+"/publish",a,null),200);
-        assertThat(republished.path("ipRegion").asText()).isEqualTo("四川");assertThat(republished.path("publishedAt")).isEqualTo(time);
+        assertThat(republished.path("ipRegion").isNull()).isTrue();assertThat(republished.path("publishedAt")).isEqualTo(time);
         for(String status:List.of("HIDDEN","PUBLISHED"))success(h.json("PATCH","/api/v1/admin/guides/"+g.path("id").asText()+"/status",admin.token(),Map.of("status",status)),200);
-        assertThat(success(h.json("GET",path(g),null,null),200).path("ipRegion").asText()).isEqualTo("四川");verify(regions,times(1)).resolve(any());
+        assertThat(success(h.json("GET",path(g),null,null),200).path("ipRegion").isNull()).isTrue();assertThat(h.jdbc().queryForObject("SELECT ip_region FROM guides WHERE id=?",String.class,g.path("id").asText())).isEqualTo("四川");verify(regions,times(1)).resolve(any());
     }
     @Test void unknownAtFirstPublicationIsNeverBackfilledAndCommentsDegradeSafely(){
         var a=h.account(false);when(regions.resolve(any())).thenReturn(null);var g=create(a,"PUBLISHED");
@@ -56,9 +56,9 @@ class M10IpRegionApiTest {
         assertThat(c.path("ipRegion").isNull()).isTrue();
         doReturn("四川").when(regions).resolve(any());
         var known=success(forwarded("POST",path(g)+"/comments",a,"{\"content\":\"测试数据源的省级结果\"}"),201);
-        assertThat(known.path("ipRegion").asText()).isEqualTo("四川");
+        assertThat(known.path("ipRegion").isNull()).isTrue();assertThat(h.jdbc().queryForObject("SELECT ip_region FROM guide_comments WHERE id=?",String.class,known.path("id").asText())).isEqualTo("四川");
         var rows=success(h.json("GET",path(g)+"/comments",null,null),200).path("records");assertThat(rows.size()).isEqualTo(2);
-        assertThat(rows.get(0).path("ipRegion").asText()).isEqualTo("四川");
+        assertThat(rows.get(0).path("ipRegion").isNull()).isTrue();
     }
     @Test void clientCannotWriteRegionOrRawIp(){
         var a=h.account(false);var g=create(a,"DRAFT");
@@ -74,8 +74,8 @@ class M10IpRegionApiTest {
         try {
             List<Future<JsonNode>> jobs=new ArrayList<>();
             for(int i=0;i<8;i++)jobs.add(pool.submit(()->success(forwarded("POST",path(g)+"/publish",a,null),200)));
-            for(var job:jobs)assertThat(job.get(25,TimeUnit.SECONDS).path("ipRegion").asText()).isEqualTo("四川");
-            verify(regions,times(1)).resolve(any());
+            for(var job:jobs)assertThat(job.get(25,TimeUnit.SECONDS).path("ipRegion").isNull()).isTrue();
+            assertThat(h.jdbc().queryForObject("SELECT ip_region FROM guides WHERE id=?",String.class,g.path("id").asText())).isEqualTo("四川");verify(regions,times(1)).resolve(any());
         }finally{pool.shutdownNow();}
     }
 }

@@ -2,6 +2,9 @@ package com.example.travelplatform.ai;
 
 import com.example.travelplatform.ai.client.OpenAiCompatibleClient;
 import com.example.travelplatform.ai.config.AiProperties;
+import com.example.travelplatform.ai.config.AiSettingsStore;
+import org.junit.jupiter.api.io.TempDir;
+import java.nio.file.Path;
 import com.example.travelplatform.common.error.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpServer;
@@ -14,6 +17,7 @@ import java.util.concurrent.atomic.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AiModelClientTest {
+    @TempDir Path settingsDirectory;
     private HttpServer server;
     private ExecutorService executor;
     private final AtomicInteger calls=new AtomicInteger();
@@ -47,7 +51,8 @@ class AiModelClientTest {
     private AiProperties config(String provider,String format) {
         return new AiProperties(true,provider,base,"SYNTHETIC_QA_KEY","test-model",1,1,6000,format);
     }
-    private OpenAiCompatibleClient client(){return new OpenAiCompatibleClient(config("custom","json_object"));}
+    private AiSettingsStore store(AiProperties value) { return new AiSettingsStore(value,settingsDirectory.resolve("settings.json").toString(),json); }
+    private OpenAiCompatibleClient client(){return new OpenAiCompatibleClient(store(config("custom","json_object")));}
     private void failure(ErrorCode expected){
         ApiException exception=assertThrows(ApiException.class,()->client().generate("json UNTRUSTED_DATA"));
         assertEquals(expected,exception.getErrorCode());assertFalse(exception.getMessage().contains("SYNTHETIC_QA_KEY"));
@@ -59,7 +64,7 @@ class AiModelClientTest {
         assertTrue(request.path("messages").get(0).path("content").asText().contains("UNTRUSTED_DATA"));
     }
     @Test void strictPresetSendsSchemaAndOpenAiTokenParameter() throws Exception {
-        new OpenAiCompatibleClient(config("openai","json_schema")).generate("json UNTRUSTED_DATA");
+        new OpenAiCompatibleClient(store(config("openai","json_schema"))).generate("json UNTRUSTED_DATA");
         var request=json.readTree(received.get());assertEquals(6000,request.path("max_completion_tokens").asInt());
         assertTrue(request.path("response_format").path("json_schema").path("strict").asBoolean());
     }
@@ -78,7 +83,7 @@ class AiModelClientTest {
     }
     @Test void missingKeyAndOversizedContextDoNotMakeNetworkRequests(){
         var disabled=new AiProperties(true,"custom",base,"","test",1,1,6000,"auto");
-        assertFalse(disabled.available());assertThrows(ApiException.class,()->new OpenAiCompatibleClient(disabled).generate("json"));
+        assertFalse(disabled.available());assertThrows(ApiException.class,()->new OpenAiCompatibleClient(store(disabled)).generate("json"));
         assertThrows(ApiException.class,()->client().generate("x".repeat(24001)));assertEquals(0,calls.get());
         assertFalse(config("custom","auto").toString().contains("SYNTHETIC_QA_KEY"));
     }

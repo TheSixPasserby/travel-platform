@@ -11,6 +11,6 @@ public record GuideSummaryVO(String id, String title, String summary, String cov
         @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSSXXX") OffsetDateTime createdAt,
         @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSSXXX") OffsetDateTime updatedAt,
         long likeCount, long favoriteCount, long commentCount,String ipRegion) {
-    public GuideSummaryVO { tags=List.copyOf(tags); }
+    public GuideSummaryVO { tags=List.copyOf(tags);ipRegion=com.example.travelplatform.common.ip.IpRegionVisibility.publicValue(ipRegion); }
     public record DestinationRef(String id, String name, String status) { }
 }

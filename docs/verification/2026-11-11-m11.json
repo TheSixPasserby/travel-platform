@@ -1,0 +1,705 @@
+{
+  "milestone": "M11",
+  "date": "2026-11-11",
+  "timezone": "Asia/Shanghai",
+  "baseline": "29fa630bf097c2afd45b9711995fe655bfc4f7c6",
+  "worktree": "main with uncommitted M11 changes",
+  "models": {
+    "codexLocalConfiguration": {
+      "model": "gpt-6.1-sol",
+      "reasoning": "ultra",
+      "modified": false
+    },
+    "dsh": {
+      "provider": "buddy (CodeBuddy)",
+      "model": "deepseek-v4.1-flash",
+      "effort": "max",
+      "configVerified": true,
+      "probeToolCallVerified": true,
+      "job": "hub-5-mwaxnyj2",
+      "status": "failed",
+      "toolCalls": 0,
+      "error": "reasoning effort max proposed after step preparation fixed adapter default",
+      "implementationBy": "Codex primary; Codex read-only helper review, no DSH delivery"
+    }
+  },
+  "tests": {
+    "backend": {
+      "passed": 249,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "command": "python3 scripts/backend.py package"
+    },
+    "web": {
+      "files": 37,
+      "passed": 363,
+      "failed": 0,
+      "command": "npm --prefix frontend test"
+    },
+    "python": {
+      "passed": 88,
+      "failed": 0,
+      "command": "python3 -m unittest discover -s scripts/tests -v"
+    },
+    "webProductionBuild": true,
+    "actionlint": "1.7.12 passed",
+    "bashSyntax": true,
+    "gitWhitespace": true,
+    "deliveryPython": {
+      "passed": 86,
+      "skippedRepositoryOnlyArchiveChecks": 2
+    },
+    "runtimeDependencyAudit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    }
+  },
+  "browser": {
+    "engine": "headed Chromium via playwright-cli",
+    "public": {
+      "checks": [
+        "five-image group/keys/rapid cycling/focus/scroll",
+        "guide cover/gallery/backdrop",
+        "city gallery/attribution",
+        "scenic cover",
+        {
+          "theme": "light",
+          "width": 360,
+          "article": true,
+          "lightbox": true
+        },
+        {
+          "theme": "light",
+          "width": 390,
+          "article": true,
+          "lightbox": true
+        },
+        {
+          "theme": "light",
+          "width": 430,
+          "article": true,
+          "lightbox": true
+        },
+        {
+          "theme": "light",
+          "width": 1440,
+          "article": true,
+          "lightbox": true
+        },
+        {
+          "theme": "dark",
+          "width": 360,
+          "article": true,
+          "lightbox": true
+        },
+        {
+          "theme": "dark",
+          "width": 390,
+          "article": true,
+          "lightbox": true
+        },
+        {
+          "theme": "dark",
+          "width": 430,
+          "article": true,
+          "lightbox": true
+        },
+        {
+          "theme": "dark",
+          "width": 1440,
+          "article": true,
+          "lightbox": true
+        },
+        "real CDP touch swipe/close",
+        "failed-image close",
+        "page navigation cleanup"
+      ],
+      "errors": []
+    },
+    "editor": {
+      "checks": [
+        "old real article no-op save exact Markdown/author/status",
+        "visual edit/source/visual/save/refresh",
+        {
+          "theme": "light",
+          "width": 360,
+          "editor": true
+        },
+        {
+          "theme": "light",
+          "width": 390,
+          "editor": true
+        },
+        {
+          "theme": "light",
+          "width": 430,
+          "editor": true
+        },
+        {
+          "theme": "light",
+          "width": 1440,
+          "editor": true
+        },
+        {
+          "theme": "dark",
+          "width": 360,
+          "editor": true
+        },
+        {
+          "theme": "dark",
+          "width": 390,
+          "editor": true
+        },
+        {
+          "theme": "dark",
+          "width": 430,
+          "editor": true
+        },
+        {
+          "theme": "dark",
+          "width": 1440,
+          "editor": true
+        },
+        "real managed upload/current cursor/alt editing/gallery record",
+        "default visual cursor upload",
+        "503 upload preserves draft",
+        "real clipboard HTML paste safety",
+        "unsupported syntax remains complete source",
+        "401 clears token and preserves complete draft",
+        "anonymous/non-owner write denied"
+      ],
+      "errors": [],
+      "fixtureGuideId": "14",
+      "isolatedDatabase": true
+    },
+    "destinations": {
+      "checks": [
+        {
+          "type": "CITY",
+          "theme": "light",
+          "width": 360
+        },
+        {
+          "type": "CITY",
+          "theme": "light",
+          "width": 390
+        },
+        {
+          "type": "CITY",
+          "theme": "light",
+          "width": 430
+        },
+        {
+          "type": "CITY",
+          "theme": "light",
+          "width": 1440
+        },
+        {
+          "type": "CITY",
+          "theme": "dark",
+          "width": 360
+        },
+        {
+          "type": "CITY",
+          "theme": "dark",
+          "width": 390
+        },
+        {
+          "type": "CITY",
+          "theme": "dark",
+          "width": 430
+        },
+        {
+          "type": "CITY",
+          "theme": "dark",
+          "width": 1440
+        },
+        {
+          "type": "SCENIC_SPOT",
+          "theme": "light",
+          "width": 360
+        },
+        {
+          "type": "SCENIC_SPOT",
+          "theme": "light",
+          "width": 390
+        },
+        {
+          "type": "SCENIC_SPOT",
+          "theme": "light",
+          "width": 430
+        },
+        {
+          "type": "SCENIC_SPOT",
+          "theme": "light",
+          "width": 1440
+        },
+        {
+          "type": "SCENIC_SPOT",
+          "theme": "dark",
+          "width": 360
+        },
+        {
+          "type": "SCENIC_SPOT",
+          "theme": "dark",
+          "width": 390
+        },
+        {
+          "type": "SCENIC_SPOT",
+          "theme": "dark",
+          "width": 430
+        },
+        {
+          "type": "SCENIC_SPOT",
+          "theme": "dark",
+          "width": 1440
+        }
+      ],
+      "errors": []
+    },
+    "newGuide": {
+      "checks": [
+        "new guide visual default/bold/italic/heading/link",
+        "real undo/redo",
+        "UI create draft/publish/refresh/withdraw keeps author and first publication"
+      ],
+      "errors": [],
+      "fixtureGuideId": "15",
+      "isolatedDatabase": true
+    },
+    "nativeGuards": {
+      "nativeLeaveConfirmObserved": true,
+      "cancelledNavigationPreservesDraft": true,
+      "nativeBeforeUnloadObserved": true,
+      "cancelledRefreshPreservesDraft": true,
+      "note": "Confirmed using playwright-cli native dialog-dismiss and subsequent DOM checks; separate from bulk scripts."
+    },
+    "matrix": {
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "widths": [
+        360,
+        390,
+        430,
+        1440
+      ],
+      "guideAndLightbox": 8,
+      "editor": 8,
+      "destinationCityAndSpot": 16
+    },
+    "touch": "Chromium CDP touch input, not physical device",
+    "physicalPhoneSafariWechat": "not executed"
+  },
+  "dataIntegrity": {
+    "same": true,
+    "tables": {
+      "destination_images": {
+        "count": 48,
+        "rowSha256": "14c2f5e3db5084c15e0ae3047556a15a97f554d49c15698dda5bdc91b7681927"
+      },
+      "destinations": {
+        "count": 30,
+        "rowSha256": "2876b835dc513f155b8232788974942e79dc131d5de7571a37b26dbeede4d8fd"
+      },
+      "guide_comments": {
+        "count": 3,
+        "rowSha256": "cf62e6d0b8399044cb374839d9f139ac579350b8d11be4506c13000f466777ec"
+      },
+      "guide_destinations": {
+        "count": 8,
+        "rowSha256": "bf007e4b08f333c337c1f70bf466d129fc21a7cbc505ec1d56bce7beceef9dfb"
+      },
+      "guide_favorites": {
+        "count": 2,
+        "rowSha256": "56f08127b06a2e51297212ee6408de0a728af7855f77b4c006bf79f84c2ee489"
+      },
+      "guide_images": {
+        "count": 18,
+        "rowSha256": "54180c3f02115dc368e6ffe52aa59f0a1b608c28d06363d90defbf3dbb4f53ea"
+      },
+      "guide_likes": {
+        "count": 2,
+        "rowSha256": "523a771dfe7c9af7aaf7709d1e2997cebaec20b52c335daf9e28b5c968b570c4"
+      },
+      "guide_tags": {
+        "count": 3,
+        "rowSha256": "414a303faafe8217cb3feff75cc9864c0076216fccd2e5e24ff7804acd1fa1b5"
+      },
+      "guides": {
+        "count": 3,
+        "rowSha256": "09a23aecdd8967a0ac98f368431d406e997e3fa9b252665227954c285be5bbac"
+      },
+      "itineraries": {
+        "count": 1,
+        "rowSha256": "3f368d14023696805494e6e413189d4c06d7c2f75a9592d70b984fcacca857c6"
+      },
+      "itinerary_days": {
+        "count": 2,
+        "rowSha256": "721e88aa65e5bd96081feffc6dc5c3fc3664ceb61c58fe0757adbaaec2c0c48e"
+      },
+      "itinerary_items": {
+        "count": 3,
+        "rowSha256": "521254487f8fb814c0ef003d72b550d977009151a57e6feb5a6f8fc3895dd847"
+      },
+      "tags": {
+        "count": 8,
+        "rowSha256": "dfe6ba88d8a1e054a3f3ba60c10f0f8fc63a4a71b319059e7b6b986e4352bcf6"
+      },
+      "users": {
+        "count": 4,
+        "rowSha256": "2753349b5ebfae5a182ec21b509ac5872b52c54111f9a10b85ac71be9b7b4fdf"
+      }
+    },
+    "businessRows": 135,
+    "uploadFiles": 44,
+    "beforeSnapshotSha256": "c1a17c79447588296465849f3f46c0c5957dfbc770e3bab66bc5c7d22625418e",
+    "afterSnapshotSha256": "c1a17c79447588296465849f3f46c0c5957dfbc770e3bab66bc5c7d22625418e",
+    "testUploadIsolationCorrection": {
+      "files": [
+        "2026/11/987d3761e5864974be5e96e7804be013.webp",
+        "2026/11/e59d22d797304c25bbd06cdd25b0e491.webp",
+        "2026/11/f46d3784a7744100abb8c4db37e37e22.webp"
+      ],
+      "allMatchSyntheticFixture": true,
+      "original44Unchanged": true,
+      "movedToIsolatedCopy": true
+    }
+  },
+  "archive": {
+    "count": 50,
+    "allByteIdentical": true,
+    "files": [
+      {
+        "old": "mobile/.env.example",
+        "new": "deprecated/uni-app/mobile/.env.example",
+        "sha256": "14fc5d178536116d6c033a2c7761ad75b8c10302c8cc2a2a991fe9c9b24eea7f"
+      },
+      {
+        "old": "mobile/.gitignore",
+        "new": "deprecated/uni-app/mobile/.gitignore",
+        "sha256": "6b600ecb78f792c6fb35d02c2eeb8862e0a03be76b5ea2c449e3c4e0cb797f21"
+      },
+      {
+        "old": "mobile/README.md",
+        "new": "deprecated/uni-app/mobile/README.md",
+        "sha256": "da64c460264f7e89ece0cdb25eb1f0ea17f4da3bd2cde85837ac85a1ef1f74d6"
+      },
+      {
+        "old": "mobile/index.html",
+        "new": "deprecated/uni-app/mobile/index.html",
+        "sha256": "61c173c9ba4407ce39a43e7bcffdeae6d5e5c2acd05c0bf1969a1f48a955b90f"
+      },
+      {
+        "old": "mobile/package-lock.json",
+        "new": "deprecated/uni-app/mobile/package-lock.json",
+        "sha256": "b0888397cc8581769cffd30ddaa2531c7b566d4e5e2963edb6e2effc7b4127f6"
+      },
+      {
+        "old": "mobile/package.json",
+        "new": "deprecated/uni-app/mobile/package.json",
+        "sha256": "314f15c4d9bf005ea203dbc1b694e5e3f697abcc09f8ec0a7fdc493c28c7e5e0"
+      },
+      {
+        "old": "mobile/src/App.vue",
+        "new": "deprecated/uni-app/mobile/src/App.vue",
+        "sha256": "48d4a316de36ec0e3ed541ecafdfa847a76859b96d91a59e09313c8db3220504"
+      },
+      {
+        "old": "mobile/src/components/ContentCard.vue",
+        "new": "deprecated/uni-app/mobile/src/components/ContentCard.vue",
+        "sha256": "b34bc4cc125dd171c399bd11ba9d1f67f4142075afa2ac2c1691edca042dc77f"
+      },
+      {
+        "old": "mobile/src/components/PageNavigation.vue",
+        "new": "deprecated/uni-app/mobile/src/components/PageNavigation.vue",
+        "sha256": "4aeebc2af2a7f2d14af67dbf20ce3a7526222c567548e94e40788ad737f92b31"
+      },
+      {
+        "old": "mobile/src/components/ResourceState.vue",
+        "new": "deprecated/uni-app/mobile/src/components/ResourceState.vue",
+        "sha256": "74d416c2b640d0ab20e699e1cf876e90e365c85a37664a5228a0a39b55d934dd"
+      },
+      {
+        "old": "mobile/src/components/SafeContent.vue",
+        "new": "deprecated/uni-app/mobile/src/components/SafeContent.vue",
+        "sha256": "bc943a23590b2da4ed856b8660410e838fa3faa6fac6915b067cd3ef5a5285a7"
+      },
+      {
+        "old": "mobile/src/components/SafeImage.vue",
+        "new": "deprecated/uni-app/mobile/src/components/SafeImage.vue",
+        "sha256": "0675caa1dbad339b979fa0ac2304742f4056c3960496c7b8e733893eab02ce0e"
+      },
+      {
+        "old": "mobile/src/composables/resource.ts",
+        "new": "deprecated/uni-app/mobile/src/composables/resource.ts",
+        "sha256": "8371f041e8cbd14dd372ae683f1877940b0dd47c0d19752f15b13b1bdd84eb31"
+      },
+      {
+        "old": "mobile/src/env.d.ts",
+        "new": "deprecated/uni-app/mobile/src/env.d.ts",
+        "sha256": "778236811cab30976efb95d57fce2742ad9a575b791702ee829df563187c5523"
+      },
+      {
+        "old": "mobile/src/main.ts",
+        "new": "deprecated/uni-app/mobile/src/main.ts",
+        "sha256": "1fa5a7f0f88fadf4aee1d856be7257ed91b56bb5eff72e169ed9be9a2073afc8"
+      },
+      {
+        "old": "mobile/src/manifest.json",
+        "new": "deprecated/uni-app/mobile/src/manifest.json",
+        "sha256": "985dda5112a45ca400726e7f4144eec339d06d65390e25dfbb2aa83abb304b90"
+      },
+      {
+        "old": "mobile/src/pages.json",
+        "new": "deprecated/uni-app/mobile/src/pages.json",
+        "sha256": "0a188423e56156588df6d58803aeeaaff4c03951a299f6904c15bea7a3fd7e38"
+      },
+      {
+        "old": "mobile/src/pages/destinations/detail.vue",
+        "new": "deprecated/uni-app/mobile/src/pages/destinations/detail.vue",
+        "sha256": "0447eedf428f74e3046a3affe60bdf8c70e3b5113a973a7ea3b4ae15a119066a"
+      },
+      {
+        "old": "mobile/src/pages/destinations/index.vue",
+        "new": "deprecated/uni-app/mobile/src/pages/destinations/index.vue",
+        "sha256": "8817a78d80cfa3c5f624977d6ca3806c52e1ad7da7d8aae6334a8f5956c6438c"
+      },
+      {
+        "old": "mobile/src/pages/favorites/index.vue",
+        "new": "deprecated/uni-app/mobile/src/pages/favorites/index.vue",
+        "sha256": "fd3103e8997e418019f44d4693cc5dc8b8c4183e4aca3906247ecf7e07d181b7"
+      },
+      {
+        "old": "mobile/src/pages/guides/detail.vue",
+        "new": "deprecated/uni-app/mobile/src/pages/guides/detail.vue",
+        "sha256": "5bb15826df0a708279640285440b6392a196ad7c447af13a52006db6edcecc7c"
+      },
+      {
+        "old": "mobile/src/pages/guides/index.vue",
+        "new": "deprecated/uni-app/mobile/src/pages/guides/index.vue",
+        "sha256": "2b8f8f0c4cf4134f841efdcba6e77ead5f23f51909e3b39aefa6c807e2fd37fb"
+      },
+      {
+        "old": "mobile/src/pages/itineraries/detail.vue",
+        "new": "deprecated/uni-app/mobile/src/pages/itineraries/detail.vue",
+        "sha256": "0180988afdd3323c98b530e7eaf3c21ee352711f09d2f8dcfe80110ee05a47b5"
+      },
+      {
+        "old": "mobile/src/pages/itineraries/index.vue",
+        "new": "deprecated/uni-app/mobile/src/pages/itineraries/index.vue",
+        "sha256": "309bb498b0e69084f688627dc708000556f86bdb5f5ab38b8e4f385df0cdaa24"
+      },
+      {
+        "old": "mobile/src/pages/login/index.vue",
+        "new": "deprecated/uni-app/mobile/src/pages/login/index.vue",
+        "sha256": "001b3b3ae928d062c79db2f713fbd188b35147b8c3d0f37bc3c17bd19f42567e"
+      },
+      {
+        "old": "mobile/src/pages/me/index.vue",
+        "new": "deprecated/uni-app/mobile/src/pages/me/index.vue",
+        "sha256": "5b3f702794d1bf84d281d7c75bd64eab24e297c97ffd09c2e2fcbb08dc812397"
+      },
+      {
+        "old": "mobile/src/pages/settings/server.vue",
+        "new": "deprecated/uni-app/mobile/src/pages/settings/server.vue",
+        "sha256": "ea5399562e7125cd1cc0a75d6b44197d3401ac04b0ee3f4b5f9c02f178e7682c"
+      },
+      {
+        "old": "mobile/src/platform/errors.ts",
+        "new": "deprecated/uni-app/mobile/src/platform/errors.ts",
+        "sha256": "4b01247a9b59563c80e82c8bf5c158b1b09071aee0df3cf78f8912b844484336"
+      },
+      {
+        "old": "mobile/src/platform/navigation.ts",
+        "new": "deprecated/uni-app/mobile/src/platform/navigation.ts",
+        "sha256": "49fa64672dea76168fe40d20f983dde3ab873eea3a3b909a5e3fe77ba6a0eb8a"
+      },
+      {
+        "old": "mobile/src/platform/request.ts",
+        "new": "deprecated/uni-app/mobile/src/platform/request.ts",
+        "sha256": "5dbac285ef98cd4cc1a671385fe2762de194fd66f1928b2f1cfebb50efe430bd"
+      },
+      {
+        "old": "mobile/src/platform/storage.ts",
+        "new": "deprecated/uni-app/mobile/src/platform/storage.ts",
+        "sha256": "ce239df8f3963f4ba9496c88633c647b6a003432a36addaef2c12b0f56edb220"
+      },
+      {
+        "old": "mobile/src/platform/upload.ts",
+        "new": "deprecated/uni-app/mobile/src/platform/upload.ts",
+        "sha256": "adbecb01baf7f58a83cba34ea4922de839e94a03f84e348a9435d0226b9e1226"
+      },
+      {
+        "old": "mobile/src/platform/url.ts",
+        "new": "deprecated/uni-app/mobile/src/platform/url.ts",
+        "sha256": "7fd1907ad2abddd4c25bb77bdc81fdb4744348f6d4e4f8d49acf92051065463a"
+      },
+      {
+        "old": "mobile/src/services/api.ts",
+        "new": "deprecated/uni-app/mobile/src/services/api.ts",
+        "sha256": "8a9ec63f6aaabe5a85d3b7a5a6e146d009abfcd995fa557dbdb0c2c914dfea0e"
+      },
+      {
+        "old": "mobile/src/services/session.ts",
+        "new": "deprecated/uni-app/mobile/src/services/session.ts",
+        "sha256": "7e5ace733e7189df866f31af32a0cef47978afa6d09d7fdbe2a690308cf0c5ac"
+      },
+      {
+        "old": "mobile/src/services/token.ts",
+        "new": "deprecated/uni-app/mobile/src/services/token.ts",
+        "sha256": "f13ffcdccf728440112b43fba09ce23cdb7f8ffe19a88879abb1eeba9926ce5f"
+      },
+      {
+        "old": "mobile/src/types/api.ts",
+        "new": "deprecated/uni-app/mobile/src/types/api.ts",
+        "sha256": "a20f65edf39fe044a446812e6b993acca16994c779f9a34d655d4b9acc2529a9"
+      },
+      {
+        "old": "mobile/src/utils/content.ts",
+        "new": "deprecated/uni-app/mobile/src/utils/content.ts",
+        "sha256": "8ac80b630dd2dfc1556a4461757b31dcc78a27704e6b6e4bf3d09bc136e3a613"
+      },
+      {
+        "old": "mobile/tests/checks.ts",
+        "new": "deprecated/uni-app/mobile/tests/checks.ts",
+        "sha256": "aef395e107e687751a4c2289b18137c669f6f3bbcc617f5cbf242c6e5a01f250"
+      },
+      {
+        "old": "mobile/tsconfig.json",
+        "new": "deprecated/uni-app/mobile/tsconfig.json",
+        "sha256": "fd2d9076706a9794d5e5b3b9fb101561dafaf21f4760f6feb2927c92ba5d5545"
+      },
+      {
+        "old": "mobile/vite.config.ts",
+        "new": "deprecated/uni-app/mobile/vite.config.ts",
+        "sha256": "ae0ac15668bd32849d9df3ddff6fd9643a2202db5d4800683fdf70f96b41e855"
+      },
+      {
+        "old": "scripts/android-init.gradle",
+        "new": "deprecated/uni-app/scripts/android-init.gradle",
+        "sha256": "9c58203022c7bd1450026627cb8642af00ec94a498975c9df275ceab17f2c8a3"
+      },
+      {
+        "old": "scripts/android_package.py",
+        "new": "deprecated/uni-app/scripts/android_package.py",
+        "sha256": "e20e41f82d4d62af0c58f94302e9486ba55a3f3681a482be6ecbe2390df2bd34"
+      },
+      {
+        "old": "scripts/android_smoke.py",
+        "new": "deprecated/uni-app/scripts/android_smoke.py",
+        "sha256": "83749233e9bf18363b82f13698744dfbca4cebaf412be0552265a28cb08a8f7b"
+      },
+      {
+        "old": "scripts/mobile_release.py",
+        "new": "deprecated/uni-app/scripts/mobile_release.py",
+        "sha256": "74e3da8c09c394762703b2073314121850ab0feb2fae83c8bdf55e7585891b4b"
+      },
+      {
+        "old": "scripts/setup_android.sh",
+        "new": "deprecated/uni-app/scripts/setup_android.sh",
+        "sha256": "0f866545c9c21c1c848213e6114ed97cb93d8fd8efffb288a095d70325ff49b0"
+      },
+      {
+        "old": "scripts/tests/test_android_package.py",
+        "new": "deprecated/uni-app/tests/test_android_package.py",
+        "sha256": "7bfa278681cde93460565a228666b05e93d0477277385b375e3b930742fb8d4f"
+      },
+      {
+        "old": "scripts/tests/test_android_smoke.py",
+        "new": "deprecated/uni-app/tests/test_android_smoke.py",
+        "sha256": "416aadb08066cdd121d708f8290aab657212ee511a218d8d66a304bbb496c7ae"
+      },
+      {
+        "old": "scripts/tests/test_mobile_release.py",
+        "new": "deprecated/uni-app/tests/test_mobile_release.py",
+        "sha256": "92b6a37d9026ed7fb9fa86fe528593cad346365ea2e065c342b8d2ee260a81f7"
+      },
+      {
+        "old": ".github/workflows/mobile-release.yml",
+        "new": "deprecated/uni-app/workflows/mobile-release.yml.disabled",
+        "sha256": "e4b5e72e81fb425a5fd54763b06d38c56e6f83184bdb5d22cdc927b9a501cecf"
+      }
+    ]
+  },
+  "remote": {
+    "mobileWorkflow": {
+      "id": 411250960,
+      "name": "Mobile packages and releases",
+      "path": ".github/workflows/mobile-release.yml",
+      "state": "disabled_manually"
+    },
+    "historicalReleasesPreserved": {
+      "count": 6,
+      "assets": 37
+    },
+    "baselineCi": [
+      {
+        "conclusion": "success",
+        "databaseId": 42795466035,
+        "headSha": "29fa630bf097c2afd45b9711995fe655bfc4f7c6",
+        "status": "completed",
+        "url": "https://github.com/TheSixPasserby/travel-platform/actions/runs/42795466035"
+      }
+    ],
+    "m11Ci": "not verified: no push; remote combined ci.yml remains baseline until authorized sync",
+    "committed": false,
+    "pushed": false,
+    "deployed": false,
+    "publishedRelease": false,
+    "secretsReadOrDeleted": false
+  },
+  "delivery": {
+    "fullReleaseCommandPassed": true,
+    "firstVerifiedPackageFiles": 517,
+    "finalPackage": ".local/m11/web-delivery-verified",
+    "checksums": "SHA256SUMS",
+    "verificationReceipt": ".local/m11/delivery-verification.json",
+    "webAndBackendOnly": true,
+    "startSmoke": "exit 0: reused existing backend 8080 and Web 5173 only",
+    "finalDocumentationRefresh": "uses tested release.assemble with existing verified JAR/dist; archived code omitted, portable historical index included"
+  },
+  "evidenceLogSha256": {
+    "web-tests-final.log": "c03ac62efa5fb3fc2b93ee50e2b0a98f2601eef2cc8b9947730b20e73ae07328",
+    "web-build-final.log": "13726140dde37c9edeb82bd26862dbf1759aed98c703df8b2f8da311a8a11a9b",
+    "python-tests-final.log": "deb1c077b2eeab5aab03ae7c0a77721401ce78a1060b88cf1394d91b04b57915",
+    "backend-package.log": "e5d9bf19adaf7e79547c266f49333ac30935aef4171ac33127ba3e37cbf25fe0",
+    "release-build.log": "6a263cef29bb81a81359dfff3d02bbbe8b7f5b6a7f9b5e468f3af33959952c8f",
+    "start-smoke.log": "e2d2ec022b731882be4ac7feb07b0c4a0713069437f2a6274ba7156974a258a1",
+    "editor-poc.log": "ac01ab366131bbeba7f9898a8ec9ab268c9627ff6f05eb910139aca233aa36f8",
+    "lightbox-red.log": "f16d662313ea493e4ee2b01846ae19ee21ad3e6fe77c6cbe767b85be409d4060",
+    "history-red.log": "99a66c605b07dd34da6523d5f82daed07b533cce9276f2885cc88df099433e95",
+    "401-red.log": "a05676171c86646c81af9cf69378fdd74ffa90149534401927f6bf38a24cd154",
+    "empty-paragraph-red.log": "3648522b2fe58f6974a0c9eba2969e1033c2a3a25cb3746605dba77802375a25"
+  },
+  "screenshots": {
+    "destination-city-dark-390.png": "1b9a8516855691254815836912f15d0d7a51b75af7e98990b727c1b149883dfe",
+    "destination-city-light-390.png": "4cdf4a97ff6e2ef10ab796afb67e2c17e2c287ebd77178f775212314f7d2ff18",
+    "destination-scenic_spot-dark-390.png": "2220b00305a51790a784fc9aff342be9dd07efa856aa9161012d847b48fdc48f",
+    "destination-scenic_spot-light-390.png": "7e8da3c49fca4e7705101cd9ab23836f579aae7a7b1725a9886d1dca586f11cc",
+    "editor-dark-1440.png": "d777a1f0d4ab073aca6078f2eabea2d302573d0137f282adf661af6175b8b94b",
+    "editor-dark-390.png": "871040824d8e6241a267cd8fc367045b8de0d41106ed10ee294b6dfe99137b28",
+    "editor-light-1440.png": "16019d5adb67f949ac9c2627d577833e50169afcf24ba5ffb5c30acd749686e6",
+    "editor-light-390.png": "25c3708a1e06b03506c801b1c05a467d1978de24e0531793d0e505261d328731",
+    "lightbox-dark-1440.png": "2411c338cd0baa2222764f24eb3740818c48a2c0f4d4a13c3f63427fb5454025",
+    "lightbox-dark-390.png": "b2a4e31e750e7742ae36048f78a554c20d27fbafde42e2ac9d5f14466185c572",
+    "lightbox-desktop-light.png": "c070ea7be79e0208c4abce8a63da71ad661d936d19c7690f83d9f54200184f15",
+    "lightbox-failure-390.png": "a0e7ba3a27e8ce18a7e2d483e666629be9b8da49f94aa7e053f32ae47232dd3c",
+    "lightbox-light-1440.png": "96f9220467d856ed9c23590df2a2893bfd86ffd0d65e9e7911f3a1b765676119",
+    "lightbox-light-390.png": "7258d5547838a3e8faf47243ea0f38e4066b32a583ec048edb624740734c88be",
+    "new-guide-visual-390.png": "c2e9beb2008216d4b4745c0d38857f45b086ab65b492f2580057706ed8bf84af",
+    "source-fallback-390.png": "1ffb631e55ff828d7ff02ec7a030d260302799d904e64917e62fd2098a60ace8"
+  },
+  "limitations": [
+    "M11 remote CI not run because no push",
+    "No external deployment",
+    "No physical phone / Safari / WeChat browser acceptance",
+    "Archived mobile platforms unsupported; no archived builds/tests executed"
+  ]
+}

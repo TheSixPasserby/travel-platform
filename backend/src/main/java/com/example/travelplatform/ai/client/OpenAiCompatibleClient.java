@@ -1,6 +1,7 @@
 package com.example.travelplatform.ai.client;
 
 import com.example.travelplatform.ai.config.AiProperties;
+import com.example.travelplatform.ai.config.AiSettingsStore;
 import com.example.travelplatform.common.error.*;
 import com.fasterxml.jackson.core.StreamReadFeature;
 import com.fasterxml.jackson.databind.*;
@@ -36,11 +37,11 @@ public class OpenAiCompatibleClient implements AiModelClient {
             Use conservative plans when distances, opening hours, tickets or coordinates are unknown.
             Explain uncertainty in warnings. Write reader-facing titles, summary, notes and warnings in Chinese.
             """;
-    private final AiProperties properties;
+    private final AiSettingsStore settings;
     private final JsonNode schema;
 
-    public OpenAiCompatibleClient(AiProperties properties) {
-        this.properties = properties;
+    public OpenAiCompatibleClient(AiSettingsStore settings) {
+        this.settings = settings;
         try (InputStream input = new ClassPathResource("ai/itinerary-output.schema.json").getInputStream()) {
             this.schema = JSON.readTree(input);
         } catch (IOException exception) {
@@ -50,6 +51,7 @@ public class OpenAiCompatibleClient implements AiModelClient {
 
     @Override
     public String generate(String context) {
+        AiProperties properties=settings.current();
         if (!properties.available()) throw new ApiException(ErrorCode.AI_UNAVAILABLE);
         AiProperties.Resolved configuration = properties.resolved();
         Map<String,Object> format = "json_schema".equals(configuration.responseFormat())

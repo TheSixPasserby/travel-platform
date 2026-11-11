@@ -5,8 +5,10 @@
  * 渲染结果全部来自 renderMarkdown 的清理输出，只通过 v-html 注入已清理字符串；
  * 正文图片加载失败时在 DOM 层用 textContent 换成可读占位，不拼接任何 HTML。
  */
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import { renderMarkdown } from '@/utils/markdown'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { isManagedImageSource, renderMarkdown } from '@/utils/markdown'
+import { useImageLightbox } from '@/composables/useImageLightbox'
+import ImageLightbox from './ImageLightbox.vue'
 
 const IMAGE_FALLBACK_TEXT = '图片暂时无法显示'
 
@@ -15,6 +17,25 @@ const props = defineProps<{ content: string }>()
 const root = ref<HTMLElement | null>(null)
 
 const html = computed(() => renderMarkdown(props.content))
+const { preview, open, close } = useImageLightbox()
+function previewImage(event: MouseEvent | KeyboardEvent): void {
+  const target = event.target
+  if (!(target instanceof HTMLImageElement) || !root.value?.contains(target)) return
+  if (event instanceof KeyboardEvent && !['Enter', ' '].includes(event.key)) return
+  const src = target.getAttribute('src') ?? ''
+  if (!isManagedImageSource(src)) return
+  event.preventDefault()
+  const images = Array.from(root.value.querySelectorAll('img'))
+  open(images.map(img => ({ src: img.getAttribute('src') ?? '', alt: img.alt })), src, target, images.indexOf(target))
+}
+watch(html, async () => {
+  close()
+  await nextTick()
+  root.value?.querySelectorAll('img').forEach(img => {
+    if (!isManagedImageSource(img.getAttribute('src') ?? '')) return
+    img.tabIndex = 0; img.setAttribute('role', 'button'); img.setAttribute('aria-label', `预览图片：${img.alt}`)
+  })
+}, { immediate: true, flush: 'post' })
 
 /** 图片加载失败：用 textContent 写入 alt，绝不用 innerHTML 拼接。 */
 function handleImageError(event: Event): void {
@@ -40,7 +61,8 @@ onBeforeUnmount(() => {
 
 <template>
   <!-- eslint-disable-next-line vue/no-v-html -- 内容已由 renderMarkdown 双层清理 -->
-  <div ref="root" class="safe-markdown" v-html="html"></div>
+  <div ref="root" class="safe-markdown" @click="previewImage" @keydown="previewImage" v-html="html"></div>
+  <ImageLightbox v-if="preview" :preview="preview" @close="close" />
 </template>
 
 <style scoped>
@@ -222,6 +244,9 @@ onBeforeUnmount(() => {
 }
 
 .safe-markdown :deep(img) {
+  cursor: zoom-in;
+  width: 100%;
+  aspect-ratio: auto 4 / 3;
   display: block;
   max-width: 100%;
   height: auto;

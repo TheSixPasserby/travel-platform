@@ -8,8 +8,8 @@
   "model_sameness_required": false,
   "codex_primary_responsibilities": "总体规划、架构决策、任务拆分、代码整合、质量控制、最终验收",
   "dsh_subagent_responsibilities": "编码、测试、文档整理、专项审查",
-  "application_code_status": "M8/M9 preserved; M10 Web header/overlays/identity/comments and safe IP-region fallback implemented; local backend 249/Web337/Python83 and 24 browser layouts verified; native device acceptance pending",
-  "database_schema_status": "14-table MySQL 8.4.13; M10 adds nullable ip_region to guides/comments through verified additive migration; 133 original rows and 44 upload files preserved",
+  "application_code_status": "M12 Web travel community locally verified with discovery feeds, creator pages, related guides, self-hosted Vditor 4.0.1, image preview and administrator AI settings; backend258/Web400/Python92; real DSH itinerary generation verified",
+  "database_schema_status": "14-table schema preserved; original137 rows and44 upload files verified;18 published guides plus image/tag/destination links added;20 published guides total",
   "validated_database_version": "8.4.13",
   "delivery_documentation": [
     "docs/22-deployment-and-operations.md",
@@ -20,6 +20,16 @@
     "docs/27-m7-test-report.md",
     "docs/33-m8-final-report.md",
     "docs/M9-DELIVERY-STATUS.md",
-    "docs/M10-DELIVERY-STATUS.md"
-  ]
+    "docs/M10-DELIVERY-STATUS.md",
+    "docs/m11/ACCEPTANCE.md",
+    "docs/m12/M12-EXECUTION.md",
+    "docs/m12/M12-CODEX-IMPLEMENTATION.md",
+    "docs/m12/M12-ACCEPTANCE.md",
+    "docs/m12/M12-DELIVERY.md",
+    "docs/m12/M12-CHANGES.md",
+    "docs/m12/additions/DELIVERY.md",
+    "docs/m12/additions/AI-CONFIG-FIX.md"
+  ],
+  "platform": "Web-only (responsive desktop and mobile browsers)",
+  "deprecated_platforms": "uni-app / WeChat mini program / native apps: unsupported; no active build or release workflow"
 }

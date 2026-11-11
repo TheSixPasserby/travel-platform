@@ -574,6 +574,7 @@ onBeforeUnmount(() => {
     <header class="mb-8 flex flex-wrap items-end justify-between gap-4">
       <div class="min-w-0">
         <p class="text-xs tracking-[0.3em] text-ember">PLAN WITH A LITTLE HELP</p>
+        <RouterLink v-if="auth.user?.role==='ADMIN'" to="/admin/ai" class="float-right text-sm text-pine underline">AI 服务设置</RouterLink>
         <h1 class="mt-3 break-words font-serif text-3xl text-pine-deep sm:text-4xl">
           AI 帮我排一程
         </h1>
@@ -601,6 +602,7 @@ onBeforeUnmount(() => {
     </section>
     <section v-else-if="caps && (!caps.available || !caps.enabled)" class="surface-card p-6 sm:p-8">
       <h2 class="break-words font-serif text-2xl text-pine-deep">AI 行程助手暂未开放</h2>
+      <RouterLink v-if="auth.user?.role==='ADMIN'" to="/admin/ai" class="btn-primary mt-4">配置 AI 服务</RouterLink>
       <p data-test="ai-unavailable" class="mt-3 break-words text-sm text-ember">
         {{ caps.reason || '服务提供方当前不可用，请稍后再试。' }}
       </p>

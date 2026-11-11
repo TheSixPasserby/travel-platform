@@ -26,9 +26,9 @@ it('展示用户名、属地和按真实ID判断的作者标记',async()=>{
   ]))
   const {wrapper}=await render();await wrapper.setProps({guideAuthorId:'1'})
   const rows=wrapper.findAll('[data-test="comment-row"]')
-  expect(rows[0].text()).toContain('@forest');expect(rows[0].text()).toContain('IP 属地：四川')
+  expect(rows[0].text()).toContain('@forest');expect(rows[0].text()).not.toContain('IP 属地')
   expect(rows[0].find('[data-test="guide-author-badge"]').exists()).toBe(true)
-  expect(rows[1].text()).toContain('IP 属地：未知');expect(rows[1].find('[data-test="guide-author-badge"]').exists()).toBe(false)
+  expect(rows[1].text()).not.toContain('IP 属地');expect(rows[1].find('[data-test="guide-author-badge"]').exists()).toBe(false)
   wrapper.unmount()
 })
 it('显示规范化后的码点长度，超限不发送且保留输入',async()=>{

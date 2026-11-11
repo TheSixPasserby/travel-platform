@@ -11,6 +11,13 @@ export const SESSION_EXPIRED_MESSAGE = '登录状态已失效，请重新登录'
 export const SERVER_ERROR_MESSAGE = '服务器开小差了，请稍后再试'
 export const REQUEST_ERROR_MESSAGE = '请求未能完成，请稍后再试'
 
+const AI_SERVICE_ERROR_MESSAGES: Readonly<Record<number, string>> = {
+  50310: 'AI服务暂未配置或启用，请使用手动行程',
+  50410: 'AI请求超时，已保留当前编辑内容',
+  50210: 'AI服务调用失败，请稍后重试',
+  50211: 'AI结果未通过校验，请调整需求后重新生成',
+}
+
 export interface ApiErrorOptions {
   status?: number
   code?: number
@@ -106,7 +113,7 @@ function normalizeError(error: unknown): ApiError {
         ? typeof body.message === 'string' && body.message.length > 0
           ? body.message
           : SESSION_EXPIRED_MESSAGE
-        : sanitizeMessage(status, body.message)
+        : sanitizeMessage(status, code, body.message)
 
     return new ApiError(message, {
       status,
@@ -118,10 +125,10 @@ function normalizeError(error: unknown): ApiError {
   return new ApiError(REQUEST_ERROR_MESSAGE)
 }
 
-/** 5xx 一律使用通用文案，避免把服务端内部信息暴露给用户。 */
-function sanitizeMessage(status: number, message: unknown): string {
+/** Known AI business codes use local messages. Other 5xx responses stay generic. */
+function sanitizeMessage(status: number, code: number, message: unknown): string {
   if (status >= 500) {
-    return SERVER_ERROR_MESSAGE
+    return AI_SERVICE_ERROR_MESSAGES[code] ?? SERVER_ERROR_MESSAGE
   }
   if (typeof message === 'string' && message.trim().length > 0) {
     return message
