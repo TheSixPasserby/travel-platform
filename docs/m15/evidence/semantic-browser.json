@@ -1,0 +1,41 @@
+{
+  "samples": [
+    {
+      "mode": "light",
+      "accent": "pine",
+      "color": "rgb(36, 99, 63)",
+      "background": "rgb(231, 242, 233)"
+    },
+    {
+      "mode": "light",
+      "accent": "rose",
+      "color": "rgb(36, 99, 63)",
+      "background": "rgb(231, 242, 233)"
+    },
+    {
+      "mode": "light",
+      "accent": "ocean",
+      "color": "rgb(36, 99, 63)",
+      "background": "rgb(231, 242, 233)"
+    },
+    {
+      "mode": "dark",
+      "accent": "pine",
+      "color": "rgb(145, 215, 171)",
+      "background": "rgb(32, 59, 44)"
+    },
+    {
+      "mode": "dark",
+      "accent": "rose",
+      "color": "rgb(145, 215, 171)",
+      "background": "rgb(32, 59, 44)"
+    },
+    {
+      "mode": "dark",
+      "accent": "ocean",
+      "color": "rgb(145, 215, 171)",
+      "background": "rgb(32, 59, 44)"
+    }
+  ],
+  "passed": true
+}

@@ -1,0 +1,89 @@
+2026-11-12 M14 final verification (after status-layer fix)
+
+$ npm --prefix frontend test
+
+> travel-notes-frontend@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 /Users/hachikei/Documents/travel-platform-codex-starter/frontend
+
+
+ Test Files  49 passed (49)
+      Tests  457 passed (457)
+   Start at  05:45:27
+   Duration  5.09s (transform 4.65s, setup 565ms, import 10.56s, tests 13.37s, environment 14.85s)
+
+
+$ npm --prefix frontend run build
+
+> travel-notes-frontend@0.1.0 build
+> vue-tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 266 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                                                    0.69 kB │ gzip:   0.45 kB
+dist/vendor/vditor/4.0.1/LICENSE                                                   1.09 kB
+dist/vendor/vditor/4.0.1/dist/js/i18n/zh_CN.js                                     2.56 kB
+dist/vendor/vditor/4.0.1/dist/js/icons/ant.js                                     42.98 kB
+dist/vendor/vditor/4.0.1/dist/js/lute/lute.min.js                              3,743.30 kB
+dist/assets/GuideGrid-MqGnGEjU.css                                                 0.19 kB │ gzip:   0.15 kB
+dist/vendor/vditor/4.0.1/dist/js/highlight.js/styles/github.min.css                1.31 kB │ gzip:   0.61 kB
+dist/vendor/vditor/4.0.1/dist/css/content-theme/light.css                          2.76 kB │ gzip:   1.24 kB
+dist/vendor/vditor/4.0.1/dist/css/content-theme/dark.css                           3.03 kB │ gzip:   1.31 kB
+dist/assets/GuideCard-D-ggFBAy.css                                                 3.39 kB │ gzip:   1.09 kB
+dist/assets/SafeMarkdown-DRdYlXXd.css                                              3.85 kB │ gzip:   0.93 kB
+dist/assets/CommunitySidebar-D4WpJrda.css                                          4.86 kB │ gzip:   1.33 kB
+dist/assets/CreatorView-DqjAUoyq.css                                               6.66 kB │ gzip:   1.69 kB
+dist/assets/ContentImage-DwKW_KDt.css                                              8.11 kB │ gzip:   2.00 kB
+dist/assets/GuideDetailView-CZwW4sfl.css                                           9.79 kB │ gzip:   2.20 kB
+dist/assets/GuideEditorView-Cbj9yCJH.css                                          41.28 kB │ gzip:   8.07 kB
+dist/assets/index-1gt80Cfc.css                                                    45.18 kB │ gzip:   9.33 kB
+dist/assets/destination-BUL8inP4.js                                                0.09 kB │ gzip:   0.11 kB
+dist/assets/administration-Cq-cQnyw.js                                             0.56 kB │ gzip:   0.26 kB
+dist/assets/interactions-jgh7KUy4.js                                               0.58 kB │ gzip:   0.29 kB
+dist/assets/destinations-rppdDBur.js                                               0.61 kB │ gzip:   0.25 kB
+dist/assets/guides-CFnD5d4y.js                                                     0.68 kB │ gzip:   0.32 kB
+dist/assets/GuidesView-CyO-8LGg.js                                                 0.70 kB │ gzip:   0.50 kB
+dist/assets/HomeView-CYD1INNt.js                                                   0.75 kB │ gzip:   0.54 kB
+dist/assets/NotFoundView-B3lbRZSg.js                                               0.79 kB │ gzip:   0.61 kB
+dist/assets/AdminNavigation.vue_vue_type_script_setup_true_lang-Bvkxtz_H.js        0.80 kB │ gzip:   0.54 kB
+dist/assets/itineraries-Cnl1HKPo.js                                                0.86 kB │ gzip:   0.33 kB
+dist/assets/SafeMarkdown-CC4MmvcM.js                                               1.60 kB │ gzip:   0.95 kB
+dist/assets/DestinationCard.vue_vue_type_script_setup_true_lang-CqvzyNDK.js        2.31 kB │ gzip:   1.22 kB
+dist/assets/useInfiniteFeed-TtEtTBJ3.js                                            2.44 kB │ gzip:   1.22 kB
+dist/assets/AdminHomeView-C0GehXsI.js                                              2.49 kB │ gzip:   1.51 kB
+dist/assets/DestinationPicker.vue_vue_type_script_setup_true_lang-DubPyFiZ.js      2.53 kB │ gzip:   1.40 kB
+dist/assets/GuideCard-2PwU6VNN.js                                                  2.89 kB │ gzip:   1.52 kB
+dist/assets/itinerary-Di_587ez.js                                                  3.52 kB │ gzip:   1.58 kB
+dist/assets/TravelArt.vue_vue_type_script_setup_true_lang-BIKFLJNr.js              3.76 kB │ gzip:   1.37 kB
+dist/assets/ImageUpload.vue_vue_type_script_setup_true_lang-Es3sD_3l.js            3.79 kB │ gzip:   1.88 kB
+dist/assets/MyFavoritesView-CyjFF9uV.js                                            3.94 kB │ gzip:   2.06 kB
+dist/assets/GuideGrid-CuMUvUAx.js                                                  4.30 kB │ gzip:   2.11 kB
+dist/assets/DestinationsView-BxABm17f.js                                           4.43 kB │ gzip:   2.24 kB
+dist/assets/LoginView-D1vCopOv.js                                                  4.56 kB │ gzip:   2.18 kB
+dist/assets/MyGuidesView-D-c-bL2A.js                                               4.98 kB │ gzip:   2.43 kB
+dist/assets/RegisterView-CiGHAB4Z.js                                               5.60 kB │ gzip:   2.30 kB
+dist/assets/ProfileView-B1oGqysu.js                                                6.34 kB │ gzip:   2.73 kB
+dist/assets/CreatorView-BpaokMEn.js                                                6.81 kB │ gzip:   3.25 kB
+dist/assets/MyItinerariesView-BQjuuYW_.js                                          6.95 kB │ gzip:   3.16 kB
+dist/assets/AdminUsersView-BMPUFrVM.js                                             9.38 kB │ gzip:   3.79 kB
+dist/assets/AdminAiSettingsView-xYe2PV5k.js                                        9.47 kB │ gzip:   3.71 kB
+dist/assets/AdminModerationView--7H5Kz6G.js                                        9.50 kB │ gzip:   3.90 kB
+dist/assets/CommunitySidebar-CsLikg69.js                                          12.03 kB │ gzip:   5.19 kB
+dist/assets/ItineraryDetailView-SJErd3CY.js                                       17.54 kB │ gzip:   5.95 kB
+dist/assets/DestinationDetailView-BHaiY05R.js                                     20.33 kB │ gzip:   6.87 kB
+dist/assets/AdminDestinationsView-ChlEYYP4.js                                     27.12 kB │ gzip:   8.86 kB
+dist/assets/GuideDetailView-CPEVnz7P.js                                           33.32 kB │ gzip:  10.81 kB
+dist/assets/AiItineraryView-CwlyLLTK.js                                           37.82 kB │ gzip:  12.41 kB
+dist/assets/ContentImage-Ssp2sNKh.js                                             150.69 kB │ gzip:  60.61 kB
+dist/assets/index-DK1_plEz.js                                                    200.80 kB │ gzip:  76.34 kB
+dist/assets/GuideEditorView-BOWBeWtS.js                                          374.29 kB │ gzip: 100.17 kB
+✓ built in 1.48s
+
+Both commands exited with code 0.
+git diff --check: exit 0.
+Backend/Python suites and remote CI: not executed (unchanged).

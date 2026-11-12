@@ -196,7 +196,7 @@ onBeforeUnmount(() => {
         </details>
       </fieldset>
       <p v-if="error" role="alert" class="rounded-xl bg-ember/10 p-3 text-sm text-ember">{{ error }}</p>
-      <p v-if="notice" data-test="ai-save-notice" role="status" class="text-sm text-pine">{{ notice }}</p>
+      <p v-if="notice" data-test="ai-save-notice" role="status" class="text-sm text-[var(--ui-success)]">{{ notice }}</p>
       <div class="flex flex-wrap items-center gap-3 border-t border-pine/15 pt-5">
         <button type="submit" data-test="save-ai-settings" class="btn-primary" :disabled="saving">{{ saving?'正在保存…':'保存 AI 设置' }}</button>
         <button type="button" class="btn-ghost" :disabled="saving" @click="load">重新加载</button>

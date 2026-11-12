@@ -3,14 +3,13 @@ import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ApiError } from '@/api/client'
 import { useAuthStore } from '@/stores/auth'
-import { useThemeStore, type ThemePreference } from '@/stores/theme'
 import { useHeaderOverlay } from '@/composables/useHeaderOverlay'
+import AppearanceSettings from './AppearanceSettings.vue'
 import SiteIcon from './SiteIcon.vue'
 import SiteBrand from './SiteBrand.vue'
 import UserAvatar from './UserAvatar.vue'
 import UserIdentity from './UserIdentity.vue'
 const auth = useAuthStore(),
-  theme = useThemeStore(),
   route = useRoute(),
   router = useRouter()
 const { active, panel, toggle, close } = useHeaderOverlay()
@@ -48,11 +47,6 @@ function search(): void {
     query: { keyword: searchKeyword.value.trim() || undefined }
   })
 }
-const themes: Array<{ value: ThemePreference; label: string; icon: string }> = [
-  { value: 'light', label: '浅色', icon: 'sun' },
-  { value: 'dark', label: '深色', icon: 'moon' },
-  { value: 'system', label: '跟随系统', icon: 'monitor' }
-]
 function selected(path: string) {
   return path === '/' ? route.path === '/' : route.path.startsWith(path)
 }
@@ -284,32 +278,7 @@ async function handleLogout() {
                 <SiteIcon name="close" />
               </button>
             </div>
-            <div class="p-5">
-              <h3 class="mb-3 text-sm font-medium text-ink-soft">主题模式</h3>
-              <div class="theme-options" role="group" aria-label="外观主题">
-                <button
-                  v-for="option in themes"
-                  :key="option.value"
-                  type="button"
-                  :data-theme-option="option.value"
-                  :aria-pressed="theme.preference === option.value"
-                  :class="{ selected: theme.preference === option.value }"
-                  @click="theme.setPreference(option.value)"
-                >
-                  <SiteIcon :name="option.icon" /><span>{{
-                    option.label
-                  }}</span>
-                </button>
-              </div>
-              <div class="theme-preview" aria-hidden="true">
-                <div />
-                <div />
-                <div />
-              </div>
-              <p class="mt-4 text-xs leading-relaxed text-ink-soft">
-                主题选择会立即生效，并在下次打开时保留。
-              </p>
-            </div>
+            <AppearanceSettings />
           </template>
           <template v-else-if="auth.user && auth.isAuthenticated">
             <div class="panel-heading gap-3">
@@ -474,14 +443,17 @@ async function handleLogout() {
   top: 12px;
   right: 16px;
   width: min(360px, calc(100vw - 24px));
-  max-height: calc(100dvh - 88px);
+  max-height: calc(100dvh - 88px - env(safe-area-inset-bottom));
   overflow: auto;
   overscroll-behavior: contain;
-  border: 1px solid color-mix(in srgb, var(--color-pine) 28%, transparent);
-  border-radius: 24px;
-  background: var(--color-surface);
+  border: 1px solid var(--ui-border-subtle);
+  border-radius: var(--ui-radius-lg);
+  background: var(--ui-bg-elevated);
   color: var(--color-ink);
-  box-shadow: 0 16px 48px #0003;
+  box-shadow: var(--ui-shadow-lg);
+}
+.settings-panel {
+  width: min(380px, calc(100vw - 24px));
 }
 .panel-heading {
   display: flex;
@@ -548,54 +520,6 @@ async function handleLogout() {
   display: flex;
   align-items: center;
   gap: 18px;
-}
-.theme-options {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-}
-.theme-options button {
-  min-height: 96px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  border: 1px solid color-mix(in srgb, var(--color-pine) 24%, transparent);
-  border-radius: 18px;
-  font-size: 13px;
-  cursor: pointer;
-}
-.theme-options svg {
-  width: 27px;
-  height: 27px;
-}
-.theme-options .selected {
-  border-color: var(--color-pine);
-  box-shadow: inset 0 0 0 1px var(--color-pine);
-}
-.theme-preview {
-  margin-top: 20px;
-  border: 1px solid color-mix(in srgb, var(--color-pine) 22%, transparent);
-  border-radius: 18px;
-  padding: 16px;
-  background: var(--color-cream);
-}
-.theme-preview div {
-  height: 14px;
-  border-radius: 8px;
-  background: var(--color-pine-soft);
-  margin-bottom: 12px;
-}
-.theme-preview div:first-child {
-  height: 24px;
-}
-.theme-preview div:nth-child(2) {
-  width: 80%;
-}
-.theme-preview div:last-child {
-  width: 60%;
-  margin-bottom: 0;
 }
 .header-overlay-enter-active,
 .header-overlay-leave-active {

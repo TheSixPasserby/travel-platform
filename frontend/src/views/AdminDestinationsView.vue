@@ -261,7 +261,7 @@ onBeforeUnmount(() => { active=false;listVersion++;parentVersion++ })
       <div><p class="text-xs tracking-[0.3em] text-ember">DESTINATION DESK</p><h1 class="mt-3 font-serif text-3xl text-pine-deep">目的地管理</h1><p class="mt-2 text-sm text-ink-soft">整理值得出发的地方，维护清晰、可靠的目的地信息。</p></div>
       <div class="flex gap-3"><RouterLink to="/destinations" class="btn-ghost">浏览目的地</RouterLink><button class="btn-primary" data-test="admin-new" :disabled="saving || uploading" @click="startNew">新增目的地</button></div>
     </div>
-    <p v-if="notice" role="status" class="mb-5 rounded-xl border border-pine/20 bg-pine-soft/40 p-3 text-sm text-pine">{{ notice }}</p>
+    <p v-if="notice" role="status" class="mb-5 rounded-xl border border-[var(--ui-success)] bg-[var(--ui-success-soft)] p-3 text-sm text-[var(--ui-success)]">{{ notice }}</p>
     <div class="grid items-start gap-6 xl:grid-cols-[minmax(0,1.25fr)_minmax(22rem,1fr)]">
       <div class="min-w-0">
         <form class="surface-card mb-5 grid gap-3 p-4 sm:grid-cols-[minmax(0,1fr)_8rem_auto]" @submit.prevent="search">
@@ -277,7 +277,7 @@ onBeforeUnmount(() => { active=false;listVersion++;parentVersion++ })
             <thead class="sr-only border-b border-pine/10 text-xs text-ink-soft sm:not-sr-only sm:table-header-group"><tr><th scope="col" class="p-4">目的地</th><th scope="col" class="p-4">状态</th><th scope="col" class="p-4">操作</th></tr></thead>
             <tbody class="block sm:table-row-group"><tr v-for="destination in result.records" :key="destination.id" class="grid grid-cols-[minmax(0,1fr)_auto] border-b border-pine/10 last:border-0 sm:table-row">
               <td class="min-w-0 break-words p-4"><RouterLink :to="{ name: 'destination-detail', params: { id: destination.id } }" class="font-medium text-pine hover:underline">{{ destination.name }}</RouterLink><p class="mt-1 text-xs text-ink-soft">{{ destinationTypeLabels[destination.destinationType] }} · {{ destination.country }}</p></td>
-              <td class="p-4"><span :class="destination.status === 'ACTIVE' ? 'text-pine' : 'text-ember'">{{ destination.status === 'ACTIVE' ? '可用' : '已停用' }}</span></td>
+              <td class="p-4"><span :class="destination.status === 'ACTIVE' ? 'text-[var(--ui-success)]' : 'text-ember'">{{ destination.status === 'ACTIVE' ? '可用' : '已停用' }}</span></td>
               <td class="col-span-2 px-4 pb-4 sm:pt-4"><div class="flex flex-wrap gap-3"><button :data-test="`edit-${destination.id}`" class="btn-ghost" :disabled="saving || uploading" @click="edit(destination)">编辑</button><button :data-test="`status-${destination.id}`" class="btn-ghost" :disabled="changing !== null || saving || uploading" @click="toggle(destination)">{{ destination.status === 'ACTIVE' ? '停用' : '启用' }}</button></div></td>
             </tr></tbody>
           </table>

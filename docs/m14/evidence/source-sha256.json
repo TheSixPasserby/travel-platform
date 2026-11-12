@@ -1,0 +1,12 @@
+{
+  "frontend/src/components/ImageLightbox.vue": "8b4a3e66e858e3f9c82b9578b909f5c856e2c94b5e1f62f59441047b9a229dbe",
+  "frontend/src/components/ImageViewerToolbar.vue": "789e795a3f40aa779fabe6422c7371bb6321b520a0db75ec532159a73f8e9439",
+  "frontend/src/composables/useImageLightbox.ts": "12cc7659c0f8df6d04d18da390c692bee77bf52d9f5b3fad5e3d607957d182f0",
+  "frontend/src/composables/useImageTransform.ts": "89f48a48cd4354363e96d9f9c32f71368a887c607596c997880425ad95c593cc",
+  "frontend/src/utils/imageDownload.ts": "083271d1f5eccd62b9450c465b8c45abb23175546874e528144d18cf8f2be46d",
+  "frontend/tests/image-download.spec.ts": "3599b4051a84e4e6d7ffc0e22cf6ff790c500d1021063617853fedf2f77e1a23",
+  "frontend/tests/image-lightbox.spec.ts": "51141fe2d52812883a4bfa4636448a104c7dd8fc4109e4ece9d593511cf5e8d6",
+  "frontend/tests/image-preview.spec.ts": "477ef545ddfb285ddaa31935f2ad23bfe942f71e703ee59fafab90349e5836a5",
+  "frontend/tests/image-transform.spec.ts": "b5ea6f320e05721bb29e5bbd828d324735db23e31aaf35848d18be0677756076",
+  "frontend/tests/image-viewer-toolbar.spec.ts": "def1d1a149ef328e5c3a0ccdb929997ea68beccda999bb1ca532f2cc8a7d5804"
+}

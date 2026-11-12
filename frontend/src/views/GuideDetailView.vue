@@ -318,6 +318,7 @@ onBeforeUnmount(() => version++)
   padding: 32px 40px;
 }
 .article-title {
+  font-family: var(--font-serif);
   margin-top: 18px;
   font-size: clamp(26px, 2.4vw, 36px);
   font-weight: 650;
@@ -407,9 +408,9 @@ onBeforeUnmount(() => version++)
     gap: 14px;
     padding: 8px 14px;
     border: 1px solid color-mix(in srgb, var(--color-pine) 18%, transparent);
-    border-radius: 24px;
+    border-radius: var(--ui-radius-lg);
     background: var(--color-surface);
-    box-shadow: 0 8px 32px #0002;
+    box-shadow: var(--ui-shadow-lg);
   }
   .article-tools :deep(.action-rail__stack) {
     flex-direction: row;

@@ -1,0 +1,72 @@
+{
+  "input": "Chromium CDP native touch",
+  "physicalDevice": false,
+  "checks": [
+    {
+      "name": "native two-finger pinch",
+      "fit": {
+        "percentage": 28.6,
+        "x": 0,
+        "y": 0,
+        "count": "‹\n1 / 3\n›"
+      },
+      "pinched": {
+        "percentage": 97.2,
+        "x": 24,
+        "y": 8.841000000000008,
+        "count": "‹\n1 / 3\n›"
+      }
+    },
+    {
+      "name": "one finger continues panning after pinch without click or swipe",
+      "pinched": {
+        "percentage": 97.2,
+        "x": 24,
+        "y": 8.841000000000008,
+        "count": "‹\n1 / 3\n›"
+      },
+      "panned": {
+        "percentage": 97.2,
+        "x": 124,
+        "y": 58.84100000000001,
+        "count": "‹\n1 / 3\n›"
+      }
+    },
+    {
+      "name": "native fit-mode swipe advances duplicate URL occurrence",
+      "swiped": {
+        "percentage": 28.6,
+        "x": 0,
+        "y": 0,
+        "count": "‹\n2 / 3\n›"
+      }
+    },
+    {
+      "name": "native reverse swipe"
+    },
+    {
+      "name": "vertical gesture does not switch"
+    },
+    {
+      "name": "zoomed touch drag pans without changing images",
+      "before": {
+        "percentage": 100,
+        "x": 0,
+        "y": 0,
+        "count": "‹\n1 / 3\n›"
+      },
+      "after": {
+        "percentage": 100,
+        "x": -140,
+        "y": 0,
+        "count": "‹\n1 / 3\n›"
+      }
+    },
+    {
+      "name": "touch cancellation clears dragging"
+    },
+    {
+      "name": "mobile close releases scroll lock"
+    }
+  ]
+}

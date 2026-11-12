@@ -1,0 +1,15 @@
+{
+  "frames": {
+    "frames": 120,
+    "over40ms": 0,
+    "p95ms": 16.700000000000273,
+    "maxMs": 16.800000000000182
+  },
+  "cls": 0,
+  "resources": 52,
+  "transferredBytes": 2277193,
+  "renderedCards": 8,
+  "shiftDetails": [],
+  "resourceBodyBytes": 2261593,
+  "browser": "157.0.8103.78"
+}

@@ -1,0 +1,8 @@
+{
+  "frontend/public/theme.js": "65efb76a180207764c72c5eb02cf01e83e21062efb281ed05cfa047c2d1b2a80",
+  "frontend/src/stores/theme.ts": "9481fc5060ce5ecd2720d8786ef7c69afe6979b200db9ecf4328b4154f442f72",
+  "frontend/src/styles/main.css": "cb87bfa1004873f81cecacdb60ccecd058232138dfeae43274fbae5cd3827f9a",
+  "frontend/src/components/AppearanceSettings.vue": "a4150f04c2308db07b2920cd03d8cb3a09e903c86b50b897606bf6286e707b11",
+  "frontend/src/components/SiteHeader.vue": "8989301c67957c8bde6f3fbbe96e781d128410a143e9d06faf906c8bdef6714a",
+  "frontend/src/components/AdminNavigation.vue": "1b957b880918d38eb3fca97086c735bde44679e83df09c84d3ba49aaa2b10cd4"
+}

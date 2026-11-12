@@ -151,7 +151,38 @@ defineExpose({insertImage,rememberSelection,getContent})
 </template>
 <style scoped>
 .rich-editor{min-width:0}.editor-modes{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem;margin-bottom:.75rem}.editor-modes button{min-height:44px;padding:.5rem .7rem;border-radius:.5rem;font-size:.8rem;color:var(--color-pine-deep);cursor:pointer}.editor-modes button[aria-pressed=true]{background:var(--color-pine-soft)}.editor-modes button:disabled{opacity:.5;cursor:default}
-.vditor-host{--border-color:color-mix(in srgb,var(--color-pine) 25%,transparent);--toolbar-background:var(--color-cream-deep);--panel-background-color:var(--color-surface);--panel-shadow:0 8px 24px #0002;--textarea-background-color:var(--color-surface);--textarea-text-color:var(--color-ink);--second-color:var(--color-ink-soft);--toolbar-icon-color:var(--color-ink-soft);--toolbar-icon-hover-color:var(--color-pine);--toolbar-height:44px;border-radius:1rem;max-width:100%;overflow:hidden;color:var(--color-ink)}
+.vditor-host {
+  border-radius: var(--ui-radius-md);
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--ui-text-primary);
+}
+.vditor-host :deep(.vditor),
+.vditor-host :deep(.vditor--dark) {
+  --border-color: var(--ui-border-subtle);
+  --toolbar-background-color: var(--ui-bg-muted);
+  --panel-background-color: var(--ui-bg-elevated);
+  --panel-shadow: var(--ui-shadow-lg);
+  --textarea-background-color: var(--ui-bg-surface);
+  --textarea-text-color: var(--ui-text-primary);
+  --second-color: var(--ui-text-secondary);
+  --toolbar-icon-color: var(--ui-text-secondary);
+  --toolbar-icon-hover-color: var(--ui-accent);
+  --toolbar-height: 44px;
+  --heading-border-color: var(--ui-border-subtle);
+  --blockquote-color: var(--ui-text-secondary);
+  --blockquote-text-color: var(--ui-text-secondary);
+  --blockquote-border-color: var(--ui-accent);
+  --ir-heading-color: var(--ui-accent);
+  --ir-title-color: var(--ui-text-secondary);
+  --ir-bi-color: var(--ui-text-primary);
+  --ir-link-color: var(--ui-link);
+  --ir-bracket-color: var(--ui-text-secondary);
+  --ir-paren-color: var(--ui-text-secondary);
+  border-color: var(--ui-border-subtle);
+  background: var(--ui-bg-surface);
+}
+.vditor-host :deep(.vditor-reset a){color:var(--ui-link)}
 .vditor-host :deep(.vditor-toolbar){padding:8px!important;flex-wrap:wrap}.vditor-host :deep(.vditor-toolbar__item){padding:0}.vditor-host :deep(.vditor-toolbar__item>button),.vditor-host :deep(.vditor-toolbar__item>span){width:36px;height:40px}.vditor-host :deep(.vditor-reset){font-family:inherit;font-size:16px;line-height:1.9;color:var(--color-ink);padding:20px!important;overflow-wrap:anywhere}.vditor-host :deep(.vditor-sv){padding:20px!important;font-family:monospace;line-height:1.8;color:var(--color-ink);background:var(--color-surface);min-width:0;width:100%}.vditor-host :deep(img){max-width:100%;height:auto;border-radius:.5rem}.vditor-host :deep(pre){max-width:100%;overflow:auto}.vditor-host :deep(.vditor-content){min-width:0}.vditor-host :deep(table){display:block;max-width:100%;overflow:auto}.vditor-host :deep(.vditor-reset h1),.vditor-host :deep(.vditor-reset h2),.vditor-host :deep(.vditor-reset h3){font-family:var(--font-serif);color:var(--color-pine-deep)}
 .vditor-host :deep(.vditor-reset blockquote){color:var(--color-ink-soft);background:var(--color-pine-soft);border-left:3px solid var(--color-pine);padding:.6rem 1rem}.vditor-host :deep(.vditor-reset pre){background:var(--color-code);color:var(--color-on-code)}
 @media(max-width:430px){.vditor-host :deep(.vditor-reset),.vditor-host :deep(.vditor-sv){padding:12px!important}.editor-modes button{font-size:.75rem;padding:.5rem}}

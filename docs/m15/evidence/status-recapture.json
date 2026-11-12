@@ -1,0 +1,168 @@
+{
+  "rows": [
+    {
+      "name": "admin-guides",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/admin/guides",
+      "h1": "攻略治理",
+      "theme": "light"
+    },
+    {
+      "name": "admin-comments",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/admin/comments",
+      "h1": "评论治理",
+      "theme": "light"
+    },
+    {
+      "name": "admin-destinations",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/admin/destinations",
+      "h1": "目的地管理",
+      "theme": "light"
+    },
+    {
+      "name": "admin-guides",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/admin/guides",
+      "h1": "攻略治理",
+      "theme": "light"
+    },
+    {
+      "name": "admin-comments",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/admin/comments",
+      "h1": "评论治理",
+      "theme": "light"
+    },
+    {
+      "name": "admin-destinations",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/admin/destinations",
+      "h1": "目的地管理",
+      "theme": "light"
+    },
+    {
+      "name": "admin-guides",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/admin/guides",
+      "h1": "攻略治理",
+      "theme": "light"
+    },
+    {
+      "name": "admin-comments",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/admin/comments",
+      "h1": "评论治理",
+      "theme": "light"
+    },
+    {
+      "name": "admin-destinations",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/admin/destinations",
+      "h1": "目的地管理",
+      "theme": "light"
+    },
+    {
+      "name": "admin-guides",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/admin/guides",
+      "h1": "攻略治理",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-comments",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/admin/comments",
+      "h1": "评论治理",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-destinations",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/admin/destinations",
+      "h1": "目的地管理",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-guides",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/admin/guides",
+      "h1": "攻略治理",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-comments",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/admin/comments",
+      "h1": "评论治理",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-destinations",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/admin/destinations",
+      "h1": "目的地管理",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-guides",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/admin/guides",
+      "h1": "攻略治理",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-comments",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/admin/comments",
+      "h1": "评论治理",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-destinations",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/admin/destinations",
+      "h1": "目的地管理",
+      "theme": "dark"
+    }
+  ],
+  "errors": [],
+  "fixture": true
+}

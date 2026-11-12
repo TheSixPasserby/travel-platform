@@ -1,0 +1,206 @@
+{
+  "checks": [
+    {
+      "name": "repeated image click",
+      "expected": 100,
+      "actual": 100
+    },
+    {
+      "name": "repeated image click",
+      "expected": 150,
+      "actual": 150
+    },
+    {
+      "name": "repeated image click",
+      "expected": 200,
+      "actual": 200
+    },
+    {
+      "name": "repeated image click",
+      "expected": 300,
+      "actual": 300
+    },
+    {
+      "name": "repeated image click",
+      "expected": 400,
+      "actual": 400
+    },
+    {
+      "name": "repeated image click",
+      "expected": 400,
+      "actual": 400
+    },
+    {
+      "name": "maximum scale button disabled"
+    },
+    {
+      "name": "zoom out",
+      "actual": 300
+    },
+    {
+      "name": "zoom keeps click anchor within one CSS pixel",
+      "before": {
+        "percentage": 100,
+        "rotation": 0,
+        "x": 0,
+        "y": 0.5960000000000036,
+        "bounds": {
+          "x": 0,
+          "y": 93.3984375
+        },
+        "rect": {
+          "x": 80,
+          "y": -16.80975341796875,
+          "w": 1280,
+          "h": 960
+        },
+        "stage": {
+          "x": 56,
+          "y": 76,
+          "w": 1328,
+          "h": 773.203125
+        },
+        "count": "‹\n1 / 3\n›"
+      },
+      "after": {
+        "percentage": 150,
+        "rotation": 0,
+        "x": -30,
+        "y": -18.803999999999974,
+        "bounds": {
+          "x": 296,
+          "y": 333.3984375
+        },
+        "rect": {
+          "x": -270,
+          "y": -276.210693359375,
+          "w": 1920,
+          "h": 1440
+        },
+        "stage": {
+          "x": 56,
+          "y": 76,
+          "w": 1328,
+          "h": 773.203125
+        },
+        "count": "‹\n1 / 3\n›"
+      }
+    },
+    {
+      "name": "mouse drag clamps and suppresses click",
+      "cursor": "grabbing",
+      "after": {
+        "percentage": 150,
+        "rotation": 0,
+        "x": 296,
+        "y": 333.398,
+        "bounds": {
+          "x": 296,
+          "y": 333.3984375
+        },
+        "rect": {
+          "x": 56,
+          "y": 75.9921875,
+          "w": 1920,
+          "h": 1440
+        },
+        "stage": {
+          "x": 56,
+          "y": 76,
+          "w": 1328,
+          "h": 773.203125
+        },
+        "count": "‹\n1 / 3\n›"
+      }
+    },
+    {
+      "name": "native mouse wheel zoom",
+      "percentage": 195.8
+    },
+    {
+      "name": "right rotation refits and centers",
+      "after": {
+        "percentage": 60.4,
+        "rotation": 90,
+        "x": 0,
+        "y": 0,
+        "bounds": {
+          "x": 0,
+          "y": 0
+        },
+        "rect": {
+          "x": 430.048828125,
+          "y": 75.9921875,
+          "w": 579.90234375,
+          "h": 773.203125
+        },
+        "stage": {
+          "x": 56,
+          "y": 76,
+          "w": 1328,
+          "h": 773.203125
+        },
+        "count": "‹\n1 / 3\n›"
+      }
+    },
+    {
+      "name": "left rotation"
+    },
+    {
+      "name": "toolbar downloads original",
+      "filename": "shanshuijian-e5716d5274af4de3ab8a7d70edf76240.jpg"
+    },
+    {
+      "name": "download failure feedback"
+    },
+    {
+      "name": "keyboard switch resets transform",
+      "after": {
+        "percentage": 80.5,
+        "rotation": 0,
+        "x": 0,
+        "y": 0,
+        "bounds": {
+          "x": 0,
+          "y": 0
+        },
+        "rect": {
+          "x": 204.7202606201172,
+          "y": 76.13394165039062,
+          "w": 1030.5595703125,
+          "h": 772.919677734375
+        },
+        "stage": {
+          "x": 56,
+          "y": 76,
+          "w": 1328,
+          "h": 773.203125
+        },
+        "count": "‹\n2 / 3\n›"
+      }
+    },
+    {
+      "name": "focus trap reverse"
+    },
+    {
+      "name": "focus trap forward"
+    },
+    {
+      "name": "blank click closes and restores focus"
+    },
+    {
+      "name": "cover opens single image"
+    },
+    {
+      "name": "reduced motion removes animations",
+      "reduced": {
+        "animations": 0,
+        "transition": "0s"
+      }
+    },
+    {
+      "name": "reduced motion closes immediately"
+    }
+  ],
+  "errors": []
+}

@@ -132,7 +132,7 @@ watch(
 .guide-note:hover {
   border-color: var(--color-pine);
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px -18px var(--color-pine-deep);
+  box-shadow: var(--ui-shadow-md);
 }
 @keyframes card-rise {
   from {
@@ -174,7 +174,7 @@ watch(
   max-width: calc(100% - 20px);
   overflow: hidden;
   padding: 4px 10px;
-  border-radius: 99px;
+  border-radius: var(--ui-radius-pill);
   background: var(--color-surface);
   color: var(--color-pine-deep);
   font-size: 12px;

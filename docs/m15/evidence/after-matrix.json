@@ -1,0 +1,1194 @@
+{
+  "rows": [
+    {
+      "name": "discovery",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/",
+      "h1": "发现下一段旅程",
+      "theme": "light"
+    },
+    {
+      "name": "article",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/guides/14",
+      "h1": "沿着西湖，慢慢走一程",
+      "theme": "light"
+    },
+    {
+      "name": "comments",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/guides/14",
+      "h1": "沿着西湖，慢慢走一程",
+      "theme": "light"
+    },
+    {
+      "name": "creator",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/users/traveler",
+      "h1": "山间旅人",
+      "theme": "light"
+    },
+    {
+      "name": "editor",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/guides/14/edit",
+      "h1": "整理这篇旅行手记",
+      "theme": "light"
+    },
+    {
+      "name": "destinations",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/destinations",
+      "h1": "下一程，去哪里",
+      "theme": "light"
+    },
+    {
+      "name": "destination",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/destinations/2",
+      "h1": "杭州",
+      "theme": "light"
+    },
+    {
+      "name": "ai",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/itineraries/ai",
+      "h1": " AI 帮我排一程 ",
+      "theme": "light"
+    },
+    {
+      "name": "favorites",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/me/favorites",
+      "h1": "我的收藏",
+      "theme": "light"
+    },
+    {
+      "name": "my-guides",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/me/guides",
+      "h1": "我的攻略",
+      "theme": "light"
+    },
+    {
+      "name": "itineraries",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/me/itineraries",
+      "h1": "我的行程",
+      "theme": "light"
+    },
+    {
+      "name": "login",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/login",
+      "h1": "欢迎回来",
+      "theme": "light"
+    },
+    {
+      "name": "register",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/register",
+      "h1": "创建账号",
+      "theme": "light"
+    },
+    {
+      "name": "settings",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/me/settings",
+      "h1": "我的资料",
+      "theme": "light"
+    },
+    {
+      "name": "admin",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/admin",
+      "h1": "后台概览",
+      "theme": "light"
+    },
+    {
+      "name": "admin-users",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/admin/users",
+      "h1": "用户管理",
+      "theme": "light"
+    },
+    {
+      "name": "admin-guides",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/admin/guides",
+      "h1": "攻略治理",
+      "theme": "light"
+    },
+    {
+      "name": "admin-comments",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/admin/comments",
+      "h1": "评论治理",
+      "theme": "light"
+    },
+    {
+      "name": "admin-destinations",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/admin/destinations",
+      "h1": "目的地管理",
+      "theme": "light"
+    },
+    {
+      "name": "admin-ai",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/admin/ai",
+      "h1": "AI 服务设置",
+      "theme": "light"
+    },
+    {
+      "name": "lightbox",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/guides/14",
+      "h1": "沿着西湖，慢慢走一程",
+      "theme": "light"
+    },
+    {
+      "name": "appearance",
+      "mode": "light",
+      "overflow": false,
+      "width": 1440,
+      "page": "/",
+      "h1": "发现下一段旅程",
+      "theme": "light"
+    },
+    {
+      "name": "discovery",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/",
+      "h1": "发现下一段旅程",
+      "theme": "light"
+    },
+    {
+      "name": "article",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/guides/14",
+      "h1": "沿着西湖，慢慢走一程",
+      "theme": "light"
+    },
+    {
+      "name": "comments",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/guides/14",
+      "h1": "沿着西湖，慢慢走一程",
+      "theme": "light"
+    },
+    {
+      "name": "creator",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/users/traveler",
+      "h1": "山间旅人",
+      "theme": "light"
+    },
+    {
+      "name": "editor",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/guides/14/edit",
+      "h1": "整理这篇旅行手记",
+      "theme": "light"
+    },
+    {
+      "name": "destinations",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/destinations",
+      "h1": "下一程，去哪里",
+      "theme": "light"
+    },
+    {
+      "name": "destination",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/destinations/2",
+      "h1": "杭州",
+      "theme": "light"
+    },
+    {
+      "name": "ai",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/itineraries/ai",
+      "h1": " AI 帮我排一程 ",
+      "theme": "light"
+    },
+    {
+      "name": "favorites",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/me/favorites",
+      "h1": "我的收藏",
+      "theme": "light"
+    },
+    {
+      "name": "my-guides",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/me/guides",
+      "h1": "我的攻略",
+      "theme": "light"
+    },
+    {
+      "name": "itineraries",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/me/itineraries",
+      "h1": "我的行程",
+      "theme": "light"
+    },
+    {
+      "name": "login",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/login",
+      "h1": "欢迎回来",
+      "theme": "light"
+    },
+    {
+      "name": "register",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/register",
+      "h1": "创建账号",
+      "theme": "light"
+    },
+    {
+      "name": "settings",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/me/settings",
+      "h1": "我的资料",
+      "theme": "light"
+    },
+    {
+      "name": "admin",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/admin",
+      "h1": "后台概览",
+      "theme": "light"
+    },
+    {
+      "name": "admin-users",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/admin/users",
+      "h1": "用户管理",
+      "theme": "light"
+    },
+    {
+      "name": "admin-guides",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/admin/guides",
+      "h1": "攻略治理",
+      "theme": "light"
+    },
+    {
+      "name": "admin-comments",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/admin/comments",
+      "h1": "评论治理",
+      "theme": "light"
+    },
+    {
+      "name": "admin-destinations",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/admin/destinations",
+      "h1": "目的地管理",
+      "theme": "light"
+    },
+    {
+      "name": "admin-ai",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/admin/ai",
+      "h1": "AI 服务设置",
+      "theme": "light"
+    },
+    {
+      "name": "lightbox",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/guides/14",
+      "h1": "沿着西湖，慢慢走一程",
+      "theme": "light"
+    },
+    {
+      "name": "appearance",
+      "mode": "light",
+      "overflow": false,
+      "width": 768,
+      "page": "/",
+      "h1": "发现下一段旅程",
+      "theme": "light"
+    },
+    {
+      "name": "discovery",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/",
+      "h1": "发现下一段旅程",
+      "theme": "light"
+    },
+    {
+      "name": "article",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/guides/14",
+      "h1": "沿着西湖，慢慢走一程",
+      "theme": "light"
+    },
+    {
+      "name": "comments",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/guides/14",
+      "h1": "沿着西湖，慢慢走一程",
+      "theme": "light"
+    },
+    {
+      "name": "creator",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/users/traveler",
+      "h1": "山间旅人",
+      "theme": "light"
+    },
+    {
+      "name": "editor",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/guides/14/edit",
+      "h1": "整理这篇旅行手记",
+      "theme": "light"
+    },
+    {
+      "name": "destinations",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/destinations",
+      "h1": "下一程，去哪里",
+      "theme": "light"
+    },
+    {
+      "name": "destination",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/destinations/2",
+      "h1": "杭州",
+      "theme": "light"
+    },
+    {
+      "name": "ai",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/itineraries/ai",
+      "h1": " AI 帮我排一程 ",
+      "theme": "light"
+    },
+    {
+      "name": "favorites",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/me/favorites",
+      "h1": "我的收藏",
+      "theme": "light"
+    },
+    {
+      "name": "my-guides",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/me/guides",
+      "h1": "我的攻略",
+      "theme": "light"
+    },
+    {
+      "name": "itineraries",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/me/itineraries",
+      "h1": "我的行程",
+      "theme": "light"
+    },
+    {
+      "name": "login",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/login",
+      "h1": "欢迎回来",
+      "theme": "light"
+    },
+    {
+      "name": "register",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/register",
+      "h1": "创建账号",
+      "theme": "light"
+    },
+    {
+      "name": "settings",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/me/settings",
+      "h1": "我的资料",
+      "theme": "light"
+    },
+    {
+      "name": "admin",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/admin",
+      "h1": "后台概览",
+      "theme": "light"
+    },
+    {
+      "name": "admin-users",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/admin/users",
+      "h1": "用户管理",
+      "theme": "light"
+    },
+    {
+      "name": "admin-guides",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/admin/guides",
+      "h1": "攻略治理",
+      "theme": "light"
+    },
+    {
+      "name": "admin-comments",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/admin/comments",
+      "h1": "评论治理",
+      "theme": "light"
+    },
+    {
+      "name": "admin-destinations",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/admin/destinations",
+      "h1": "目的地管理",
+      "theme": "light"
+    },
+    {
+      "name": "admin-ai",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/admin/ai",
+      "h1": "AI 服务设置",
+      "theme": "light"
+    },
+    {
+      "name": "lightbox",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/guides/14",
+      "h1": "沿着西湖，慢慢走一程",
+      "theme": "light"
+    },
+    {
+      "name": "appearance",
+      "mode": "light",
+      "overflow": false,
+      "width": 390,
+      "page": "/",
+      "h1": "发现下一段旅程",
+      "theme": "light"
+    },
+    {
+      "name": "discovery",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/",
+      "h1": "发现下一段旅程",
+      "theme": "dark"
+    },
+    {
+      "name": "article",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/guides/14",
+      "h1": "沿着西湖，慢慢走一程",
+      "theme": "dark"
+    },
+    {
+      "name": "comments",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/guides/14",
+      "h1": "沿着西湖，慢慢走一程",
+      "theme": "dark"
+    },
+    {
+      "name": "creator",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/users/traveler",
+      "h1": "山间旅人",
+      "theme": "dark"
+    },
+    {
+      "name": "editor",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/guides/14/edit",
+      "h1": "整理这篇旅行手记",
+      "theme": "dark"
+    },
+    {
+      "name": "destinations",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/destinations",
+      "h1": "下一程，去哪里",
+      "theme": "dark"
+    },
+    {
+      "name": "destination",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/destinations/2",
+      "h1": "杭州",
+      "theme": "dark"
+    },
+    {
+      "name": "ai",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/itineraries/ai",
+      "h1": " AI 帮我排一程 ",
+      "theme": "dark"
+    },
+    {
+      "name": "favorites",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/me/favorites",
+      "h1": "我的收藏",
+      "theme": "dark"
+    },
+    {
+      "name": "my-guides",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/me/guides",
+      "h1": "我的攻略",
+      "theme": "dark"
+    },
+    {
+      "name": "itineraries",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/me/itineraries",
+      "h1": "我的行程",
+      "theme": "dark"
+    },
+    {
+      "name": "login",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/login",
+      "h1": "欢迎回来",
+      "theme": "dark"
+    },
+    {
+      "name": "register",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/register",
+      "h1": "创建账号",
+      "theme": "dark"
+    },
+    {
+      "name": "settings",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/me/settings",
+      "h1": "我的资料",
+      "theme": "dark"
+    },
+    {
+      "name": "admin",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/admin",
+      "h1": "后台概览",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-users",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/admin/users",
+      "h1": "用户管理",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-guides",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/admin/guides",
+      "h1": "攻略治理",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-comments",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/admin/comments",
+      "h1": "评论治理",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-destinations",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/admin/destinations",
+      "h1": "目的地管理",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-ai",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/admin/ai",
+      "h1": "AI 服务设置",
+      "theme": "dark"
+    },
+    {
+      "name": "lightbox",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/guides/14",
+      "h1": "沿着西湖，慢慢走一程",
+      "theme": "dark"
+    },
+    {
+      "name": "appearance",
+      "mode": "dark",
+      "overflow": false,
+      "width": 1440,
+      "page": "/",
+      "h1": "发现下一段旅程",
+      "theme": "dark"
+    },
+    {
+      "name": "discovery",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/",
+      "h1": "发现下一段旅程",
+      "theme": "dark"
+    },
+    {
+      "name": "article",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/guides/14",
+      "h1": "沿着西湖，慢慢走一程",
+      "theme": "dark"
+    },
+    {
+      "name": "comments",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/guides/14",
+      "h1": "沿着西湖，慢慢走一程",
+      "theme": "dark"
+    },
+    {
+      "name": "creator",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/users/traveler",
+      "h1": "山间旅人",
+      "theme": "dark"
+    },
+    {
+      "name": "editor",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/guides/14/edit",
+      "h1": "整理这篇旅行手记",
+      "theme": "dark"
+    },
+    {
+      "name": "destinations",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/destinations",
+      "h1": "下一程，去哪里",
+      "theme": "dark"
+    },
+    {
+      "name": "destination",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/destinations/2",
+      "h1": "杭州",
+      "theme": "dark"
+    },
+    {
+      "name": "ai",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/itineraries/ai",
+      "h1": " AI 帮我排一程 ",
+      "theme": "dark"
+    },
+    {
+      "name": "favorites",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/me/favorites",
+      "h1": "我的收藏",
+      "theme": "dark"
+    },
+    {
+      "name": "my-guides",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/me/guides",
+      "h1": "我的攻略",
+      "theme": "dark"
+    },
+    {
+      "name": "itineraries",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/me/itineraries",
+      "h1": "我的行程",
+      "theme": "dark"
+    },
+    {
+      "name": "login",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/login",
+      "h1": "欢迎回来",
+      "theme": "dark"
+    },
+    {
+      "name": "register",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/register",
+      "h1": "创建账号",
+      "theme": "dark"
+    },
+    {
+      "name": "settings",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/me/settings",
+      "h1": "我的资料",
+      "theme": "dark"
+    },
+    {
+      "name": "admin",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/admin",
+      "h1": "后台概览",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-users",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/admin/users",
+      "h1": "用户管理",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-guides",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/admin/guides",
+      "h1": "攻略治理",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-comments",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/admin/comments",
+      "h1": "评论治理",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-destinations",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/admin/destinations",
+      "h1": "目的地管理",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-ai",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/admin/ai",
+      "h1": "AI 服务设置",
+      "theme": "dark"
+    },
+    {
+      "name": "lightbox",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/guides/14",
+      "h1": "沿着西湖，慢慢走一程",
+      "theme": "dark"
+    },
+    {
+      "name": "appearance",
+      "mode": "dark",
+      "overflow": false,
+      "width": 768,
+      "page": "/",
+      "h1": "发现下一段旅程",
+      "theme": "dark"
+    },
+    {
+      "name": "discovery",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/",
+      "h1": "发现下一段旅程",
+      "theme": "dark"
+    },
+    {
+      "name": "article",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/guides/14",
+      "h1": "沿着西湖，慢慢走一程",
+      "theme": "dark"
+    },
+    {
+      "name": "comments",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/guides/14",
+      "h1": "沿着西湖，慢慢走一程",
+      "theme": "dark"
+    },
+    {
+      "name": "creator",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/users/traveler",
+      "h1": "山间旅人",
+      "theme": "dark"
+    },
+    {
+      "name": "editor",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/guides/14/edit",
+      "h1": "整理这篇旅行手记",
+      "theme": "dark"
+    },
+    {
+      "name": "destinations",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/destinations",
+      "h1": "下一程，去哪里",
+      "theme": "dark"
+    },
+    {
+      "name": "destination",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/destinations/2",
+      "h1": "杭州",
+      "theme": "dark"
+    },
+    {
+      "name": "ai",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/itineraries/ai",
+      "h1": " AI 帮我排一程 ",
+      "theme": "dark"
+    },
+    {
+      "name": "favorites",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/me/favorites",
+      "h1": "我的收藏",
+      "theme": "dark"
+    },
+    {
+      "name": "my-guides",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/me/guides",
+      "h1": "我的攻略",
+      "theme": "dark"
+    },
+    {
+      "name": "itineraries",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/me/itineraries",
+      "h1": "我的行程",
+      "theme": "dark"
+    },
+    {
+      "name": "login",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/login",
+      "h1": "欢迎回来",
+      "theme": "dark"
+    },
+    {
+      "name": "register",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/register",
+      "h1": "创建账号",
+      "theme": "dark"
+    },
+    {
+      "name": "settings",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/me/settings",
+      "h1": "我的资料",
+      "theme": "dark"
+    },
+    {
+      "name": "admin",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/admin",
+      "h1": "后台概览",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-users",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/admin/users",
+      "h1": "用户管理",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-guides",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/admin/guides",
+      "h1": "攻略治理",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-comments",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/admin/comments",
+      "h1": "评论治理",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-destinations",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/admin/destinations",
+      "h1": "目的地管理",
+      "theme": "dark"
+    },
+    {
+      "name": "admin-ai",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/admin/ai",
+      "h1": "AI 服务设置",
+      "theme": "dark"
+    },
+    {
+      "name": "lightbox",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/guides/14",
+      "h1": "沿着西湖，慢慢走一程",
+      "theme": "dark"
+    },
+    {
+      "name": "appearance",
+      "mode": "dark",
+      "overflow": false,
+      "width": 390,
+      "page": "/",
+      "h1": "发现下一段旅程",
+      "theme": "dark"
+    }
+  ],
+  "errors": [],
+  "fixture": true
+}

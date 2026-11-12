@@ -1,0 +1,14 @@
+{
+  "protectedFiles": {
+    "frontend/src/composables/useImageLightbox.ts": true,
+    "frontend/src/composables/useImageTransform.ts": true,
+    "frontend/src/utils/imageDownload.ts": true,
+    "frontend/src/components/ImageViewerToolbar.vue": true,
+    "frontend/tests/image-lightbox.spec.ts": true,
+    "frontend/tests/image-transform.spec.ts": true,
+    "frontend/tests/image-download.spec.ts": true,
+    "frontend/tests/image-preview.spec.ts": true,
+    "frontend/tests/image-viewer-toolbar.spec.ts": true
+  },
+  "lightboxLogicAndTemplateUnchanged": true
+}

@@ -267,7 +267,7 @@ onMounted(() => {
             </div>
           </div>
 
-          <p v-if="statusMessage" role="status" class="text-sm text-pine">
+          <p v-if="statusMessage" role="status" class="text-sm text-[var(--ui-success)]">
             {{ statusMessage }}
           </p>
 

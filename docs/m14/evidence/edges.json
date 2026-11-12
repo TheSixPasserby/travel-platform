@@ -1,0 +1,32 @@
+{
+  "checks": [
+    {
+      "name": "blank loading canvas closes despite status layer"
+    },
+    {
+      "name": "failed preview shows recovery message"
+    },
+    {
+      "name": "failed image disables transformation/download"
+    },
+    {
+      "name": "blank error canvas closes despite status layer"
+    },
+    {
+      "name": "failed image can switch to a healthy image"
+    },
+    {
+      "name": "gallery opens actual clicked position"
+    },
+    {
+      "name": "route query change cleans preview and scroll"
+    },
+    {
+      "name": "DOMPurify and source allowlist remain intact"
+    },
+    {
+      "name": "unsafe downloads rejected before network",
+      "rejected": 4
+    }
+  ]
+}

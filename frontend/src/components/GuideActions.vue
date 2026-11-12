@@ -631,8 +631,7 @@ onBeforeUnmount(() => {
   border-radius: 999px;
   background: var(--color-surface);
   border: 1px solid color-mix(in srgb, var(--color-pine) 16%, transparent);
-  box-shadow: 0 12px 30px -22px
-    color-mix(in srgb, var(--color-pine-deep) 55%, transparent);
+  box-shadow: var(--ui-shadow-sm);
 }
 
 .action-rail__btn {
@@ -671,7 +670,8 @@ onBeforeUnmount(() => {
 }
 
 .action-rail__btn.is-active {
-  color: var(--color-ember);
+  color: var(--ui-accent);
+  background: var(--ui-accent-soft);
 }
 
 .action-rail__btn.is-bumped {

@@ -1,45 +1,60 @@
 import { onScopeDispose, ref } from 'vue'
 import { defineStore } from 'pinia'
+import type { AccentSelection, ThemePreference } from '@/types/theme'
+export type { ThemePreference } from '@/types/theme'
 
-export type ThemePreference = 'system' | 'light' | 'dark'
 const STORAGE_KEY = 'travel-notes.theme'
 
-function parsePreference(value: string | null): ThemePreference {
-  return value === 'light' || value === 'dark' ? value : 'system'
-}
-
 export const useThemeStore = defineStore('theme', () => {
+  const runtime = window.shanshuiTheme
+  let storage: Storage | null = null
   let saved: ThemePreference = 'system'
+  let savedAccent: AccentSelection = { preset: 'pine' }
   try {
-    saved = parsePreference(localStorage.getItem(STORAGE_KEY))
+    storage = window.localStorage
+    saved = runtime.readPreference(storage.getItem(STORAGE_KEY))
+    savedAccent = runtime.readAccent(storage.getItem(runtime.accentKey))
   } catch {
     // Theme selection remains usable without persistent storage.
   }
   const preference = ref<ThemePreference>(saved)
+  const accent = ref<AccentSelection>(savedAccent)
+  const presets = runtime.presets
   const system = window.matchMedia?.('(prefers-color-scheme: dark)')
 
   function apply(): void {
-    const theme = preference.value === 'system'
-      ? (system?.matches ? 'dark' : 'light')
-      : preference.value
-    document.documentElement.dataset.theme = theme
-    document.documentElement.style.colorScheme = theme
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#141e1a' : '#f9f7f2')
+    runtime.apply(preference.value, accent.value, system?.matches ?? false)
+  }
+
+  function persist(key: string, value: string): void {
+    try { storage?.setItem(key, value) }
+    catch { /* Keep applying in memory when persistence is disabled. */ }
   }
 
   function setPreference(next: ThemePreference): void {
-    preference.value = next
-    try {
-      localStorage.setItem(STORAGE_KEY, next)
-    } catch {
-      // Apply in memory even if persistence is disabled.
-    }
+    preference.value = runtime.readPreference(next)
+    persist(STORAGE_KEY, preference.value)
     apply()
   }
 
+  function setAccent(next: unknown): boolean {
+    const valid = runtime.normalizeAccent(next)
+    if (!valid) return false
+    accent.value = valid
+    persist(runtime.accentKey, JSON.stringify(valid))
+    apply()
+    return true
+  }
+
+  function resetAccent(): void {
+    setAccent({ preset: 'pine' })
+  }
+
   function syncStorage(event: StorageEvent): void {
-    if (event.key !== STORAGE_KEY && event.key !== null) return
-    preference.value = parsePreference(event.newValue)
+    if (event.key !== STORAGE_KEY && event.key !== runtime.accentKey && event.key !== null) return
+    if (event.storageArea && event.storageArea !== storage) return
+    if (event.key === STORAGE_KEY || event.key === null) preference.value = runtime.readPreference(event.newValue)
+    if (event.key === runtime.accentKey || event.key === null) accent.value = runtime.readAccent(event.newValue)
     apply()
   }
 
@@ -51,5 +66,5 @@ export const useThemeStore = defineStore('theme', () => {
     window.removeEventListener('storage', syncStorage)
   })
 
-  return { preference, setPreference }
+  return { preference, accent, presets, setPreference, setAccent, resetAccent }
 })

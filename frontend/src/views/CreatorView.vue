@@ -309,7 +309,7 @@ onBeforeUnmount(() => {
 .stream-container {
   width: 100%;
   min-width: 0;
-  max-width: 96rem;
+  max-width: var(--ui-stream-max, 96rem);
   margin-inline: auto;
   padding-inline: 1.25rem;
 }
@@ -334,10 +334,9 @@ onBeforeUnmount(() => {
   overflow: hidden;
   border: 1px solid
     color-mix(in srgb, var(--color-pine) 18%, var(--color-surface));
-  border-radius: 1.75rem;
+  border-radius: var(--ui-radius-lg);
   background: var(--color-surface);
-  box-shadow: 0 26px 60px -46px
-    color-mix(in srgb, var(--color-pine-deep) 60%, transparent);
+  box-shadow: var(--ui-shadow-md);
 }
 .profile-cover {
   position: relative;
@@ -387,8 +386,7 @@ onBeforeUnmount(() => {
   padding: 4px;
   border-radius: 999px;
   background: var(--color-surface);
-  box-shadow: 0 10px 28px -18px
-    color-mix(in srgb, var(--color-pine-deep) 80%, transparent);
+  box-shadow: var(--ui-shadow-sm);
 }
 .profile-id {
   min-width: 0;
@@ -451,7 +449,7 @@ onBeforeUnmount(() => {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  min-height: 40px;
+  min-height: 44px;
   padding: 0.375rem 0.875rem;
   border: 1px solid color-mix(in srgb, var(--color-pine) 26%, transparent);
   border-radius: 999px;
@@ -601,6 +599,7 @@ onBeforeUnmount(() => {
   }
 }
 .profile-name {
+  font-family: var(--font-serif);
   font-size: 30px;
   font-weight: 650;
   line-height: 1.4;
@@ -624,6 +623,7 @@ onBeforeUnmount(() => {
     padding-top: 12px;
   }
   .profile-name {
+  font-family: var(--font-serif);
     font-size: 34px;
   }
 }

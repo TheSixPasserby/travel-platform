@@ -1,0 +1,24 @@
+M15 final local verification — 2026-11-12 Asia/Shanghai
+
+Frontend
+ Test Files  51 passed (51)
+      Tests  493 passed (493)
+   Duration  5.16s (transform 4.44s, setup 1.17s, import 10.90s, tests 11.64s, environment 14.93s)
+
+TypeScript/Vite
+✓ built in 1.48s
+
+Python/Web-only
+Ran 92 tests in 0.365s
+OK
+
+Chromium 157.0.8103.78
+Layout matrix 264/264
+Theme assertions 49/49
+Vditor checks 16/16
+M14 matrix 10/10, desktop 22/22, touch 8/8, edges 9/9
+M13 501 records, peak DOM 96, final DOM 17, last record reachable
+Palette samples 8192, minimum text 4.838, button 5.530, strong boundary 3.000
+Source preservation hashes passed
+Backend tests, physical devices, Safari/Firefox, remote CI and paid AI calls not executed.
+Production storage-disabled browser test passed. DevTools storage getter restriction documented in ACCEPTANCE.md.

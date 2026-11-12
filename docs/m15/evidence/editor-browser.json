@@ -1,0 +1,182 @@
+{
+  "checks": [
+    {
+      "name": "Vditor content and layout",
+      "mode": "light",
+      "width": 1440,
+      "editMode": "wysiwyg",
+      "colors": {
+        "toolbar": "rgb(242, 238, 241)",
+        "expected": "#f2eef1",
+        "body": "#fdfdfe",
+        "text": "#202a29",
+        "overflow": false
+      }
+    },
+    {
+      "name": "Vditor content and layout",
+      "mode": "light",
+      "width": 1440,
+      "editMode": "ir",
+      "colors": {
+        "toolbar": "rgb(242, 238, 241)",
+        "expected": "#f2eef1",
+        "body": "#fdfdfe",
+        "text": "#202a29",
+        "overflow": false
+      }
+    },
+    {
+      "name": "Vditor content and layout",
+      "mode": "light",
+      "width": 1440,
+      "editMode": "sv",
+      "colors": {
+        "toolbar": "rgb(242, 238, 241)",
+        "expected": "#f2eef1",
+        "body": "#fdfdfe",
+        "text": "#202a29",
+        "overflow": false
+      }
+    },
+    {
+      "name": "theme switch retains existing Markdown",
+      "mode": "light",
+      "width": 1440
+    },
+    {
+      "name": "Vditor content and layout",
+      "mode": "light",
+      "width": 390,
+      "editMode": "wysiwyg",
+      "colors": {
+        "toolbar": "rgb(242, 238, 241)",
+        "expected": "#f2eef1",
+        "body": "#fdfdfe",
+        "text": "#202a29",
+        "overflow": false
+      }
+    },
+    {
+      "name": "Vditor content and layout",
+      "mode": "light",
+      "width": 390,
+      "editMode": "ir",
+      "colors": {
+        "toolbar": "rgb(242, 238, 241)",
+        "expected": "#f2eef1",
+        "body": "#fdfdfe",
+        "text": "#202a29",
+        "overflow": false
+      }
+    },
+    {
+      "name": "Vditor content and layout",
+      "mode": "light",
+      "width": 390,
+      "editMode": "sv",
+      "colors": {
+        "toolbar": "rgb(242, 238, 241)",
+        "expected": "#f2eef1",
+        "body": "#fdfdfe",
+        "text": "#202a29",
+        "overflow": false
+      }
+    },
+    {
+      "name": "theme switch retains existing Markdown",
+      "mode": "light",
+      "width": 390
+    },
+    {
+      "name": "Vditor content and layout",
+      "mode": "dark",
+      "width": 1440,
+      "editMode": "wysiwyg",
+      "colors": {
+        "toolbar": "rgb(30, 31, 41)",
+        "expected": "#1e1f29",
+        "body": "#21262c",
+        "text": "#edf0ee",
+        "overflow": false
+      }
+    },
+    {
+      "name": "Vditor content and layout",
+      "mode": "dark",
+      "width": 1440,
+      "editMode": "ir",
+      "colors": {
+        "toolbar": "rgb(30, 31, 41)",
+        "expected": "#1e1f29",
+        "body": "#21262c",
+        "text": "#edf0ee",
+        "overflow": false
+      }
+    },
+    {
+      "name": "Vditor content and layout",
+      "mode": "dark",
+      "width": 1440,
+      "editMode": "sv",
+      "colors": {
+        "toolbar": "rgb(30, 31, 41)",
+        "expected": "#1e1f29",
+        "body": "#21262c",
+        "text": "#edf0ee",
+        "overflow": false
+      }
+    },
+    {
+      "name": "theme switch retains existing Markdown",
+      "mode": "dark",
+      "width": 1440
+    },
+    {
+      "name": "Vditor content and layout",
+      "mode": "dark",
+      "width": 390,
+      "editMode": "wysiwyg",
+      "colors": {
+        "toolbar": "rgb(30, 31, 41)",
+        "expected": "#1e1f29",
+        "body": "#21262c",
+        "text": "#edf0ee",
+        "overflow": false
+      }
+    },
+    {
+      "name": "Vditor content and layout",
+      "mode": "dark",
+      "width": 390,
+      "editMode": "ir",
+      "colors": {
+        "toolbar": "rgb(30, 31, 41)",
+        "expected": "#1e1f29",
+        "body": "#21262c",
+        "text": "#edf0ee",
+        "overflow": false
+      }
+    },
+    {
+      "name": "Vditor content and layout",
+      "mode": "dark",
+      "width": 390,
+      "editMode": "sv",
+      "colors": {
+        "toolbar": "rgb(30, 31, 41)",
+        "expected": "#1e1f29",
+        "body": "#21262c",
+        "text": "#edf0ee",
+        "overflow": false
+      }
+    },
+    {
+      "name": "theme switch retains existing Markdown",
+      "mode": "dark",
+      "width": 390
+    }
+  ],
+  "errors": [],
+  "fixture": true
+}

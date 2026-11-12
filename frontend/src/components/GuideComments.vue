@@ -75,7 +75,7 @@ onBeforeUnmount(()=>{contextVersion++;listVersion++})
     </div>
     <div class="comments__feedback">
       <p v-if="writeError" role="alert" class="mt-4 rounded-xl bg-ember/10 p-3 text-sm text-ember">{{ writeError }}</p>
-      <p v-if="notice" role="status" class="mt-4 text-sm text-pine">{{ notice }}</p>
+      <p v-if="notice" role="status" class="mt-4 text-sm text-[var(--ui-success)]">{{ notice }}</p>
     </div>
     <div class="comments__compose">
       <form v-if="auth.isAuthenticated||text" data-test="comment-form" class="mt-6" @submit.prevent="submit">

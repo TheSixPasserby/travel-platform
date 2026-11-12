@@ -1,0 +1,555 @@
+{
+  "checks": [
+    {
+      "name": "preset applied",
+      "mode": "light",
+      "preset": "pine"
+    },
+    {
+      "name": "preset applied",
+      "mode": "light",
+      "preset": "ocean"
+    },
+    {
+      "name": "preset applied",
+      "mode": "light",
+      "preset": "violet"
+    },
+    {
+      "name": "preset applied",
+      "mode": "light",
+      "preset": "sunset"
+    },
+    {
+      "name": "preset applied",
+      "mode": "light",
+      "preset": "rose"
+    },
+    {
+      "name": "preset applied",
+      "mode": "light",
+      "preset": "graphite"
+    },
+    {
+      "name": "preset applied",
+      "mode": "dark",
+      "preset": "pine"
+    },
+    {
+      "name": "preset applied",
+      "mode": "dark",
+      "preset": "ocean"
+    },
+    {
+      "name": "preset applied",
+      "mode": "dark",
+      "preset": "violet"
+    },
+    {
+      "name": "preset applied",
+      "mode": "dark",
+      "preset": "sunset"
+    },
+    {
+      "name": "preset applied",
+      "mode": "dark",
+      "preset": "rose"
+    },
+    {
+      "name": "preset applied",
+      "mode": "dark",
+      "preset": "graphite"
+    },
+    {
+      "name": "preset applied",
+      "mode": "system",
+      "preset": "pine"
+    },
+    {
+      "name": "preset applied",
+      "mode": "system",
+      "preset": "ocean"
+    },
+    {
+      "name": "preset applied",
+      "mode": "system",
+      "preset": "violet"
+    },
+    {
+      "name": "preset applied",
+      "mode": "system",
+      "preset": "sunset"
+    },
+    {
+      "name": "preset applied",
+      "mode": "system",
+      "preset": "rose"
+    },
+    {
+      "name": "preset applied",
+      "mode": "system",
+      "preset": "graphite"
+    },
+    {
+      "name": "custom applied",
+      "mode": "light",
+      "custom": "#000000"
+    },
+    {
+      "name": "custom applied",
+      "mode": "dark",
+      "custom": "#000000"
+    },
+    {
+      "name": "custom applied",
+      "mode": "light",
+      "custom": "#FFFFFF"
+    },
+    {
+      "name": "custom applied",
+      "mode": "dark",
+      "custom": "#FFFFFF"
+    },
+    {
+      "name": "custom applied",
+      "mode": "light",
+      "custom": "#1a73e8"
+    },
+    {
+      "name": "custom applied",
+      "mode": "dark",
+      "custom": "#1a73e8"
+    },
+    {
+      "name": "invalid rejected",
+      "invalid": "#fff"
+    },
+    {
+      "name": "invalid rejected",
+      "invalid": "#12345678"
+    },
+    {
+      "name": "invalid rejected",
+      "invalid": "red"
+    },
+    {
+      "name": "invalid rejected",
+      "invalid": "#GGGGGG"
+    },
+    {
+      "name": "invalid rejected",
+      "invalid": "#123456;display:none"
+    },
+    {
+      "name": "reset clears invalid draft and retains mode"
+    },
+    {
+      "name": "reload persistence"
+    },
+    {
+      "name": "cross-tab accent sync"
+    },
+    {
+      "name": "cross-tab appearance sync retains accent"
+    },
+    {
+      "name": "system change retains accent"
+    },
+    {
+      "name": "unknown storage version falls back"
+    },
+    {
+      "name": "storage clear restores system mode"
+    },
+    {
+      "name": "palette before Vue entry",
+      "theme": "dark",
+      "accent": "ocean"
+    },
+    {
+      "name": "open comments follows accent"
+    },
+    {
+      "name": "lightbox canvas remains neutral",
+      "neutral": "rgb(18, 22, 25)"
+    },
+    {
+      "name": "lightbox restores focus and scroll after accent update"
+    },
+    {
+      "name": "storage disabled still usable"
+    },
+    {
+      "name": "storage event does not break blocked-storage in-memory selection",
+      "blockedErrors": []
+    },
+    {
+      "name": "responsive keyboard panel",
+      "width": 360,
+      "panel": {
+        "x": 8,
+        "right": 344,
+        "bottom": 638,
+        "overflow": false,
+        "viewport": 650,
+        "focus": true
+      }
+    },
+    {
+      "name": "responsive keyboard panel",
+      "width": 390,
+      "panel": {
+        "x": 8,
+        "right": 374,
+        "bottom": 638,
+        "overflow": false,
+        "viewport": 650,
+        "focus": true
+      }
+    },
+    {
+      "name": "responsive keyboard panel",
+      "width": 430,
+      "panel": {
+        "x": 34,
+        "right": 414,
+        "bottom": 638,
+        "overflow": false,
+        "viewport": 650,
+        "focus": true
+      }
+    },
+    {
+      "name": "responsive keyboard panel",
+      "width": 768,
+      "panel": {
+        "x": 372,
+        "right": 752,
+        "bottom": 832.671875,
+        "overflow": false,
+        "viewport": 1000,
+        "focus": true
+      }
+    },
+    {
+      "name": "responsive keyboard panel",
+      "width": 1024,
+      "panel": {
+        "x": 628,
+        "right": 1008,
+        "bottom": 832.671875,
+        "overflow": false,
+        "viewport": 1000,
+        "focus": true
+      }
+    },
+    {
+      "name": "responsive keyboard panel",
+      "width": 1440,
+      "panel": {
+        "x": 1044,
+        "right": 1424,
+        "bottom": 832.671875,
+        "overflow": false,
+        "viewport": 1000,
+        "focus": true
+      }
+    },
+    {
+      "name": "reduced motion",
+      "motion": "0s"
+    }
+  ],
+  "samples": [
+    {
+      "theme": "light",
+      "accent": "pine",
+      "css": "color-scheme: light; --ui-bg-page: #f4f5f0; --ui-bg-surface: #fcfdfd; --ui-bg-elevated: #fefefe; --ui-bg-muted: #eaefe9; --ui-text-primary: #202a29; --ui-text-secondary: #52605e; --ui-border-subtle: #d9dbdb; --ui-border-strong: #828484; --ui-accent: #166d4a; --ui-accent-hover: #136041; --ui-accent-pressed: #115439; --ui-accent-soft: #e0e8e1; --ui-accent-on: #ffffff; --ui-focus-ring: #166d4a; --ui-link: #166d4a; --ui-selection: #e0e8e1; --ui-viewer-accent: #4f977a; --ui-viewer-on: #101819; --ui-viewer-focus: #4f977a; --ui-accent-seed: #187650;",
+      "page": "#f4f5f0",
+      "surface": "#fcfdfd",
+      "accentColor": "#166d4a",
+      "link": "#166d4a",
+      "focus": "#166d4a",
+      "success": "#24633f",
+      "warning": "#98441d",
+      "danger": "#af3241",
+      "body": "rgb(244, 245, 240)",
+      "button": "rgb(84, 151, 124)",
+      "meta": "#fcfdfd"
+    },
+    {
+      "theme": "light",
+      "accent": "ocean",
+      "css": "color-scheme: light; --ui-bg-page: #f5f5f3; --ui-bg-surface: #fdfdfe; --ui-bg-elevated: #fefeff; --ui-bg-muted: #eceff1; --ui-text-primary: #202a29; --ui-text-secondary: #52605e; --ui-border-subtle: #dadbdc; --ui-border-strong: #828484; --ui-accent: #2b62a4; --ui-accent-hover: #265690; --ui-accent-pressed: #214b7e; --ui-accent-soft: #e3e8eb; --ui-accent-on: #ffffff; --ui-focus-ring: #2b62a4; --ui-link: #2b62a4; --ui-selection: #e3e8eb; --ui-viewer-accent: #538cd0; --ui-viewer-on: #101819; --ui-viewer-focus: #538cd0; --ui-accent-seed: #3578C8;",
+      "page": "#f5f5f3",
+      "surface": "#fdfdfe",
+      "accentColor": "#2b62a4",
+      "link": "#2b62a4",
+      "focus": "#2b62a4",
+      "success": "#24633f",
+      "warning": "#98441d",
+      "danger": "#af3241",
+      "body": "rgb(245, 245, 243)",
+      "button": "rgb(22, 109, 74)",
+      "meta": "#fdfdfe"
+    },
+    {
+      "theme": "light",
+      "accent": "violet",
+      "css": "color-scheme: light; --ui-bg-page: #f7f4f3; --ui-bg-surface: #fdfdfe; --ui-bg-elevated: #fefeff; --ui-bg-muted: #f2eef1; --ui-text-primary: #202a29; --ui-text-secondary: #52605e; --ui-border-subtle: #dadbdc; --ui-border-strong: #828484; --ui-accent: #6a53a6; --ui-accent-hover: #5d4992; --ui-accent-pressed: #524080; --ui-accent-soft: #eae6eb; --ui-accent-on: #ffffff; --ui-focus-ring: #6a53a6; --ui-link: #6a53a6; --ui-selection: #eae6eb; --ui-viewer-accent: #947dd1; --ui-viewer-on: #101819; --ui-viewer-focus: #947dd1; --ui-accent-seed: #8064C8;",
+      "page": "#f7f4f3",
+      "surface": "#fdfdfe",
+      "accentColor": "#6a53a6",
+      "link": "#6a53a6",
+      "focus": "#6a53a6",
+      "success": "#24633f",
+      "warning": "#98441d",
+      "danger": "#af3241",
+      "body": "rgb(247, 244, 243)",
+      "button": "rgb(43, 98, 164)",
+      "meta": "#fdfdfe"
+    },
+    {
+      "theme": "light",
+      "accent": "sunset",
+      "css": "color-scheme: light; --ui-bg-page: #f9f5f0; --ui-bg-surface: #fefdfd; --ui-bg-elevated: #fffefe; --ui-bg-muted: #f7efe8; --ui-text-primary: #202a29; --ui-text-secondary: #52605e; --ui-border-subtle: #dadbdb; --ui-border-strong: #848686; --ui-accent: #8c542e; --ui-accent-hover: #7b4a28; --ui-accent-pressed: #6c4123; --ui-accent-soft: #f0e8df; --ui-accent-on: #ffffff; --ui-focus-ring: #8c542e; --ui-link: #8c542e; --ui-selection: #f0e8df; --ui-viewer-accent: #c87842; --ui-viewer-on: #101819; --ui-viewer-focus: #c87842; --ui-accent-seed: #C87842;",
+      "page": "#f9f5f0",
+      "surface": "#fefdfd",
+      "accentColor": "#8c542e",
+      "link": "#8c542e",
+      "focus": "#8c542e",
+      "success": "#24633f",
+      "warning": "#98441d",
+      "danger": "#af3241",
+      "body": "rgb(249, 245, 240)",
+      "button": "rgb(106, 83, 166)",
+      "meta": "#fefdfd"
+    },
+    {
+      "theme": "light",
+      "accent": "rose",
+      "css": "color-scheme: light; --ui-bg-page: #f9f4f1; --ui-bg-surface: #fefdfe; --ui-bg-elevated: #fffefe; --ui-bg-muted: #f7eeec; --ui-text-primary: #202a29; --ui-text-secondary: #52605e; --ui-border-subtle: #dadbdc; --ui-border-strong: #828484; --ui-accent: #914a65; --ui-accent-hover: #804159; --ui-accent-pressed: #70394e; --ui-accent-soft: #f0e6e6; --ui-accent-on: #ffffff; --ui-focus-ring: #914a65; --ui-link: #914a65; --ui-selection: #f0e6e6; --ui-viewer-accent: #ca6d91; --ui-viewer-on: #101819; --ui-viewer-focus: #ca6d91; --ui-accent-seed: #C7658B;",
+      "page": "#f9f4f1",
+      "surface": "#fefdfe",
+      "accentColor": "#914a65",
+      "link": "#914a65",
+      "focus": "#914a65",
+      "success": "#24633f",
+      "warning": "#98441d",
+      "danger": "#af3241",
+      "body": "rgb(249, 244, 241)",
+      "button": "rgb(140, 84, 46)",
+      "meta": "#fefdfe"
+    },
+    {
+      "theme": "light",
+      "accent": "graphite",
+      "css": "color-scheme: light; --ui-bg-page: #f6f5f1; --ui-bg-surface: #fdfdfe; --ui-bg-elevated: #fefefe; --ui-bg-muted: #f0efec; --ui-text-primary: #202a29; --ui-text-secondary: #52605e; --ui-border-subtle: #dadbdc; --ui-border-strong: #828484; --ui-accent: #566171; --ui-accent-hover: #4c5563; --ui-accent-pressed: #424b57; --ui-accent-soft: #e7e8e6; --ui-accent-on: #ffffff; --ui-focus-ring: #566171; --ui-link: #566171; --ui-selection: #e7e8e6; --ui-viewer-accent: #808c9b; --ui-viewer-on: #101819; --ui-viewer-focus: #808c9b; --ui-accent-seed: #667487;",
+      "page": "#f6f5f1",
+      "surface": "#fdfdfe",
+      "accentColor": "#566171",
+      "link": "#566171",
+      "focus": "#566171",
+      "success": "#24633f",
+      "warning": "#98441d",
+      "danger": "#af3241",
+      "body": "rgb(246, 245, 241)",
+      "button": "rgb(145, 74, 101)",
+      "meta": "#fdfdfe"
+    },
+    {
+      "theme": "dark",
+      "accent": "pine",
+      "css": "color-scheme: dark; --ui-bg-page: #141a1a; --ui-bg-surface: #1d2627; --ui-bg-elevated: #283333; --ui-bg-muted: #14201e; --ui-text-primary: #edf0ee; --ui-text-secondary: #bac6c4; --ui-border-subtle: #424a4b; --ui-border-strong: #777d7d; --ui-accent: #79b09a; --ui-accent-hover: #89b9a6; --ui-accent-pressed: #98c2b1; --ui-accent-soft: #233734; --ui-accent-on: #101819; --ui-focus-ring: #79b09a; --ui-link: #79b09a; --ui-selection: #233734; --ui-viewer-accent: #4f977a; --ui-viewer-on: #101819; --ui-viewer-focus: #4f977a; --ui-accent-seed: #187650;",
+      "page": "#141a1a",
+      "surface": "#1d2627",
+      "accentColor": "#79b09a",
+      "link": "#79b09a",
+      "focus": "#79b09a",
+      "success": "#91d7ab",
+      "warning": "#efb18d",
+      "danger": "#ffadb7",
+      "body": "rgb(20, 26, 26)",
+      "button": "rgb(113, 123, 138)",
+      "meta": "#1d2627"
+    },
+    {
+      "theme": "dark",
+      "accent": "ocean",
+      "css": "color-scheme: dark; --ui-bg-page: #151a1d; --ui-bg-surface: #1e262c; --ui-bg-elevated: #293338; --ui-bg-muted: #172129; --ui-text-primary: #edf0ee; --ui-text-secondary: #bac6c4; --ui-border-subtle: #434a4f; --ui-border-strong: #7a8083; --ui-accent: #80aadc; --ui-accent-hover: #8fb4e0; --ui-accent-pressed: #9dbee4; --ui-accent-soft: #273844; --ui-accent-on: #101819; --ui-focus-ring: #80aadc; --ui-link: #80aadc; --ui-selection: #273844; --ui-viewer-accent: #538cd0; --ui-viewer-on: #101819; --ui-viewer-focus: #538cd0; --ui-accent-seed: #3578C8;",
+      "page": "#151a1d",
+      "surface": "#1e262c",
+      "accentColor": "#80aadc",
+      "link": "#80aadc",
+      "focus": "#80aadc",
+      "success": "#91d7ab",
+      "warning": "#efb18d",
+      "danger": "#ffadb7",
+      "body": "rgb(21, 26, 29)",
+      "button": "rgb(121, 176, 154)",
+      "meta": "#1e262c"
+    },
+    {
+      "theme": "dark",
+      "accent": "violet",
+      "css": "color-scheme: dark; --ui-bg-page: #171a1d; --ui-bg-surface: #21262c; --ui-bg-elevated: #2c3238; --ui-bg-muted: #1e1f29; --ui-text-primary: #edf0ee; --ui-text-secondary: #bac6c4; --ui-border-subtle: #464a4f; --ui-border-strong: #7a7f81; --ui-accent: #af9ddc; --ui-accent-hover: #b9a9e0; --ui-accent-pressed: #c1b4e4; --ui-accent-soft: #313544; --ui-accent-on: #101819; --ui-focus-ring: #af9ddc; --ui-link: #af9ddc; --ui-selection: #313544; --ui-viewer-accent: #947dd1; --ui-viewer-on: #101819; --ui-viewer-focus: #947dd1; --ui-accent-seed: #8064C8;",
+      "page": "#171a1d",
+      "surface": "#21262c",
+      "accentColor": "#af9ddc",
+      "link": "#af9ddc",
+      "focus": "#af9ddc",
+      "success": "#91d7ab",
+      "warning": "#efb18d",
+      "danger": "#ffadb7",
+      "body": "rgb(23, 26, 29)",
+      "button": "rgb(128, 170, 220)",
+      "meta": "#21262c"
+    },
+    {
+      "theme": "dark",
+      "accent": "sunset",
+      "css": "color-scheme: dark; --ui-bg-page: #191a1a; --ui-bg-surface: #242626; --ui-bg-elevated: #2f3333; --ui-bg-muted: #25211d; --ui-text-primary: #edf0ee; --ui-text-secondary: #bac6c4; --ui-border-subtle: #484a4a; --ui-border-strong: #808382; --ui-accent: #d79e77; --ui-accent-hover: #dcaa87; --ui-accent-pressed: #e0b496; --ui-accent-soft: #3a3832; --ui-accent-on: #101819; --ui-focus-ring: #d79e77; --ui-link: #d79e77; --ui-selection: #3a3832; --ui-viewer-accent: #c87842; --ui-viewer-on: #101819; --ui-viewer-focus: #c87842; --ui-accent-seed: #C87842;",
+      "page": "#191a1a",
+      "surface": "#242626",
+      "accentColor": "#d79e77",
+      "link": "#d79e77",
+      "focus": "#d79e77",
+      "success": "#91d7ab",
+      "warning": "#efb18d",
+      "danger": "#ffadb7",
+      "body": "rgb(25, 26, 26)",
+      "button": "rgb(175, 157, 220)",
+      "meta": "#242626"
+    },
+    {
+      "theme": "dark",
+      "accent": "rose",
+      "css": "color-scheme: dark; --ui-bg-page: #181a1c; --ui-bg-surface: #242629; --ui-bg-elevated: #2f3236; --ui-bg-muted: #241f24; --ui-text-primary: #edf0ee; --ui-text-secondary: #bac6c4; --ui-border-subtle: #484a4c; --ui-border-strong: #7d8081; --ui-accent: #d895af; --ui-accent-hover: #dda2b9; --ui-accent-pressed: #e1adc1; --ui-accent-soft: #3a353c; --ui-accent-on: #101819; --ui-focus-ring: #d895af; --ui-link: #d895af; --ui-selection: #3a353c; --ui-viewer-accent: #ca6d91; --ui-viewer-on: #101819; --ui-viewer-focus: #ca6d91; --ui-accent-seed: #C7658B;",
+      "page": "#181a1c",
+      "surface": "#242629",
+      "accentColor": "#d895af",
+      "link": "#d895af",
+      "focus": "#d895af",
+      "success": "#91d7ab",
+      "warning": "#efb18d",
+      "danger": "#ffadb7",
+      "body": "rgb(24, 26, 28)",
+      "button": "rgb(215, 158, 119)",
+      "meta": "#242629"
+    },
+    {
+      "theme": "dark",
+      "accent": "graphite",
+      "css": "color-scheme: dark; --ui-bg-page: #161a1c; --ui-bg-surface: #202629; --ui-bg-elevated: #2b3335; --ui-bg-muted: #1c2023; --ui-text-primary: #edf0ee; --ui-text-secondary: #bac6c4; --ui-border-subtle: #454a4c; --ui-border-strong: #7a7f7f; --ui-accent: #9fa7b3; --ui-accent-hover: #abb2bc; --ui-accent-pressed: #b5bbc4; --ui-accent-soft: #2d373b; --ui-accent-on: #101819; --ui-focus-ring: #9fa7b3; --ui-link: #9fa7b3; --ui-selection: #2d373b; --ui-viewer-accent: #808c9b; --ui-viewer-on: #101819; --ui-viewer-focus: #808c9b; --ui-accent-seed: #667487;",
+      "page": "#161a1c",
+      "surface": "#202629",
+      "accentColor": "#9fa7b3",
+      "link": "#9fa7b3",
+      "focus": "#9fa7b3",
+      "success": "#91d7ab",
+      "warning": "#efb18d",
+      "danger": "#ffadb7",
+      "body": "rgb(22, 26, 28)",
+      "button": "rgb(216, 149, 175)",
+      "meta": "#202629"
+    },
+    {
+      "theme": "dark",
+      "accent": "pine",
+      "css": "color-scheme: dark; --ui-bg-page: #141a1a; --ui-bg-surface: #1d2627; --ui-bg-elevated: #283333; --ui-bg-muted: #14201e; --ui-text-primary: #edf0ee; --ui-text-secondary: #bac6c4; --ui-border-subtle: #424a4b; --ui-border-strong: #777d7d; --ui-accent: #79b09a; --ui-accent-hover: #89b9a6; --ui-accent-pressed: #98c2b1; --ui-accent-soft: #233734; --ui-accent-on: #101819; --ui-focus-ring: #79b09a; --ui-link: #79b09a; --ui-selection: #233734; --ui-viewer-accent: #4f977a; --ui-viewer-on: #101819; --ui-viewer-focus: #4f977a; --ui-accent-seed: #187650;",
+      "page": "#141a1a",
+      "surface": "#1d2627",
+      "accentColor": "#79b09a",
+      "link": "#79b09a",
+      "focus": "#79b09a",
+      "success": "#91d7ab",
+      "warning": "#efb18d",
+      "danger": "#ffadb7",
+      "body": "rgb(20, 26, 26)",
+      "button": "rgb(159, 167, 179)",
+      "meta": "#1d2627"
+    },
+    {
+      "theme": "dark",
+      "accent": "ocean",
+      "css": "color-scheme: dark; --ui-bg-page: #151a1d; --ui-bg-surface: #1e262c; --ui-bg-elevated: #293338; --ui-bg-muted: #172129; --ui-text-primary: #edf0ee; --ui-text-secondary: #bac6c4; --ui-border-subtle: #434a4f; --ui-border-strong: #7a8083; --ui-accent: #80aadc; --ui-accent-hover: #8fb4e0; --ui-accent-pressed: #9dbee4; --ui-accent-soft: #273844; --ui-accent-on: #101819; --ui-focus-ring: #80aadc; --ui-link: #80aadc; --ui-selection: #273844; --ui-viewer-accent: #538cd0; --ui-viewer-on: #101819; --ui-viewer-focus: #538cd0; --ui-accent-seed: #3578C8;",
+      "page": "#151a1d",
+      "surface": "#1e262c",
+      "accentColor": "#80aadc",
+      "link": "#80aadc",
+      "focus": "#80aadc",
+      "success": "#91d7ab",
+      "warning": "#efb18d",
+      "danger": "#ffadb7",
+      "body": "rgb(21, 26, 29)",
+      "button": "rgb(145, 170, 170)",
+      "meta": "#1e262c"
+    },
+    {
+      "theme": "dark",
+      "accent": "violet",
+      "css": "color-scheme: dark; --ui-bg-page: #171a1d; --ui-bg-surface: #21262c; --ui-bg-elevated: #2c3238; --ui-bg-muted: #1e1f29; --ui-text-primary: #edf0ee; --ui-text-secondary: #bac6c4; --ui-border-subtle: #464a4f; --ui-border-strong: #7a7f81; --ui-accent: #af9ddc; --ui-accent-hover: #b9a9e0; --ui-accent-pressed: #c1b4e4; --ui-accent-soft: #313544; --ui-accent-on: #101819; --ui-focus-ring: #af9ddc; --ui-link: #af9ddc; --ui-selection: #313544; --ui-viewer-accent: #947dd1; --ui-viewer-on: #101819; --ui-viewer-focus: #947dd1; --ui-accent-seed: #8064C8;",
+      "page": "#171a1d",
+      "surface": "#21262c",
+      "accentColor": "#af9ddc",
+      "link": "#af9ddc",
+      "focus": "#af9ddc",
+      "success": "#91d7ab",
+      "warning": "#efb18d",
+      "danger": "#ffadb7",
+      "body": "rgb(23, 26, 29)",
+      "button": "rgb(134, 170, 203)",
+      "meta": "#21262c"
+    },
+    {
+      "theme": "dark",
+      "accent": "sunset",
+      "css": "color-scheme: dark; --ui-bg-page: #191a1a; --ui-bg-surface: #242626; --ui-bg-elevated: #2f3333; --ui-bg-muted: #25211d; --ui-text-primary: #edf0ee; --ui-text-secondary: #bac6c4; --ui-border-subtle: #484a4a; --ui-border-strong: #808382; --ui-accent: #d79e77; --ui-accent-hover: #dcaa87; --ui-accent-pressed: #e0b496; --ui-accent-soft: #3a3832; --ui-accent-on: #101819; --ui-focus-ring: #d79e77; --ui-link: #d79e77; --ui-selection: #3a3832; --ui-viewer-accent: #c87842; --ui-viewer-on: #101819; --ui-viewer-focus: #c87842; --ui-accent-seed: #C87842;",
+      "page": "#191a1a",
+      "surface": "#242626",
+      "accentColor": "#d79e77",
+      "link": "#d79e77",
+      "focus": "#d79e77",
+      "success": "#91d7ab",
+      "warning": "#efb18d",
+      "danger": "#ffadb7",
+      "body": "rgb(25, 26, 26)",
+      "button": "rgb(161, 162, 214)",
+      "meta": "#242626"
+    },
+    {
+      "theme": "dark",
+      "accent": "rose",
+      "css": "color-scheme: dark; --ui-bg-page: #181a1c; --ui-bg-surface: #242629; --ui-bg-elevated: #2f3236; --ui-bg-muted: #241f24; --ui-text-primary: #edf0ee; --ui-text-secondary: #bac6c4; --ui-border-subtle: #484a4c; --ui-border-strong: #7d8081; --ui-accent: #d895af; --ui-accent-hover: #dda2b9; --ui-accent-pressed: #e1adc1; --ui-accent-soft: #3a353c; --ui-accent-on: #101819; --ui-focus-ring: #d895af; --ui-link: #d895af; --ui-selection: #3a353c; --ui-viewer-accent: #ca6d91; --ui-viewer-on: #101819; --ui-viewer-focus: #ca6d91; --ui-accent-seed: #C7658B;",
+      "page": "#181a1c",
+      "surface": "#242629",
+      "accentColor": "#d895af",
+      "link": "#d895af",
+      "focus": "#d895af",
+      "success": "#91d7ab",
+      "warning": "#efb18d",
+      "danger": "#ffadb7",
+      "body": "rgb(24, 26, 28)",
+      "button": "rgb(196, 159, 152)",
+      "meta": "#242629"
+    },
+    {
+      "theme": "dark",
+      "accent": "graphite",
+      "css": "color-scheme: dark; --ui-bg-page: #161a1c; --ui-bg-surface: #202629; --ui-bg-elevated: #2b3335; --ui-bg-muted: #1c2023; --ui-text-primary: #edf0ee; --ui-text-secondary: #bac6c4; --ui-border-subtle: #454a4c; --ui-border-strong: #7a7f7f; --ui-accent: #9fa7b3; --ui-accent-hover: #abb2bc; --ui-accent-pressed: #b5bbc4; --ui-accent-soft: #2d373b; --ui-accent-on: #101819; --ui-focus-ring: #9fa7b3; --ui-link: #9fa7b3; --ui-selection: #2d373b; --ui-viewer-accent: #808c9b; --ui-viewer-on: #101819; --ui-viewer-focus: #808c9b; --ui-accent-seed: #667487;",
+      "page": "#161a1c",
+      "surface": "#202629",
+      "accentColor": "#9fa7b3",
+      "link": "#9fa7b3",
+      "focus": "#9fa7b3",
+      "success": "#91d7ab",
+      "warning": "#efb18d",
+      "danger": "#ffadb7",
+      "body": "rgb(22, 26, 28)",
+      "button": "rgb(209, 153, 167)",
+      "meta": "#202629"
+    }
+  ],
+  "errors": [],
+  "fixture": true
+}

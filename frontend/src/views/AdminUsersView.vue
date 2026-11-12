@@ -179,22 +179,22 @@ onBeforeUnmount(()=>{active=false;context+=1})
     <header class="mb-6">
       <p class="text-sm font-semibold tracking-[0.18em] text-ember">后台管理</p>
       <h1 class="mt-1 font-serif text-3xl text-pine-deep">用户管理</h1>
-      <p class="mt-2 text-sm text-pine/70">查看平台注册用户，必要时调整账号的可用状态。</p>
+      <p class="mt-2 text-sm text-ink-soft">查看平台注册用户，必要时调整账号的可用状态。</p>
     </header>
 
     <form data-test="admin-user-search" class="surface-card mb-5 grid gap-3 p-4 sm:grid-cols-2 lg:grid-cols-4" @submit.prevent="submitSearch">
-      <label class="text-sm text-pine/80">关键词
-        <input v-model="keyword" data-test="admin-user-keyword" :disabled="busy" type="search" placeholder="昵称或用户名" class="mt-1 w-full rounded-xl border border-pine/20 bg-cream px-3 py-2 text-pine-deep outline-none focus:border-pine" />
+      <label class="text-sm text-ink-soft">关键词
+        <input v-model="keyword" data-test="admin-user-keyword" :disabled="busy" type="search" placeholder="昵称或用户名" class="field-input mt-1" />
       </label>
-      <label class="text-sm text-pine/80">角色
-        <select v-model="role" data-test="admin-user-role" :disabled="busy" class="mt-1 w-full rounded-xl border border-pine/20 bg-cream px-3 py-2 text-pine-deep outline-none focus:border-pine">
+      <label class="text-sm text-ink-soft">角色
+        <select v-model="role" data-test="admin-user-role" :disabled="busy" class="field-input mt-1">
           <option value="">全部角色</option>
           <option value="ADMIN">管理员</option>
           <option value="USER">普通用户</option>
         </select>
       </label>
-      <label class="text-sm text-pine/80">状态
-        <select v-model="status" data-test="admin-user-status" :disabled="busy" class="mt-1 w-full rounded-xl border border-pine/20 bg-cream px-3 py-2 text-pine-deep outline-none focus:border-pine">
+      <label class="text-sm text-ink-soft">状态
+        <select v-model="status" data-test="admin-user-status" :disabled="busy" class="field-input mt-1">
           <option value="">全部状态</option>
           <option value="ACTIVE">正常</option>
           <option value="DISABLED">已禁用</option>
@@ -208,7 +208,7 @@ onBeforeUnmount(()=>{active=false;context+=1})
       <button data-test="retry-admin-users" class="btn-ghost shrink-0" :disabled="loading" @click="retry">{{ loading?'重试中…':'重试' }}</button>
     </div>
 
-    <p v-if="loading&&!records.length" class="surface-card p-6 text-sm text-pine/70">正在加载用户…</p>
+    <p v-if="loading&&!records.length" class="surface-card p-6 text-sm text-ink-soft">正在加载用户…</p>
 
     <ul v-else-if="!listError&&!queryError&&records.length" class="surface-card divide-y divide-pine/10">
       <li v-for="row in records" :key="row.id" data-test="admin-user-row" class="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
@@ -216,23 +216,23 @@ onBeforeUnmount(()=>{active=false;context+=1})
           <UserAvatar :src="row.avatarUrl" :name="row.nickname" size="md" />
           <div class="min-w-0">
             <p class="truncate font-medium text-pine-deep">{{ row.nickname }}</p>
-            <p class="truncate text-sm text-pine/70">{{ row.username }} · {{ ROLE_LABELS[row.role] }}</p>
+            <p class="truncate text-sm text-ink-soft">{{ row.username }} · {{ ROLE_LABELS[row.role] }}</p>
           </div>
         </div>
         <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
-          <span class="self-start rounded-full px-3 py-1 text-xs font-semibold" :class="row.status==='ACTIVE'?'bg-pine-soft/70 text-pine-deep':'bg-ember/10 text-ember'">{{ STATUS_LABELS[row.status] }}</span>
+          <span class="self-start rounded-full px-3 py-1 text-xs font-semibold" :class="row.status==='ACTIVE'?'bg-[var(--ui-success-soft)] text-[var(--ui-success)]':'bg-ember/10 text-ember'">{{ STATUS_LABELS[row.status] }}</span>
           <button :data-test="`change-user-${row.id}`" class="btn-ghost w-full sm:w-auto" :disabled="busy||isSelf(row)" @click="openConfirm(row)">{{ isSelf(row)?'当前账号':actionLabel(row) }}</button>
         </div>
       </li>
     </ul>
 
-    <div v-else-if="!listError&&!queryError&&beyondLast" class="surface-card p-6 text-sm text-pine/70">
+    <div v-else-if="!listError&&!queryError&&beyondLast" class="surface-card p-6 text-sm text-ink-soft">
       <p>当前页没有数据：共 {{ total }} 位用户，共 {{ totalPages }} 页。</p>
       <button data-test="admin-users-first" class="btn-ghost mt-3 w-full sm:w-auto" :disabled="loading" @click="goPage(1)">回到第一页</button>
     </div>
-    <p v-else-if="!loading&&!listError&&!queryError" class="surface-card p-6 text-sm text-pine/70">暂无符合条件的用户。</p>
+    <p v-else-if="!loading&&!listError&&!queryError" class="surface-card p-6 text-sm text-ink-soft">暂无符合条件的用户。</p>
 
-    <div v-if="!listError&&!queryError&&records.length" class="mt-4 flex flex-col items-center justify-between gap-3 text-sm text-pine/70 sm:flex-row">
+    <div v-if="!listError&&!queryError&&records.length" class="mt-4 flex flex-col items-center justify-between gap-3 text-sm text-ink-soft sm:flex-row">
       <p>第 {{ current }} / {{ totalPages }} 页 · 共 {{ total }} 位用户</p>
       <div class="flex w-full gap-2 sm:w-auto">
         <button class="btn-ghost flex-1 sm:flex-none" :disabled="loading||busy||current<=1" @click="goPage(current-1)">上一页</button>
@@ -243,7 +243,7 @@ onBeforeUnmount(()=>{active=false;context+=1})
     <div v-if="dialog" class="fixed inset-0 z-20 flex items-end justify-center overflow-y-auto bg-scrim/60 p-4 sm:items-center" @click.self="closeDialog">
       <div role="alertdialog" aria-modal="true" class="surface-card w-full max-w-md p-5">
         <h2 class="font-serif text-xl text-pine-deep">{{ dialog.targetStatus==='DISABLED'?'确认禁用账号':'确认恢复账号' }}</h2>
-        <p class="mt-2 text-sm text-pine/70">目标账号：{{ dialog.nickname }}（{{ dialog.username }}）。{{ dialog.targetStatus==='DISABLED'?'禁用后该用户将无法登录。':'恢复后该用户可以重新登录。' }}</p>
+        <p class="mt-2 text-sm text-ink-soft">目标账号：{{ dialog.nickname }}（{{ dialog.username }}）。{{ dialog.targetStatus==='DISABLED'?'禁用后该用户将无法登录。':'恢复后该用户可以重新登录。' }}</p>
         <p v-if="actionError" role="alert" class="mt-3 text-sm text-ember">{{ actionError }}</p>
         <div class="mt-5 flex flex-col gap-2 sm:flex-row sm:justify-end">
           <button data-test="cancel-user-status" class="btn-ghost w-full sm:w-auto" :disabled="pending" @click="closeDialog">取消</button>

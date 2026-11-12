@@ -205,7 +205,7 @@ function retry(): void {
           </div>
         </div>
 
-        <p v-if="successMessage" role="status" class="text-sm text-pine">
+        <p v-if="successMessage" role="status" class="text-sm text-[var(--ui-success)]">
           {{ successMessage }}
         </p>
 

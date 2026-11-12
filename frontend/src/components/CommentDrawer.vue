@@ -340,7 +340,7 @@ onBeforeUnmount(() => {
   inset: 0;
   background: color-mix(in srgb, var(--color-scrim) 55%, transparent);
   opacity: 0;
-  transition: opacity 240ms ease;
+  transition: opacity var(--ui-motion-normal) var(--ui-motion-ease);
   pointer-events: none;
 }
 
@@ -359,15 +359,15 @@ onBeforeUnmount(() => {
   height: 100dvh;
   max-height: 100dvh;
   overflow: hidden;
-  background: var(--color-surface);
+  background: var(--ui-bg-elevated);
   border-left: 1px solid color-mix(in srgb, var(--color-pine) 16%, transparent);
   box-shadow: -18px 0 48px -32px
     color-mix(in srgb, var(--color-pine-deep) 60%, transparent);
   transform: translateX(100%);
   opacity: 0;
   transition:
-    transform 240ms ease,
-    opacity 240ms ease;
+    transform var(--ui-motion-normal) var(--ui-motion-ease),
+    opacity var(--ui-motion-normal) var(--ui-motion-ease);
   pointer-events: none;
   outline: none;
 }
@@ -379,8 +379,7 @@ onBeforeUnmount(() => {
   max-height: calc(100dvh - 96px);
   border: 1px solid color-mix(in srgb, var(--color-pine) 16%, transparent);
   border-radius: var(--radius-card);
-  box-shadow: 0 24px 60px -36px
-    color-mix(in srgb, var(--color-pine-deep) 70%, transparent);
+  box-shadow: var(--ui-shadow-lg);
 }
 
 .comment-drawer.is-visible {
@@ -398,7 +397,7 @@ onBeforeUnmount(() => {
   padding: 1rem 1.1rem;
   border-bottom: 1px solid
     color-mix(in srgb, var(--color-pine) 12%, transparent);
-  background: var(--color-surface);
+  background: var(--ui-bg-elevated);
 }
 
 .comment-drawer__title {
@@ -416,8 +415,8 @@ onBeforeUnmount(() => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.2rem;
-  height: 2.2rem;
+  width: 2.75rem;
+  height: 2.75rem;
   border: 1px solid color-mix(in srgb, var(--color-pine) 18%, transparent);
   border-radius: 999px;
   background: transparent;
