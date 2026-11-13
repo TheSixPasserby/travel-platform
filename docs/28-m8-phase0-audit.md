@@ -1,5 +1,7 @@
 # M8 Phase 0：项目、数据与实施审计
 
+本页为历史阶段记录，日期、测试数量和当时范围按原记录保留。当前使用与开发入口见 [项目文档](README.md)。
+
 审计日期：2026-11-06（Asia/Shanghai）。本轮范围为 Phase 0；未实施 Phase 1–5 的业务修改。
 
 正式输入：[M8 原文](m8/00-implementation-spec.md)，完整保留 392 行，SHA-256 为 `12a1b7423e7645546a52680223fc20b362ddfa7a26fd71c0a13c3ec9ddc9e6ff`。用户明确将其指定为实施规范；其中有关旧数据的描述均重新核查，未当作当前事实。
@@ -112,4 +114,4 @@ DSH 是通过 Crew hub 调度的外部执行代理，不是 Codex 原生子代�
 
 ## 7. 后续阶段
 
-详见[技术方案](superpowers/specs/2026-11-06-m8-upgrade-design.md)与[实施任务](superpowers/plans/2026-11-06-m8-upgrade.md)。下一步进入 Phase 1 的来源研究、正文/图片预览及备份恢复准备；先提供三篇按 ID 的变更清单，再做受控写入。新景点关系依赖 Phase 2，在 Phase 1 先形成地点引用清单，不伪造尚不存在的数据库 ID。
+详见[技术方案](superpowers/specs/2026-11-06-m8-upgrade-design.md)与[实施任务](history/README.md)。下一步进入 Phase 1 的来源研究、正文/图片预览及备份恢复准备；先提供三篇按 ID 的变更清单，再做受控写入。新景点关系依赖 Phase 2，在 Phase 1 先形成地点引用清单，不伪造尚不存在的数据库 ID。

@@ -7,6 +7,8 @@ public class GuideComment {
     private Long id;
     private Long guideId;
     private Long userId;
+    private Long rootId;
+    private Long replyToId;
     private String content;
     private String status;
     private String ipRegion;
@@ -14,6 +16,10 @@ public class GuideComment {
     private Integer isDeleted;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    public Long getRootId() { return rootId; }
+    public void setRootId(Long value) { rootId=value; }
+    public Long getReplyToId() { return replyToId; }
+    public void setReplyToId(Long value) { replyToId=value; }
     public Long getId() { return id; }
     public void setId(Long value) { this.id=value; }
     public Long getGuideId() { return guideId; }

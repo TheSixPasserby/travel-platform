@@ -1,98 +1,78 @@
-# 数据库详细设计
+# 数据库设计
 
-数据库：MySQL 8.x；InnoDB；utf8mb4。SQL 初稿见 `database/schema.sql`。
+采用 MySQL 8.x、InnoDB 和 utf8mb4。当前空库结构由 [schema.sql](../database/schema.sql) 定义，包含 18 张表、151 列和 31 个外键。既有库通过 [增量迁移](../database/README.md) 升级。
 
-## 1. 设计原则
-signed BIGINT 自增主键及同类型外键，与 Java Long 范围一致；REST 中 ID 使用字符串以避免 JavaScript 精度丢失。snake_case；DATETIME(3)；金额 DECIMAL；密码只保存 BCrypt 哈希；关系表联合唯一索引；图片只存访问路径；逻辑删除和状态语义明确。
+## 表与职责
 
-## 2. 表清单
-| 表 | 职责 |
+| 表 | 职责与重要关系 |
 |---|---|
-| `users` | 用户账号、资料和角色 |
-| `destinations` | 城市/景点目的地 |
-| `destination_images` | 目的地有序图片、来源与授权 |
-| `guides` | 攻略主体 |
-| `guide_images` | 攻略图片 |
-| `guide_destinations` | 攻略与多个同城景点关系 |
-| `tags` | 攻略标签 |
-| `guide_tags` | 攻略标签关系 |
-| `guide_likes` | 点赞关系 |
-| `guide_favorites` | 收藏关系 |
-| `guide_comments` | 评论 |
-| `itineraries` | 用户行程 |
-| `itinerary_days` | 每日安排 |
-| `itinerary_items` | 每日游玩项目 |
+| `users` | 账号、BCrypt 哈希、公开资料、USER/ADMIN 角色及状态 |
+| `destinations` | 城市、景点和其他地点，可空父城市及资料来源 |
+| `destination_images` | 目的地有序图库、作者与素材许可 |
+| `guides` | 作者、主目的地、Markdown、状态及首次发布时间 |
+| `guide_images` | 攻略有序图片 |
+| `guide_destinations` | 攻略与真实关联景点，多对多且组合唯一 |
+| `tags`、`guide_tags` | 标签字典及攻略标签关系 |
+| `guide_likes`、`guide_favorites` | 用户和攻略组合唯一的互动关系 |
+| `guide_comments` | 根评论、二级回复和直接回复目标 |
+| `comment_mentions` | 评论与显式提及账号组合唯一 |
+| `notifications` | 发起者、收件人、攻略和评论，收件人/评论组合唯一 |
+| `comment_write_locks` | 每用户一条评论写入串行化锁记录 |
+| `itineraries` | 私人行程、所有者、日期和可空整程导入请求 UUID |
+| `itinerary_days` | 行程内唯一日期和日序号 |
+| `itinerary_items` | 日程项目、可空地点关系及名称快照、顺序 |
+| `itinerary_guide_imports` | 攻略景点导入回执、内容摘要和幂等结果 |
 
-## 3. ER 关系
+## 核心关系
+
 ```mermaid
 erDiagram
-    DESTINATIONS o|--o{ DESTINATIONS : contains
-    DESTINATIONS ||--o{ DESTINATION_IMAGES : illustrates
-    GUIDES ||--o{ GUIDE_DESTINATIONS : visits
-    DESTINATIONS ||--o{ GUIDE_DESTINATIONS : linked
     USERS ||--o{ GUIDES : writes
-    DESTINATIONS o|--o{ GUIDES : categorizes
-    GUIDES ||--o{ GUIDE_IMAGES : contains
-    GUIDES ||--o{ GUIDE_TAGS : has
-    TAGS ||--o{ GUIDE_TAGS : assigned
-    USERS ||--o{ GUIDE_LIKES : likes
-    GUIDES ||--o{ GUIDE_LIKES : receives
-    USERS ||--o{ GUIDE_FAVORITES : favorites
-    GUIDES ||--o{ GUIDE_FAVORITES : saved
-    USERS ||--o{ GUIDE_COMMENTS : writes
-    GUIDES ||--o{ GUIDE_COMMENTS : receives
     USERS ||--o{ ITINERARIES : owns
-    DESTINATIONS o|--o{ ITINERARIES : destination
+    DESTINATIONS o|--o{ DESTINATIONS : parent
+    DESTINATIONS o|--o{ GUIDES : primary
+    GUIDES ||--o{ GUIDE_DESTINATIONS : includes
+    DESTINATIONS ||--o{ GUIDE_DESTINATIONS : references
+    GUIDES ||--o{ GUIDE_COMMENTS : receives
+    USERS ||--o{ GUIDE_COMMENTS : writes
+    GUIDE_COMMENTS o|--o{ GUIDE_COMMENTS : root_or_reply
+    GUIDE_COMMENTS ||--o{ COMMENT_MENTIONS : mentions
+    USERS ||--o{ COMMENT_MENTIONS : selected
+    USERS ||--o{ NOTIFICATIONS : actor_or_recipient
+    GUIDE_COMMENTS ||--o{ NOTIFICATIONS : event
     ITINERARIES ||--o{ ITINERARY_DAYS : contains
     ITINERARY_DAYS ||--o{ ITINERARY_ITEMS : contains
-    DESTINATIONS o|--o{ ITINERARY_ITEMS : references
+    DESTINATIONS o|--o{ ITINERARY_ITEMS : location
+    ITINERARIES ||--o{ ITINERARY_GUIDE_IMPORTS : receipts
 ```
 
-## 4. 关键约束
-- `users.username` 唯一；role 为 USER/ADMIN；status 为 ACTIVE/DISABLED。
-- `destinations.destination_type` 为 CITY/SCENIC_SPOT/OTHER；parent_id 可空；status 为 ACTIVE/INACTIVE。
-- `guides.author_id` 关联用户；destination_id 可空；正文 Markdown；status 为 DRAFT/PUBLISHED/HIDDEN；预算 DECIMAL(10,2)；逻辑删除。
-- `guide_likes`、`guide_favorites` 对 `(user_id, guide_id)` 联合唯一。
-- `guide_comments` 第一版不做评论树；status 为 NORMAL/HIDDEN。
-- `itineraries` 归属 user；start_date 不晚于 end_date。
-- `itinerary_days` 对 `(itinerary_id, day_no)` 和 `(itinerary_id, travel_date)` 唯一。
-- `itinerary_items` 可关联 destination，也保存 place_name 快照；sort_order 控制顺序。
-- 每日日期必须落在行程日期范围内，由 Service 校验。
-- `day_no` 由 travel_date 相对行程 start_date 的日期差加一计算；缩短行程排除已有日程时拒绝修改，不自动删除子数据。
-- 第一版不维护浏览量计数；热度按点赞关系聚合，避免无验收依据的冗余计数器。
+完整外键与 CHECK 以 SQL 为准。图中合并展示评论的根/直接目标关系及通知的两条用户关系，标签、图片和互动关系在表清单列明。`itinerary_guide_imports.day_id` 是已保存目标标识，当前没有日程外键。
 
-### 逻辑删除和状态边界
+## 字段与状态
 
-有 `is_deleted` 的业务主体使用逻辑删除。删除主体不会触发数据库 ON DELETE，Service 查询和关联查询必须显式检查主体未删除；不能假定物理外键级联会处理逻辑删除。
+ID 使用 signed BIGINT，与 Java Long 一致，JSON 中传递字符串。创建更新时间为 DATETIME(3)，行程日期和时间保持 DATE、TIME。金额使用 DECIMAL，图片字段保存访问路径。
 
-点赞/收藏取消、攻略图片/标签关系替换、每日安排或项目的显式删除可物理删除关联/子数据。逻辑删除攻略或行程时保留其关联数据，但公开列表、收藏和子资源接口必须检查父资源可见性/所有权。用户名的唯一占用在逻辑删除后保留，不开放复用。
+账号状态为 ACTIVE/DISABLED，目的地为 ACTIVE/INACTIVE，攻略为 DRAFT/PUBLISHED/HIDDEN，评论为 NORMAL/HIDDEN。存在 `is_deleted` 的主体采用逻辑删除，查询必须检查主体和必要父资源的状态。物理外键级联不会代替逻辑删除的可见性校验。
 
-攻略 DRAFT/PUBLISHED/HIDDEN 的转换及停用目的地历史关联规则见 `docs/06-api-contract.md` 第 13–14 节。管理员只治理状态；隐藏/恢复保留原 published_at。所有级联修改与排序在事务中完成，且重排必须验证同一天项目的完整无重复 ID 集合。
+停用目的地保留历史关系，新建或替换关联须指向有效地点。首次 `published_at` 在编辑、撤回与治理中保留。`ip_region` 历史列继续保存，当前公开响应由统一开关返回 null。
 
-## 5. 索引建议
-users：username 唯一；destinations：status/type/parent_id、name；guides：status/is_deleted/published_at、destination_id/status/is_deleted、author_id/created_at；guide_tags：guide_id/tag_id 唯一和 tag_id 索引；likes/favorites：user_id/guide_id 唯一；comments：guide_id/status/created_at；itineraries：user_id/status/created_at；days：行程+日期/序号唯一；items：day_id/sort_order。
+## 事务与并发
 
-## 6. 搜索
-第一版使用 MySQL LIKE 或必要的全文索引实现关键词搜索，配合目的地和标签筛选。不要为普通毕业设计引入 Elasticsearch。限制 page size，转义 LIKE 特殊字符。
+- 攻略主体、图片、标签和景点替换在同一事务完成。
+- 点赞、收藏、提及及通知由联合唯一键去重。
+- 历史评论的 `root_id`、`reply_to_id` 均为空。回复统一指向一个根线程，直接目标保留对话对象。
+- 评论创建依次共享锁定当前用户、串行化每用户评论锁、锁定攻略后检查滚动次数。正文、提及、通知原子提交。
+- 行程日期和子项目通过完整父子关系核验归属。缩短日期排除已有安排时拒绝，项目排序验证同日完整排列。
+- 整程导入按当前用户和请求 UUID 复用已有行程。攻略导入额外校验内容摘要，提交失败回滚，同内容重试返回已有回执。
 
-## 7. 初始化数据
-`database/seed.sql` 只放公开目的地和标签示例，不创建明文默认管理员。管理员应通过安全首次启动流程或人工命令创建。
+评论频率从真实评论记录查询，专用锁表只协调并发。互动数量按关系计算，当前结构没有浏览量冗余计数。
 
-SQL 脚本不创建或切换数据库，调用者必须显式选择目标库；测试只在经确认的独立空库执行。已验证本机原服务为 26.7.0，用户随后授权单独准备 MySQL 8.4 并保留原服务，见 ADR-018；凭据保留在本地，具体运行验证见基线审查记录。`CREATE TABLE IF NOT EXISTS` 不代替后续结构迁移。
+## 索引与检索
 
-## 8. M8 增量字段与关系
+索引围绕用户唯一账号、公开攻略排序、关系联合唯一、线程回复顺序、通知收件人/已读时间、行程所有者与日期设计。普通搜索使用参数化 LIKE 并转义通配符，跨类型查询由数据库聚合返回。当前没有全文搜索服务。
 
-destinations 新增 address、DECIMAL(9,6) longitude/DECIMAL(8,6) latitude、recommended_duration_minutes、recommended_days、opening_hours、ticket_info、official_url、source_url、verified_at，全部可空。坐标成对且有范围 CHECK；分钟 1–1440、天数 1–30。CITY 无父；SCENIC_SPOT 直属 CITY，服务层维护层级及历史停用边界。
+## 初始化和升级
 
-destination_images 保留图片路径、说明、顺序、来源/作者/许可/许可链接/获取时间，唯一(destination_id,image_url)，顺序索引(destination_id,sort_order,id)。guide_destinations 唯一(guide_id,destination_id)，反向索引(destination_id,guide_id)。三条新外键均 RESTRICT；逻辑删除主体不物理级联。图库和攻略景点替换分别与主体同事务。
+`schema.sql`、`seed.sql` 作用于调用方明确选择的空库，示例数据只包含公开目的地和标签。既有数据库使用 V008、V010、V016、V017 中与当前版本差异对应的迁移，具体顺序见数据库说明。`CREATE TABLE IF NOT EXISTS` 不补齐既有表的新列。
 
-itineraries 增加可空 client_request_id CHAR(36)，唯一(user_id,client_request_id)，供整程原子导入防重；原手动创建保持 NULL。没有新增 AI 行程表。DDL 与新空库 SQL 已在 MySQL 8.4.13 验证等价，精确 SQL 及哈希见 database/migrations/manifest.json。
-
-
-## 9. M10 可空属地快照
-
-`guides.ip_region`、`guide_comments.ip_region` 均为可空 `VARCHAR(64)`、utf8mb4_0900_ai_ci，仅保存省/直辖市/特别行政区或国家文本，不新增原始 IP 列。历史行保持 NULL；攻略以首次 published_at 为冻结标志，不另建重复状态或计数列。
-
-现有库仅执行 `database/migrations/V010_01__ip_regions.sql`，校验清单为 `manifest-m10.json`；`schema.sql` 只供新空库。新脚本 `scripts/m10_backup.py` 在本机明确目标/UUID下备份并恢复到全新测试克隆；`scripts/m10_migrate.py` 默认 dry-run，校验备份哈希、实例/库名、两张目标表的 InnoDB/字符集、列完整定义和全部原列行哈希，再执行两条 ADD COLUMN。支持重复执行及断点续跑，漂移即停。
-
-MySQL DDL 隐式提交；不自动 DROP 列或重放 schema。回退优先保留新增可空列，使用旧版本兼容代码；完整恢复先在全新克隆校验后由操作者切换。具体命令、执行环境和数据保护证据见 `docs/m10/MIGRATION.md` 与 M10 交付状态。
+M17 已在独立恢复副本及测试库重复执行迁移，并与新空库逐项核对列、索引、外键动作和 CHECK，结果一致。原业务库仍为 14 表，当前新结构的验证不表示原业务库已升级。[实际测试报告](../output/m17/项目P1完成情况与真实测试报告.md)

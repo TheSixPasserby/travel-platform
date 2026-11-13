@@ -17,6 +17,9 @@ import static org.assertj.core.api.Assertions.*;
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 class M16SearchApiTest {
+    static TimeZone originalZone;
+    @BeforeAll static void utcJvm() { originalZone = TimeZone.getDefault(); TimeZone.setDefault(TimeZone.getTimeZone("UTC")); }
+    @AfterAll static void restoreZone() { TimeZone.setDefault(originalZone); }
     @LocalServerPort int port;
     @Autowired DataSource source;
     HttpTestSupport h;

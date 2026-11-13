@@ -5,6 +5,7 @@ import { ApiError } from '@/api/client'
 import { useAuthStore } from '@/stores/auth'
 import { useHeaderOverlay } from '@/composables/useHeaderOverlay'
 import AppearanceSettings from './AppearanceSettings.vue'
+import NotificationBell from './NotificationBell.vue'
 import SiteIcon from './SiteIcon.vue'
 import SiteBrand from './SiteBrand.vue'
 import UserAvatar from './UserAvatar.vue'
@@ -38,6 +39,7 @@ const personal = computed(() => [
   { to: '/me/guides', label: '我的攻略', icon: 'book' },
   { to: '/me/favorites', label: '我的收藏', icon: 'star' },
   { to: '/me/itineraries', label: '我的行程', icon: 'calendar' },
+  { to: '/me/notifications', label: '通知', icon: 'book' },
   { to: '/me/settings', label: '编辑资料', icon: 'settings' }
 ])
 const searchKeyword = ref('')
@@ -120,6 +122,7 @@ async function handleLogout() {
         />
       </form>
       <div class="header-actions">
+        <NotificationBell v-if="auth.isAuthenticated" />
         <RouterLink to="/search" class="icon-button search-shortcut" aria-label="全站搜索"><SiteIcon name="explore" /></RouterLink>
         <RouterLink to="/guides/new" class="header-publish btn-primary"
           ><SiteIcon name="pen" /><span>发布笔记</span></RouterLink
@@ -616,5 +619,10 @@ async function handleLogout() {
   .header-publish {
     display: none;
   }
+}
+@media (max-width: 430px) {
+  .header-actions { gap: 2px; }
+  .brand-link :deep(svg) { width: 28px; }
+  .brand-link :deep(.inline-flex) { gap: 4px; font-size: 18px; }
 }
 </style>

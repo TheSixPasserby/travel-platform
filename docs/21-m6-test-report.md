@@ -1,6 +1,8 @@
 # M6 基础后台验收记录
 
-结论：**M6于2026-11-04验收通过**。见[机器证据](verification/2026-11-04-m6.json)、[设计](superpowers/specs/2026-11-04-m6-administration-design.md)、[计划](superpowers/plans/2026-11-04-m6-administration.md)。P0/P1核心业务已交付，继续系统交付与演示准备；外部正式部署和学校最终验收尚未执行。
+本页为历史阶段记录，日期、测试数量和当时范围按原记录保留。当前使用与开发入口见 [项目文档](README.md)。
+
+结论：**M6于2026-11-04验收通过**。见[机器证据](verification/2026-11-04-m6.json)、[设计](superpowers/specs/2026-11-04-m6-administration-design.md)、[计划](history/README.md)。P0/P1核心业务已交付，继续系统交付与演示准备；外部正式部署和学校最终验收尚未执行。
 
 交付用户分页筛选与启停、攻略隐藏恢复、评论治理、后台导航及四项真实数据库概览。管理员不代改正文、不获得作者删除权，无角色修改/密码重置/硬删API。无DDL、依赖变更或自动commit。
 

@@ -14,6 +14,7 @@ declare module 'vue-router' {
 }
 
 const routes = [
+  { path: '/me/notifications', name: 'notifications', component: () => import('@/views/NotificationsView.vue'), meta: { requiresAuth: true, title: '通知 · 山水间' } },
   { path: '/search', name: 'search', component: () => import('@/views/SearchView.vue'), meta: { title: '全站搜索 · 山水间' } },
   { path: '/users/:username', name: 'creator', component: () => import('@/views/CreatorView.vue'), meta: { title: '旅人的主页 · 山水间' } },
   {

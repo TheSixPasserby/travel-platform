@@ -18,6 +18,13 @@ LauncherError,select_jar=_launcher.LauncherError,_launcher.select_jar
 ROOT_FILES=['AGENTS.md','README.md','PROJECT_STATUS.md','PACKAGE-MANIFEST.json','.env.example','.editorconfig','.gitignore','start.sh','M16-START-HERE.md']
 PROJECT_FILES=['backend/pom.xml','backend/mvnw','backend/mvnw.cmd','frontend/package.json','frontend/package-lock.json','frontend/index.html','frontend/vite.config.ts','frontend/tsconfig.json','scripts/backend.py','scripts/start.py','scripts/release.py','scripts/m8_content.py','scripts/m8_data.py','scripts/m8_migrate.py','scripts/m10_migrate.py','scripts/m10_backup.py','scripts/requirements-maintenance.txt','scripts/m16-checks.sh','scripts/m16-preflight.py','scripts/m16-verify-package.py','.github/workflows/ci.yml']
 SOURCE_TREES=['backend/src','backend/.mvn','frontend/src','frontend/build','frontend/public','frontend/tests','scripts/tests','database','docs','prompts','deploy']
+THESIS_FILES = [
+    'output/m17/旅游攻略分享与行程规划平台_毕业论文_修订版.docx',
+    'output/m17/旅游攻略分享与行程规划平台_毕业论文_修订版_检查版.pdf',
+    'output/m17/参考文献来源核对清单.md',
+    'output/m17/项目P1完成情况与真实测试报告.md',
+    'output/m17/论文修改记录与人工确认事项.md',
+]
 BANNED={'.git','.local','.superpowers','node_modules','__pycache__','.vite','coverage','.DS_Store'}
 
 
@@ -69,6 +76,10 @@ def assemble(root, output):
             check_config(source.name,content)
         sources[destination]=source
     for name in ROOT_FILES+PROJECT_FILES:include(root/name,name)
+    for name in THESIS_FILES:
+        source = root / name
+        if source.exists() or source.is_symlink():
+            include(source, name)
     trees=SOURCE_TREES+['frontend/dist']
     for name in trees:
         directory=root/name

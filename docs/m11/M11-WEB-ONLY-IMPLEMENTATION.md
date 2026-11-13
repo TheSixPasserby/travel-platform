@@ -1,5 +1,7 @@
 # M11 · Web-only：图片灯箱、零门槛图文编辑与 uni-app 归档
 
+本页为历史阶段记录，日期、测试数量和当时范围按原记录保留。当前使用与开发入口见 [项目文档](../README.md)。
+
 > 仓库：`TheSixPasserby/travel-platform`\
 > 基线：先以本机最新 `main` 为准，并和远端核对；截至本次审查远端为 `main@29fa630bf097c2afd45b9711995fe655bfc4f7c6`。\
 > 范围：Web 前端和必要的构建/归档配置。保持 Spring Boot/MySQL 既有业务接口、用户资料、文章状态和数据不变。\

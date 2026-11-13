@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { onBeforeRouteLeave, useRoute } from 'vue-router'
-import { fetchCreator, fetchCreatorFeed } from '@/api/creators'
+import * as creatorsApi from '@/api/creators'
 import { ApiError } from '@/api/client'
 import { useAuthStore } from '@/stores/auth'
 import { useInfiniteFeed } from '@/composables/useInfiniteFeed'
 import GuideGrid from '@/components/GuideGrid.vue'
 import SiteIcon from '@/components/SiteIcon.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
-import type { CreatorProfile } from '@/types/creator'
+import TravelArt from '@/components/TravelArt.vue'
+import type { CreatorDestination, CreatorProfile } from '@/types/creator'
+import type { DestinationType } from '@/types/destination'
+import { destinationTypeLabels } from '@/types/destination'
 import type { GuideSummary } from '@/types/guide'
 
 const route = useRoute()
@@ -34,7 +37,7 @@ const metrics = computed(() => [
 ])
 const feed = useInfiniteFeed<GuideSummary>({
   fetchPage: (cursor, signal) =>
-    fetchCreatorFeed(username.value, { size: 12, cursor }, signal),
+    creatorsApi.fetchCreatorFeed(username.value, { size: 12, cursor }, signal),
   keyOf: (guide) => guide.id,
   cacheKey: () => `creator:${username.value}`,
   cacheScope: () => auth.token ?? 'anonymous'
@@ -59,7 +62,7 @@ async function load(): Promise<void> {
   profileError.value = ''
   creator.value = null
   try {
-    const profile = await fetchCreator(username.value)
+    const profile = await creatorsApi.fetchCreator(username.value)
     if (ticket !== version) return
     creator.value = profile
     await feed.loadFirst()
@@ -86,6 +89,80 @@ async function loadMore(): Promise<void> {
 async function retryFeed(): Promise<void> {
   await feed.retry()
 }
+
+const DESTINATION_PAGE_SIZE = 10
+const destinations = ref<CreatorDestination[]>([])
+const destinationsLoading = ref(false)
+const destinationsError = ref('')
+const destinationsPage = ref(1)
+const destinationsPages = ref(0)
+const destinationsTotal = ref(0)
+const brokenCovers = ref<string[]>([])
+let destinationVersion = 0
+
+const typeLabel = (type: string) =>
+  destinationTypeLabels[type as DestinationType] ?? type
+const guideCountLabel = (count: number) => `${count} 篇手记`
+const isCoverBroken = (id: string) => brokenCovers.value.includes(id)
+function markCoverBroken(id: string) {
+  if (!brokenCovers.value.includes(id)) brokenCovers.value.push(id)
+}
+
+async function loadDestinations(): Promise<void> {
+  if (!username.value) return
+  const ticket = ++destinationVersion
+  destinationsLoading.value = true
+  destinationsError.value = ''
+  try {
+    const data = await creatorsApi.fetchCreatorDestinations(username.value, {
+      page: destinationsPage.value,
+      size: DESTINATION_PAGE_SIZE
+    })
+    if (ticket !== destinationVersion) return
+    destinations.value = data.records ?? []
+    destinationsPages.value = data.pages ?? 0
+    destinationsTotal.value = data.total ?? 0
+    if (data.current > 0) destinationsPage.value = data.current
+  } catch (error) {
+    if (ticket !== destinationVersion) return
+    destinations.value = []
+    destinationsPages.value = 0
+    destinationsTotal.value = 0
+    destinationsError.value =
+      error instanceof ApiError
+        ? error.message
+        : '目的地加载失败，请稍后再试'
+  } finally {
+    if (ticket === destinationVersion) destinationsLoading.value = false
+  }
+}
+function resetDestinations(): void {
+  destinationVersion++
+  destinationsPage.value = 1
+  destinations.value = []
+  destinationsPages.value = 0
+  destinationsTotal.value = 0
+  destinationsError.value = ''
+  brokenCovers.value = []
+}
+function turnDestinations(delta: number): void {
+  const next = destinationsPage.value + delta
+  if (next < 1 || (destinationsPages.value && next > destinationsPages.value))
+    return
+  destinationsPage.value = next
+  void loadDestinations()
+}
+function retryDestinations(): void {
+  void loadDestinations()
+}
+watch(
+  username,
+  () => {
+    resetDestinations()
+    void loadDestinations()
+  },
+  { immediate: true }
+)
 
 watch(sentinel, (element) => {
   observer?.disconnect()
@@ -133,6 +210,7 @@ onBeforeRouteLeave(() => {
 })
 onBeforeUnmount(() => {
   version++
+  destinationVersion++
   observer?.disconnect()
   feed.dispose()
 })
@@ -295,6 +373,120 @@ onBeforeUnmount(() => {
             已经看到全部公开手记
           </p>
           <div ref="sentinel" class="notes-sentinel" aria-hidden="true"></div>
+        </section>
+
+        <section
+          class="destinations-section"
+          data-test="creator-destinations"
+          aria-labelledby="creator-destinations-title"
+        >
+          <header class="notes-head">
+            <div>
+              <h2 id="creator-destinations-title" data-test="destinations-title">
+                手记中的目的地
+              </h2>
+              <p class="notes-hint" data-test="destinations-hint">
+                来自公开手记中关联的目的地，不代表真实到访
+              </p>
+            </div>
+            <span
+              v-if="destinationsTotal > 0 && !destinationsError"
+              class="destination-total"
+            >
+              共 {{ destinationsTotal }} 个目的地
+            </span>
+          </header>
+
+          <div
+            v-if="destinationsError"
+            role="alert"
+            class="destination-state surface-card"
+          >
+            <p class="destination-error">{{ destinationsError }}</p>
+            <button
+              type="button"
+              data-test="destinations-retry"
+              class="btn-ghost mt-4"
+              @click="retryDestinations"
+            >
+              重新加载
+            </button>
+          </div>
+
+          <div
+            v-else-if="destinationsLoading && !destinations.length"
+            role="status"
+            aria-label="正在加载手记中的目的地"
+            class="destination-state surface-card"
+          >
+            正在整理手记中的目的地…
+          </div>
+
+          <div
+            v-else-if="!destinations.length"
+            data-test="destinations-empty"
+            class="destination-state surface-card"
+          >
+            这位旅人还没有在公开手记里标记目的地
+          </div>
+
+          <template v-else>
+            <ul class="destinations-grid">
+              <li
+                v-for="dest in destinations"
+                :key="dest.id"
+                data-test="destination-item"
+                class="destination-card surface-card"
+              >
+                <div class="destination-cover">
+                  <img
+                    v-if="dest.coverImageUrl && !isCoverBroken(dest.id)"
+                    :src="dest.coverImageUrl"
+                    :alt="dest.name"
+                    loading="lazy"
+                    class="h-full w-full object-cover"
+                    @error="markCoverBroken(dest.id)"
+                  />
+                  <TravelArt v-else variant="hero" aria-hidden="true" />
+                  <span class="destination-type">{{ typeLabel(dest.destinationType) }}</span>
+                </div>
+                <div class="destination-body">
+                  <h3 class="destination-name">{{ dest.name }}</h3>
+                  <p class="destination-count">{{ guideCountLabel(dest.guideCount) }}</p>
+                </div>
+              </li>
+            </ul>
+
+            <nav
+              v-if="destinationsPages > 1"
+              class="destinations-pager"
+              aria-label="手记中的目的地分页"
+            >
+              <button
+                type="button"
+                data-test="destinations-prev"
+                class="btn-ghost"
+                :disabled="destinationsLoading || destinationsPage <= 1"
+                @click="turnDestinations(-1)"
+              >
+                上一页
+              </button>
+              <span data-test="destinations-page-status" class="page-status">
+                {{ destinationsPage }} / {{ destinationsPages }}
+              </span>
+              <button
+                type="button"
+                data-test="destinations-next"
+                class="btn-ghost"
+                :disabled="
+                  destinationsLoading || destinationsPage >= destinationsPages
+                "
+                @click="turnDestinations(1)"
+              >
+                下一页
+              </button>
+            </nav>
+          </template>
         </section>
       </template>
     </div>
@@ -625,6 +817,111 @@ onBeforeUnmount(() => {
   .profile-name {
   font-family: var(--font-serif);
     font-size: 34px;
+  }
+}
+.destinations-section {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-pine) 14%, transparent);
+}
+.destinations-section .notes-head {
+  margin-bottom: 1.25rem;
+}
+.destination-total {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--color-ink-soft);
+}
+.destination-state {
+  padding: 2.5rem 1.25rem;
+  text-align: center;
+  font-size: 0.9375rem;
+  color: var(--color-ink-soft);
+}
+.destination-error {
+  color: var(--color-ember);
+}
+.destinations-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.destination-card {
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--ui-shadow-sm);
+  transition:
+    transform var(--motion-fast) var(--ease-standard),
+    box-shadow var(--motion-fast) var(--ease-standard);
+}
+.destination-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--ui-shadow-md);
+}
+.destination-cover {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--color-pine-soft) 45%, var(--color-surface));
+}
+.destination-type {
+  position: absolute;
+  left: 0.75rem;
+  top: 0.75rem;
+  padding: 0.125rem 0.625rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--color-pine-deep);
+}
+.destination-body {
+  padding: 0.875rem 1rem 1.125rem;
+}
+.destination-name {
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  line-height: 1.4;
+  color: var(--color-pine-deep);
+}
+.destination-count {
+  margin-top: 0.375rem;
+  font-size: 0.8125rem;
+  color: var(--color-ink-soft);
+}
+.destinations-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.75rem;
+}
+.destinations-pager .page-status {
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink-soft);
+}
+@media (min-width: 640px) {
+  .destinations-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .destinations-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .destination-card {
+    transition: none;
+  }
+  .destination-card:hover {
+    transform: none;
   }
 }
 </style>

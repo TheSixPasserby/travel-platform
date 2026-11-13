@@ -1,0 +1,22 @@
+{
+  "checks": [
+    {
+      "name": "real preview API succeeds",
+      "ok": true
+    },
+    {
+      "name": "preview creates no itinerary",
+      "ok": true
+    },
+    {
+      "name": "save requires explicit confirmation",
+      "ok": true
+    },
+    {
+      "name": "edited preview saved and survives refresh",
+      "ok": true
+    }
+  ],
+  "itinerary": "http://127.0.0.1:15180/itineraries/4",
+  "provider": "local synthetic HTTP fixture, no external model call"
+}

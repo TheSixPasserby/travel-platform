@@ -1,6 +1,8 @@
 # M4 互动与我的收藏验收记录
 
-日期：2026-11-03。结论：**M4验收通过**。见[机器证据](verification/2026-11-03-m4.json)、[设计](superpowers/specs/2026-11-03-m4-interactions-design.md)、[计划](superpowers/plans/2026-11-03-m4-interactions.md)。行程与基础后台继续按后续里程碑实施。
+本页为历史阶段记录，日期、测试数量和当时范围按原记录保留。当前使用与开发入口见 [项目文档](README.md)。
+
+日期：2026-11-03。结论：**M4验收通过**。见[机器证据](verification/2026-11-03-m4.json)、[设计](superpowers/specs/2026-11-03-m4-interactions-design.md)、[计划](history/README.md)。行程与基础后台继续按后续里程碑实施。
 
 交付幂等点赞/收藏、当前用户真实选中状态、私人收藏搜索分页、公开评论分页/发表/本人删除，以及详情页互动、评论组件、个人中心收藏入口和安全登录回跳。复用现有12表，无DDL、无冗余计数列、无新增依赖。Codex维护契约、数据库、整合和验收；DSH指定Flash/Max交付纯策略与单组件并独立审查。
 

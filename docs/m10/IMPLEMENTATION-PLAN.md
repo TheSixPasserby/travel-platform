@@ -1,10 +1,12 @@
-# M10 Implementation Plan
+# M10 导航与兼容字段实施记录
+
+本页为历史阶段记录，日期、测试数量和当时范围按原记录保留。当前使用与开发入口见 [项目文档](../README.md)。
 
 **Goal:** 按六张参考图交付 Web 单行导航、抽屉/两种浮层、统一身份和评论元信息、安全 IP 属地降级，保护 M8/M9。
 
 **Architecture:** 延续 Vue/Pinia 与模块化 Spring Boot。API 仅增加公开 username、可空 ipRegion；使用现有首次发布时间和行锁保存历史语义。没有已授权 GeoIP 来源时保存 NULL，不调用第三方。
 
-**Spec:** `docs/m10/README.md`、`docs/m10/M10-IMPLEMENTATION-PROMPT.md` 及六张 references。
+**Spec:** `docs/m10/README.md`、[历史阶段记录](../history/README.md) 及六张 references。
 
 ## 工作区 checkpoint
 
@@ -20,7 +22,7 @@
 - [x] 3. Codex：可信代理 IP 解析、无来源 NULL 降级；首次发布/评论快照；两个可空列的独立增量迁移、备份和恢复说明。安全单测和独立测试库集成、并发/历史 NULL/伪造字段测试。
 - [x] 4. 实际运行任务书全部后端/Web/mobile/Python 检查；浏览器六宽度/两主题/匿名与账号/交互截图；只读专项审查、diff 和敏感信息扫描；更新 PROJECT_STATUS 与 M10-DELIVERY-STATUS。
 
-## Review focus
+## 审查项目
 
 1. 360px 长账号不溢出，设置和账号快速切换不丢失焦点/滚动恢复。
 2. 登出失败及账号切换期间不泄漏旧账号私有状态。

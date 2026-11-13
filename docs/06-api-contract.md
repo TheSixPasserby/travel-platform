@@ -1,8 +1,10 @@
-# REST API 契约草案
+# REST API 契约
 
-统一前缀 `/api/v1`；JSON；Sa-Token；服务端分页。
+当前契约对应 M17。业务 JSON API 使用 `/api/v1` 前缀和 Sa-Token，公开分享 HTML、robots 与 sitemap 使用独立路径。
 
-## M13 公开连续加载契约
+跨类型搜索、攻略导入及图片衍生尺寸见 [M16 API](m16/API.md)，回复、提及、通知及分享见 [M17 API](m17/API.md)。本页保留基础字段、权限和状态的详细规则。
+
+## 公开连续加载
 
 GET `/guides/feed` 接受 `size`（默认 12，1–50）、`keyword`、`destinationId`、`tagId`、`sort`（latest 或 popular）和可选 `cursor`。GET `/users/by-username/{username}/guides/feed` 接受 `size` 和 `cursor`，仅返回该用户的公开攻略。成功的 data 如下。
 
@@ -19,16 +21,19 @@ latest 按 published_at、id 倒序。popular 按快照时刻之前创建且仍�
 Web `/me` 恢复登录态后跳转本人 `/users/:username`，资料编辑入口为 `/me/settings`，本人草稿入口使用 `/me/guides?status=DRAFT`，私有列表通过 URL 保留状态筛选。会话暂时无法恢复时保留资料设置的重试入口。
 
 ## 1. 统一响应
+
 ```json
 {"code":0,"message":"success","data":{}}
 ```
 分页 data：
+
 ```json
 {"records":[],"total":0,"current":1,"size":10,"pages":0}
 ```
 错误使用合适 HTTP 状态码和稳定的整数业务码，准确映射见第 11 节；不混用字符串 code。
 
 ## 2. 认证与用户
+
 | Method | Path | 说明 | 权限 |
 |---|---|---|---|
 | POST | `/auth/register` | 注册 | 公开 |
@@ -43,6 +48,7 @@ Web `/me` 恢复登录态后跳转本人 `/users/:username`，资料编辑入口
 | GET | `/users/me/favorites` | 我的收藏 | 登录 |
 
 ## 3. 攻略
+
 | Method | Path | 说明 | 权限 |
 |---|---|---|---|
 | GET | `/guides` | 攻略分页/搜索 | 公开 |
@@ -55,9 +61,10 @@ Web `/me` 恢复登录态后跳转本人 `/users/:username`，资料编辑入口
 
 查询参数：`page`、`size`、`keyword`、`destinationId`、`tagId`、`sort=latest|popular`。
 
-标签为 P1；`GET /tags` 公开返回 `[{"id":"1","name":"美食"}]` 形式的种子标签列表，供攻略编辑和筛选选择。攻略创建/编辑使用 `tagIds` 字符串 ID 数组，重复或不存在的标签 ID 返回 40001。第一版不增加标签管理后台。
+`GET /tags` 公开返回 `[{"id":"1","name":"美食"}]` 形式的种子标签列表，供攻略编辑和筛选选择。攻略创建/编辑使用 `tagIds` 字符串 ID 数组，重复或不存在的标签 ID 返回 40001。标签从现有字典读取。
 
 ## 4. 互动与评论
+
 | Method | Path | 说明 | 权限 |
 |---|---|---|---|
 | PUT | `/guides/{id}/like` | 点赞（幂等） | 登录 |
@@ -69,6 +76,7 @@ Web `/me` 恢复登录态后跳转本人 `/users/:username`，资料编辑入口
 | DELETE | `/comments/{id}` | 删除评论 | 评论作者 |
 
 ## 5. 目的地
+
 | Method | Path | 说明 | 权限 |
 |---|---|---|---|
 | GET | `/destinations` | 目的地分页/筛选 | 公开 |
@@ -79,6 +87,7 @@ Web `/me` 恢复登录态后跳转本人 `/users/:username`，资料编辑入口
 | PATCH | `/admin/destinations/{id}/status` | 启用/停用 | 管理员 |
 
 ## 6. 行程
+
 | Method | Path | 说明 | 权限 |
 |---|---|---|---|
 | GET | `/itineraries` | 我的行程分页 | 登录 |
@@ -97,6 +106,7 @@ Web `/me` 恢复登录态后跳转本人 `/users/:username`，资料编辑入口
 资源所有权必须通过数据库关联确认，不能只凭客户端 userId。
 
 ## 7. 文件
+
 | Method | Path | 说明 | 权限 |
 |---|---|---|---|
 | POST | `/files/images` | 上传图片（multipart/form-data） | 登录 |
@@ -104,6 +114,7 @@ Web `/me` 恢复登录态后跳转本人 `/users/:username`，资料编辑入口
 限制 MIME、扩展名、大小，随机生成文件名，拒绝路径穿越。
 
 ## 8. AI 行程规划（M8）
+
 | Method | Path | 说明 | 权限 |
 |---|---|---|---|
 | GET | `/ai/itineraries/capabilities` | 查看服务配置可用状态 | 登录 |
@@ -114,6 +125,7 @@ Web `/me` 恢复登录态后跳转本人 `/users/:username`，资料编辑入口
 请求和响应的精确结构、限制与错误码见第24–25节。
 
 ## 9. 管理员
+
 | Method | Path | 说明 | 权限 |
 |---|---|---|---|
 | GET | `/admin/users` | 用户分页 | 管理员 |
@@ -127,15 +139,16 @@ Web `/me` 恢复登录态后跳转本人 `/users/:username`，资料编辑入口
 | PUT | `/admin/ai-settings` | 保存全站 AI 设置，后续请求立即生效 | 管理员 |
 
 ## 10. 契约要求
+
 SpringDoc 生成接口文档；前端类型与响应一致；不返回 password_hash；写接口必须认证和检查资源权限；限制最大 page size；API 变更同步更新本文件和测试。
 
-## 11. M0 确定的通用约定
+## 11. 通用传输约定
 
-以下为 Codex 在 2026-11-02 的基线裁定，尚未声称已实现；模块实现时同步 DTO、VO、前端类型与测试。
+字段约束、前端类型和测试按以下规则维护。
 
 - 登录返回 `{"tokenName":"satoken","tokenValue":"<opaque-token>","user":{...}}`；受保护请求仅使用 `satoken` 请求头，不从 Cookie、查询参数或请求体读取 token。使用 Sa-Token 单体内存登录态，超时 86400 秒，不引入 Redis。每次登录创建独立 token；退出仅使当前 token 失效。
-- 前端收到401仍抛对应ApiError，但仅当该请求携带的令牌与当前会话相同（或两者均匿名）才清理会话并触发导航；旧账号/旧匿名请求迟到的401不能清掉新登录。后端HTTP/业务码不变。
-- 开发 CORS 仅允许配置白名单（默认 `http://localhost:5173`），允许 `satoken`/`Content-Type` 请求头，不使用 Cookie 凭据或通配来源；部署使用同源反向代理。配置约定不代表当前已有后端实现。
+- 前端收到401仍抛对应ApiError，但仅当该请求携带的令牌与当前会话相同（或两者均匿名）才清理会话。公开页保留阅读，已挂载编辑器派发失效事件保留草稿，其他受保护页面跳转登录。旧账号/旧匿名请求迟到的401不能清掉新登录。后端HTTP/业务码不变。
+- 开发 CORS 仅允许配置白名单（默认 `http://localhost:5173`），允许 `satoken`/`Content-Type` 请求头，不使用 Cookie 凭据或通配来源；部署使用同源反向代理。允许来源由当前环境配置。
 - 所有 ID 和外键 ID 在 JSON 中使用十进制字符串，前端不得转为 Number；请求 ID 必须为正整数且不超 Java Long 上限。仅 ID 字段字符串化，分页 total/current/size/pages 与互动计数仍为数值，不使用把所有 Long 一律转字符串的全局配置。
 - 创建/更新时间返回带 `+08:00` 的 ISO 8601 字符串；旅行日期为 `yyyy-MM-dd`，活动时间为 `HH:mm`。金额使用十进制字符串，对应 DECIMAL(10,2)，最多两位小数且非负。
 - 分页默认 `page=1,size=10`，page >= 1，1 <= size <= 50，非整数或越界返回 400，不静默截断。空结果 `records=[],total=0,pages=0`；超出末页返回空 records，保留真实 total/current/size/pages。
@@ -143,7 +156,7 @@ SpringDoc 生成接口文档；前端类型与响应一致；不返回 password_
 - 响应 `code` 统一为整数：0 成功；40001 参数错误；40101 未登录/凭据失效；40102 账号或密码错误；40301 权限不足；40401 资源不存在或对当前公开入口不可见；40901 唯一值冲突；40902 状态冲突；41301 上传过大；41501 不支持的图片；50001 内部错误。HTTP 状态分别对应 200/201、400、401、403、404、409、413、415、500。内部错误只返回通用信息。
 - 错误体仍为 `{code,message,data}`：40001 的 data 可为 `{"fieldErrors":[{"field":"username","message":"格式不正确"}]}`，其他错误 data 为 null。不回显密码、token、原始被拒绝值、SQL 或堆栈。
 
-## 12. M1 认证与资料 DTO/VO
+## 12. 认证与资料 DTO/VO
 
 | 接口 | 请求 | 成功响应 data / HTTP |
 |---|---|---|
@@ -180,15 +193,15 @@ username 为 3–50 个 ASCII 字母、数字或下划线，去首尾空白并�
 - 行程日期缩短若排除已有每日安排，返回 40902，保持全部原数据；不自动删日程。dayNo 按 travelDate 与 startDate 的日期差加一由服务端计算。
 - 日程/项目请求通过 day → itinerary → user 验证所有权。当天项目排序请求为 `{"itemIds":["1","2"]}`，必须提交该天全部项目 ID 的无重复排列，缺项、重复、跨天或不属于该天的 ID 返回 40001；路径中的日程非本人所有时返回 40301。排序和父子数据更新必须原子完成。
 
-## 15. 图片与后续契约补全
+## 15. 图片与统一错误
 
 图片以 multipart 字段 `file` 提交，仅接受 JPEG/PNG/WebP，单文件最多 5 MiB；同时检查扩展名、声明 MIME 和实际解码格式，拒绝 SVG。使用服务端随机文件名和受管相对访问路径，数据库不接收磁盘绝对路径。响应 data 为 `{"url":"/uploads/..."}`，不包含磁盘路径或原始文件名。上传失败不得创建攻略或图片关系；攻略、目的地和头像保存时重新验证路径指向存在的受管图片，拒绝外链、路径穿越或不存在路径，返回 40001。
 
 框架拒绝不支持的 HTTP 方法或无法接受的响应媒体类型时，分别保留 HTTP 405/406，并复用请求不符合契约的业务码 40001；响应保持统一错误包，不转换为内部错误 500。
 
-本次固定通用规范、M1 DTO 和已有业务的权限/状态边界。攻略、目的地、上传、行程与 AI 的完整字段 DTO/VO 在各自里程碑实施前补齐，保留本文件为共享契约；没有前后端代码的阶段不声称类型或接口测试已更新。
+以下各节列出目的地、图片、攻略、互动、行程、后台与 AI 的字段及限制。
 
-## 16. M2 目的地 DTO/VO（实现前契约）
+## 16. 目的地 DTO/VO
 
 目的地列表沿用 page/size/keyword（上限100码点、去首尾空白、LIKE按字面转义），另支持 destinationType、parentId。管理员列表另支持 status；公开列表始终仅 ACTIVE 且未删除，不能通过 status 参数扩大可见性。固定按 sort_order、id 升序；不使用攻略 latest/popular 排序。非法枚举/ID/页参数返回40001。parentId为正Long范围十进制字符串。
 
@@ -211,7 +224,7 @@ DestinationVO恰含id、name、destinationType、parentId、country、province�
 
 parentId须指向存在且未删除的目的地，不可自己/后代；新建或改变引用要求ACTIVE，未改变的历史INACTIVE引用保留。无效父引用/环/封面返回40001，目标不存在40401；唯一名+类型冲突40901（含已逻辑删除名称占用）；并发写冲突40902并提示重试。管理员写事务内显式REPEATABLE_READ并按主键有序FOR UPDATE读取目的地图后验证/修改，最终不得形成环；不修改既有约束或删除历史引用。
 
-## 17. M2 图片接口与边界（实现前契约）
+## 17. 图片接口与边界
 
 POST /files/images仅登录用户，multipart字段file且仅一个文件；成功201，data={"url":"/uploads/..."}。文件1字节至5MiB，扩展名、声明MIME与实际解码格式一致；JPEG(jpg/jpeg,image/jpeg)、PNG(png,image/png)、WebP(webp,image/webp)，不支持SVG。有效5MiB必须可上传，超5MiB文件或超6MiB总multipart请求返回413/41301；空文件/缺file/多file返回40001，不支持或无法解码返回41501。读取头部尺寸后再解码，单边最多10000、总像素最多2500万，超尺寸40001。
 
@@ -219,7 +232,7 @@ POST /files/images仅登录用户，multipart字段file且仅一个文件；成�
 
 GET /uploads/**为公开图片读取，位于/api/v1之外；仅白名单扩展名的实际受管文件，normalize+realPath限制在真实根内，防穿越及符号链接越界。准确Content-Type并设置X-Content-Type-Options:nosniff；无效/不存在的受管路径返回40401，不暴露目录。容器先拒绝的畸形URL可返回400。Vite代理/uploads以同源显示图片。
 
-## 18. M3 攻略 DTO/VO（前置设计契约）
+## 18. 攻略 DTO/VO
 
 POST /guides和PUT /guides/{id}共同白名单为title、content、summary、destinationId、coverImageUrl、travelDays、budgetPerPerson、season、tagIds、images、scenicSpotIds（详见第23节）；POST另含status（缺失DRAFT，显式null拒绝，只允许DRAFT/PUBLISHED），PUT不接受status。POST201，其余写成功200；DELETE成功data=null。用户ID只从认证上下文取得。
 
@@ -227,23 +240,23 @@ title必填strip后1–180码点；content必填字符串且≤100000码点，�
 
 tagIds缺失/null归空，最多10个不重复、存在的字符串ID；响应tags按id升序。images缺失/null归空，最多20项，恰含url与可空altText（≤200码点），url不重复且指向真实受管文件；服务端按数组顺序赋sortOrder=0..n-1。PUT为完整替换，省略的可空字段清空、数组变空，正文/图片/标签同一事务；未知/内部字段及隐式类型强转拒绝。
 
-GuideSummaryVO恰含id、title、summary、coverImageUrl、author（id/nickname/avatarUrl/bio）、destination（id/name/status或null）、travelDays、budgetPerPerson、season、tags（id/name数组）、status、publishedAt、createdAt、updatedAt、likeCount、favoriteCount、commentCount。GuideDetailVO另含content、images（url/altText/sortOrder）、scenicSpots（见第23节）。所有ID字符串、计数数字、时间+08:00毫秒，nullable字段保留。公开status恒PUBLISHED；计数来自实际关系，commentCount仅NORMAL且未删除评论，不增加冗余计数列。
+GuideSummaryVO恰含id、title、summary、coverImageUrl、author（id/nickname/avatarUrl/bio/username）、destination（id/name/status或null）、travelDays、budgetPerPerson、season、tags（id/name数组）、status、publishedAt、createdAt、updatedAt、likeCount、favoriteCount、commentCount、ipRegion。GuideDetailVO另含content、images（url/altText/sortOrder）、scenicSpots（见第23节）。所有ID字符串、计数数字、时间+08:00毫秒，nullable字段保留。公开status恒PUBLISHED；计数来自实际关系，commentCount 仅计 NORMAL、未删除且 root_id 为空的根评论，不增加冗余计数列。
 
-公开列表沿用第11节分页/keyword/sort，筛选destinationId/tagId（合法但不存在ID为空200，非法40001）；标题/摘要LIKE固定ESCAPE '!'，!/%/_按字面转义，反斜杠为普通字符。目的地INACTIVE不隐藏历史攻略，也不阻止筛选。私有GET /users/me/guides另可status=DRAFT/PUBLISHED/HIDDEN，按created_at DESC,id DESC；私有详情仅本人，存在但他人40301。GET /tags公开返回id/name数组按id升序。公开资料只返回既定四个字段。
+公开列表沿用第11节分页/keyword/sort，筛选destinationId/tagId（合法但不存在ID为空200，非法40001）；标题/摘要LIKE固定ESCAPE '!'，!/%/_按字面转义，反斜杠为普通字符。目的地INACTIVE不隐藏历史攻略，也不阻止筛选。私有GET /users/me/guides另可status=DRAFT/PUBLISHED/HIDDEN，按created_at DESC,id DESC；私有详情仅本人，存在但他人40301。GET /tags公开返回id/name数组按id升序。公开作者资料为 id、nickname、avatarUrl、bio、username 五字段，ipRegion 当前统一返回 null。
 
 发布/撤回/隐藏遵守第13节和[M3状态矩阵](superpowers/specs/2026-11-03-m3-guides-design.md)：首次publishedAt永不重写；重复发布/撤回幂等；HIDDEN不可由作者编辑、发布或撤回（40902），可作者删除；二次删除40401。发布转换从持久化行重验字段、图片存在性和目的地有效性；不变的历史INACTIVE引用保留，不存在/逻辑删除关联40001。攻略写和关联替换有数据库行锁与事务，锁冲突40902。
 
-## 19. M4 互动与评论 DTO/VO（前置设计契约）
+## 19. 互动与评论 DTO/VO
 
 GET /guides/{id}/interaction、PUT/DELETE /guides/{id}/like、PUT/DELETE /guides/{id}/favorite仅登录且目标公开，成功200，返回GuideInteractionVO：guideId字符串，liked/favorited布尔，likeCount/favoriteCount/commentCount数字。PUT/DELETE幂等，重复收藏不改首次created_at；隐藏/撤回/删除保留关系但公开入口404。用户ID从会话取得，不接受客户端指定用户。
 
 GET /users/me/favorites只查本人，page/size/keyword沿用第11节，按收藏created_at DESC、收藏id DESC，仅展示PUBLISHED未删除的GuideSummaryVO；数据恢复公开后原收藏重现。分页count与records同一只读快照，无他人收藏查询入口。
 
-GET /guides/{id}/comments公开，先确认攻略PUBLISHED未删除，再分页NORMAL未删除评论，created_at DESC、id DESC。POST相同路径只登录，body仅content；成功201返回CommentVO：id、guideId、author（id/nickname/avatarUrl/bio）、content、createdAt、updatedAt。ID字符串，时间+08:00毫秒，无status/isDeleted/密码字段。content按[M4精确规范化](superpowers/specs/2026-11-03-m4-interactions-design.md)拒不支持控制字符、统一换行、去首尾Unicode空白/200B/FEFF后1–2000码点；纯文本，不执行HTML或Markdown。未知字段/类型错误40001。
+GET /guides/{id}/comments公开，先确认攻略PUBLISHED未删除，再分页 NORMAL 未删除根评论，created_at DESC、id DESC。回复采用独立分页接口。POST相同路径只登录，body 接受 content，以及可选 replyToId、mentionUserIds。成功 201 返回 CommentVO 的 id、guideId、author、content、createdAt、updatedAt，并包含 rootId、replyToId、replyToAuthor、replyCount 和 mentions。ID字符串，时间+08:00毫秒，无status/isDeleted/密码字段。content按[M4精确规范化](superpowers/specs/2026-11-03-m4-interactions-design.md)拒不支持控制字符、统一换行、去首尾Unicode空白/200B/FEFF后1–2000码点；纯文本，不执行HTML或Markdown。未知字段/类型错误40001。
 
 DELETE /comments/{id}须当前ACTIVE用户为评论作者（ADMIN无代删权），可以删除本人HIDDEN评论及非公开/已逻辑删除攻略下本人评论，只做逻辑删除，200/data=null；不存在/已删40401，其他作者40301。所有涉及同一攻略/评论的写事务按攻略→评论锁序复核，不能只用客户端userId；锁冲突40902。
 
-## 20. M5 私人手动行程 DTO/VO（前置设计契约）
+## 20. 私人手动行程 DTO/VO
 
 第6节12个入口全部要求ACTIVE登录并验证根行程所有者，ADMIN无例外。列表只本人；路径对象存在但非本人40301，未知/根逻辑删除后的根或子入口40401。写事务先锁根，再复核子关系；根逻辑删除保留子数据，显式删除日程/项目物理删除。错误沿用第11节，不回显内部路径/SQL。
 
@@ -270,7 +283,7 @@ DELETE /comments/{id}须当前ACTIVE用户为评论作者（ADMIN无代删权）
 
 destination为null或{id,name,status}，无内部字段。所有ID/外键字符串；dayNo/计数/sortOrder数值；时间戳+08:00毫秒，日期yyyy-MM-dd，时间HH:mm/null。无userId、isDeleted或磁盘路径。详情批量取日、项目、目的地，不逐项目查目的地。
 
-## 21. M6 基础后台 DTO/VO（前置设计契约）
+## 21. 基础后台 DTO/VO
 
 全部/admin接口须当前ACTIVE未删ADMIN，普通用户40301、匿名或被禁用账号40101。无角色变更/密码重置/用户或目的地硬删接口；管理员不复用作者接口代改内容或发布草稿。写请求只接受`{"status":"..."}`，缺失/null、未知字段、类型错误或非法枚举40001。不存在/逻辑删除目标40401；成功200统一包，ID字符串、时间+08:00毫秒、计数数值。
 
@@ -295,8 +308,7 @@ destination为null或{id,name,status}，无内部字段。所有ID/外键字符�
 
 攻略治理只能已发布内容隐藏/恢复，当前DRAFT或没有首次发布时间的异常HIDDEN恢复40902；首次publishedAt、正文、作者及全部图片/标签/点赞收藏关系不变。评论治理只NORMAL/HIDDEN转换，已逻辑删除404且不能复活；按攻略→评论当前锁读，父攻略隐藏/已删不影响管理员治理未删评论，公开读取仍由父可见性限制。所有同状态PATCH幂等200，不重写updatedAt。
 
-
-## 22. M8 目的地资料与图库
+## 22. 目的地资料与图库
 
 DestinationVO在原字段上增加address、longitude/latitude（六位小数字符串或null）、recommendedDurationMinutes（1–1440）、recommendedDays（1–30）、openingHours、ticketInfo、officialUrl、sourceUrl、verifiedAt（+08:00毫秒时间或null）、images（有序数组，空为[]）。字段上限：地址300、说明1000、链接1000；坐标成对提供，longitude[-180,180]、latitude[-90,90]，小数最多6位，不舍入。开放/票务说明或坐标非空时必须有sourceUrl和verifiedAt；链接仅http/https绝对地址，无userinfo，不自动抓取。
 
@@ -304,14 +316,13 @@ POST/PUT目的地允许上述新增字段；为兼容旧客户端，新字段PUT
 
 CITY禁止父级；SCENIC_SPOT必须直接归属CITY，禁止景点父级和循环；仍被景点引用的CITY改类型40902。新父级必须ACTIVE未删，原停用父级引用可保留；OTHER原任意父链语义保留并防环。公开列表不列出父城市已停用的景点；公开详情继续可读INACTIVE历史，供已有攻略/行程说明。类型收紧后的旧防环回归改用OTHER夹具，保留循环与并发保护断言。
 
-
-## 23. M8 攻略多景点与目的地相关攻略
+## 23. 攻略多景点与目的地相关攻略
 
 GuideDetailVO新增scenicSpots（{id,name,status}数组）；GuideSummaryVO维持原结构。攻略POST/PUT可传scenicSpotIds，最多20个正整数字符串ID，归一化后不可重复，须为主目的地CITY的直属SCENIC_SPOT。新增关联的城市与景点必须ACTIVE未删；同城不变的停用历史关联可保留。省略scenicSpotIds保留旧关联（创建为空），显式null拒绝，[]清空；已有关联时改变主城市必须显式提供兼容新城的集合或[]。关联与正文、标签、图片同事务，所有权规则不变；被攻略关联的景点不能直接换城市或改类型（40902）。
 
 GET /destinations/{id}/guides公开，支持page/size/keyword/tagId，返回GuideSummaryVO标准分页；城市匹配攻略主城市或该城下关联景点，景点匹配自身关联，OTHER匹配主目的地。仅PUBLISHED未删，按首次发布时间/id倒序，EXISTS去重，草稿与隐藏攻略不可见；未知目的地40401。停用历史资料仍可查看。路径ID与分页/搜索规范沿第11节。
 
-## 24. M8 整程原子导入
+## 24. 整程原子导入
 
 POST /itineraries/import要求ACTIVE登录。只创建新的本人行程，第一次成功201，同用户同clientRequestId重发200返回已保存行程，已删除目标40902。数据库唯一(user_id,client_request_id)与用户行锁共同防重，幂等键大小写按UUID归一。不同用户可以使用相同UUID。响应为原ItineraryDetailVO，内部幂等键不投影。
 
@@ -319,7 +330,7 @@ POST /itineraries/import要求ACTIVE登录。只创建新的本人行程，第�
 
 kind只接受SCENIC_SPOT或FREE_TIME。景点须为根城市直属ACTIVE未删SCENIC_SPOT，名称与地址回查数据库覆盖客户端同名字段。FREE_TIME必须destinationId=null，名称由服务端固定为“自由活动”，地址null。导入景点全程唯一，时段不能重叠。原单条手动编辑入口保留重访能力。模型预览或用户修改均须经过导入重新校验。根、每日与项目在同一事务创建，任一步失败全部回滚。根标题160码点，notes2000码点，上限不截断。
 
-## 25. M8 AI只读预览
+## 25. AI只读预览
 
 全部 /ai/itineraries 入口要求ACTIVE登录。GET /capabilities返回enabled、available、reason、maxDays=14、provider、providerLabel。available表示服务端已具备调用配置。Base URL、Key与上游原始响应不投影。
 
@@ -334,7 +345,6 @@ POST /day-preview输入恰为requirements、targetDate、usedDestinationIds。ta
 候选最多40个，先包含想去/必须去，再补充其他可用候选。仅检索最多5篇公开攻略，每篇摘要最多1600字符，候选资料与摘要按序收缩，最终外呼JSON不超过24000字符。模型等待期间不持有数据库事务，返回前重新读取景点和父城状态。预览无业务写入。每用户滚动60秒最多2次、每用户1个并发、全局2个并发，最多记录10000个用户状态，过期空闲状态可回收。上游失败不会自动再发调用。
 
 错误码使用503/50310配置不可用、422/42210资料不足、429/42910本地限流、429/42911上游限流、504/50410超时、502/50210上游失败、502/50211非法输出。API请求校验仍为400/40001。AI关闭时私人手动行程接口继续可用。
-
 
 ## M10：身份与 IP 属地兼容扩展
 
@@ -359,8 +369,7 @@ POST /day-preview输入恰为requirements、targetDate、usedDestinationIds。ta
 
 首页推荐与热门复用现有 `GET /guides?sort=popular`（点赞数、发布时间、ID倒序），最新使用 `latest`；界面不宣称个性化。搜索范围保持标题或摘要，`GuideSummary` 原字段不变。
 
-IP 属地输出由 `IpRegionVisibility.ENABLED=false` 全局关闭：攻略/评论 `ipRegion` 字段仍存在，但公开/本人响应为 null；原数据库快照、首次发布写入和可信代理解析逻辑保留。只有来源能力单独验收后才能修改披露策略。本轮没有 DDL 或内容格式迁移。
-
+IP 属地输出由 `IpRegionVisibility.ENABLED=false` 全局关闭：攻略/评论 `ipRegion` 字段仍存在，但公开/本人响应为 null；原数据库快照、首次发布写入和可信代理解析逻辑保留。只有来源能力单独验收后才能修改披露策略。该公开展示开关不改变既有数据。
 
 ## M12 管理员网页 AI 设置
 
@@ -376,3 +385,22 @@ PUT 接收上述 version、enabled、provider、baseUrl、model、responseFormat
 - apiKey 留空或省略时沿用当前密钥。clearApiKey=true 时需留空 apiKey，网页同时取消启用。API 地址改变后需重新提供密钥，启用前须具备完整可用配置。
 - 成功响应采用 GET 的安全投影，输入密钥在页面内存中清空。配置通过服务账号私有文件原子保存。启动时读取持久化版本，文件损坏时关闭 AI 并向管理员显示恢复提示。
 - 已保存配置优先于启动环境默认值，后续生成请求取得一份不可变快照。手动行程与业务表继续使用现有规则。
+
+## 当前增量接口
+
+| 方法 | 路径 | 说明 |
+|---|---|---|
+| GET | `/search` | 五类公开对象检索与输入建议 |
+| POST | `/itineraries/guide-imports` | 攻略真实关联地点创建或追加私人行程 |
+| GET | `/comments/{id}/replies` | 根评论的公开回复分页 |
+| GET | `/comments/{id}/location` | 通知目标所在根评论及回复页 |
+| GET | `/users/mention-suggestions` | 登录用户的公开账号建议 |
+| GET | `/notifications`、`/notifications/unread-count` | 当前收件人列表与未读数量 |
+| PUT | `/notifications/{id}/read`、`/notifications/read-all` | 当前用户幂等已读 |
+| GET | `/users/by-username/{username}/destinations` | 公开作品关联目的地分页 |
+| GET | `/share/guides/{id}`、`/share/users/{username}` | 服务端分享 HTML，路径位于 /api/v1 之外 |
+| GET | `/sitemap.xml`、`/robots.txt` | 公开站点元数据 |
+
+准确请求字段、频控、通知去重优先级和导入幂等语义以对应 [M16](m16/API.md)、[M17](m17/API.md) 补充契约为准。
+
+按 ID 的公开资料及攻略读取保持原内容状态规则。按用户名的作者入口、作者目的地、分享、通知和 sitemap 额外排除失效账号。用户禁用不自动修改既有攻略的发布状态。

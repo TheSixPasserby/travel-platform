@@ -1,0 +1,50 @@
+{
+  "checkedAt": "2026-11-13T16:15:22.163846+00:00",
+  "originalFilesUnchanged": true,
+  "originalHashes": {
+    "/Users/hachikei/Downloads/附件6：毕业设计（论文、专题报告）封面模板.docx": "cf4f038367eb430f2d0670a3d9017427bea1c8e4279182a7d681f93d2af5632c",
+    "/Users/hachikei/Downloads/毕设11-13.docx": "0011bbf271bf4009601bd58e640dab74de2e6ad4c2f3ec8becee7d643a14de7b"
+  },
+  "coverStructureIdenticalExceptRequestedFooterRemoval": true,
+  "coverLogoBytesIdentical": true,
+  "referenceEntries": 9,
+  "citationNumbers": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9"
+  ],
+  "nativeCachedPageReferences": 40,
+  "pdfPages": 29,
+  "coverPages": 1,
+  "tocPages": 2,
+  "numberedBodyPages": 26,
+  "knownPrivateValuesFound": 0,
+  "files": {
+    "参考文献来源核对清单.md": {
+      "bytes": 5798,
+      "sha256": "668b8864563e0c435f1141082f292765f62b81a4bcdc9b4096b5db51098c4d75"
+    },
+    "旅游攻略分享与行程规划平台_毕业论文_修订版.docx": {
+      "bytes": 2926199,
+      "sha256": "cdcff346ce066cf9f2f786756b365ddcdb75373ebf286c2964ebe6ac1e115645"
+    },
+    "旅游攻略分享与行程规划平台_毕业论文_修订版_检查版.pdf": {
+      "bytes": 2986272,
+      "sha256": "132a74b55ce3ea663d900e6edcecbd5d246088e45fbfb5e8b3fb292e185ef8a5"
+    },
+    "论文修改记录与人工确认事项.md": {
+      "bytes": 6155,
+      "sha256": "2b406d09a98480844449e74f65c6e78bc72b0e50b7bfa777807bfb0d26c74de4"
+    },
+    "项目P1完成情况与真实测试报告.md": {
+      "bytes": 7088,
+      "sha256": "4a67f40876d3232c5978fb51f8f14ed4f4cd0cf6fecf374a9d4559116c1aea9b"
+    }
+  }
+}

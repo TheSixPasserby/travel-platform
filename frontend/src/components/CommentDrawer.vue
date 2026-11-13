@@ -18,6 +18,7 @@ const props = withDefaults(
     /** 与服务端同步的评论总数，打开时展示在标题旁。 */
     commentCount?: number
     guideAuthorId?: string
+    locationCommentId?: string
   }>(),
   { commentCount: 0, guideAuthorId: undefined }
 )
@@ -312,6 +313,7 @@ onBeforeUnmount(() => {
           layout="drawer"
           :guide-id="guideId"
           :guide-author-id="guideAuthorId"
+          :location-comment-id="open ? locationCommentId : undefined"
           @count-changed="emit('count-changed', $event)"
         />
       </div>

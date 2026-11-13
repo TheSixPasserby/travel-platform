@@ -33,7 +33,8 @@ public class CommentService {
     private final GuideMapper guides;
     private final UserMapper users;
     private final UserService session;
-    public CommentService(CommentMapper comments,GuideMapper guides,UserMapper users,UserService session,RequestIpRegion ipRegions){this.ipRegions=ipRegions;this.comments=comments;this.guides=guides;this.users=users;this.session=session;}
+    private final com.example.travelplatform.notification.NotificationMapper notifications;
+    public CommentService(CommentMapper comments,GuideMapper guides,UserMapper users,UserService session,RequestIpRegion ipRegions,com.example.travelplatform.notification.NotificationMapper notifications){this.notifications=notifications;this.ipRegions=ipRegions;this.comments=comments;this.guides=guides;this.users=users;this.session=session;}
     @Transactional(readOnly=true,isolation=Isolation.REPEATABLE_READ)
     public PageResponse<CommentVO> list(String id,String rawPage,String rawSize){
         long guide=RequestValues.positiveId(id),page=RequestValues.page(rawPage),size=RequestValues.size(rawSize),offset=RequestValues.offset(page,size);
@@ -43,17 +44,90 @@ public class CommentService {
                 .stream().collect(Collectors.toMap(User::getId,Function.identity()));
         List<CommentVO> result=rows.stream().map(comment->{
             User user=authors.get(comment.getUserId());PublicProfileVO author=user==null?new PublicProfileVO(comment.getUserId().toString(),"已注销的旅行者",null,null,null):PublicProfileVO.from(user);
-            return CommentVO.from(comment,author);
+            return view(comment,author);
         }).toList();
         return new PageResponse<>(result,total,page,size,total/size+(total%size==0?0:1));
     }
     @Transactional(isolation=Isolation.READ_COMMITTED)
     public CommentVO create(String id,CommentCreateRequest request){
-        User user=session.requireCurrentUser();long guide=RequestValues.positiveId(id);visible(guides.lock(guide));
+        User user=session.requireCurrentUser();long guide=RequestValues.positiveId(id);
         String content=CommentInputPolicy.normalize(request==null?null:request.content());
+        User locked=comments.lockAuthor(user.getId());
+        if(locked==null||!"ACTIVE".equals(locked.getStatus())||locked.getIsDeleted()!=0)throw new ApiException(ErrorCode.UNAUTHORIZED);
+        comments.serializeWrites(user.getId());
+        visible(guides.lock(guide));
+        LocalDateTime time=now();
+        if(comments.recent(user.getId(),time.minusMinutes(1))>=10||comments.recent(user.getId(),time.minusDays(1))>=100)
+            throw new ApiException(ErrorCode.COMMENT_RATE_LIMIT);
+        GuideComment target=null;
+        Long root=null;
+        if(request.replyToId()!=null) {
+            target=publicComment(RequestValues.positiveId(request.replyToId()));
+            if(target.getGuideId()!=guide)throw new ApiException(ErrorCode.VALIDATION_FAILED,"回复必须属于当前攻略");
+            root=target.getRootId()==null?target.getId():target.getRootId();
+        }
+        List<User> mentioned=validateMentions(content,request.mentionUserIds());
         GuideComment comment=new GuideComment();comment.setGuideId(guide);comment.setUserId(user.getId());comment.setContent(content);
-        comment.setIpRegion(ipRegions.current());comment.setStatus("NORMAL");comment.setIsDeleted(0);comment.setCreatedAt(now());comment.setUpdatedAt(comment.getCreatedAt());comments.insert(comment);
-        return CommentVO.from(comment,PublicProfileVO.from(user));
+        comment.setRootId(root);comment.setReplyToId(target==null?null:target.getId());
+        comment.setIpRegion(ipRegions.current());comment.setStatus("NORMAL");comment.setIsDeleted(0);comment.setCreatedAt(time);comment.setUpdatedAt(time);comments.insert(comment);
+        for(User recipient:mentioned)comments.mention(comment.getId(),recipient.getId());
+        Map<Long,String> recipients=new LinkedHashMap<>();
+        if(target==null)recipients.put(guides.selectById(guide).getAuthorId(),"COMMENT");
+        else recipients.put(target.getUserId(),"REPLY");
+        for(User recipient:mentioned)recipients.put(recipient.getId(),"MENTION");
+        recipients.remove(user.getId());
+        for(var recipient:recipients.entrySet()) {
+            User receiver=users.selectById(recipient.getKey());
+            if(receiver!=null&&"ACTIVE".equals(receiver.getStatus()))
+                notifications.insert(recipient.getKey(),user.getId(),guide,comment.getId(),recipient.getValue(),time);
+        }
+        return view(comment,PublicProfileVO.from(user));
+    }
+    @Transactional(readOnly=true,isolation=Isolation.REPEATABLE_READ)
+    public PageResponse<CommentVO> replies(String rawId,String rawPage,String rawSize) {
+        GuideComment root=publicComment(RequestValues.positiveId(rawId));
+        if(root.getRootId()!=null)throw new ApiException(ErrorCode.VALIDATION_FAILED,"请选择根评论");
+        long page=RequestValues.page(rawPage),size=RequestValues.size(rawSize),offset=RequestValues.offset(page,size);
+        long total=comments.countReplies(root.getId());
+        var rows=offset>=total?List.<GuideComment>of():comments.replies(root.getId(),size,offset);
+        var values=rows.stream().map(c->view(c,profile(c.getUserId(),users.selectById(c.getUserId())))).toList();
+        return new PageResponse<>(values,total,page,size,total/size+(total%size==0?0:1));
+    }
+    public record Location(String guideId,String rootId,long rootPage,long replyPage) { }
+    @Transactional(readOnly=true,isolation=Isolation.REPEATABLE_READ)
+    public Location location(String rawId) {
+        GuideComment c=publicComment(RequestValues.positiveId(rawId));
+        long root=c.getRootId()==null?c.getId():c.getRootId();
+        return new Location(c.getGuideId().toString(),Long.toString(root),comments.newerRoots(root)/10+1,c.getRootId()==null?1:comments.earlierReplies(c.getId())/10+1);
+    }
+    private GuideComment publicComment(long id) {
+        GuideComment c=required(comments.find(id));
+        if(!"NORMAL".equals(c.getStatus()))throw new ApiException(ErrorCode.NOT_FOUND);
+        visible(guides.selectById(c.getGuideId()));
+        if(c.getRootId()!=null) {
+            GuideComment root=required(comments.find(c.getRootId()));
+            if(!"NORMAL".equals(root.getStatus()))throw new ApiException(ErrorCode.NOT_FOUND);
+        }
+        return c;
+    }
+    private List<User> validateMentions(String content,List<String> rawIds) {
+        if(rawIds==null||rawIds.isEmpty())return List.of();
+        if(rawIds.size()>5)throw new ApiException(ErrorCode.VALIDATION_FAILED,"每条评论最多提及五人");
+        Set<Long> ids=new LinkedHashSet<>();
+        for(String raw:rawIds)if(!ids.add(RequestValues.positiveId(raw)))throw new ApiException(ErrorCode.VALIDATION_FAILED,"提及用户不能重复");
+        List<User> result=new ArrayList<>();
+        for(long id:ids) {
+            User u=users.selectById(id);
+            if(u==null||!"ACTIVE".equals(u.getStatus())||!java.util.regex.Pattern.compile("(?<![A-Za-z0-9_@])@"+java.util.regex.Pattern.quote(u.getUsername())+"(?![A-Za-z0-9_])",java.util.regex.Pattern.CASE_INSENSITIVE).matcher(content).find())
+                throw new ApiException(ErrorCode.VALIDATION_FAILED,"提及账号无效或正文缺少对应的 @用户名");
+            result.add(u);
+        }
+        return result;
+    }
+    private CommentVO view(GuideComment c,PublicProfileVO author) {
+        GuideComment target=c.getReplyToId()==null?null:comments.find(c.getReplyToId());
+        PublicProfileVO replyTo=target==null?null:profile(target.getUserId(),users.selectById(target.getUserId()));
+        return CommentVO.from(c,author,replyTo,c.getRootId()==null?comments.countReplies(c.getId()):0,comments.mentions(c.getId()).stream().map(PublicProfileVO::from).toList());
     }
     @Transactional(isolation=Isolation.READ_COMMITTED)
     public void delete(String id){
@@ -95,7 +169,7 @@ public class CommentService {
     private static GuideComment required(GuideComment comment){
         if(comment==null||!Integer.valueOf(0).equals(comment.getIsDeleted()))throw new ApiException(ErrorCode.NOT_FOUND);return comment;
     }
-    private static void visible(Guide guide){
+    private void visible(Guide guide){
         if(guide==null||!Integer.valueOf(0).equals(guide.getIsDeleted())||!"PUBLISHED".equals(guide.getStatus()))throw new ApiException(ErrorCode.NOT_FOUND);
     }
     private static LocalDateTime now(){return LocalDateTime.now(ZoneId.of("Asia/Shanghai")).truncatedTo(ChronoUnit.MILLIS);}

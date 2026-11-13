@@ -1,2 +1,5 @@
 package com.example.travelplatform.comment.dto;
-public record CommentCreateRequest(String content) { }
+import java.util.List;
+public record CommentCreateRequest(String content, String replyToId, List<String> mentionUserIds) {
+    public CommentCreateRequest(String content) { this(content, null, null); }
+}

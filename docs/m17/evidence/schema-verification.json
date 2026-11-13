@@ -1,0 +1,7 @@
+{
+  "freshSchemaEqualsMigratedSchema": true,
+  "tableCount": 18,
+  "columnCount": 151,
+  "foreignKeyCount": 31,
+  "checks": 14
+}

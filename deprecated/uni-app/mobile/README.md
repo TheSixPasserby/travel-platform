@@ -42,7 +42,7 @@ H5 仍默认使用本站 `/api/v1` 和原攻略首页；服务器设置中可选
 
 ## AppID 与原生安装包
 
-本项目已登记 DCloud AppID `__UNI__284320D`，Android 包名为 `io.github.thesixpasserby.travel`；固定签名指纹和 Actions 配置见 [移动构建与发布](../docs/MOBILE_RELEASES.md)。签名私钥和密码仅放在 GitHub Secrets 与忽略的本地目录，不放进源码或发布附件。
+本项目已登记 DCloud AppID `__UNI__284320D`，Android 包名为 `io.github.thesixpasserby.travel`；固定签名指纹和 Actions 配置见 [移动构建与发布](../../../docs/MOBILE_RELEASES.md)。签名私钥和密码仅放在 GitHub Secrets 与忽略的本地目录，不放进源码或发布附件。
 
 源码 manifest 保持 AppID 占位，Actions 在源码安全检查通过后从仓库 Variables 注入真实 AppID 和版本。微信 AppID 尚待配置；微信开发者工具可导入 `dist/build/mp-weixin` 工程，无 AppID 不代表已完成线上发布。正式配置保持 `urlCheck=true`，填写服务器地址不能绕过 request、downloadFile 和图片合法域名规则。
 
@@ -55,7 +55,7 @@ H5 仍默认使用本站 `/api/v1` 和原攻略首页；服务器设置中可选
 - 原生配置未齐时，nightly 可发布明确标注“未生成 APK”的资源产物；beta／正式版会停止，不能发布不完整安装包。
 - 原生配置齐全时，签名 APK 还须通过 `android-smoke` 模拟器启动检查才能发布。首启截图、UI XML 和 JSON 摘要保存在 Actions 的 `android-startup-evidence` artifact；烟测不注入签名 Secrets，不自动同意应用权限或隐私提示。
 
-完整渠道、版本号、附件说明与配置清单见 [MOBILE_RELEASES.md](../docs/MOBILE_RELEASES.md)。
+完整渠道、版本号、附件说明与配置清单见 [MOBILE_RELEASES.md](../../../docs/MOBILE_RELEASES.md)。
 
 ## 范围与安全展示
 
@@ -67,12 +67,12 @@ H5 仍默认使用本站 `/api/v1` 和原攻略首页；服务器设置中可选
 
 ## 实际验收状态
 
-2026-11-10 最终验收：`28ee71b` 的完整 CI、自动 nightly 与手动 beta 均通过。已发布 [签名 APK Beta 10.1](https://github.com/TheSixPasserby/travel-platform/releases/tag/v0.1.0-beta.10.1) 与 [Nightly 9.1](https://github.com/TheSixPasserby/travel-platform/releases/tag/v0.1.0-nightly.20261110.9.1)，同时包含 H5／微信工程／App 资源与校验清单，均为预发布、非 Latest。API35 x86_64 模拟器完成安装及首启服务器设置页验证，真实截图已目视验收；本地 Python124/124。详细[机器证据](../docs/verification/2026-11-10-android-releases.json)记录各 run、签名、版本、哈希及首启结果。Android真机和微信线上验收仍未执行。
+2026-11-10 最终验收：`28ee71b` 的完整 CI、自动 nightly 与手动 beta 均通过。已发布 [签名 APK Beta 10.1](https://github.com/TheSixPasserby/travel-platform/releases/tag/v0.1.0-beta.10.1) 与 [Nightly 9.1](https://github.com/TheSixPasserby/travel-platform/releases/tag/v0.1.0-nightly.20261110.9.1)，同时包含 H5／微信工程／App 资源与校验清单，均为预发布、非 Latest。API35 x86_64 模拟器完成安装及首启服务器设置页验证，真实截图已目视验收；本地 Python124/124。详细[机器证据](../../../docs/verification/2026-11-10-android-releases.json)记录各 run、签名、版本、哈希及首启结果。Android真机和微信线上验收仍未执行。
 
 以下记录为实施历史，保留当时结果。
 
 服务器设置已通过本地安全 22/22、类型检查、三目标资源构建与 H5 浏览器 7 项验证。功能提交 `c8cfa254` 的完整 CI、nightly 构建和 GitHub 预发布均通过，资源附件下载后校验和一致。
 
-2026-11-10：官方 SDK、AppKey 和固定签名已配置；首轮原生工作流因缺少 `sdkmanager` 失败，现已新增 Android 工具初始化。重跑 [Actions 42789409101](https://github.com/TheSixPasserby/travel-platform/actions/runs/42789409101) 正在验收，尚不能据此声称 APK、模拟器启动或真机安装通过。详细证据和下载入口见 [移动构建与发布](../docs/MOBILE_RELEASES.md)；原 M9／M10 历史与真机待办继续保留。
+2026-11-10：官方 SDK、AppKey 和固定签名已配置；首轮原生工作流因缺少 `sdkmanager` 失败，现已新增 Android 工具初始化。重跑 [Actions 42789409101](https://github.com/TheSixPasserby/travel-platform/actions/runs/42789409101) 正在验收，尚不能据此声称 APK、模拟器启动或真机安装通过。详细证据和下载入口见 [移动构建与发布](../../../docs/MOBILE_RELEASES.md)；原 M9／M10 历史与真机待办继续保留。
 
 依赖基于 DCloud 官方 Vue3/Vite/TS 模板的同版工具包，所有 DCloud 编译包固定 `3.0.0-5030420261029002`，Vue 3.4.21、Vite 5.2.8、TypeScript 5.9.3。版本来源见 [官方 CLI 指南](https://uniapp.dcloud.net.cn/quickstart-cli.html) 和 [官方 TypeScript 模板](https://github.com/dcloudio/uni-preset-vue/tree/vite-ts)。

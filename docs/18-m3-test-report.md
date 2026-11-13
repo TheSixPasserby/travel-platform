@@ -1,6 +1,8 @@
 # M3 攻略核心验收记录
 
-日期：2026-11-03。结论：**M3 验收通过**。证据见 [机器记录](verification/2026-11-03-m3.json)；方案见 [M3 设计](superpowers/specs/2026-11-03-m3-guides-design.md)、[实施计划](superpowers/plans/2026-11-03-m3-guides.md)。本结论不代表后续互动、行程和基础后台已完成。
+本页为历史阶段记录，日期、测试数量和当时范围按原记录保留。当前使用与开发入口见 [项目文档](README.md)。
+
+日期：2026-11-03。结论：**M3 验收通过**。证据见 [机器记录](verification/2026-11-03-m3.json)；方案见 [M3 设计](superpowers/specs/2026-11-03-m3-guides-design.md)、[阶段记录](history/README.md)。本结论不代表后续互动、行程和基础后台已完成。
 
 ## 实际交付
 

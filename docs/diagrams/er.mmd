@@ -1,21 +1,18 @@
 erDiagram
-    DESTINATIONS o|--o{ DESTINATIONS : contains
-    DESTINATIONS ||--o{ DESTINATION_IMAGES : illustrates
-    GUIDES ||--o{ GUIDE_DESTINATIONS : visits
-    DESTINATIONS ||--o{ GUIDE_DESTINATIONS : linked
     USERS ||--o{ GUIDES : writes
-    DESTINATIONS o|--o{ GUIDES : categorizes
-    GUIDES ||--o{ GUIDE_IMAGES : contains
-    GUIDES ||--o{ GUIDE_TAGS : has
-    TAGS ||--o{ GUIDE_TAGS : assigned
-    USERS ||--o{ GUIDE_LIKES : likes
-    GUIDES ||--o{ GUIDE_LIKES : receives
-    USERS ||--o{ GUIDE_FAVORITES : favorites
-    GUIDES ||--o{ GUIDE_FAVORITES : saved
-    USERS ||--o{ GUIDE_COMMENTS : writes
-    GUIDES ||--o{ GUIDE_COMMENTS : receives
     USERS ||--o{ ITINERARIES : owns
-    DESTINATIONS o|--o{ ITINERARIES : destination
+    DESTINATIONS o|--o{ DESTINATIONS : parent
+    DESTINATIONS o|--o{ GUIDES : primary
+    GUIDES ||--o{ GUIDE_DESTINATIONS : includes
+    DESTINATIONS ||--o{ GUIDE_DESTINATIONS : references
+    GUIDES ||--o{ GUIDE_COMMENTS : receives
+    USERS ||--o{ GUIDE_COMMENTS : writes
+    GUIDE_COMMENTS o|--o{ GUIDE_COMMENTS : root_or_reply
+    GUIDE_COMMENTS ||--o{ COMMENT_MENTIONS : mentions
+    USERS ||--o{ COMMENT_MENTIONS : selected
+    USERS ||--o{ NOTIFICATIONS : actor_or_recipient
+    GUIDE_COMMENTS ||--o{ NOTIFICATIONS : event
     ITINERARIES ||--o{ ITINERARY_DAYS : contains
     ITINERARY_DAYS ||--o{ ITINERARY_ITEMS : contains
-    DESTINATIONS o|--o{ ITINERARY_ITEMS : references
+    DESTINATIONS o|--o{ ITINERARY_ITEMS : location
+    ITINERARIES ||--o{ ITINERARY_GUIDE_IMPORTS : receipts

@@ -1,6 +1,6 @@
 # 需求、实现与验收追踪
 
-按[TC-001–040定义](09-test-and-acceptance.md)逐项映射。M6实际完整后端165项、前端227项；后续交付脚本检查单独计数，不混为业务测试。源码中的测试方法可用`python3 scripts/backend.py test --test Class#method`定向执行，需独立测试库。
+按 [验收用例](09-test-and-acceptance.md) 映射实现与测试。TC-001–040 保留基础场景，TC-041–048 覆盖当前社区与规划增量。最近完整执行结果见 M17 测试报告。源码中的测试方法可用`python3 scripts/backend.py test --test Class#method`定向执行，需独立测试库。
 
 下表简写对应真实测试类：
 
@@ -95,3 +95,17 @@
 | 真实浏览器 | 城市/景点/图库/草稿/管理员/390px，QA副本AI保存刷新、外来用户403、502后编辑保留及手动保存 |
 
 完整命令、实际数量、限制与十项验收见[最终报告](33-m8-final-report.md)及[机器证据](verification/2026-11-06-m8-final.json)。
+
+## M13–M17 增量映射
+
+| TC / 范围 | 实现与测试 |
+|---|---|
+| 瀑布流、连续加载、主题和灯箱 | 前端 m13/m14/m15 测试及对应阶段浏览器证据 |
+| TC-041 | SearchService、M16SearchApiTest |
+| TC-042 | 攻略行程导入服务、GuideTripImportApiTest |
+| TC-043–046 | CommentService、NotificationService、M17CommunityApiTest、m17-comments / m17-notifications 组件测试 |
+| TC-047–048 | CreatorDestinationsController、ShareController、M17SharingApiTest、m17-creator-destinations 组件测试 |
+| 图片受控衍生尺寸 | 缩略图接口测试与 M16 图片配对样本 |
+| AI 当前浏览器 | 本地 HTTP 合成供应商下预览、编辑、确认保存及刷新 |
+
+测试文件位于 [后端测试](../backend/src/test/java/com/example/travelplatform) 和 [前端测试](../frontend/tests)。当前结果及限制见 [M17 报告](../output/m17/项目P1完成情况与真实测试报告.md)，历史执行范围见 [阶段索引](history/README.md)。

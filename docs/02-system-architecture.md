@@ -1,64 +1,50 @@
-# 系统架构设计
+# 系统架构
 
-## 1. 架构决策
-采用前后端分离的模块化单体：
-- Vue 3 SPA 负责展示和交互；
-- Spring Boot 提供 REST API；
-- MySQL 保存业务数据；
-- 本地文件系统保存图片；
-- AI 作为可选外部 API。
+系统采用前后端分离的模块化单体。浏览器负责内容展示和编辑，业务校验、鉴权、事务及 AI 外呼集中在 Spring Boot，MySQL 保存结构化数据。
 
-不采用微服务，降低毕业设计开发、部署和调试成本。
-
-## 2. 逻辑架构
+## 通信关系
 
 ```mermaid
 flowchart TB
-    U[游客 / 注册用户 / 管理员] --> FE[Vue 3 + TypeScript]
-    FE -->|HTTPS / JSON| API[Spring Boot REST API]
-    API --> AUTH[Sa-Token 认证与权限]
-    API --> SVC[业务 Service 层]
-    SVC --> MAPPER[MyBatis-Plus Mapper]
-    MAPPER --> DB[(MySQL 8)]
-    SVC --> FILE[本地图片存储]
-    SVC -. 可选 .-> AI[外部大模型 API]
+    browser[桌面与手机浏览器] --> web[Vue 3 / TypeScript / Vite]
+    web -->|JSON / satoken| api[Spring Boot /api/v1]
+    api --> auth[Sa-Token 与资源所有权校验]
+    api --> service[业务 Service 与事务]
+    service --> mapper[MyBatis-Plus / Mapper]
+    mapper --> db[(MySQL 8)]
+    service --> images[受管原图与独立缩略图缓存]
+    service -->|可选 HTTP 调用| model[外部 AI 供应商]
+    crawler[分享抓取程序] --> share[服务端分享 HTML / sitemap]
+    share --> service
 ```
 
-## 3. 前端模块
-`views/` 页面；`components/` 公共组件；`layouts/` 布局；`api/` 请求；`stores/` Pinia；`router/` 路由；`types/` 类型；`utils/` 工具。
+## 前端
 
-## 4. 后端模块
-建议按业务域组织：
-```text
-com.example.travelplatform
-├── common
-├── config
-├── security
-├── user
-├── destination
-├── guide
-├── interaction
-├── itinerary
-├── file
-├── admin
-├── ai
-└── exception
-```
-各业务域内部按 controller/service/mapper/entity/dto/vo 分层。也可采用统一分层包，但必须职责清晰。
+`views` 组织路由页面，`components` 保存复用界面，`api` 集中请求，`types` 定义传输类型，`stores` 管理登录态与主题。组合函数处理筛选、游标加载及局部交互。Vditor 是当前攻略编辑器，正文继续使用 Markdown。
 
-## 5. 部署
-开发：Vite dev server、Spring Boot、本地或容器 MySQL，Vite proxy 转发 `/api`。
-演示/生产：Nginx 提供静态资源并反代 API；上传目录使用持久化磁盘；MySQL 独立运行并备份。
-第一版不要求 Docker/Kubernetes。
+Axios 请求携带当前令牌。迟到请求只影响其所属账号和页面版本。页面处理加载、空结果、失败及重试，路由守卫引导登录，后端再次校验权限。
 
-## 6. 认证与授权
-Sa-Token 管理登录态；密码 BCrypt；角色 USER/ADMIN；写接口后端校验身份；资源修改校验所有者；管理员接口校验 ADMIN。前端路由守卫不承担安全边界。
+## 后端模块
 
-## 7. 图片存储
-头像、目的地封面、攻略封面和正文图片第一版本地存储。数据库保存相对访问路径。后端统一管理映射和上传限制，不允许用户控制磁盘绝对路径。
+| 包 | 职责 |
+|---|---|
+| `user`、`security` | 身份、资料、会话和权限 |
+| `guide`、`destination` | 攻略、标签、目的地和关联资料 |
+| `interaction`、`comment`、`notification` | 点赞收藏、评论线程、提及与通知 |
+| `itinerary`、`ai` | 私人计划、导入、模型预览与结果校验 |
+| `file` | 上传、受管读取、缩略图 |
+| `search`、`sharing` | 五类公开对象查询、服务端分享元数据 |
+| `administration` | 账号与公开内容治理 |
+| `common` | 响应、错误、校验、时间和基础工具 |
 
-## 8. AI 边界
-封装 `AiItineraryService`，密钥从环境变量读取；超时、异常处理；校验模型 JSON 结构；用户确认后保存为 itinerary 数据。AI 失败不影响其他模块。
+Controller 处理入口参数和响应，Service 维护业务规则及事务，Mapper 绑定参数并执行查询。评论、提及及通知共用一次数据库事务。外部模型等待位于业务事务之外，返回后重新校验地点状态。
 
-## 9. 时区
-业务时间统一按 `Asia/Shanghai` 处理。数据库连接、Java 时区和 JSON 序列化一致。日期使用 DATE，活动时间使用 TIME，创建/更新时间使用 DATETIME(3)，避免旅行日期被错误转换为 UTC 日期。
+## 持久化和权限
+
+当前空库结构为 18 张表，图片只保存受管路径。原图和缩略图使用独立目录，业务备份同时包含数据库、原图和服务端私有配置。账号角色为 USER/ADMIN，资源所有者从认证上下文和数据库关系确认。
+
+业务时间统一为 Asia/Shanghai。JDBC 使用固定 `+08:00` 会话偏移，JSON 时间带明确偏移。旅行日期和活动时间分别保持 DATE、TIME 语义。搜索快照也显式采用同一业务时区。
+
+## 运行方式
+
+开发环境由 Vite 代理 `/api`、`/uploads` 和分享相关入口。部署时可由 Nginx 承载静态 Web 并转发后端路径。登录态保存在单体内存中，后端重启后需要重新登录。配置、迁移和备份步骤见 [运维说明](22-deployment-and-operations.md)。

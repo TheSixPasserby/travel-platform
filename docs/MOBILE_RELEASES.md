@@ -1,6 +1,8 @@
-# 移动端构建与发布
+# 历史移动端构建与发布
 
-本流水线先构建 Android APK，同时提供 H5 站点、微信开发者工具工程和 uni-app App 资源。配置文件为 [mobile-release.yml](../.github/workflows/mobile-release.yml)，原 [Build and verify](../.github/workflows/ci.yml) 验证流水线继续保留。
+本页记录 M9 时期的构建渠道与操作。自 M11 起移动端停止维护，工作流和脚本已归档，当前交付使用 [Web 运维说明](22-deployment-and-operations.md)。
+
+本流水线先构建 Android APK，同时提供 H5 站点、微信开发者工具工程和 uni-app App 资源。配置文件为 [mobile-release.yml](../deprecated/uni-app/workflows/mobile-release.yml.disabled)，原 [Build and verify](../.github/workflows/ci.yml) 验证流水线继续保留。
 
 ## 渠道与触发规则
 
@@ -88,7 +90,7 @@ DCloud 5.34 SDK 已取得并上传到私有仓库的[构建依赖 Release `build
 
 原生打包使用 DCloud 官方 `HBuilder-Integrate-AS/simpleDemo` 模板与匹配的 5.34 SDK。工具链使用 Android compileSdk／targetSdk 36、Build Tools 36.0.0、Gradle 8.14.3、Android Gradle Plugin 8.12.0、Java 17 构建环境；资源编译器仍使用项目锁定的 uni-app 版本。
 
-[setup_android.sh](../scripts/setup_android.sh) 初始化 Google Android command-line tools，处理 hosted runner 未安装 `sdkmanager` 或未将其加入 PATH 的情况，再安装指定的平台与 Build Tools。模拟器使用 Android API 35、`google_apis`、x86_64 系统镜像，与 APK 的编译目标版本分开配置。
+[setup_android.sh](../deprecated/uni-app/scripts/setup_android.sh) 初始化 Google Android command-line tools，处理 hosted runner 未安装 `sdkmanager` 或未将其加入 PATH 的情况，再安装指定的平台与 Build Tools。模拟器使用 Android API 35、`google_apis`、x86_64 系统镜像，与 APK 的编译目标版本分开配置。
 
 执行前校验完整配置和归档 SHA256，拒绝不安全解压路径、资源符号链接、错误 AppID 或不匹配的资源编译器。构建后通过 `apksigner` 和 `apkanalyzer` 核对真实 APK、签名指纹、包名与内部版本号，再产生 APK SHA256 和核验记录；不能把任意 ZIP 改后缀作为安装包。
 

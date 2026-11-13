@@ -56,6 +56,8 @@ springdoc:
     disable-swagger-default-url: true
 
 travel:
+  site:
+    public-base-url: ${PUBLIC_BASE_URL:http://localhost:5173}
   ip:
     trusted-proxies: ${IP_TRUSTED_PROXIES:}
   ai:

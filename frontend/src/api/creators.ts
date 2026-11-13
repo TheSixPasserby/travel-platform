@@ -1,5 +1,9 @@
 import { apiClient } from './client'
-import type { CreatorProfile } from '@/types/creator'
+import type {
+  CreatorDestination,
+  CreatorDestinationQuery,
+  CreatorProfile
+} from '@/types/creator'
 import type { GuideFeedPage, GuideSummary } from '@/types/guide'
 import type { PageResult } from '@/types/api'
 const path = (username: string) => `/users/by-username/${encodeURIComponent(username)}`
@@ -11,4 +15,14 @@ export function fetchCreatorGuides(username: string, params: { page: number; siz
 }
 export function fetchCreatorFeed(username: string, params: { size?: number; cursor?: string } = {}, signal?: AbortSignal): Promise<GuideFeedPage> {
   return apiClient.get<GuideFeedPage, GuideFeedPage>(`${path(username)}/guides/feed`, { params, signal })
+}
+export function fetchCreatorDestinations(
+  username: string,
+  params: CreatorDestinationQuery,
+  signal?: AbortSignal
+): Promise<PageResult<CreatorDestination>> {
+  return apiClient.get<PageResult<CreatorDestination>, PageResult<CreatorDestination>>(
+    `${path(username)}/destinations`,
+    { params, signal }
+  )
 }

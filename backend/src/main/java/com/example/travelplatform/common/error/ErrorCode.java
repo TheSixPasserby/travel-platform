@@ -26,6 +26,7 @@ public enum ErrorCode {
     PAYLOAD_TOO_LARGE(41301, HttpStatus.PAYLOAD_TOO_LARGE, "上传内容超出大小限制"),
     /** 不支持的媒体类型。 */
     UNSUPPORTED_MEDIA_TYPE(41501, HttpStatus.UNSUPPORTED_MEDIA_TYPE, "不支持的请求内容类型"),
+    COMMENT_RATE_LIMIT(42901, HttpStatus.TOO_MANY_REQUESTS, "评论过于频繁，请稍后再试"),
     AI_UNAVAILABLE(50310, HttpStatus.SERVICE_UNAVAILABLE, "AI服务暂未配置或启用，请使用手动行程"),
     AI_DATA_INSUFFICIENT(42210, HttpStatus.UNPROCESSABLE_ENTITY, "可用城市或景点资料不足，请调整选择"),
     AI_RATE_LIMIT(42910, HttpStatus.TOO_MANY_REQUESTS, "生成请求过于频繁或仍在进行，请稍后再试"),

@@ -1,3 +1,4 @@
+vi.mock('@/components/NotificationBell.vue', () => ({ default: { template: '<span />' } }))
 import { describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import { createPinia } from 'pinia'

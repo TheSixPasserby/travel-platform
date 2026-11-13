@@ -283,7 +283,7 @@ onBeforeUnmount(() => version++)
             :favorite-count="guide.favoriteCount"
             :comment-count="guide.commentCount"
             :comments-open="commentsOpen"
-            :share-url="`${windowOrigin}/guides/${guide.id}`"
+            :share-url="`${windowOrigin}/share/guides/${guide.id}`"
             @open-comments="setComments(!commentsOpen)"
             @change="updateInteraction"
           />
@@ -316,6 +316,7 @@ onBeforeUnmount(() => version++)
         :guide-id="guide.id"
         :guide-author-id="guide.author.id"
         :comment-count="guide.commentCount"
+        :location-comment-id="commentsOpen && typeof route.query.commentId === 'string' ? route.query.commentId : undefined"
         @close="setComments(false)"
         @count-changed="updateCommentCount"
       />
@@ -437,8 +438,9 @@ onBeforeUnmount(() => version++)
     left: 50%;
     transform: translateX(-50%);
     flex-direction: row;
-    gap: 14px;
-    padding: 8px 14px;
+    gap: 5px;
+    max-width: calc(100vw - 12px);
+    padding: 8px 6px;
     border: 1px solid color-mix(in srgb, var(--color-pine) 18%, transparent);
     border-radius: var(--ui-radius-lg);
     background: var(--color-surface);
@@ -446,8 +448,9 @@ onBeforeUnmount(() => version++)
   }
   .article-tools :deep(.action-rail__stack) {
     flex-direction: row;
-    gap: 10px;
+    gap: 4px;
   }
+  .article-tools .trip-rail-button { min-width: 44px; min-height: 50px; margin-bottom: 0; font-size: 10px; }
   .article-tools :deep(.action-rail__btn) {
     width: 44px;
     height: 50px;

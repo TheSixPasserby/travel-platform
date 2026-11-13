@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -26,7 +27,7 @@ public class SearchService {
         if ((kind != null && !SearchCursor.KINDS.contains(kind)) || !List.of("relevance", "latest").contains(sort))
             throw new ApiException(ErrorCode.VALIDATION_FAILED, "请选择有效的搜索分类和排序");
         String key = FeedCursor.fingerprint(keyword + "|" + kind + "|" + sort);
-        var now = LocalDateTime.now();
+        var now = LocalDateTime.now(ZoneId.of("Asia/Shanghai"));
         var cursor = rawCursor == null ? null : SearchCursor.decode(rawCursor, key, now);
         if (keyword == null) return new FeedResponse<>(List.of(), null, false);
         var snapshot = cursor == null ? now : cursor.snapshot();

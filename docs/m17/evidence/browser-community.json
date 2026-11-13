@@ -1,0 +1,228 @@
+{
+  "guideId": "29",
+  "rootId": "16",
+  "replyId": "17",
+  "uiCreate": true,
+  "uiReply": true,
+  "explicitMention": true,
+  "notificationReadAndLocated": true,
+  "unreadCount": 0,
+  "matrix": [
+    {
+      "width": 360,
+      "mode": "light",
+      "path": "/guides/29?comments=1&commentId=17",
+      "overflow": false
+    },
+    {
+      "width": 360,
+      "mode": "light",
+      "path": "/me/notifications",
+      "overflow": false
+    },
+    {
+      "width": 360,
+      "mode": "light",
+      "path": "/users/m17qae0c8e0d5author",
+      "overflow": false
+    },
+    {
+      "width": 360,
+      "mode": "dark",
+      "path": "/guides/29?comments=1&commentId=17",
+      "overflow": false
+    },
+    {
+      "width": 360,
+      "mode": "dark",
+      "path": "/me/notifications",
+      "overflow": false
+    },
+    {
+      "width": 360,
+      "mode": "dark",
+      "path": "/users/m17qae0c8e0d5author",
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "path": "/guides/29?comments=1&commentId=17",
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "path": "/me/notifications",
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "path": "/users/m17qae0c8e0d5author",
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "path": "/guides/29?comments=1&commentId=17",
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "path": "/me/notifications",
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "path": "/users/m17qae0c8e0d5author",
+      "overflow": false
+    },
+    {
+      "width": 430,
+      "mode": "light",
+      "path": "/guides/29?comments=1&commentId=17",
+      "overflow": false
+    },
+    {
+      "width": 430,
+      "mode": "light",
+      "path": "/me/notifications",
+      "overflow": false
+    },
+    {
+      "width": 430,
+      "mode": "light",
+      "path": "/users/m17qae0c8e0d5author",
+      "overflow": false
+    },
+    {
+      "width": 430,
+      "mode": "dark",
+      "path": "/guides/29?comments=1&commentId=17",
+      "overflow": false
+    },
+    {
+      "width": 430,
+      "mode": "dark",
+      "path": "/me/notifications",
+      "overflow": false
+    },
+    {
+      "width": 430,
+      "mode": "dark",
+      "path": "/users/m17qae0c8e0d5author",
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "mode": "light",
+      "path": "/guides/29?comments=1&commentId=17",
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "mode": "light",
+      "path": "/me/notifications",
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "mode": "light",
+      "path": "/users/m17qae0c8e0d5author",
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "mode": "dark",
+      "path": "/guides/29?comments=1&commentId=17",
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "mode": "dark",
+      "path": "/me/notifications",
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "mode": "dark",
+      "path": "/users/m17qae0c8e0d5author",
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "mode": "light",
+      "path": "/guides/29?comments=1&commentId=17",
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "mode": "light",
+      "path": "/me/notifications",
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "mode": "light",
+      "path": "/users/m17qae0c8e0d5author",
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "mode": "dark",
+      "path": "/guides/29?comments=1&commentId=17",
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "mode": "dark",
+      "path": "/me/notifications",
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "mode": "dark",
+      "path": "/users/m17qae0c8e0d5author",
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "path": "/guides/29?comments=1&commentId=17",
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "path": "/me/notifications",
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "path": "/users/m17qae0c8e0d5author",
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "path": "/guides/29?comments=1&commentId=17",
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "path": "/me/notifications",
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "path": "/users/m17qae0c8e0d5author",
+      "overflow": false
+    }
+  ]
+}

@@ -64,7 +64,7 @@ public interface GuideMapper extends BaseMapper<Guide> {
     String COUNTS = """
         (SELECT COUNT(*) FROM guide_likes l WHERE l.guide_id=g.id) AS like_count,
         (SELECT COUNT(*) FROM guide_favorites f WHERE f.guide_id=g.id) AS favorite_count,
-        (SELECT COUNT(*) FROM guide_comments c WHERE c.guide_id=g.id AND c.status='NORMAL' AND c.is_deleted=0) AS comment_count
+        (SELECT COUNT(*) FROM guide_comments c WHERE c.guide_id=g.id AND c.status='NORMAL' AND c.is_deleted=0 AND c.root_id IS NULL) AS comment_count
         """;
 
     @Select("<script>SELECT COUNT(*) FROM guides g " + FILTER + "</script>")

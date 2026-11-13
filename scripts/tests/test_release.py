@@ -34,10 +34,23 @@ class ReleaseTests(unittest.TestCase):
         for name in ['.env','.local/private.json','.git/config','.superpowers/run.md','backend/src/main/.env','frontend/node_modules/private.txt','uploads/private.jpg','docs/.env','docs/application-prod.yml']:
             p=self.root/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_text('synthetic-sensitive-value')
         design=self.root/'docs/superpowers/specs/design.md';design.parent.mkdir(parents=True);design.write_text('public design')
+        thesis_names = [
+            '旅游攻略分享与行程规划平台_毕业论文_修订版.docx',
+            '旅游攻略分享与行程规划平台_毕业论文_修订版_检查版.pdf',
+            '参考文献来源核对清单.md',
+            '项目P1完成情况与真实测试报告.md',
+            '论文修改记录与人工确认事项.md',
+        ]
+        for name in thesis_names:
+            artifact = self.root / 'output/m17' / name
+            artifact.parent.mkdir(parents=True, exist_ok=True)
+            artifact.write_text('synthetic public thesis artifact')
         hashes=self.m.assemble(self.root,self.out)
         self.assertTrue((self.out/'.env.example').is_file());self.assertTrue((self.out/'docs/superpowers/specs/design.md').is_file())
         self.assertTrue((self.out/'uploads/.gitkeep').is_file())
         self.assertEqual((self.out/'frontend/dist/index.html').read_text(),'<html>production</html>')
+        for name in thesis_names:
+            self.assertIn('output/m17/' + name, hashes)
         for name,digest in hashes.items():
             content=(self.out/name).read_bytes();self.assertNotIn(b'synthetic-sensitive-value',content)
             self.assertEqual(hashlib.sha256(content).hexdigest(),digest)

@@ -25,8 +25,9 @@ public class AuthWebConfig implements WebMvcConfigurer {
                         || path.matches("/api/v1/destinations/[^/]+/guides"));
                 boolean publicGuide = "GET".equals(request.getMethod()) && (path.equals("/api/v1/search") || path.equals("/api/v1/guides")
                         || path.matches("/api/v1/guides/[^/]+") || path.matches("/api/v1/guides/[^/]+/comments") || path.equals("/api/v1/tags")
+                        || path.matches("/api/v1/comments/[^/]+/(?:replies|location)")
                         || path.matches("/api/v1/users/[^/]+/profile")
-                        || path.matches("/api/v1/users/by-username/[^/]+(?:/guides(?:/feed)?)?")
+                        || path.matches("/api/v1/users/by-username/[^/]+(?:/guides(?:/feed)?|/destinations)?")
                         || path.matches("/api/v1/guides/[^/]+/related"));
                 if (!"OPTIONS".equals(request.getMethod()) && !publicDestination && !publicGuide) users.requireCurrentUser();
                 return true;

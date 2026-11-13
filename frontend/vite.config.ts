@@ -16,6 +16,9 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
     proxy: {
+      '/share': { target: process.env.TRAVEL_API_TARGET || 'http://127.0.0.1:8080', changeOrigin: true },
+      '/sitemap.xml': { target: process.env.TRAVEL_API_TARGET || 'http://127.0.0.1:8080', changeOrigin: true },
+      '/robots.txt': { target: process.env.TRAVEL_API_TARGET || 'http://127.0.0.1:8080', changeOrigin: true },
       '/api': {
         target: process.env.TRAVEL_API_TARGET || 'http://127.0.0.1:8080',
         changeOrigin: true

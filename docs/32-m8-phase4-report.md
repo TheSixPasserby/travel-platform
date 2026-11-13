@@ -1,5 +1,7 @@
 # M8 Phase 4 实施记录
 
+本页为历史阶段记录，日期、测试数量和当时范围按原记录保留。当前使用与开发入口见 [项目文档](README.md)。
+
 2026-11-06。AI只读预览、单日重生成和整程原子保存已落地，真实收费服务尚未联调。
 
 - 服务端配置OpenAI、DeepSeek、通义千问及custom。沿用Spring RestClient和Chat Completions协议，采用JSON schema或JSON object模式，连接/读取超时、响应字节上限、Key脱敏及有界滚动限流。每次生成一次上游请求。

@@ -148,6 +148,8 @@ CREATE TABLE IF NOT EXISTS guide_comments (
   guide_id BIGINT NOT NULL,
   user_id BIGINT NOT NULL,
   content VARCHAR(2000) NOT NULL,
+  root_id BIGINT NULL,
+  reply_to_id BIGINT NULL,
   status VARCHAR(20) NOT NULL DEFAULT 'NORMAL',
   ip_region VARCHAR(64) COLLATE utf8mb4_0900_ai_ci NULL,
   is_deleted TINYINT(1) NOT NULL DEFAULT 0,
@@ -156,6 +158,9 @@ CREATE TABLE IF NOT EXISTS guide_comments (
   PRIMARY KEY (id),
   KEY idx_guide_comments_guide_status_time (guide_id, status, created_at),
   KEY idx_guide_comments_user (user_id, created_at),
+  KEY idx_guide_comments_root (root_id, status, is_deleted, created_at, id),
+  CONSTRAINT fk_comments_root FOREIGN KEY (root_id) REFERENCES guide_comments(id) ON DELETE CASCADE,
+  CONSTRAINT fk_comments_reply_to FOREIGN KEY (reply_to_id) REFERENCES guide_comments(id) ON DELETE SET NULL,
   CONSTRAINT fk_guide_comments_guide FOREIGN KEY (guide_id) REFERENCES guides(id) ON DELETE CASCADE,
   CONSTRAINT fk_guide_comments_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT,
   CONSTRAINT chk_guide_comments_status CHECK (status IN ('NORMAL', 'HIDDEN'))
@@ -264,4 +269,39 @@ CREATE TABLE IF NOT EXISTS itinerary_guide_imports (
   KEY idx_guide_imports_itinerary (itinerary_id),
   CONSTRAINT fk_guide_imports_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   CONSTRAINT fk_guide_imports_itinerary FOREIGN KEY (itinerary_id) REFERENCES itineraries(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS comment_mentions (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  comment_id BIGINT NOT NULL,
+  user_id BIGINT NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY uk_comment_mentions (comment_id, user_id),
+  CONSTRAINT fk_mentions_comment FOREIGN KEY (comment_id) REFERENCES guide_comments(id) ON DELETE CASCADE,
+  CONSTRAINT fk_mentions_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS notifications (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  recipient_id BIGINT NOT NULL,
+  actor_id BIGINT NOT NULL,
+  guide_id BIGINT NOT NULL,
+  comment_id BIGINT NOT NULL,
+  type VARCHAR(20) NOT NULL,
+  created_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  read_at DATETIME(3) NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY uk_notifications_recipient_comment (recipient_id, comment_id),
+  KEY idx_notifications_recipient_read (recipient_id, read_at, created_at, id),
+  CONSTRAINT fk_notifications_recipient FOREIGN KEY (recipient_id) REFERENCES users(id) ON DELETE CASCADE,
+  CONSTRAINT fk_notifications_actor FOREIGN KEY (actor_id) REFERENCES users(id) ON DELETE CASCADE,
+  CONSTRAINT fk_notifications_guide FOREIGN KEY (guide_id) REFERENCES guides(id) ON DELETE CASCADE,
+  CONSTRAINT fk_notifications_comment FOREIGN KEY (comment_id) REFERENCES guide_comments(id) ON DELETE CASCADE,
+  CONSTRAINT chk_notifications_type CHECK (type IN ('COMMENT','REPLY','MENTION'))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS comment_write_locks (
+  user_id BIGINT NOT NULL,
+  PRIMARY KEY (user_id),
+  CONSTRAINT fk_comment_write_locks_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

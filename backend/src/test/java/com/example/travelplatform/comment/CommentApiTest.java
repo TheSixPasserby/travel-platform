@@ -34,7 +34,7 @@ class CommentApiTest {
         Account a=h.account(false),b=h.account(false);JsonNode g=guide(b,"public");
         assertThat(success(get(comments(g)),200).path("total").asLong()).isZero();
         JsonNode c=create(a,g," \u00A0\u200B溪谷\r\n很好\uFEFF ");
-        assertThat(c.propertyStream().map(Map.Entry::getKey).toList()).containsExactlyInAnyOrder("id","guideId","author","content","createdAt","updatedAt","ipRegion");
+        assertThat(c.propertyStream().map(Map.Entry::getKey).toList()).containsExactlyInAnyOrder("id","guideId","author","content","createdAt","updatedAt","ipRegion","rootId","replyToId","replyToAuthor","replyCount","mentions");
         assertThat(c.path("id").isTextual()).isTrue();assertThat(c.path("guideId")).isEqualTo(g.path("id"));assertThat(c.path("content").asText()).isEqualTo("溪谷\n很好");
         assertThat(c.path("author").propertyStream().map(Map.Entry::getKey).toList()).containsExactlyInAnyOrder("id","nickname","avatarUrl","bio","username");
         assertThat(c.path("author").path("id").asText()).isEqualTo(a.id());assertThat(c.path("createdAt").asText()).matches(".*\\.\\d{3}\\+08:00");

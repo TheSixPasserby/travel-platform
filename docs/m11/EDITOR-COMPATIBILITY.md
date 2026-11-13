@@ -1,5 +1,7 @@
 # Markdown 编辑器兼容性裁定
 
+本页为历史阶段记录，日期、测试数量和当时范围按原记录保留。当前使用与开发入口见 [项目文档](../README.md)。
+
 采用 Milkdown Kit 7.23.0，使用 Markdown 原生 parser/serializer，保留 `guides.content`、GuideInput、GuideDetail 和后端全部校验。Tiptap 的 Beta Markdown 适配层未采用；Crepe 的额外图片 URL/上传入口未引入，使用现有上传接口和轻量 Vue 工具栏。
 
 PoC 使用真实攻略4、5、6以及包含多级标题、粗斜体、无序/有序列表、链接、引用、五图、表格、代码块的综合夹具。当前数据库三篇内容与 `docs/m8/content/guide-4/5/6.md` 逐字相同。前端测试直接读取这些历史文件并执行实际 Milkdown 导入/导出；保留重要文本、结构和图片地址。

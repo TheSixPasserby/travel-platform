@@ -1,0 +1,95 @@
+{
+  "checkedAt": "2026-11-13T13:41:11.080495+00:00",
+  "localHead": "e1ef92c7c7548db6417336aad0ed2299713cc574",
+  "remoteHead": "e1ef92c7c7548db6417336aad0ed2299713cc574",
+  "latestRemoteRun": {
+    "id": 43371817022,
+    "status": "completed",
+    "conclusion": "failure",
+    "url": "https://github.com/TheSixPasserby/travel-platform/actions/runs/43371817022"
+  },
+  "tests": {
+    "backend": 284,
+    "backendFailures": 0,
+    "frontend": 573,
+    "frontendFiles": 62,
+    "python": 93,
+    "typecheckAndBuild": "passed",
+    "freshSchemaUtcBackend": "passed"
+  },
+  "businessData": {
+    "tables": 14,
+    "rows": 290,
+    "uploadFiles": 44,
+    "fingerprintsUnchanged": true
+  },
+  "logs": {
+    "backend": {
+      "path": ".local/m17/backend-verified.log",
+      "sha256": "26d5e76611ca9cd377a82a56fd0ce4f0b8c6ab5ac011c02e53e4acc8a5f16ba5"
+    },
+    "freshSchemaBackend": {
+      "path": ".local/m17/backend-fresh-ci.log",
+      "sha256": "faee28c24002e7f1443213e5020330db41083178c680b21ea4eb98888c2d12c9"
+    },
+    "frontend": {
+      "path": ".local/m17/frontend-final-clean.log",
+      "sha256": "697bcd181b16c71f9b546f8257cecb752f8ebf30f1091af93e32488fa81d6c01"
+    },
+    "build": {
+      "path": ".local/m17/build-final-clean.log",
+      "sha256": "1d51b0bbd783000b7cd6285c3b2e5f977424c65a09af468fb5ea71f532ccf982"
+    },
+    "python": {
+      "path": ".local/m17/python-final.log",
+      "sha256": "96d118c3a424ac300fd0a51ea15f1deda81612a6aeba2f7fc051c5aa37ce174c"
+    }
+  },
+  "sourceFiles": {
+    "backend/src/main/java/com/example/travelplatform/comment/controller/CommentController.java": "2d6d5b33784169f1342a79b14c7fb3fa15dcfe03efebf4528e615df5b13ed077",
+    "backend/src/main/java/com/example/travelplatform/comment/dto/CommentCreateRequest.java": "0d01f624f314619defbf4905c36a4f4685ed888a322e57a7d51a5db225c8364d",
+    "backend/src/main/java/com/example/travelplatform/comment/entity/GuideComment.java": "3b0c187f89316adc4251d5883aac1944f9f4ca6687bdecb99dcd2d3d83762818",
+    "backend/src/main/java/com/example/travelplatform/comment/mapper/CommentMapper.java": "a4acc182cb604ae2b1761ec08ac3e517678d1b943cb31355dbb52b631dc0668a",
+    "backend/src/main/java/com/example/travelplatform/comment/service/CommentService.java": "045f203e9876dfa83e8542f1b1a9c651a16adcfedd3955440b2b9d697ea8eb6c",
+    "backend/src/main/java/com/example/travelplatform/comment/vo/CommentVO.java": "7149396151b8cde992e4e7c2684221d5d6a9800eaaead41987a230e386a53571",
+    "backend/src/main/java/com/example/travelplatform/common/error/ErrorCode.java": "14e22db479c31f2f24d36e2fd9f33edb1715a3bd3781682310ff19023445cde5",
+    "backend/src/main/java/com/example/travelplatform/guide/mapper/GuideMapper.java": "6f98b3c457ea75015cd085bcca32e53c5eb435b38055652e504323ffab1b7432",
+    "backend/src/main/java/com/example/travelplatform/notification/NotificationController.java": "6b150a4d86a2ddeb7a9aa5da250d254bf9b5947e98f7482404e4788d2709985f",
+    "backend/src/main/java/com/example/travelplatform/notification/NotificationMapper.java": "812aa3df9c4c21a3a4350c3bfd7eee34622f370b6bc8f368315f20a1d2be2c42",
+    "backend/src/main/java/com/example/travelplatform/notification/NotificationRow.java": "6024eff8ba36b8ae45172a3c752779dc1aa2907e578c5716cc0733d567d150fd",
+    "backend/src/main/java/com/example/travelplatform/notification/NotificationService.java": "83d4b11173cd22913aa15c71730950f2f4512154598c93db87a84d5fed03f412",
+    "backend/src/main/java/com/example/travelplatform/search/SearchService.java": "17584347801339fc200daf566a352cf2889fc6b09762b2e382c12aa95f6cfeb8",
+    "backend/src/main/java/com/example/travelplatform/security/AuthWebConfig.java": "8e01bc040d3919bb46334dbbf32dc1899c9e090a3d6225effd61a9c2860f13f2",
+    "backend/src/main/java/com/example/travelplatform/sharing/CreatorDestinationsController.java": "53dc2bf20233e769c41eea956e92fa382f3dfa88e07ca492cab28a239911f9c5",
+    "backend/src/main/java/com/example/travelplatform/sharing/PublicContentMapper.java": "86111fb25c83216ee6adc18913ed35a7823c4edbf0abb41ee45c131fbf534e41",
+    "backend/src/main/java/com/example/travelplatform/sharing/ShareController.java": "9d3f42ed6cfb08fbb5899581fe840f21b18d084d3cfd2a0c43601bac4fe9c163",
+    "backend/src/main/resources/application.yml": "c3338efcf3d0f469ce6ebd47c6f7433e91fdf7a336b6dffed5fcb49d3c5fbf20",
+    "backend/src/test/java/com/example/travelplatform/comment/CommentApiTest.java": "3e8db203b05309d55b91db83b461be6868fe8689ded47ee9735c2ad56ac1027f",
+    "backend/src/test/java/com/example/travelplatform/comment/M17CommunityApiTest.java": "8308d68b85935fdd8310d075982e57a779140a504753265a7d3a0890354a9105",
+    "backend/src/test/java/com/example/travelplatform/guide/M16SearchApiTest.java": "40a15e3bb43ddf6d7b1796bb00075da181e07c9587aab01aadd5c47a5db72d1e",
+    "backend/src/test/java/com/example/travelplatform/guide/M17SharingApiTest.java": "03c5ef134d7dff1f86414aaf66cb0d63d646d71ef6fb40478edc4ee03c1210e2",
+    "database/README.md": "bede3588173a437aadec5f15759197fa7f6f24a9fa5be6e875c610bfc75dfc53",
+    "database/migrations/V017_01__community_threads_notifications.sql": "f9d551a629d816e31c6735cfdae1ed15b1f03e5f7488e899800316d3c00b207e",
+    "database/schema.sql": "aefbfe9d7712992cc72202c847414b75daa3d74c84d5adc244d3a5a73561dd78",
+    "frontend/src/api/creators.ts": "429b859a9656c208f189ead169767ba0716fcaa28963de4d696edbe2adcd370d",
+    "frontend/src/api/interactions.ts": "9efc586d007adf11069d3deaaea688bf8acebf2f3dab88da529ef094292b2468",
+    "frontend/src/api/notifications.ts": "06f7946f1c8614a9d971aabc658b0809ed2e06ea890fc512d47ffca62683607c",
+    "frontend/src/components/CommentDrawer.vue": "5eb04e1e7359a2b3bd72d1ff80647d96a90c881f3c5e1a2ad150424ffb6ae2eb",
+    "frontend/src/components/GuideComments.vue": "1e08dd29357ed3d4089619c0adc5ec888b4d5077ccdbc35fae870cdf9f3bf04f",
+    "frontend/src/components/NotificationBell.vue": "c39e96765067b4b1d1e30ce3d10163a2160cf24dc4eb06c2073e50c90ea9bb90",
+    "frontend/src/components/SiteHeader.vue": "aee6f0c315356f49c273be6e7d92b83b560d90fc945ebce5998613ad792cb387",
+    "frontend/src/router/index.ts": "66be5a60ef429bfab2657c38e5e892420cb659c06426f4a50de14eeed2098bc3",
+    "frontend/src/types/creator.ts": "88d783b4c320332861ff874488d8e7953f71a6666d105526fe7a05a0f407e829",
+    "frontend/src/types/interaction.ts": "85c1088002fe05f7ea4ee73e05c93a4b6bfcfe2fed0976a8b70f8d40d1eddc53",
+    "frontend/src/types/notification.ts": "d8bfc7ed7997d91d886cbb8377b3d01c63bcad5cbc57d6590bb8650a7d7a7fd9",
+    "frontend/src/views/CreatorView.vue": "168e79b747f892785914178fda2722a8acee761bad9017e1c6db1883f01d239c",
+    "frontend/src/views/GuideDetailView.vue": "5260f29552b4a773e09a2209a1bbdb1991ed778fb1bfe4656cd3094560485f7c",
+    "frontend/src/views/NotificationsView.vue": "a3ae6b0809205d5684908f86f20d95135ca69e367a99238a5361f5943bab5314",
+    "frontend/tests/app-motion.spec.ts": "804201f849fa8cb1a47463dbce47fe5b348eeef985b33089c3f8e23077310c72",
+    "frontend/tests/header.spec.ts": "479f239512c581399e05aaa3f65fa57c43fca2e34ce642616f1a0fd6bd5c9cb4",
+    "frontend/tests/m17-comments.spec.ts": "573fe5c42ce316407a6c1d8fe9bfe5acc1d9610ead9cd2b2bb37fc4ac4df78af",
+    "frontend/tests/m17-creator-destinations.spec.ts": "eb5a24a5ee557fdeb38b814ca94eb3a5c4ea65c94ee731d9ed8e1955cb49bcdf",
+    "frontend/tests/m17-notifications.spec.ts": "cea823eb90eb9a3a88e191944513099a7894b57f4909771c03aaa988a0be93f2",
+    "frontend/vite.config.ts": "ff04e1b608bacff5ab0232ea8a5f6e3483ad6de2dec119af5b5c46e55639fd02"
+  }
+}
