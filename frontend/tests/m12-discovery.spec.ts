@@ -90,10 +90,10 @@ async function render(path = '/') {
   return { w, router }
 }
 describe('真实内容发现流', () => {
-  it('发现流首屏保留内容与筛选，手机搜索入口进入攻略搜索页', async () => {
+  it('发现流首屏保留内容与筛选，手机搜索入口进入全站搜索页', async () => {
     const { w } = await render()
     expect(w.find('[data-test="guide-search"]').exists()).toBe(false)
-    expect(w.find('a[href="/guides"]').exists()).toBe(true)
+    expect(w.find('a[href="/search"]').exists()).toBe(true)
     expect(w.find('[data-test="guide-card"]').exists()).toBe(true)
   })
   it('首页从API显示内容、作者与真实主题城市，推荐排序可解释', async () => {

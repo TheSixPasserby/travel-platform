@@ -12,8 +12,9 @@
 import MarkdownIt from 'markdown-it'
 import DOMPurify from 'dompurify'
 import type { Config, DOMPurify as Purifier } from 'dompurify'
+import { isManagedImageSource } from './managedImages'
+export { isManagedImageSource } from './managedImages'
 
-const MANAGED_IMAGE_PATTERN = /^\/uploads\/[0-9]{4}\/(0[1-9]|1[0-2])\/[0-9a-f]{32}\.(jpg|png|webp)$/
 const CONTROL_CHARACTER_PATTERN = /[\u0000-\u001F\u007F]/
 const ABSOLUTE_HTTP_PATTERN = /^https?:\/\//i
 const LANGUAGE_CLASS_PATTERN = /^language-[A-Za-z0-9_+#.-]+$/
@@ -109,10 +110,6 @@ export function isSafeLinkTarget(raw: string): boolean {
   } catch {
     return false
   }
-}
-
-export function isManagedImageSource(value: string): boolean {
-  return MANAGED_IMAGE_PATTERN.test(value)
 }
 
 // 解析阶段的链接白名单：markdown-it 对链接与图片 src 都会调用这里。

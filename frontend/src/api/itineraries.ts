@@ -18,3 +18,7 @@ export function deleteItineraryItem(id:string):Promise<null>{return apiClient.de
 export function reorderItineraryItems(id:string,itemIds:string[]):Promise<ItineraryDay>{return apiClient.put<ItineraryDay,ItineraryDay>(`${day(id)}/items/order`,{itemIds})}
 
 export function importItinerary(body:import('@/types/itinerary').ItineraryImportInput):Promise<ItineraryDetail>{return apiClient.post<ItineraryDetail,ItineraryDetail>('/itineraries/import',body)}
+
+export function importGuidePlaces(body: import('@/types/itinerary').GuideTripImportInput): Promise<import('@/types/itinerary').GuideTripImportResult> {
+  return apiClient.post<import('@/types/itinerary').GuideTripImportResult, import('@/types/itinerary').GuideTripImportResult>('/itineraries/guide-imports', body)
+}

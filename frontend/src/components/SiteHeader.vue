@@ -43,7 +43,7 @@ const personal = computed(() => [
 const searchKeyword = ref('')
 function search(): void {
   void router.push({
-    path: '/guides',
+    path: '/search',
     query: { keyword: searchKeyword.value.trim() || undefined }
   })
 }
@@ -114,12 +114,13 @@ async function handleLogout() {
       <form class="header-search" role="search" @submit.prevent="search">
         <SiteIcon name="explore" /><input
           v-model="searchKeyword"
-          aria-label="搜索旅行手记"
-          placeholder="搜索旅行手记"
+          aria-label="全站搜索"
+          placeholder="搜索攻略、城市、景点、作者或话题"
           type="search"
         />
       </form>
       <div class="header-actions">
+        <RouterLink to="/search" class="icon-button search-shortcut" aria-label="全站搜索"><SiteIcon name="explore" /></RouterLink>
         <RouterLink to="/guides/new" class="header-publish btn-primary"
           ><SiteIcon name="pen" /><span>发布笔记</span></RouterLink
         >
@@ -603,6 +604,7 @@ async function handleLogout() {
   height: 18px;
 }
 @media (min-width: 1280px) {
+  .search-shortcut { display: none; }
   .header-search {
     display: flex;
   }

@@ -1,0 +1,505 @@
+{
+  "results": [
+    {
+      "page": "drawer",
+      "mode": "existing",
+      "targets": [
+        {
+          "tag": "BUTTON",
+          "test": "trip-close",
+          "text": "关闭加入行程抽屉",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "test": "trip-select-all",
+          "text": "取消全选",
+          "width": 51.203125,
+          "height": 44
+        },
+        {
+          "tag": "LABEL",
+          "test": null,
+          "text": "人民公园",
+          "width": 352.8125,
+          "height": 44
+        },
+        {
+          "tag": "LABEL",
+          "test": null,
+          "text": "宽窄巷子",
+          "width": 352.8125,
+          "height": 44
+        },
+        {
+          "tag": "LABEL",
+          "test": null,
+          "text": "成都武侯祠博物馆",
+          "width": 352.8125,
+          "height": 44
+        },
+        {
+          "tag": "LABEL",
+          "test": null,
+          "text": "成都杜甫草堂博物馆",
+          "width": 352.8125,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "test": "trip-mode-existing",
+          "text": "加入已有行程",
+          "width": 102.8046875,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "test": "trip-mode-new",
+          "text": "新建行程并加入",
+          "width": 115.6015625,
+          "height": 44
+        },
+        {
+          "tag": "SELECT",
+          "test": "trip-itinerary-select",
+          "text": "请选择行程\nM16 本地HTTP夹具·用户编辑后保存（2026-11-",
+          "width": 354.8125,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "test": "trip-cancel",
+          "text": "取消",
+          "width": 58,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "test": "trip-plan-ai",
+          "text": "交给 AI 规划",
+          "width": 106.4140625,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "test": "trip-confirm",
+          "text": "确认加入行程",
+          "width": 112.3984375,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "page": "drawer",
+      "mode": "new",
+      "targets": [
+        {
+          "tag": "BUTTON",
+          "test": "trip-close",
+          "text": "关闭加入行程抽屉",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "test": "trip-select-all",
+          "text": "取消全选",
+          "width": 51.203125,
+          "height": 44
+        },
+        {
+          "tag": "LABEL",
+          "test": null,
+          "text": "人民公园",
+          "width": 352.8125,
+          "height": 44
+        },
+        {
+          "tag": "LABEL",
+          "test": null,
+          "text": "宽窄巷子",
+          "width": 352.8125,
+          "height": 44
+        },
+        {
+          "tag": "LABEL",
+          "test": null,
+          "text": "成都武侯祠博物馆",
+          "width": 352.8125,
+          "height": 44
+        },
+        {
+          "tag": "LABEL",
+          "test": null,
+          "text": "成都杜甫草堂博物馆",
+          "width": 352.8125,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "test": "trip-mode-existing",
+          "text": "加入已有行程",
+          "width": 102.8046875,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "test": "trip-mode-new",
+          "text": "新建行程并加入",
+          "width": 115.6015625,
+          "height": 44
+        },
+        {
+          "tag": "INPUT",
+          "test": "trip-title",
+          "text": "",
+          "width": 354.8125,
+          "height": 44
+        },
+        {
+          "tag": "INPUT",
+          "test": "trip-start",
+          "text": "",
+          "width": 173.40625,
+          "height": 44
+        },
+        {
+          "tag": "INPUT",
+          "test": "trip-end",
+          "text": "",
+          "width": 173.40625,
+          "height": 44
+        },
+        {
+          "tag": "INPUT",
+          "test": "trip-travel-date",
+          "text": "",
+          "width": 354.8125,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "test": "trip-cancel",
+          "text": "取消",
+          "width": 58,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "test": "trip-plan-ai",
+          "text": "交给 AI 规划",
+          "width": 106.4140625,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "test": "trip-confirm",
+          "text": "确认加入行程",
+          "width": 112.3984375,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "page": "search",
+      "targets": [
+        {
+          "tag": "INPUT",
+          "test": "global-search-input",
+          "text": "搜索攻略、城市、景点、作者或话题",
+          "width": 234,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "test": null,
+          "text": "清空关键词",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "test": null,
+          "text": "搜索",
+          "width": 58,
+          "height": 44.75
+        },
+        {
+          "tag": "BUTTON",
+          "test": null,
+          "text": "全部",
+          "width": 62,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "test": null,
+          "text": "攻略",
+          "width": 62,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "test": null,
+          "text": "目的地",
+          "width": 76,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "test": null,
+          "text": "景点",
+          "width": 62,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "test": null,
+          "text": "作者",
+          "width": 62,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "test": null,
+          "text": "话题",
+          "width": 62,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "test": null,
+          "text": "相关性",
+          "width": 67,
+          "height": 44
+        },
+        {
+          "tag": "BUTTON",
+          "test": null,
+          "text": "最新",
+          "width": 54,
+          "height": 44
+        }
+      ]
+    }
+  ],
+  "matrix": [
+    {
+      "width": 360,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 360,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 360,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 360,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 430,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 430,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 430,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 430,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 768,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 768,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 768,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 768,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 1024,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 1024,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 1024,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 1024,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "bodyLocked": true,
+      "minTouchSize": 44
+    }
+  ]
+}

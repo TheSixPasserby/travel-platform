@@ -44,6 +44,14 @@ class ReleaseTests(unittest.TestCase):
         expected=''.join(f'{digest}  {name}\n' for name,digest in sorted(hashes.items()))
         self.assertEqual((self.out/'SHA256SUMS').read_text(),expected)
 
+    def test_m16_entrypoint_checks_and_migration_are_in_offline_delivery(self):
+        required=['M16-START-HERE.md','scripts/m16-checks.sh','scripts/m16-preflight.py','scripts/m16-verify-package.py','database/migrations/V016_01__guide_trip_imports.sql']
+        for name in required:
+            path=self.root/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text('M16 synthetic delivery input')
+        hashes=self.m.assemble(self.root,self.out)
+        for name in required:
+            self.assertIn(name,hashes)
+
     def test_vditor_build_plugin_is_part_of_web_source_delivery(self):
         plugin=self.root/'frontend/build/vditorAssets.ts'
         plugin.parent.mkdir(parents=True,exist_ok=True)

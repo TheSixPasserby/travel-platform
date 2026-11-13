@@ -1,0 +1,116 @@
+{
+  "webVitals": {
+    "cls": 0,
+    "lcp": 3168
+  },
+  "viewport": [
+    1440,
+    1000
+  ],
+  "dpr": 1,
+  "cache": "disabled",
+  "latencyMs": 40,
+  "downloadBytesPerSecond": 1250000,
+  "images": [
+    {
+      "src": "http://127.0.0.1:15179/uploads/2026/11/2428d1e213b943d5b5710b4cfaf9ffa4.jpg",
+      "naturalWidth": 1280,
+      "naturalHeight": 853,
+      "renderedWidth": 275,
+      "renderedHeight": 344
+    },
+    {
+      "src": "http://127.0.0.1:15179/uploads/2026/11/aa861adb2db541b4ab75bc8d05afa287.jpg",
+      "naturalWidth": 1280,
+      "naturalHeight": 853,
+      "renderedWidth": 275,
+      "renderedHeight": 367
+    },
+    {
+      "src": "http://127.0.0.1:15179/uploads/2026/11/6b1b3e5843194e3bb626cf121e461684.jpg",
+      "naturalWidth": 1280,
+      "naturalHeight": 566,
+      "renderedWidth": 275,
+      "renderedHeight": 275
+    },
+    {
+      "src": "http://127.0.0.1:15179/uploads/2026/11/d14d58421adb42ca83c15658354f06a0.jpg",
+      "naturalWidth": 1280,
+      "naturalHeight": 720,
+      "renderedWidth": 275,
+      "renderedHeight": 275
+    },
+    {
+      "src": "http://127.0.0.1:15179/uploads/2026/11/ba82092a219647e79b71a2997cb8a3a9.jpg",
+      "naturalWidth": 1280,
+      "naturalHeight": 960,
+      "renderedWidth": 275,
+      "renderedHeight": 344
+    },
+    {
+      "src": "http://127.0.0.1:15179/uploads/2026/11/42db4e3533064bb0ac3b210fa87125f5.jpg",
+      "naturalWidth": 1280,
+      "naturalHeight": 960,
+      "renderedWidth": 275,
+      "renderedHeight": 367
+    },
+    {
+      "src": "http://127.0.0.1:15179/uploads/2026/11/00a9a297acb743e9be315919b1f59332.jpg",
+      "naturalWidth": 1280,
+      "naturalHeight": 868,
+      "renderedWidth": 275,
+      "renderedHeight": 367
+    },
+    {
+      "src": "http://127.0.0.1:15179/uploads/2026/11/2d923a0366f44cd9896fc04f7a0acd64.jpg",
+      "naturalWidth": 1280,
+      "naturalHeight": 961,
+      "renderedWidth": 275,
+      "renderedHeight": 344
+    }
+  ],
+  "resources": [
+    {
+      "name": "http://127.0.0.1:15179/uploads/2026/11/2428d1e213b943d5b5710b4cfaf9ffa4.jpg",
+      "bytes": 247081,
+      "transfer": 247381,
+      "duration": 1219.800000011921
+    },
+    {
+      "name": "http://127.0.0.1:15179/uploads/2026/11/d14d58421adb42ca83c15658354f06a0.jpg",
+      "bytes": 149526,
+      "transfer": 149826,
+      "duration": 762.3999999761581
+    },
+    {
+      "name": "http://127.0.0.1:15179/uploads/2026/11/6b1b3e5843194e3bb626cf121e461684.jpg",
+      "bytes": 293421,
+      "transfer": 293721,
+      "duration": 1423.3999999761581
+    },
+    {
+      "name": "http://127.0.0.1:15179/uploads/2026/11/aa861adb2db541b4ab75bc8d05afa287.jpg",
+      "bytes": 501606,
+      "transfer": 501906,
+      "duration": 2410.7999999523163
+    },
+    {
+      "name": "http://127.0.0.1:15179/uploads/2026/11/ba82092a219647e79b71a2997cb8a3a9.jpg",
+      "bytes": 252978,
+      "transfer": 253278,
+      "duration": 1248.5
+    },
+    {
+      "name": "http://127.0.0.1:15179/uploads/2026/11/42db4e3533064bb0ac3b210fa87125f5.jpg",
+      "bytes": 322718,
+      "transfer": 323018,
+      "duration": 1565.9000000357628
+    }
+  ],
+  "navigation": [
+    {
+      "domContentLoaded": 1200.8999999761581,
+      "load": 1204.699999988079
+    }
+  ]
+}

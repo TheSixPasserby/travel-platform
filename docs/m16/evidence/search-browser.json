@@ -1,0 +1,280 @@
+{
+  "checks": [
+    {
+      "name": "real guide and city search",
+      "ok": true
+    },
+    {
+      "name": "category URL",
+      "ok": true
+    },
+    {
+      "name": "refresh keyword",
+      "ok": true
+    },
+    {
+      "name": "back sorting",
+      "ok": true
+    },
+    {
+      "name": "empty state",
+      "ok": true
+    },
+    {
+      "name": "keyboard actual destination",
+      "ok": true
+    },
+    {
+      "name": "network failure retry",
+      "ok": true
+    },
+    {
+      "name": "layout 360light#126899",
+      "ok": true
+    },
+    {
+      "name": "layout 360light#b64b82",
+      "ok": true
+    },
+    {
+      "name": "layout 360dark#126899",
+      "ok": true
+    },
+    {
+      "name": "layout 360dark#b64b82",
+      "ok": true
+    },
+    {
+      "name": "layout 390light#126899",
+      "ok": true
+    },
+    {
+      "name": "layout 390light#b64b82",
+      "ok": true
+    },
+    {
+      "name": "layout 390dark#126899",
+      "ok": true
+    },
+    {
+      "name": "layout 390dark#b64b82",
+      "ok": true
+    },
+    {
+      "name": "layout 430light#126899",
+      "ok": true
+    },
+    {
+      "name": "layout 430light#b64b82",
+      "ok": true
+    },
+    {
+      "name": "layout 430dark#126899",
+      "ok": true
+    },
+    {
+      "name": "layout 430dark#b64b82",
+      "ok": true
+    },
+    {
+      "name": "layout 768light#126899",
+      "ok": true
+    },
+    {
+      "name": "layout 768light#b64b82",
+      "ok": true
+    },
+    {
+      "name": "layout 768dark#126899",
+      "ok": true
+    },
+    {
+      "name": "layout 768dark#b64b82",
+      "ok": true
+    },
+    {
+      "name": "layout 1024light#126899",
+      "ok": true
+    },
+    {
+      "name": "layout 1024light#b64b82",
+      "ok": true
+    },
+    {
+      "name": "layout 1024dark#126899",
+      "ok": true
+    },
+    {
+      "name": "layout 1024dark#b64b82",
+      "ok": true
+    },
+    {
+      "name": "layout 1440light#126899",
+      "ok": true
+    },
+    {
+      "name": "layout 1440light#b64b82",
+      "ok": true
+    },
+    {
+      "name": "layout 1440dark#126899",
+      "ok": true
+    },
+    {
+      "name": "layout 1440dark#b64b82",
+      "ok": true
+    },
+    {
+      "name": "reduced motion",
+      "ok": true
+    }
+  ],
+  "matrix": [
+    {
+      "width": 360,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "width": 360,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false
+    },
+    {
+      "width": 360,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "width": 360,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false
+    },
+    {
+      "width": 430,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "width": 430,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false
+    },
+    {
+      "width": 430,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "width": 430,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false
+    }
+  ],
+  "api": "real isolated backend",
+  "reference": "01-search-desktop.png / 05-search-mobile.png"
+}

@@ -7,6 +7,11 @@ import { ApiError } from '@/api/client'
 import AiItineraryForm from '@/components/AiItineraryForm.vue'
 import AiItineraryPreview from '@/components/AiItineraryPreview.vue'
 import { useAuthStore } from '@/stores/auth'
+import { useTripIntentStore } from '@/stores/tripIntent'
+import { fetchGuide } from '@/api/guides'
+import AddToTripDrawer from '@/components/AddToTripDrawer.vue'
+import type { GuideDetail } from '@/types/guide'
+import { clearAiWorkspace, readAiWorkspace, saveAiWorkspace } from '@/utils/aiWorkspace'
 import type {
   AiBudgetEstimate,
   AiCandidate,
@@ -22,6 +27,23 @@ type Caps = 'loading' | 'ready' | 'error'
 
 const router = useRouter(),
   auth = useAuthStore()
+const inspiration = useTripIntentStore()
+const sourceGuide = ref<GuideDetail | null>(null), sourceError = ref(''), manualOpen = ref(false)
+let sourceVersion = 0
+async function loadSourceGuide(): Promise<void> {
+  const request = ++sourceVersion, source = inspiration.source
+  sourceGuide.value = null; sourceError.value = ''
+  if (!source) return
+  try {
+    const guide = await fetchGuide(source.guideId)
+    if (request === sourceVersion) sourceGuide.value = guide
+  } catch { if (request === sourceVersion) sourceError.value = '来源攻略暂时无法读取，可重试或继续手动安排。' }
+}
+watch(() => inspiration.source?.guideId, () => { manualOpen.value = false; void loadSourceGuide() }, { immediate: true })
+function planFromManual(ids: string[]): void {
+  if (sourceGuide.value) inspiration.select(sourceGuide.value, ids)
+  manualOpen.value = false
+}
 const caps = ref<AiCapabilities | null>(null),
   capsState = ref<Caps>('loading'),
   capsError = ref('')
@@ -46,6 +68,31 @@ let capsVersion = 0,
   context = 0,
   previewStarted = false,
   editVersion = 0
+let workspaceOwner = auth.user?.id ?? ''
+let savedSuccessfully = false
+const pendingWorkspace = ref(readAiWorkspace(workspaceOwner))
+const initialRequirements = ref<AiRequirements | null>(null)
+const workspaceStorageError = ref(false)
+function persistWorkspace(): void {
+  if (savedSuccessfully || pendingWorkspace.value || !workspaceOwner || workspaceOwner !== auth.user?.id || !auth.token) return
+  if (!requirements.value && !draft.value) { clearAiWorkspace(); return }
+  workspaceStorageError.value = !saveAiWorkspace(workspaceOwner, {
+    requirements: requirements.value, draft: draft.value, candidates: candidates.value, warnings: warnings.value,
+    budget: budget.value, cityName: cityName.value, clientRequestId: keyDirty ? '' : clientRequestId.value,
+    sourceGuideId: inspiration.source?.guideId ?? null
+  })
+}
+function restoreWorkspace(): void {
+  const saved = pendingWorkspace.value
+  if (!saved) return
+  if (saved.sourceGuideId !== (inspiration.source?.guideId ?? null)) inspiration.clear()
+  requirements.value = saved.requirements; initialRequirements.value = saved.requirements
+  draft.value = saved.draft; candidates.value = saved.candidates; warnings.value = saved.warnings
+  budget.value = saved.budget; cityName.value = saved.cityName; clientRequestId.value = saved.clientRequestId
+  keyDirty = !saved.clientRequestId; previewStarted = Boolean(saved.draft)
+  pendingWorkspace.value = null
+}
+function discardWorkspace(): void { pendingWorkspace.value = null; clearAiWorkspace() }
 const dayVersions = new Map<string, number>()
 const message = (error: unknown) =>
   error instanceof ApiError ? error.message : '操作没有完成，请稍后重试'
@@ -126,14 +173,15 @@ function clearPrivate(): void {
   previewStarted = false
 }
 function onDirty(next: AiRequirements): void {
-  if (requirements.value && JSON.stringify(requirements.value) !== JSON.stringify(next)) {
+  const changed = !requirements.value || JSON.stringify(requirements.value) !== JSON.stringify(next)
+  if (requirements.value && changed) {
     reqVersion++
     previewLoading.value = false
     dayBusy.value = null
     saveOpen.value = false
   }
   requirements.value = next
-  keyDirty = true
+  if (changed) keyDirty = true
 }
 function onInvalidate(next: AiRequirements): void {
   requirements.value = next
@@ -522,8 +570,9 @@ async function confirmSave(): Promise<void> {
   try {
     const created = await importItinerary(body)
     if (!current()) return
+    savedSuccessfully = true
+    clearAiWorkspace()
     saveOpen.value = false
-    keyDirty = true
     await router.push({ name: 'itinerary-detail', params: { id: created.id } })
   } catch (error) {
     if (!current()) return
@@ -556,14 +605,24 @@ function closeSave(): void {
 const finalRootNotes = computed(() => importBody()?.notes ?? '')
 watch(
   [() => auth.token, () => auth.user?.id],
-  () => {
+  (current, previous) => {
+    const initialRestoration = !previous[1] && current[1] && current[0] === previous[0]
+    if (!initialRestoration) clearAiWorkspace()
+    workspaceOwner = auth.user?.id ?? ''
+    pendingWorkspace.value = initialRestoration ? readAiWorkspace(workspaceOwner) : null
+    initialRequirements.value = null
     clearPrivate()
   },
 )
+watch([requirements, draft, candidates, warnings, budget, cityName, clientRequestId], persistWorkspace, { deep: true })
 onMounted(() => {
+  window.addEventListener('beforeunload', persistWorkspace)
   void loadCaps()
 })
 onBeforeUnmount(() => {
+  persistWorkspace()
+  window.removeEventListener('beforeunload', persistWorkspace)
+  sourceVersion++
   context++
   reqVersion++
   capsVersion++
@@ -586,6 +645,23 @@ onBeforeUnmount(() => {
         >改用手动安排 →</RouterLink
       >
     </header>
+    <section v-if="pendingWorkspace" class="surface-card mb-6 p-5" data-test="ai-workspace-recovery">
+      <h2 class="font-serif text-xl text-pine-deep">继续上次的行程草稿</h2>
+      <p class="mt-3 text-sm text-ink-soft">{{ pendingWorkspace.draft?.title || '上次填写的旅行需求' }} 已保存在本次浏览器会话中。</p>
+      <div class="mt-4 flex flex-wrap gap-3"><button type="button" class="btn-primary" data-test="ai-restore-workspace" @click="restoreWorkspace">恢复上次编辑</button><button type="button" class="btn-ghost" @click="discardWorkspace">使用当前旅行灵感</button></div>
+    </section>
+    <p v-if="workspaceStorageError" role="status" class="mb-5 text-sm text-ember">浏览器暂时无法保存临时草稿，离开页面前请将已确认的预览保存到我的行程。</p>
+    <section v-if="inspiration.source" class="surface-card mb-6 p-5 sm:p-6" data-test="ai-source-panel">
+      <div class="flex flex-wrap items-start justify-between gap-4">
+        <div class="min-w-0"><h2 class="font-serif text-xl text-pine-deep">来自攻略的旅行灵感</h2><RouterLink :to="`/guides/${inspiration.source.guideId}`" class="mt-2 block break-words text-sm text-pine underline">{{ inspiration.source.guideTitle }}</RouterLink></div>
+        <button type="button" class="btn-ghost" @click="inspiration.clear()">移除来源</button>
+      </div>
+      <ul class="mt-4 flex flex-wrap gap-2"><li v-for="place in inspiration.source.places" :key="place.id" class="rounded-full bg-pine-soft px-3 py-2 text-sm">{{ place.name }}</li></ul>
+      <p class="mt-4 text-sm text-ink-soft">所选城市与景点将预填为「想去」，可调整为「必去」。点击生成会将旅行参数、景点资料和同城公开攻略节选发送至当前 AI 服务提供方，保存前请确认预览。</p>
+      <div class="mt-4 flex flex-wrap items-center gap-3"><button type="button" class="btn-ghost" data-test="ai-source-manual" :disabled="!sourceGuide" @click="manualOpen=true">用这些地点手动安排行程</button><button v-if="sourceError" type="button" class="btn-ghost" @click="loadSourceGuide">重新读取来源</button></div>
+      <p v-if="sourceError" role="alert" class="mt-3 text-sm text-ember">{{ sourceError }}</p>
+      <AddToTripDrawer :open="manualOpen" :guide="sourceGuide" :initial-selected-ids="inspiration.source.places.map(place=>place.id)" @close="manualOpen=false" @plan-ai="planFromManual" />
+    </section>
     <p v-if="capsState === 'loading'" role="status" class="surface-card p-8 text-sm text-ink-soft">
       正在确认 AI 服务是否可用…
     </p>
@@ -624,9 +700,12 @@ onBeforeUnmount(() => {
         · 生成需要真实模型调用，可能较慢。
       </p>
       <AiItineraryForm
+        v-if="!pendingWorkspace"
         :key="auth.user?.id"
         :busy="previewLoading || saving || Boolean(dayBusy)"
         :max-days="caps.maxDays"
+        :inspiration="inspiration.source"
+        :initial-requirements="initialRequirements"
         @submit="generate"
         @dirty="onDirty"
         @invalidate="onInvalidate"

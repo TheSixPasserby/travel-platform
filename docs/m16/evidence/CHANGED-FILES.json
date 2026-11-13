@@ -1,0 +1,762 @@
+{
+  "baselineHead": "9a6261c47695131bee399c8d373d1cc5ff55c630",
+  "manifestExcludesItself": true,
+  "excluded": [
+    "original ZIP input",
+    ".local/",
+    ".env",
+    "uploads/"
+  ],
+  "files": [
+    {
+      "path": "M16-START-HERE.md",
+      "sha256": "a26c104be40a61ec4b5bc30bf135e07c38841989ebae2d711c56e77014b3f6f6",
+      "bytes": 3377,
+      "role": "provided-input"
+    },
+    {
+      "path": "PROJECT_STATUS.md",
+      "sha256": "2ffa77202456a4bbeed745cd1c8b700ad7a0184e9a9a3af9fd4c6ac14b39085a",
+      "bytes": 52194,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "README.md",
+      "sha256": "b2beff477dd707ca1ff6aaa926db4844024b0d1e4dc145c9acf929b44d59c216",
+      "bytes": 8514,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "backend/src/main/java/com/example/travelplatform/file/ImageOrientation.java",
+      "sha256": "74128aaf4c67791eed73812360e630a0100d1a8f65cf95bb8f9081745b286991",
+      "bytes": 4035,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "backend/src/main/java/com/example/travelplatform/file/ImageReadController.java",
+      "sha256": "3d3819b81a2f122cfe4dd1683addddc827e2c14d1552f9fa48aad6596fa7c6be",
+      "bytes": 2243,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "backend/src/main/java/com/example/travelplatform/file/ImageVariantService.java",
+      "sha256": "51984ebdd7d7d15ca1b106b5462dbf9942cefdacab10cb9b4deb47d75b0deb56",
+      "bytes": 5460,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "backend/src/main/java/com/example/travelplatform/itinerary/controller/GuideTripImportController.java",
+      "sha256": "90b2cdda39c7ccd238915247d6afcab29fc60b8684331bd57b639015d58af2d8",
+      "bytes": 974,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "backend/src/main/java/com/example/travelplatform/itinerary/dto/GuideTripImportRequest.java",
+      "sha256": "c4743f789bbc2f6b758e5933495540c62b4f1199a93d76ac0b4cbc25ca7a8b13",
+      "bytes": 385,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "backend/src/main/java/com/example/travelplatform/itinerary/mapper/GuideTripImportMapper.java",
+      "sha256": "71ac5ff74516024a734b920c1ba546ce7626b7898757ed47ed67cd0cc72ea750",
+      "bytes": 862,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "backend/src/main/java/com/example/travelplatform/itinerary/service/GuideTripImportService.java",
+      "sha256": "686cc03568a6ece84becfb3e2d62df0c48c87503cc86f88ad680ffd01354f833",
+      "bytes": 8888,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "backend/src/main/java/com/example/travelplatform/itinerary/vo/GuideTripImportResult.java",
+      "sha256": "31a33167fee22973af26303760528821883217058b1ef0bc55e67812f32d131b",
+      "bytes": 197,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "backend/src/main/java/com/example/travelplatform/search/SearchController.java",
+      "sha256": "0daf95a93ad16afff95b63476dc8c3dee7f372239515df24e5357a03b4e8f44b",
+      "bytes": 1021,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "backend/src/main/java/com/example/travelplatform/search/SearchCursor.java",
+      "sha256": "0f32a0c8d6d228599d604df0662d41bb5458bb254b58bc856316dda8066568f8",
+      "bytes": 1811,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "backend/src/main/java/com/example/travelplatform/search/SearchHit.java",
+      "sha256": "fc4860c5dc8bc29f68b8d11c8947e41dbab94c7f3febc8e060d9c6303cfe7668",
+      "bytes": 203,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "backend/src/main/java/com/example/travelplatform/search/SearchMapper.java",
+      "sha256": "d25b9f5e9279d8109e551f8327ecefe0d722025383ea0ff544ee9dbfd4f7a71e",
+      "bytes": 4194,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "backend/src/main/java/com/example/travelplatform/search/SearchRow.java",
+      "sha256": "6c0280d071c60f323b096a5118a05fb8ac6b86b069020062f3c2dc08438969c2",
+      "bytes": 258,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "backend/src/main/java/com/example/travelplatform/search/SearchService.java",
+      "sha256": "6a21ae547fadbba077ef13fe0a46f907fc680180422213ec9e54813df5d1b2a1",
+      "bytes": 2927,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "backend/src/main/java/com/example/travelplatform/security/AuthWebConfig.java",
+      "sha256": "340fdf96418ed88fbf885818b90a2ccc7a63bcb3f76174fc08e725b747d98f26",
+      "bytes": 2204,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "backend/src/main/resources/application.yml",
+      "sha256": "50b272a265fb1cf1068df58449b02c301d8d2edbf2ac4c255e0bc5821602beda",
+      "bytes": 2083,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "backend/src/test/java/com/example/travelplatform/file/ImageVariantApiTest.java",
+      "sha256": "8c1023ef4231ec40b6a42a45dc263ddd88be98f1d0154a99fce160b5a75f0896",
+      "bytes": 6747,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "backend/src/test/java/com/example/travelplatform/guide/M16SearchApiTest.java",
+      "sha256": "967b422c856fdd5dedf7d41c392507c8af5c41b15bcd932d5d3ee96c99b00815",
+      "bytes": 6406,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "backend/src/test/java/com/example/travelplatform/itinerary/GuideTripImportApiTest.java",
+      "sha256": "750da1854ba20d862828cf48053b9d3030c5482e49631a8349247624b6f0eb89",
+      "bytes": 8350,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "database/README.md",
+      "sha256": "ee4f354ca647576589e4793f7f185b9d121cef1ec5cb2701a3975177119dad21",
+      "bytes": 4792,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "database/migrations/V016_01__guide_trip_imports.sql",
+      "sha256": "3af67a17516aff7a8057574213931954c2dba5f071a9aa695c4aff3f4576a923",
+      "bytes": 942,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "database/schema.sql",
+      "sha256": "8f8f01a0c238db92687ed5521520abb15eeac9bf298c860cfafb3cbfcd8fb2b2",
+      "bytes": 13313,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/API.md",
+      "sha256": "d06d1e24bc55e8eb86c24aaf3697c6e0881ec8d07039a08d0f094daeeceb7a40",
+      "bytes": 7953,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/DELIVERY.md",
+      "sha256": "df218252950374e070c2202770d005f53232a1e8a60067614501677996263426",
+      "bytes": 10564,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/IMPLEMENTATION-LOG.md",
+      "sha256": "fff548e1e3bdcff75faa02d19bdc92b59b6ffd3beeb3377ed2d53c5a532cc208",
+      "bytes": 9703,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/M16-ACCEPTANCE.md",
+      "sha256": "6a052ee2b791852225bb1f401957a6422e406d6457b7f8b7b561e692703bc0a4",
+      "bytes": 3959,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/M16-API-DATA-CONTRACT.md",
+      "sha256": "0851bf6f44a83323cfbb08aebe582d78a942e1c740b15f92d64439f39738076d",
+      "bytes": 5868,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/M16-CODEX-IMPLEMENTATION.md",
+      "sha256": "3a040552ded9b7a5471f4a0c0282d2e10761726a5f6d6671661302d04f207740",
+      "bytes": 10357,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/M16-DSH-FRONTEND-BRIEF.md",
+      "sha256": "93b004b3272189764b686618f5cb62583b30c4570040a06af9958e32b5c9b127",
+      "bytes": 4825,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/M16-EXECUTION-PLAN.md",
+      "sha256": "e66f9bb5cfd42871efdb81cd6d01836b6c24bb82fcd4095de164804b4512641d",
+      "bytes": 2665,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/M16-REFERENCE-GUIDE.md",
+      "sha256": "4dcd42ccf793be74bbe650420d5c14dec8abdbbca436e996ec88d9d333117ba8",
+      "bytes": 2887,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/M16-SHA256SUMS.txt",
+      "sha256": "2520a55e9ffca238dc5e554918760972a9006937814db7b2e6c73671cfa6083b",
+      "bytes": 3377,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/ai-manual-1440.png",
+      "sha256": "0503bc782c40356ada9cde86583deead92ba102298180522124991f03cad7eb7",
+      "bytes": 114335,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/ai-manual-390.png",
+      "sha256": "fe75d8d35f54ce4776581986c625b09f5255e0a94e66e286724939eef4a188e0",
+      "bytes": 87520,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/ai-saved-http-fixture-390.png",
+      "sha256": "cde9c18389ba17def7367d2086735f97296651717955dffea0e518e15b2056da",
+      "bytes": 77260,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/ai-workspace-browser.json",
+      "sha256": "308a537d2185ed424d660f09489037bf52e2eab7a9e91378e7447f3243e38746",
+      "bytes": 939,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/ai-workspace-http-fixture-1440.png",
+      "sha256": "dbd0e90e2d0c614d4b49d36aa145f0b22b3bab2d46baa25e5dc8609f1e439ff0",
+      "bytes": 98466,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/ai-workspace-http-fixture-390.png",
+      "sha256": "778f502b3da16f6cdf8cf47d1daa75f04c287cd0c57ccf171397751b88b54d7d",
+      "bytes": 71190,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/data-protection.json",
+      "sha256": "4dd77f183260d860c622fdcced4d59cd6ec618f1f39d5d57d1b9ea2c5ba4512d",
+      "bytes": 1342,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/feed-before-1440.png",
+      "sha256": "70cdbd84e131c9c8b579d18c43de459ed7b83c1eadba61ce3640ff7ba2bb9f27",
+      "bytes": 1199555,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/feed-original-1440.png",
+      "sha256": "946701aa8bfedeb60305b9041cc9057630f29a9c42e1979dac6003698c803b75",
+      "bytes": 647528,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/feed-variant-1440.png",
+      "sha256": "9bd73a98ced49f8c8078957624f20a293efdea2bf55a891924451b1efa48e809",
+      "bytes": 1036086,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/final-capture-browser.json",
+      "sha256": "a3059617f32d517b5a4e558246e60770a661685316e404946e97e48626fb0540",
+      "bytes": 3733,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/image-before.json",
+      "sha256": "cd6b84c3c4419486a9aa52d66b44100fb98da23b7ac3c92721be61348c2b7a20",
+      "bytes": 3211,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/lightbox-original-1440.png",
+      "sha256": "c1e39d5ac9aea27fc0f652bb7682e5dfae7f801be901d29866263a114df3d7d5",
+      "bytes": 697649,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/login-390.png",
+      "sha256": "6c9432e9134672114ab1493c0f9a354475cc6caef38fe56da503e2c632c8f5c2",
+      "bytes": 28807,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/performance.json",
+      "sha256": "1c2324ce5b69bf58cfb9de218cd9ddd6ba5b8617bde16d7decc9606c3622be00",
+      "bytes": 9884,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/protected-source.json",
+      "sha256": "0c7b016a25168f1db29ae51b95ea458ae75b783c3c6dfdcf25c8ad75ba89e081",
+      "bytes": 421,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/regression-browser.json",
+      "sha256": "2945b1ecce7ac4aa72594845322204d1dcda5b73a3b378cf6d9700cd66b82adf",
+      "bytes": 897,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/search-1440-dark.png",
+      "sha256": "8f7dc002bc5deca3db6c0225078212ef1a756b623b458818943e9491d1128b9c",
+      "bytes": 537081,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/search-1440-light.png",
+      "sha256": "415dd0c6c2160e25d40267ecae6415a5462e83537bf7d0fc567e20c3d17a6507",
+      "bytes": 536788,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/search-1440-pine.png",
+      "sha256": "e0882b4f7ac2be953fddb4feee1f977b7a8a0b9cf07d34b9d0faf22d3e0a22ea",
+      "bytes": 646242,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/search-390-dark.png",
+      "sha256": "40bfd348d8ad5e3cc58ea3c36becaff3cb48233d3230c5fb000520ef83c7248a",
+      "bytes": 113975,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/search-390-light.png",
+      "sha256": "55d8644580829967e61703ba5fc9b755199f34d92722ecfc260eb1e279fc1120",
+      "bytes": 113771,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/search-browser.json",
+      "sha256": "75238fb5e0509d6b3f9519aa7342e96a6c0f4cb1c120618b7e350335d5581f2a",
+      "bytes": 4873,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/touch-browser.json",
+      "sha256": "bbe942eeb465d2604245ef4d923205c76adb16c67445d10f39475e4ae2a056f0",
+      "bytes": 11060,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/trip-1440-dark.png",
+      "sha256": "01608e8a09e062003d706c3b07e2d9b3c724034261e581f4541b919faa783a91",
+      "bytes": 591656,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/trip-1440-light.png",
+      "sha256": "c3a5293388b6c5ca5a85932d84510b3efea5a0c123294f7fa808369db645fa83",
+      "bytes": 594478,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/trip-390-dark.png",
+      "sha256": "4c5175f0000dffeb1ec7903537e377b1f31f038588e60c3aeadc80b5a8b06e57",
+      "bytes": 70917,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/trip-390-light.png",
+      "sha256": "e9657b13f8f90a84b6327eee2e6e5a280811d7005792d8ee1f5174ad899b339f",
+      "bytes": 71289,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/trip-browser.json",
+      "sha256": "cbd1c7fc79fa9229cd81a4e8d21d4c56c66e445f366af0341bfc1922e11c0ba5",
+      "bytes": 6624,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/trip-detail-1440.png",
+      "sha256": "57f41207d7645ccb98927e179c146d654e3e96102a945a00f3cdfd45691c8238",
+      "bytes": 109433,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/evidence/trip-saved-1440.png",
+      "sha256": "ae69e0b6374ac4d394351baee563f11badbfe590ac155fa03e3e482b991ae6c5",
+      "bytes": 617441,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "docs/m16/references/00-M16-overview-flows.png",
+      "sha256": "7c71714eb644153d5a4326916c082f7d39501d0eac59b148d4afcdf6f578f006",
+      "bytes": 2230385,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/references/00-M16-overview-green.png",
+      "sha256": "1a558c7651c51a0bed7edb7e511bfbe2fd009630a192bb4ca32d6556f623f177",
+      "bytes": 2260621,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/references/01-search-desktop.png",
+      "sha256": "ab924d31983d8d1acd7866811208408661619a6abd3221dddd445dfff4414a20",
+      "bytes": 496087,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/references/02-article-add-trip.png",
+      "sha256": "7968d38c8642ac48023fa0df60d3d839310529dedbe4daffcb3771c4fa6b617c",
+      "bytes": 381289,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/references/03-ai-itinerary-workspace.png",
+      "sha256": "f6a054e5be5bd1d2d78cc6c9874392684568f61927d25669bc702a4c0e4700a2",
+      "bytes": 351011,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/references/04-notifications-interactions.png",
+      "sha256": "c67d05fbfd5a2d3461f11126782ac0613dacdd69b1ea7c5ba4b79dca9e331bf5",
+      "bytes": 312133,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/references/05-search-mobile.png",
+      "sha256": "1b8ca42e30156f7c88830c7b33a40a99ad80ca8c737c32f91657acda7165d246",
+      "bytes": 162455,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/references/assets/temp_alps.png",
+      "sha256": "dedf690cec0f1ddae27cb32bdbf03fbbaf14f02b18566ecef3aea6acce72cba0",
+      "bytes": 263851,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/references/assets/temp_coast.png",
+      "sha256": "f1ee3a8f4bee61eb455a5b15f72daf4db16fa79528fbce8f44e817749e39d31f",
+      "bytes": 362473,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/references/assets/temp_lake.png",
+      "sha256": "087ecf36637a86af563754b2fd909e1e9b33007f2aaa42c0203bdd234f9fa1d4",
+      "bytes": 369952,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/references/assets/temp_sakura.png",
+      "sha256": "44d40477f2762b35e7c003fa66078d9de282409f35a6fc59488d72f5e049fbd9",
+      "bytes": 495545,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/references/assets/temp_sky.png",
+      "sha256": "061b4aae864e1ae4a675edd59a360063b74b6176d8f1e901d5d1a7d41dbb0350",
+      "bytes": 228112,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/references/assets/temp_temple.png",
+      "sha256": "0a9661e1fc81facca1b45fc53be86733e08beb7f942eb7a1c206a1f0d0f0ca2e",
+      "bytes": 424515,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/references/assets/temp_town.png",
+      "sha256": "aa11cdd0147498664bcae47a04134935e2765215b20d5eba0141ac63d7411fd5",
+      "bytes": 254046,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/references/assets/temp_water.png",
+      "sha256": "aa21cc3e730c6c8e5cf8388a71fbbced0d9e11da0f24af1eeb667ce7e04d2663",
+      "bytes": 253357,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/references/prototypes/01-search-desktop.html",
+      "sha256": "409dc3504013646f172eeaf8e6bba62ec7c45f495f4ef81043774e39fa1d6c1b",
+      "bytes": 5267,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/references/prototypes/02-article-add-trip.html",
+      "sha256": "cf95cab9ac868c9def624177faf20d79a8ed9589f5ea81d2073587c737a103fb",
+      "bytes": 5907,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/references/prototypes/03-ai-itinerary-workspace.html",
+      "sha256": "a06a692dbcbfb6179cee7af490e4dd4277da7fc4629d581359788a03de33bb81",
+      "bytes": 5342,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/references/prototypes/04-notifications-interactions.html",
+      "sha256": "4b39ee630ce0b6a98d5b60ee4e6966e7728f37a095f590fb599e6a297510639a",
+      "bytes": 4600,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/references/prototypes/05-search-mobile.html",
+      "sha256": "538cbcd2f5b45ad06ca3fbc79c946342a2949d75570c249cba5b569f65beff8a",
+      "bytes": 3623,
+      "role": "provided-input"
+    },
+    {
+      "path": "docs/m16/references/prototypes/style.css",
+      "sha256": "c2fb7d593c3d56b45abe072287cd32ffc1033c432cb4a806604233ab33a11e54",
+      "bytes": 4178,
+      "role": "provided-input"
+    },
+    {
+      "path": "frontend/src/api/itineraries.ts",
+      "sha256": "43bb80d2b5ec9262cc8f4d2e6c677d8251388a5a2b8973f253303fae4733d874",
+      "bytes": 2699,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/src/api/search.ts",
+      "sha256": "9c456ec9a5ad73e722fa9421ba5e56b7a3141b517da655dbc44745b0207e1cad",
+      "bytes": 282,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/src/components/AddToTripDrawer.vue",
+      "sha256": "10dc25ced53cc1e07ece74e37638816a8f2a8899d8cd7706eceb16c0c585bb3b",
+      "bytes": 40920,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/src/components/AiItineraryForm.vue",
+      "sha256": "b2fa61380dd900b0026bf2df70027cacc17d402a893dc78e093510d69a555e86",
+      "bytes": 20436,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/src/components/CommunitySidebar.vue",
+      "sha256": "461fc7670b840c7ee2dc65d0f55ef71269035ca10d7452ddd25dedfb24d36c01",
+      "bytes": 3749,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/src/components/GuideCard.vue",
+      "sha256": "af212b91d3de5507a2733788f26a2967a1fecc1e8649d5b00b104092395205c2",
+      "bytes": 7577,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/src/components/SearchBox.vue",
+      "sha256": "4f05ce4e671a28c5a51569d673b8b81717a5d623745a498be6e06ea773ccf4a1",
+      "bytes": 10108,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/src/components/SiteHeader.vue",
+      "sha256": "0e6d9706614fa36ee7748750cd994f7964bccf04d698de7f6b38be77f2ae8ac3",
+      "bytes": 17584,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/src/router/index.ts",
+      "sha256": "5913665054bc40bddf687dcb7312aee65164937f77ff628d0a572d0e766fdb80",
+      "bytes": 7190,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/src/stores/tripIntent.ts",
+      "sha256": "13ad456baa7129a6dda21ecbf0a96f5e3236e336d251c86f16a710e7ab04be9e",
+      "bytes": 2924,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/src/types/ai.ts",
+      "sha256": "68c3f543039acb841d85cc1c4194dc654ba41b2a97d7729957bbb72b8fb263bf",
+      "bytes": 2545,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/src/types/itinerary.ts",
+      "sha256": "a22ad7f402962ca151642541bb6137bf1e8b3dfc36cd4302bf08fc502c549903",
+      "bytes": 2317,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/src/types/search.ts",
+      "sha256": "b2ec036fbab2d3f84e18798ee6db42098aa0d943df131f1b4c02e42e1d3d191d",
+      "bytes": 537,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/src/types/tripIntent.ts",
+      "sha256": "aa6143c13f4bbf806264a461e9a0d72d1f554f9811d4383d9d53b7e6dfde4cda",
+      "bytes": 171,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/src/utils/aiWorkspace.ts",
+      "sha256": "1bd7542a1a19dfc68afbc5147b272a8a4b1cf180e7c6788281284c17d336a046",
+      "bytes": 3813,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/src/utils/imageVariants.ts",
+      "sha256": "7ad2874bde1ff36bd70522f268e3e3a06f9ea4628daf602627e3b9165b561dde",
+      "bytes": 599,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/src/utils/managedImages.ts",
+      "sha256": "6be713dd5992a2f61c485ada31c9cb2a501c906ca390d90fb5a2a0903e5985bd",
+      "bytes": 210,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/src/utils/markdown.ts",
+      "sha256": "44f8ef1565479f61ef212f80f1b2dc2acdc348f09926bb690fb5e616f35838ca",
+      "bytes": 7016,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/src/views/AiItineraryView.vue",
+      "sha256": "b5e34a42589b74005497031efa7288eb60b01092477b11f8d2ba1013bb6e2e91",
+      "bytes": 33102,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/src/views/GuideDetailView.vue",
+      "sha256": "5edb43249f931dd7764dcae1f37e9354b29196f3b74d5589325fb8bbf7d0eb58",
+      "bytes": 16494,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/src/views/MyFavoritesView.vue",
+      "sha256": "29435215436f8c570967669f8cc9feff11d76d5b84ccaf3148587ba4286f1253",
+      "bytes": 5464,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/src/views/SearchView.vue",
+      "sha256": "959057484f3214288d3849d3dd8950a4b16ab32cb36829dd781b2c39033c27dd",
+      "bytes": 20141,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/tests/ai-itinerary.spec.ts",
+      "sha256": "2ab712bb8725fb1ab1bae9003035ad85e1e2b36251d04e01afff955495cfdc2e",
+      "bytes": 41354,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/tests/favorites-view.spec.ts",
+      "sha256": "4610e17fb506313a815bfc45ce67379420a3a2673ecd7f9e5382c795148e0af9",
+      "bytes": 3914,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/tests/m12-discovery.spec.ts",
+      "sha256": "a0e50607ef154f77ae5f95d0ea82997e72343ffc5dc9051ffa3f627a57aa5089",
+      "bytes": 6801,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/tests/m16-ai-inspiration.spec.ts",
+      "sha256": "775ba3a560c5c4fd9e0ed73e4464e1eeee2aea1f8d3fe740e44b853c6e0068a8",
+      "bytes": 3263,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/tests/m16-ai-workspace-storage.spec.ts",
+      "sha256": "46a564df9936ef16edf6e82c1092fc28ba5becec8e7335082dbfd3ff6e614a6c",
+      "bytes": 1911,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/tests/m16-image-variants.spec.ts",
+      "sha256": "ae256b160ae6f1c6e9d54ca95183c4d1ee316186c8df1ffefd134171408dcb06",
+      "bytes": 990,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/tests/m16-search-box.spec.ts",
+      "sha256": "961bc4e067ad7ab072c6668a81ef1d780b39844fb6ab0a1d23fe3f4db8cf9743",
+      "bytes": 5130,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/tests/m16-search-view.spec.ts",
+      "sha256": "4b41859293baa229968854d84abd243e8fd2f2309a2928357da9910f19d6c352",
+      "bytes": 4844,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/tests/m16-trip-drawer.spec.ts",
+      "sha256": "d867b5f20d47df8cbef112d89835554ab49a235d0016ee4308cdd12e51ae68a2",
+      "bytes": 22090,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/tests/m16-trip-entrypoints.spec.ts",
+      "sha256": "0f3bc454d64d89fc3ac0a1ed0bdea0ca6b0a1504081b07b6aed6c6df5c17adac",
+      "bytes": 2477,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "frontend/tests/m16-trip-intent.spec.ts",
+      "sha256": "b0595d571b6507729e2733b67f675c7d10031269d45e972f1817fe4444c87990",
+      "bytes": 2187,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "scripts/m16-checks.sh",
+      "sha256": "d0772e825a2bba125e8bdf82e4af573435169ea28c9f0706cbe23728a24d0e5b",
+      "bytes": 1204,
+      "role": "provided-input"
+    },
+    {
+      "path": "scripts/m16-preflight.py",
+      "sha256": "9d9814869d889e177b92553010a6caf26f72eefe757470619ab0ca4737ab2d6f",
+      "bytes": 3814,
+      "role": "provided-input"
+    },
+    {
+      "path": "scripts/m16-verify-package.py",
+      "sha256": "3099e2defe726a972f3db3fe4db02929a6b94006643ed2adee1cced545dc8c1a",
+      "bytes": 1192,
+      "role": "provided-input"
+    },
+    {
+      "path": "scripts/release.py",
+      "sha256": "9f87e806a70d530f777d928507e277079c37ffe96b35da4862f02dc826ef6f8e",
+      "bytes": 7357,
+      "role": "implementation-or-evidence"
+    },
+    {
+      "path": "scripts/tests/test_release.py",
+      "sha256": "27bb53b17fb0f19c54cb1c9c4b47475af7c180ad6788c9c744ddd10c83b9f137",
+      "bytes": 9739,
+      "role": "implementation-or-evidence"
+    }
+  ]
+}

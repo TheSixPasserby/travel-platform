@@ -1,0 +1,44 @@
+{
+  "checks": [
+    {
+      "name": "real creator profile target",
+      "ok": true
+    },
+    {
+      "name": "real topic feed target",
+      "ok": true
+    },
+    {
+      "name": "infinite feed appends twenty without duplicates",
+      "ok": true
+    },
+    {
+      "name": "lightbox retains original URL",
+      "ok": true
+    },
+    {
+      "name": "zoom rotate fit controls work",
+      "ok": true
+    },
+    {
+      "name": "original download completes",
+      "ok": true
+    },
+    {
+      "name": "Escape closes image viewer",
+      "ok": true
+    },
+    {
+      "name": "actual share link copied",
+      "ok": true
+    }
+  ],
+  "originalPath": "/uploads/2026/11/2428d1e213b943d5b5710b4cfaf9ffa4.jpg",
+  "downloaded": ".local/m16/downloaded-original.jpg",
+  "feedCount": 20,
+  "downloadVerification": {
+    "downloadBytes": 247081,
+    "originalBytes": 247081,
+    "sameSha256": true
+  }
+}

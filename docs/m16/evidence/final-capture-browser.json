@@ -1,0 +1,199 @@
+{
+  "matrix": [
+    {
+      "page": "trip",
+      "width": 390,
+      "mode": "light",
+      "overflow": false
+    },
+    {
+      "page": "trip",
+      "width": 390,
+      "mode": "dark",
+      "overflow": false
+    },
+    {
+      "page": "trip",
+      "width": 1440,
+      "mode": "light",
+      "overflow": false
+    },
+    {
+      "page": "trip",
+      "width": 1440,
+      "mode": "dark",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 360,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 360,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 360,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 360,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 390,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 390,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 390,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 390,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 430,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 430,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 430,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 430,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 768,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 768,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 768,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 768,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 1024,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 1024,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 1024,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 1024,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 1440,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 1440,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 1440,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false
+    },
+    {
+      "page": "AI disabled",
+      "width": 1440,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false
+    }
+  ],
+  "ai": "disabled",
+  "loginReturnTripToAi": true,
+  "mutations": 0
+}

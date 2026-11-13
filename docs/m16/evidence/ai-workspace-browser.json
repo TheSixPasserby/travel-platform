@@ -1,0 +1,50 @@
+{
+  "checks": [
+    {
+      "name": "real source city prefilled",
+      "ok": true
+    },
+    {
+      "name": "both chosen IDs prefilled",
+      "ok": true
+    },
+    {
+      "name": "preview and save are separate",
+      "ok": true
+    },
+    {
+      "name": "edited must-visit and preferences reach API",
+      "ok": true
+    },
+    {
+      "name": "edited preview restored after refresh",
+      "ok": true
+    },
+    {
+      "name": "form dates restored",
+      "ok": true
+    },
+    {
+      "name": "save needs explicit confirmation",
+      "ok": true
+    },
+    {
+      "name": "one real atomic import",
+      "ok": true
+    },
+    {
+      "name": "saved edits survive refresh",
+      "ok": true
+    }
+  ],
+  "itinerary": "http://127.0.0.1:15179/itineraries/4",
+  "previewStatus": 200,
+  "provider": "local synthetic HTTP fixture, no external model call",
+  "preferredIds": [
+    "26",
+    "27"
+  ],
+  "mustVisitIds": [
+    "26"
+  ]
+}

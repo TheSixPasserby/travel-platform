@@ -1,6 +1,7 @@
 import { beforeEach,expect,it,vi } from 'vitest'
 import { flushPromises,mount } from '@vue/test-utils'
 import { createMemoryHistory,createRouter } from 'vue-router'
+import { createPinia } from 'pinia'
 import MyFavoritesView from '@/views/MyFavoritesView.vue'
 import { fetchFavorites } from '@/api/interactions'
 import { ApiError } from '@/api/client'
@@ -10,7 +11,7 @@ const guide:GuideSummary={ id:'9007199254740993',title:'收藏的山谷',summary
 const page=(records:GuideSummary[],extra={})=>({ records,total:records.length,current:1,size:9,pages:records.length?1:0,...extra })
 async function render(path='/me/favorites'){
   const router=createRouter({ history:createMemoryHistory(),routes:[{ path:'/me/favorites',name:'my-favorites',component:MyFavoritesView },{ path:'/guides',name:'guides',component:{ template:'<div />' } },{ path:'/guides/:id',name:'guide-detail',component:{ template:'<div />' } },{ path:'/login',name:'login',component:{ template:'<div />' } }] })
-  await router.push(path);await router.isReady();const wrapper=mount(MyFavoritesView,{ global:{ plugins:[router] } });await flushPromises();return { wrapper,router }
+  await router.push(path);await router.isReady();const wrapper=mount(MyFavoritesView,{ global:{ plugins:[createPinia(),router] } });await flushPromises();return { wrapper,router }
 }
 beforeEach(()=>{vi.resetAllMocks();vi.mocked(fetchFavorites).mockResolvedValue(page([guide]))})
 it('收藏列表使用服务端页码与字符串ID',async()=>{

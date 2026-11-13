@@ -7,6 +7,9 @@ import { fetchGuide } from '@/api/guides'
 import { ApiError } from '@/api/client'
 import GuideActions from '@/components/GuideActions.vue'
 import CommentDrawer from '@/components/CommentDrawer.vue'
+import AddToTripDrawer from '@/components/AddToTripDrawer.vue'
+import SiteIcon from '@/components/SiteIcon.vue'
+import { useTripIntentStore } from '@/stores/tripIntent'
 import UserAvatar from '@/components/UserAvatar.vue'
 import SafeMarkdown from '@/components/SafeMarkdown.vue'
 import TravelArt from '@/components/TravelArt.vue'
@@ -18,6 +21,27 @@ const route = useRoute(),
   router = useRouter(),
   auth = useAuthStore()
 const windowOrigin = window.location.origin
+const tripIntent = useTripIntentStore()
+const tripOpen = ref(false)
+async function openTrip(): Promise<void> {
+  if (!auth.isAuthenticated) {
+    const redirect = router.resolve({ path: route.path, query: { ...route.query, trip: '1', comments: undefined } }).fullPath
+    void router.push({ name: 'login', query: { redirect } }); return
+  }
+  if (commentsOpen.value) await router.replace({ query: { ...route.query, comments: undefined } })
+  tripOpen.value = true
+}
+function closeTrip(): void {
+  const wasOpen = tripOpen.value
+  tripOpen.value = false
+  if (wasOpen && route.query.trip) void router.replace({ query: { ...route.query, trip: undefined } })
+}
+function planFromGuide(ids: string[]): void {
+  if (guide.value && tripIntent.select(guide.value, ids)) {
+    tripOpen.value = false
+    void router.push('/itineraries/ai')
+  }
+}
 const commentsOpen = computed(() => route.query.comments === '1')
 function setComments(open: boolean): void {
   void router.replace({
@@ -61,10 +85,14 @@ async function load(): Promise<void> {
 watch(
   () => route.params.id,
   () => {
+    tripOpen.value = false
     void load()
   },
   { immediate: true }
 )
+watch(() => [guide.value?.id, auth.isAuthenticated, route.query.trip], () => {
+  if (guide.value && auth.isAuthenticated && route.query.trip === '1') tripOpen.value = true
+})
 onBeforeUnmount(() => version++)
 </script>
 <template>
@@ -247,6 +275,7 @@ onBeforeUnmount(() => version++)
           </div>
         </div>
         <aside class="article-tools" aria-label="文章操作">
+          <button type="button" data-test="add-guide-to-trip" class="trip-rail-button" @click="openTrip"><SiteIcon name="calendar" /><span>加入行程</span></button>
           <GuideActions
             layout="rail"
             :guide-id="guide.id"
@@ -291,11 +320,14 @@ onBeforeUnmount(() => version++)
         @count-changed="updateCommentCount"
       />
       <RelatedGuides :guide-id="guide.id" />
+      <AddToTripDrawer :open="tripOpen" :guide="guide" @close="closeTrip" @plan-ai="planFromGuide" />
     </article>
   </section>
 </template>
 
 <style scoped>
+.trip-rail-button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; min-width: 64px; min-height: 64px; margin-bottom: 10px; border-radius: var(--ui-radius-lg); background: var(--ui-accent-soft); color: var(--ui-link); font-size: 12px; }
+.trip-rail-button svg { width: 24px; height: 24px; }
 .article-page {
   width: min(100% - 48px, 1560px);
   margin-inline: auto;

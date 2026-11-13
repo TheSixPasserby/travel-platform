@@ -10,6 +10,7 @@ const home = computed(() =>
 )
 const links = computed(() => [
   { to: '/', label: '发现', icon: 'explore' },
+  { to: '/search', label: '全站搜索', icon: 'explore' },
   { to: '/guides?sort=latest', label: '最新手记', icon: 'book' },
   { to: '/guides?sort=popular', label: '热门手记', icon: 'heart' },
   { to: '/destinations', label: '城市与景点', icon: 'pin' },
@@ -31,7 +32,7 @@ function selected(to: string): boolean {
         :to="link.to"
         :class="{
           active: selected(link.to),
-          'nav-divider': index === 3 || index === 6
+          'nav-divider': index === 4 || index === 7
         }"
         :aria-current="selected(link.to) ? 'page' : undefined"
         ><SiteIcon :name="link.icon" />{{ link.label }}</RouterLink
@@ -40,7 +41,7 @@ function selected(to: string): boolean {
   </aside>
   <nav class="community-mobile-nav" aria-label="手机快捷导航">
     <RouterLink to="/"><SiteIcon name="home" /><span>发现</span></RouterLink>
-    <RouterLink to="/guides"
+    <RouterLink to="/search"
       ><SiteIcon name="explore" /><span>搜索</span></RouterLink
     >
     <RouterLink to="/guides/new"

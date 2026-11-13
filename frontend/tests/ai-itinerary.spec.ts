@@ -248,6 +248,32 @@ const inputValue = (wrapper: Wrapper, name: string) =>
   (field(wrapper, name).element as HTMLInputElement).value
 
 describe('主代理集成边界', () => {
+  it('刷新或返回后可明确恢复未保存的需求与编辑预览', async () => {
+    const first = await render(); await fillForm(first.wrapper); await generate(first.wrapper)
+    await field(first.wrapper, `ai-day-${D1}-title`).setValue('保留的私人编辑'); await flushPromises()
+    first.wrapper.unmount()
+    const restored = await render()
+    expect(restored.wrapper.find('[data-test="ai-restore-workspace"]').exists()).toBe(true)
+    await field(restored.wrapper, 'ai-restore-workspace').trigger('click'); await flushPromises()
+    expect(inputValue(restored.wrapper, 'ai-start-date')).toBe(D1)
+    expect(inputValue(restored.wrapper, `ai-day-${D1}-title`)).toBe('保留的私人编辑')
+    restored.wrapper.unmount()
+  })
+  it('切换账号会清除可恢复的AI私人草稿', async () => {
+    const { wrapper, auth } = await render(); await fillForm(wrapper); await generate(wrapper)
+    auth.token = 'another-session'; auth.user = { ...auth.user!, id: '2' }; await flushPromises()
+    expect(sessionStorage.getItem('travel-notes.ai-workspace.v1')).toBeNull()
+    wrapper.unmount()
+  })
+  it('保存后页面跳转失败时重试沿用同一UUID', async () => {
+    const { wrapper, router } = await render(); await fillForm(wrapper); await generate(wrapper); await openSave(wrapper)
+    vi.spyOn(router, 'push').mockRejectedValueOnce(new Error('route unavailable'))
+    await confirmSave(wrapper)
+    const first = vi.mocked(importItinerary).mock.calls[0][0].clientRequestId
+    await openSave(wrapper); await confirmSave(wrapper)
+    expect(vi.mocked(importItinerary).mock.calls[1][0].clientRequestId).toBe(first)
+    wrapper.unmount()
+  })
   it('其他日期在单日请求过程中被编辑时丢弃迟到结果', async () => {
     let resolve!: (value: { day: AiDay; warnings: string[] }) => void
     vi.mocked(previewAiDay).mockReturnValue(

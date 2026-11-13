@@ -1,0 +1,342 @@
+{
+  "checks": [
+    {
+      "name": "cancel performs zero writes",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 360light#126899",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 360light#b64b82",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 360dark#126899",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 360dark#b64b82",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 390light#126899",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 390light#b64b82",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 390dark#126899",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 390dark#b64b82",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 430light#126899",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 430light#b64b82",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 430dark#126899",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 430dark#b64b82",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 768light#126899",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 768light#b64b82",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 768dark#126899",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 768dark#b64b82",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 1024light#126899",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 1024light#b64b82",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 1024dark#126899",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 1024dark#b64b82",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 1440light#126899",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 1440light#b64b82",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 1440dark#126899",
+      "ok": true
+    },
+    {
+      "name": "drawer layout 1440dark#b64b82",
+      "ok": true
+    },
+    {
+      "name": "real result adds two managed places",
+      "ok": true
+    },
+    {
+      "name": "only one mutation for confirmation",
+      "ok": true
+    },
+    {
+      "name": "saved itinerary survives refresh",
+      "ok": true
+    },
+    {
+      "name": "duplicate preview is real",
+      "ok": true
+    },
+    {
+      "name": "duplicate confirmation skips both",
+      "ok": true
+    },
+    {
+      "name": "AI source keeps both real selected places",
+      "ok": true
+    },
+    {
+      "name": "source survives refresh",
+      "ok": true
+    },
+    {
+      "name": "AI disabled keeps manual selection",
+      "ok": true
+    },
+    {
+      "name": "Escape unlocks body",
+      "ok": true
+    }
+  ],
+  "matrix": [
+    {
+      "width": 360,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 360,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 360,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 360,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 430,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 430,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 430,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 430,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 768,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 768,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 768,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 768,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 1024,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 1024,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 1024,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 1024,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "color": "#126899",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "color": "#b64b82",
+      "overflow": false,
+      "panelOverflow": false,
+      "locked": true
+    }
+  ],
+  "itineraryHref": "/itineraries/3",
+  "writeCount": 2,
+  "selectedIds": [
+    "26",
+    "27"
+  ],
+  "api": "real isolated MySQL backend",
+  "ai": "disabled manual path"
+}

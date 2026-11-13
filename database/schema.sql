@@ -249,3 +249,19 @@ CREATE TABLE IF NOT EXISTS guide_destinations (
   CONSTRAINT fk_guide_destinations_guide FOREIGN KEY (guide_id) REFERENCES guides(id) ON DELETE RESTRICT,
   CONSTRAINT fk_guide_destinations_destination FOREIGN KEY (destination_id) REFERENCES destinations(id) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS itinerary_guide_imports (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  user_id BIGINT NOT NULL,
+  client_request_id CHAR(36) NOT NULL,
+  request_hash CHAR(64) NOT NULL,
+  itinerary_id BIGINT NOT NULL,
+  day_id BIGINT NOT NULL,
+  response_json TEXT NOT NULL,
+  created_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  PRIMARY KEY (id),
+  UNIQUE KEY uk_guide_imports_user_request (user_id, client_request_id),
+  KEY idx_guide_imports_itinerary (itinerary_id),
+  CONSTRAINT fk_guide_imports_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  CONSTRAINT fk_guide_imports_itinerary FOREIGN KEY (itinerary_id) REFERENCES itineraries(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import UserIdentity from './UserIdentity.vue'
 import type { GuideSummary } from '@/types/guide'
+import { cardImageSource, cardImageSrcset, CARD_IMAGE_SIZES } from '@/utils/imageVariants'
 
 const props = withDefaults(
   defineProps<{ guide: GuideSummary; animate?: boolean }>(),
@@ -9,6 +10,12 @@ const props = withDefaults(
 )
 const failed = ref(false)
 const loaded = ref(false)
+const originalFallback = ref(false)
+function imageError(): void {
+  loaded.value = false
+  if (!originalFallback.value && cardImageSrcset(props.guide.coverImageUrl)) originalFallback.value = true
+  else failed.value = true
+}
 const location = computed(() => ({
   name: 'guide-detail',
   params: { id: props.guide.id }
@@ -38,6 +45,7 @@ watch(
   () => {
     failed.value = false
     loaded.value = false
+    originalFallback.value = false
   }
 )
 </script>
@@ -55,13 +63,15 @@ watch(
     >
       <img
         v-if="guide.coverImageUrl && !failed"
-        :src="guide.coverImageUrl"
+        :src="originalFallback ? guide.coverImageUrl : cardImageSource(guide.coverImageUrl)"
+        :srcset="originalFallback ? undefined : cardImageSrcset(guide.coverImageUrl)"
+        :sizes="CARD_IMAGE_SIZES"
         :alt="guide.title"
         :class="{ 'is-loaded': loaded }"
         @load="loaded = true"
         loading="lazy"
         decoding="async"
-        @error="failed = true"
+        @error="imageError"
       />
       <div v-else data-test="card-placeholder" class="note-placeholder">
         <svg viewBox="0 0 160 96" aria-hidden="true">

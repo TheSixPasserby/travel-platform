@@ -1,0 +1,11 @@
+{
+  "frontend/public/theme.js": true,
+  "frontend/src/stores/theme.ts": true,
+  "frontend/src/styles/main.css": true,
+  "frontend/src/components/AppearanceSettings.vue": true,
+  "frontend/src/components/ImageLightbox.vue": true,
+  "frontend/src/composables/useImageTransform.ts": true,
+  "frontend/src/components/ImageViewerToolbar.vue": true,
+  "frontend/src/utils/imageDownload.ts": true,
+  "deprecated/uni-app": true
+}

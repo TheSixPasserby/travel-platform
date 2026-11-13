@@ -105,3 +105,14 @@ export interface AiDraft {
   notes: string
   days: AiDraftDay[]
 }
+
+export interface AiWorkspaceSnapshot {
+  requirements: AiRequirements | null
+  draft: AiDraft | null
+  candidates: AiCandidate[]
+  warnings: string[]
+  budget: AiBudgetEstimate | null
+  cityName: string
+  clientRequestId: string
+  sourceGuideId: string | null
+}

@@ -1,0 +1,42 @@
+{
+  "baselineHead": "9a6261c47695131bee399c8d373d1cc5ff55c630",
+  "originalData": {
+    "tables": 14,
+    "rows": 290,
+    "uploads": 44,
+    "schemaRowsAndUploadsUnchanged": true
+  },
+  "rootEnvUnchanged": true,
+  "knownPrivateValuesAbsentFromPublicChanges": true,
+  "migration": [
+    {
+      "database": "travel_platform_test",
+      "additive": true,
+      "repeatUnchanged": true,
+      "originalTablesUnchanged": 14,
+      "schemaSha256": "7f9640a7403c7994ddc2106f12bdf401de7f5b297d6516c1e323fbb1e6cc2cc7"
+    },
+    {
+      "database": "travel_platform_m16_6829168b_test",
+      "additive": true,
+      "repeatUnchanged": true,
+      "originalTablesUnchanged": 14,
+      "schemaSha256": "7f9640a7403c7994ddc2106f12bdf401de7f5b297d6516c1e323fbb1e6cc2cc7"
+    }
+  ],
+  "protectedSourceChecks": {
+    "frontend/public/theme.js": true,
+    "frontend/src/stores/theme.ts": true,
+    "frontend/src/styles/main.css": true,
+    "frontend/src/components/AppearanceSettings.vue": true,
+    "frontend/src/components/ImageLightbox.vue": true,
+    "frontend/src/composables/useImageTransform.ts": true,
+    "frontend/src/components/ImageViewerToolbar.vue": true,
+    "frontend/src/utils/imageDownload.ts": true,
+    "deprecated/uni-app": true
+  },
+  "businessDatabaseMigrated": false,
+  "committed": false,
+  "pushed": false,
+  "deployed": false
+}

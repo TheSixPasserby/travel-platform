@@ -4,11 +4,15 @@ import { ApiError } from '@/api/client'
 import { fetchDestinations } from '@/api/destinations'
 import type { AiInterest, AiRequirements } from '@/types/ai'
 import type { Destination } from '@/types/destination'
+import type { TripInspiration } from '@/types/tripIntent'
 /** 需求表单：只收集用户意图，不调用生成接口；城市与候选全部来自真实目的地接口。 */
-const props = withDefaults(defineProps<{ busy?: boolean; maxDays?: number }>(), {
-  busy: false,
-  maxDays: 14,
-})
+const props = withDefaults(
+  defineProps<{ busy?: boolean; maxDays?: number; inspiration?: TripInspiration | null; initialRequirements?: AiRequirements | null }>(),
+  {
+    busy: false,
+    maxDays: 14,
+  },
+)
 const emit = defineEmits<{
   submit: [AiRequirements]
   dirty: [AiRequirements]
@@ -78,6 +82,38 @@ function dirty(): void {
 /** 城市或日期变化会让上一轮预览与需求不一致，必须明确作废而不是悄悄沿用。 */
 function invalidate(): void {
   emit('invalidate', snapshot())
+}
+/** 攻略来源只做一次性预填：表单已挂载后到达的新来源不自动覆盖用户输入。 */
+const appliedSource = ref<TripInspiration | null>(null)
+const guideHref = (id: string): string => `/guides/${encodeURIComponent(id)}`
+function sourcePlaceIds(source: TripInspiration): string[] {
+  return [...new Set(source.places.map(place => place.id).filter(Boolean))].slice(0, LIMIT)
+}
+const pendingSource = computed<TripInspiration | null>(() => {
+  const source = props.inspiration
+  if (!source || !source.cityId) return null
+  if (appliedSource.value && appliedSource.value.guideId === source.guideId
+    && appliedSource.value.cityId === source.cityId
+    && sourcePlaceIds(appliedSource.value).join(',') === sourcePlaceIds(source).join(',')) return null
+  return source
+})
+/** notify=true 表示用户点击按钮应用，需要同时作废上一轮预览。 */
+function applySource(source: TripInspiration, notify: boolean): void {
+  cityId.value = source.cityId
+  preferredIds.value = sourcePlaceIds(source)
+  mustVisitIds.value = []
+  avoidIds.value = []
+  page.value = 1
+  keyword.value = ''
+  candError.value = ''
+  appliedSource.value = { ...source, places: source.places.map((place) => ({ ...place })) }
+  void loadCandidates()
+  if (notify) invalidate()
+  dirty()
+}
+function applyPending(): void {
+  const source = pendingSource.value
+  if (source) applySource(source, true)
 }
 async function loadCities(): Promise<void> {
   const request = ++cityVersion
@@ -207,6 +243,17 @@ function submit(): void {
 }
 onMounted(() => {
   void loadCities()
+  const initial = props.initialRequirements
+  if (initial) {
+    cityId.value = initial.cityId; startDate.value = initial.startDate; endDate.value = initial.endDate
+    travelers.value = String(initial.travelers); budgetAmount.value = initial.budgetAmount; budgetBasis.value = initial.budgetBasis
+    pace.value = initial.pace; transport.value = initial.transport; interests.value = [...initial.interests]
+    preferredIds.value = [...initial.preferredIds]; mustVisitIds.value = [...initial.mustVisitIds]; avoidIds.value = [...initial.avoidIds]
+    appliedSource.value = props.inspiration ?? null
+    void loadCandidates(); dirty(); return
+  }
+  const source = props.inspiration
+  if (source && source.cityId) applySource(source, false)
 })
 </script>
 <template>
@@ -218,6 +265,53 @@ onMounted(() => {
     @change="dirty"
     @submit.prevent="submit"
   >
+    <section
+      v-if="appliedSource"
+      data-test="ai-inspiration"
+      class="rounded-2xl border border-pine/15 bg-pine/5 p-4 sm:p-5"
+    >
+      <div class="flex flex-wrap items-baseline justify-between gap-2">
+        <h3 class="text-sm font-medium text-pine-deep">
+          攻略《{{ appliedSource.guideTitle }}》带来的灵感
+        </h3>
+        <a :href="guideHref(appliedSource.guideId)" class="text-xs text-pine underline">
+          查看原攻略
+        </a>
+      </div>
+      <p class="mt-2 text-xs text-ink-soft">
+        {{ appliedSource.cityName || '来源城市' }} · 已将
+        {{ appliedSource.places.length }} 个地点预填为「想去」，可继续修改。
+      </p>
+      <ul class="mt-2 flex flex-wrap gap-2">
+        <li
+          v-for="place in appliedSource.places"
+          :key="place.id"
+          data-test="ai-inspiration-place"
+          class="rounded-full border border-pine/15 px-3 py-1 text-xs text-ink"
+        >
+          {{ place.name }}
+        </li>
+      </ul>
+    </section>
+    <section
+      v-if="pendingSource"
+      data-test="ai-inspiration-pending"
+      role="status"
+      class="rounded-2xl border border-pine/15 bg-pine/5 p-4 sm:p-5"
+    >
+      <p class="text-sm text-ink">
+        已选择新的攻略来源《{{ pendingSource.guideTitle }}》。点击应用后替换当前地点选择。
+      </p>
+      <button
+        type="button"
+        data-test="ai-inspiration-apply"
+        class="btn-ghost mt-3"
+        :disabled="busy"
+        @click="applyPending"
+      >
+        应用这些来源地点
+      </button>
+    </section>
     <div class="grid gap-5 sm:grid-cols-2">
       <div class="sm:col-span-2">
         <label for="ai-city" class="field-label">目的地城市</label>
